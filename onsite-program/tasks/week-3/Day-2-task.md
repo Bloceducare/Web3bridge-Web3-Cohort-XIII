@@ -5,4 +5,3 @@ TASK ONE
 
 
 
-git remote set-url origin https://github.com/IyanuOluwaJesuloba/Web3bridge-Web3-Cohort-XIII.git
