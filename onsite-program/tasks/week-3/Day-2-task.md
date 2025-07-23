@@ -5,3 +5,6 @@ TASK ONE
 
 
 
+git add .
+git commit -m update
+git push origin patch-1
