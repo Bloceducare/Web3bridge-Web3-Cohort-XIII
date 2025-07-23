@@ -21,3 +21,4 @@ const config: HardhatUserConfig = {
 };
 
 export default config;
+//deployed cotract address :  0xC25ad06105fA43F789a63Ef1a21e8A3E3918E064
