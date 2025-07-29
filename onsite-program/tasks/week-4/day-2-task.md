@@ -22,11 +22,11 @@ You are required to implement the following functionality:
 ### 1. **Student Registration**
 
 - Register a new student with basic details (e.g., name, age, etc.)
-- Each student must be assigned a **unique ID** (e.g., using a counter)
+- Each student must be assigned a **unique ID**
 
 ### 2. **Update Student Details**
 
-- Allow updating student information (e.g., name or age)
+- Allow updating student information (e.g., name or age, or both)
 
 ### 3. **Delete Student**
 
@@ -52,7 +52,6 @@ You are required to implement the following functionality:
 ## Constraints
 
 - **Do NOT use `mapping`** for this assignment
-  (You'll refactor the code to use `mapping` later after it's taught more in-depth)
 
 ## Additional Notes
 
@@ -61,3 +60,7 @@ You are required to implement the following functionality:
 - Think carefully about how you’ll generate and assign unique IDs
 
 ---
+
+## Submission
+
+To be submitted by 4am no stories, enjoy!
