@@ -32,8 +32,8 @@ contract SchoolManagementSystem {
     // Update student details by ID
      function updateStudentName(uint id, string memory name) public {
         for (uint i = 0; i < students.length; i++) {
-            if (students[i] == id) {
-                students[i] = name;
+            if (students[i].id == id) {
+                students[i].name = name;
                 return;
             }
         }
@@ -41,8 +41,8 @@ contract SchoolManagementSystem {
 
     function updateStudentAge(uint id, uint age) public {
         for (uint i = 0; i < students.length; i++) {
-            if (students[i] == id) {
-                students[i] = age;
+            if (students[i].id == id) {
+                students[i].age = age;
                 return;
             }
         }
