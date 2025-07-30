@@ -30,12 +30,24 @@ contract SchoolManagementSystem {
     }
 
     // Update student details by ID
-    function updateStudent(uint index, string memory name, uint age) public {
-        require(index < students.length, "Student not found");
-        students[index].name = name;
-        students[index].age = age;
+     function updateStudentName(uint id, string memory name) public {
+        for (uint i = 0; i < students.length; i++) {
+            if (students[i] == id) {
+                students[i] = name;
+                return;
+            }
+        }
     }
 
+    function updateStudentAge(uint id, uint age) public {
+        for (uint i = 0; i < students.length; i++) {
+            if (students[i] == id) {
+                students[i] = age;
+                return;
+            }
+        }
+
+    }
     // Delete student by ID
     function deleteStudent(uint index) public {
         require(index < students.length, "Student not found");
