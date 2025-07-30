@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/s-olagoke/web3bridge-tasks/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-2/Sikiru Olagoke/sms-student-status-tracking/contracts/StudentManagement.sol": {
+      "lastModificationDate": 1753834681025,
+      "contentHash": "67b1ef845a5ec9dca17fbfddfa8e0352",
+      "sourceName": "contracts/StudentManagement.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "StudentManagement"
+      ]
+    }
+  }
+}
