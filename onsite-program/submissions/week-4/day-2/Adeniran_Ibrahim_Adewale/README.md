@@ -1,0 +1,7 @@
+# Sample Hardhat Project
+
+```Shell
+Deployed Addresses
+
+SchoolManagementModule#SchoolManagement - 0xB97969c1A21133e71Ed4DbB462d3e84997122985
+```
