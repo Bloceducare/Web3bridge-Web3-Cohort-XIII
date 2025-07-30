@@ -67,7 +67,7 @@ contract StudentManagement {
     }
 
     function delete_student(uint _index) external {
-        require(_index == students.length - 1, "Student does not exits");
+        require(_index <= students.length - 1, "Student does not exits");
         delete students[_index];
     }
 
