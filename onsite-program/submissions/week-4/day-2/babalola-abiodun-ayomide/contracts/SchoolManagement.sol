@@ -92,4 +92,13 @@ contract SchoolManagement {
         }
         revert("Student with id not found");
     }
+    function deleteStudent(uint id)external {
+        for (uint count = 0; count < allStudents.length; count++){
+            if(allStudents[count].id == id){
+               delete allStudents[count];
+                return;
+            }
+        }
+        revert("Student with id not found");
+    }
 }
