@@ -10,6 +10,8 @@ Generally there four visibilites for both variables and functions but singularly
 #### 3. Internal
 #### 4. external
 
+What happens when you dont assign a value to a variable or function??💡 I'll tell you later, I promise! 🤞
+
 * **Public:**
     * **Description:** Public variables are accessible from anywhere, both within the contract/scope they are defined in and from external contracts/scopes. It is Often used for data that needs to be read or modified by other parts of the application or by external entities.
     * **USE CASE💡:** A `balance` variable in a cryptocurrency contract that needs to be readable by anyone.
@@ -50,23 +52,26 @@ Solidity provides four visibility specifiers to control access to variables and 
 | `public`     | Accessible everywhere              | Accessible everywhere              | ✅ Yes               | ✅ Yes         |
 | `private`    | Only within defining contract      | Only within defining contract      | ❌ No                | ❌ No          |
 | `internal`   | Defining contract + child contracts| Defining contract + child contracts| ✅ Yes               | ❌ No          |
-| `external`   | ❌ Not applicable                 | Only via external calls            | ✅ Yes               | ✅ Yes         |
+| `external`   | ❌ Not applicable                  | Only via external calls            | ✅ Yes               | ✅ Yes         |
 
-### Key Notes:
-1. **Default Visibility**: 
+ When a vraiable isn't assigned a value, a default value is added to it
+ **Default Visibility**: 
    - Variables: `internal`  
    - Functions: `public`  
-2. **Gas Efficiency**: 
+   - 
+### Key Notes:
+
+1. **Gas Efficiency**: 
    - `external` functions are cheaper for calls from outside the contract.
-3. **Best Practices**:
+2. **Best Practices**:
    - Use `private` for sensitive data/functions.
    - Prefer `external` over `public` for functions only called externally.
    - Use `internal` for reusable code in child contracts.
 
-Example:
+Example in code:
 ```solidity
 contract Example {
-    uint256 public publicVar;  // Readable by anyone
+    uint256 public publicVar;  // Readable by anyone 
     uint256 private privateVar; // Only this contract
     uint256 internal internalVar; // This + child contracts
     
