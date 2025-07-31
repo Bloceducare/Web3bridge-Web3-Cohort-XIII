@@ -1,23 +1,3 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> e166642c59505ee4f7c6d1e74068b9136f37e806
-# Sample Hardhat Project
-
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
-<<<<<<< HEAD
-=======
-=======
 # Web3bridge Web3 Cohort XIII - GitHub Contribution Guide
 
 Welcome to the Web3Bridge Cohort XIII training program! This repository is used for submitting tasks, tracking student progress, and grading assessments. Follow this guide to ensure a smooth contribution process.
@@ -162,12 +142,9 @@ git push origin main
 ### 3. Reviewing Student Submissions
 
 - Check the Pull Requests (PRs) tab on GitHub.
-- Open a PR and review the student’s work.
+- Open a PR and review the student's work.
 - Leave comments for corrections if needed.
 - Approve the PR if it meets expectations.
 - Merge the PR after approval.
 
 Thank you for contributing to Web3Bridge Cohort XIII! Happy coding!
-
->>>>>>> cddca7fa287dceff0c3a5543a99079077f9b3cc4
->>>>>>> e166642c59505ee4f7c6d1e74068b9136f37e806
