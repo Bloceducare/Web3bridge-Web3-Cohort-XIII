@@ -18,7 +18,17 @@ Access to the garage is determined by the following logic:
 
 Other roles such as `SOCIAL_MEDIA_TEAM`, `TECHNICIAN_SUPERVISOR`, and `KITCHEN_STAFF` are tracked by the system but do not have garage access.
 
-### Core Functions
+## Deployed Contract on Lisk Sepolia
+
+The contract has been deployed to the **Lisk Sepolia Testnet**.
+
+You can view and interact with the verified contract on the Lisk Sepolia Blockscout explorer via the link below.
+
+**Contract Address:** [0x86D74e5fD14C88fd9469410a6f75Ab5A5120AB83](https://sepolia-blockscout.lisk.com/address/0x86D74e5fD14C88fd9469410a6f75Ab5A5120AB83)
+
+
+
+## Core Functions
 
 - **`setEmployee(address, name, role, status)`**: A manager-only function to add a new employee or update an existing one's details.
 - **`canAccessGarage(address)`**: A public function that checks if a given employee address has permission to enter the garage.
