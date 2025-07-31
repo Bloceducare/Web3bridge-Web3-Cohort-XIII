@@ -4,10 +4,10 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
 
-const AccessSystemModule = buildModule("AccessSystemModule", (m) => {
-  const access_system = m.contract("AccessSystem");
+const AccessModule = buildModule("AccessModule", (m) => {
+  const access = m.contract("Access");
 
-  return { access_system };
+  return { access };
 });
 
-export default AccessSystemModule;
+export default AccessModule;
