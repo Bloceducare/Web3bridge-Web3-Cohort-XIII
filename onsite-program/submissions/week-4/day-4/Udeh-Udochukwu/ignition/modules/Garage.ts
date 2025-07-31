@@ -3,9 +3,9 @@
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-const SchoolModule = buildModule("SchoolModule", (m) => {
-  const School = m.contract("School");
-  return { School };
+const Garage = buildModule("GarageModule", (m) => {
+  const Garage = m.contract("Garage");
+  return { Garage };
 });
 
-export default SchoolModule;
+export default Garage;

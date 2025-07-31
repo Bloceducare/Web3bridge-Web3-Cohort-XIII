@@ -1,0 +1,11 @@
+{
+  "name": "Udeh-Udochukwu",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "hardhat": "^2.26.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}

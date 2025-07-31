@@ -11,7 +11,3 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
-npx hardhat vars set PRIVATE_KEY
-npx hardhat ignition deploy ignition/modules/School.ts --network liskTestnet --verify
-
-
