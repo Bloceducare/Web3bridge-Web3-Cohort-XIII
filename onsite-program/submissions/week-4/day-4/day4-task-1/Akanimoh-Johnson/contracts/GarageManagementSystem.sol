@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-contract Web3BridgeGarage {
+contract GarageManagementSystem {
 
     enum Role { 
         MEDIATEAM,
@@ -25,7 +25,7 @@ contract Web3BridgeGarage {
     mapping(address => Employee) public employees;
     Employee[] public employeeList;
 
-    function addEmployee(address _employeeAddress, string memory _name, Role _role) external {
+    function add_employee_toList(address _employeeAddress, string memory _name, Role _role) external {
         require(bytes(employees[_employeeAddress].name).length == 0, "Employee already exists");
         Employee memory newEmployee = Employee({
             name: _name,
@@ -36,6 +36,22 @@ contract Web3BridgeGarage {
         employeeList.push(newEmployee);
     }
 
-   
-   
+    function can_access_garage(address _employeeAddress) external view returns (bool) {
+        Employee memory employee = employees[_employeeAddress];
+        if (employee.status != Status.ACTIVE) {
+            return false;
+        }
+        if (employee.role == Role.MEDIATEAM || employee.role == Role.MENTORS || employee.role == Role.MANAGERS) {
+            return true;
+        }
+        return false;
+    }
+
+    function get_all_employees() external view returns (Employee[] memory) {
+        return employeeList;
+    }
+
+    function get_employee_details(address _employeeAddress) external view returns (Employee memory) {
+        return employees[_employeeAddress];
+    }
 }
