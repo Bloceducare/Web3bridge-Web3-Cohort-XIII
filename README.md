@@ -1,5 +1,4 @@
 <<<<<<< HEAD
-<<<<<<< HEAD
 # Sample Hardhat Project
 
 This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
@@ -166,6 +165,3 @@ git push origin main
 Thank you for contributing to Web3Bridge Cohort XIII! Happy coding!
 
 >>>>>>> cddca7fa287dceff0c3a5543a99079077f9b3cc4
-=======
-Contract Address:  0xFD25E23c2AAc3917e9e777D488Dd62724AFeE536
->>>>>>> c3eafa15541f9fb258d5c04c3e7e69eeb2600d14
