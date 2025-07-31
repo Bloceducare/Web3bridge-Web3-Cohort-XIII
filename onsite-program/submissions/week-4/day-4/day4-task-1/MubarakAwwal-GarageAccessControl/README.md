@@ -1,4 +1,4 @@
-#Contract address=0x64485690ddd6b781511564670F4b18E02Fa3636B
+#Contract-address=0x64485690ddd6b781511564670F4b18E02Fa3636B
 # Sample Hardhat Project
 
 This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
