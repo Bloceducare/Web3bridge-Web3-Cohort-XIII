@@ -1,5 +1,3 @@
-# Sample Hardhat Project
-
 Deployed Addresses
 
 SchoolAccessModule#SchoolAccess - 0x7B3677Af0916Eb6Ad10C14d247366A018869F44E
