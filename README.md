@@ -142,10 +142,9 @@ git push origin main
 ### 3. Reviewing Student Submissions
 
 - Check the Pull Requests (PRs) tab on GitHub.
-- Open a PR and review the student’s work.
+- Open a PR and review the student's work.
 - Leave comments for corrections if needed.
 - Approve the PR if it meets expectations.
 - Merge the PR after approval.
 
 Thank you for contributing to Web3Bridge Cohort XIII! Happy coding!
-
