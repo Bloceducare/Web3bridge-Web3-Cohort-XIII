@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/day4-task-1/Fawaz-Oduola/contracts/accessControl.sol": {
+      "lastModificationDate": 1753998097640,
+      "contentHash": "bef54a32a1e262bf2289724c8984b12a",
+      "sourceName": "contracts/accessControl.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.8.25"
+      ],
+      "artifacts": [
+        "AccessControl"
+      ]
+    }
+  }
+}
