@@ -1,34 +1,50 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.28;
+//SPDX-License-Identifier: UNLICENSED
 
-// Uncomment this line to use console.log
-// import "hardhat/console.sol";
+pragma solidity ^0.8.29;
 
-contract Lock {
-    uint public unlockTime;
-    address payable public owner;
+contract Garage {
+    enum Role {MANAGER, MENTOR, MEDIA, SOCIAL_MEDIA, SUPERVISORS, COOK}
 
-    event Withdrawal(uint amount, uint when);
-
-    constructor(uint _unlockTime) payable {
-        require(
-            block.timestamp < _unlockTime,
-            "Unlock time should be in the future"
-        );
-
-        unlockTime = _unlockTime;
-        owner = payable(msg.sender);
+    struct Employee {
+        address employee;
+        string name;
+        Role role;
+        bool isEmployeed;
     }
 
-    function withdraw() public {
-        // Uncomment this line, and the import of "hardhat/console.sol", to print a log in your terminal
-        // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
+    Employee[] public employees;
 
-        require(block.timestamp >= unlockTime, "You can't withdraw yet");
-        require(msg.sender == owner, "You aren't the owner");
+    mapping(string => address) public nameToAddress;    
 
-        emit Withdrawal(address(this).balance, block.timestamp);
+    function AddEmployee(string memory _name, Role _role, address _address) external {
+        Employee memory new_employee_ = Employee(_address, _name, _role, true);
 
-        owner.transfer(address(this).balance);
+        employees.push(new_employee_);
     }
+
+        function UpdateEmployee(address _address, string memory _name, Role _role) external {
+        for (uint256 i = 0; i < employees.length; i++) {
+            if (employees[i].employee == _address) { 
+                employees[i].name = _name;           
+                employees[i].role = _role;           
+                return; 
+            }  
+        }
+        revert("Employee not found"); 
+    }
+
+
+    function getEmployees() external view returns (Employee[] memory) {
+        return employees;
+    }
+
+
+    function setAddress(string memory _name, address _address) public {
+      nameToAddress[_name] = _address;
+    }
+
+    function getAddress(string memory _name) public view returns (address) {
+        return nameToAddress[_name];
+    }
+
 }
