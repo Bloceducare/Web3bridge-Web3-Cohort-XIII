@@ -17,10 +17,11 @@ contract StudentManagementSystem {
     }
 
     Student[] public students;
-    uint256 public id;
+//    uint256 public id;
+    uint256 public nextId;
 
-    function register_student(string memory _name, uint256 _id, uint8 _age, Gender _gender) external {
-        Student memory new_student_ = Student({name: _name, id: _id, age: _age, gender: _gender, status: Status.ACTIVE});
+    function register_student(string memory _name, uint8 _age, Gender _gender) external {
+        Student memory new_student_ = Student({name: _name, age: _age, gender: _gender, status: Status.ACTIVE});
         students.push(new_student_);
         nextId++;
     }
@@ -42,7 +43,5 @@ contract StudentManagementSystem {
         students[_index] = students[students.length-1];
         students.pop();
     }
-
-    uint256 public nextId;
 
 }
