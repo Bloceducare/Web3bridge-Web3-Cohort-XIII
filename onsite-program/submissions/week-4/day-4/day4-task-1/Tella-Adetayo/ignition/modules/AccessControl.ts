@@ -3,8 +3,8 @@
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-const AccessModule = buildModule("SMSModule", (m) => {
-  const access = m.contract("ACCESS"); 
+const AccessModule = buildModule("AccessModule", (m) => {
+  const access = m.contract("EmployeeAccess"); 
   
   return { access };
 });
