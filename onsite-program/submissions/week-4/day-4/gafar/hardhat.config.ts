@@ -9,12 +9,23 @@ const config: HardhatUserConfig = {
   solidity: "0.8.28",
   networks: {
     'lisk-sepolia': {
-      url: LISK_RPC_URL,
-      accounts: [`0x${PRIVATE_KEY}`]
-    }
+      url: 'https://rpc.sepolia-api.lisk.com'
+    },
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    apiKey: {
+      'lisk-sepolia': 'empty'
+    },
+    customChains: [
+      {
+        network: "lisk-sepolia",
+        chainId: 4202,
+        urls: {
+          apiURL: "https://sepolia-blockscout.lisk.com/api",
+          browserURL: "https://sepolia-blockscout.lisk.com"
+        }
+      }
+    ]
   }
 };
 
