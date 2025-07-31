@@ -43,7 +43,7 @@ contract SchoolManagement {
     }
     
     function deleteStudent(uint256 _id) public {
-        for (uint256 i = 0; i < students.length; i++) {
+        for (uint256 i = 0; i < students.length; i++)
             if (students[i].id == _id && students[i].exists) {
                 students[i].exists = false;
                 return;
@@ -92,7 +92,7 @@ contract SchoolManagement {
             if (students[i].exists) {
                 activeStudents[currentIndex] = students[i];
                 currentIndex++;
-            }
+            }J
         }
         
         return activeStudents;
