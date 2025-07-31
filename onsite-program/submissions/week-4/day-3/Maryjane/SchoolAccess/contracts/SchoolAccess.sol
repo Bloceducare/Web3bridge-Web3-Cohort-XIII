@@ -23,23 +23,23 @@ contract SchoolAccess {
     mapping(address => Employee) public employees;
     Employee[] public allEmployees;
 
-    function addEmployee( address employeeWallet,string memory employeeName,Role employeeRole,bool employeeStatus) public {
-        require(employees[employeeWallet].wallet == address(0), "Employee already exists");
+    function addEmployee( address _employeeWallet,string memory _employeeName,Role _employeeRole,bool _employeeStatus) public {
+        require(employees[_employeeWallet].wallet == address(0), "Employee already exists");
 
-        Employee memory newEmployee = Employee( employeeName,employeeRole,employeeStatus,employeeWallet);
-        employees[employeeWallet] = newEmployee;
+        Employee memory newEmployee = Employee( _employeeName,_employeeRole,_employeeStatus,_employeeWallet);
+        employees[_employeeWallet] = newEmployee;
         allEmployees.push(newEmployee);
     }
 
-    function updateEmployee(address employeeWallet,string memory employeeName,Role employeeRole,bool employeeStatus) public {
-        require(employees[employeeWallet].wallet != address(0), "Employee does not exist");
+    function updateEmployee(address _employeeWallet,string memory _employeeName,Role _employeeRole,bool _employeeStatus) public {
+        require(employees[_employeeWallet].wallet != address(0), "Employee does not exist");
 
-        Employee memory updatedEmployee = Employee(employeeName,employeeRole,employeeStatus,employeeWallet);
+        Employee memory updatedEmployee = Employee(_employeeName,_employeeRole,_employeeStatus,_employeeWallet);
 
-        employees[employeeWallet] = updatedEmployee;
+        employees[_employeeWallet] = updatedEmployee;
 
         for (uint i = 0; i < allEmployees.length; i++) {
-            if (allEmployees[i].wallet == employeeWallet) {
+            if (allEmployees[i].wallet == _employeeWallet) {
                 allEmployees[i] = updatedEmployee;
                 return;
             }
