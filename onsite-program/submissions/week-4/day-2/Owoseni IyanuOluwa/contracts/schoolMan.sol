@@ -15,53 +15,46 @@ contract SchoolManagementSystem {
         string name;
         uint256 age;
         Status status;
-        bool exists; // true if student exists, false if deleted
+        bool exists; 
     }
     
-    // Array to store all students
     Student[] public students;
     
-    // Counter to give each student a unique ID
     uint256 public nextId = 1;
     
-    /**
-     * Register a new student
-     */
+   
     function registerStudent(string memory _name, uint256 _age) public returns (uint256) {
-        // Create a new student
         Student memory newStudent = Student({
             id: nextId,
             name: _name,
             age: _age,
-            status: Status.ACTIVE, // New students are always ACTIVE
+            status: Status.ACTIVE, 
             exists: true
         });
         
-        // Add student to our array
         students.push(newStudent);
         
-        // Save the current ID to return
-        uint256 currentId = nextId;
+        // uint256 currentId = nextId;
         
-        // Increase ID for next student
-        nextId = nextId + 1;
+        // nextId = nextId + 1;
+        totalActiveStudents= totalActiveStudents+1;
         
-        return currentId;
+        return nextId+1;
     }
     
-    /**
-     * Update student information
-     */
+    
     function updateStudent(uint256 _studentId, string memory _newName, uint256 _newAge) public {
-        // Find the student in our array
         for (uint256 i = 0; i < students.length; i++) {
             if (students[i].id == _studentId && students[i].exists == true) {
-                // Update the student's information
                 students[i].name = _newName;
                 students[i].age = _newAge;
-                return; // Exit the function once we found and updated
+                return; 
+
+                // require(sender==msg.sender, "invalid sender")
+
             }
         }
+         revert("Student not found or does not exist");
     }
     
     
@@ -74,9 +67,7 @@ contract SchoolManagementSystem {
         }
     }
     
-    /**
-     * Change a student's status
-     */
+    
     function changeStudentStatus(uint256 _studentId, Status _newStatus) public {
         for (uint256 i = 0; i < students.length; i++) {
             if (students[i].id == _studentId && students[i].exists == true) {
@@ -87,15 +78,15 @@ contract SchoolManagementSystem {
     }
     
    
-    function getStudent(uint256 _studentId) public view returns (uint256, string memory, uint256, Status) {
+    function getStudent(uint256 _studentId) public view returns (uint256, string memory, uint256, Status, bool) {
         for (uint256 i = 0; i < students.length; i++) {
             if (students[i].id == _studentId && students[i].exists == true) {
-                return (students[i].id, students[i].name, students[i].age, students[i].status);
+                return (students[i].id, students[i].name, students[i].age, students[i].status, true);
             }
         }
         
     
-        return (0, "", 0, Status.ACTIVE);
+        return (0, "", 0, Status.ACTIVE, false);
     }
     
     
@@ -112,4 +103,8 @@ contract SchoolManagementSystem {
         }
         return false;
     }
+    function getTotalActiveStudents() public view returns (uint256) {
+        return totalActiveStudents;
+    }
 }
+
