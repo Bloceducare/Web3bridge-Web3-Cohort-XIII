@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/yusuf/Documents/Web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-2/Yusuf Abdul-hayyi/contracts/StudentData.sol": {
+      "lastModificationDate": 1753844049810,
+      "contentHash": "f849c46c214a0f2b22e01e6458ad8805",
+      "sourceName": "contracts/StudentData.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.10"
+      ],
+      "artifacts": [
+        "StudentData"
+      ]
+    }
+  }
+}
