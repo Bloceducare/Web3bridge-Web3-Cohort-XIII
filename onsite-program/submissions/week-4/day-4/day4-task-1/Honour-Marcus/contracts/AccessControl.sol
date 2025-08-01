@@ -71,6 +71,17 @@ contract AccessControl {
         return false;
     }
 
+    function deleteEmployee(address _empAddress) public {
+    require(bytes(addrtoemp[_empAddress].Name).length != 0, "Employee does not exist");
+        delete addrtoemp[_empAddress];
+        for (uint256 i = 0; i < employeeList.length; i++) {
+            if (employeeList[i] == _empAddress) {
+            employeeList[i] = employeeList[employeeList.length - 1]; // Move last to deleted index
+            employeeList.pop(); // Remove last element
+            break;}
+        }
+    }
+
     function getAllEmployees() public view returns (address[] memory) {
         return employeeList;
     }
