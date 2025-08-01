@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/bilal/bilal_projects/Learning/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/day-4-task-1/Bilal-Oyeleke-Soliu/contracts/Employee_Management.sol": {
+      "lastModificationDate": 1753998793114,
+      "contentHash": "9b6671065d6a2e79f0e33b9aa4df8570",
+      "sourceName": "contracts/Employee_Management.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "SchoolManage"
+      ]
+    }
+  }
+}
