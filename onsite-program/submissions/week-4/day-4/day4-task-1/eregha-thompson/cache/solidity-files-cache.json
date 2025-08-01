@@ -1,0 +1,77 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/godbrand/Documents/GitHub/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/day4-task-1/eregha-thompson/contracts/Lock.sol": {
+      "lastModificationDate": 1753995952631,
+      "contentHash": "7eee587c347fe6b1de50c96688cb9477",
+      "sourceName": "contracts/Lock.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Lock"
+      ]
+    },
+    "/home/godbrand/Documents/GitHub/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/day4-task-1/eregha-thompson/contracts/cardAccess.sol": {
+      "lastModificationDate": 1753998771806,
+      "contentHash": "69ed9995af57c605889bdc2b9cf412a3",
+      "sourceName": "contracts/cardAccess.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "Entry"
+      ]
+    }
+  }
+}
