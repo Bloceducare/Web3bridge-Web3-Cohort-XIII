@@ -21,7 +21,7 @@ contract SchoolManagementSystem {
     Student[] public students;
     
     uint256 public nextId = 1;
-    
+    uint256 public totalActiveStudents = 0;
    
     function registerStudent(string memory _name, uint256 _age) public returns (uint256) {
         Student memory newStudent = Student({
