@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.28;
 
-contract SchoolManagement {
+contract SchoolManage {
 
     address public owner;
     uint public counter = 0;

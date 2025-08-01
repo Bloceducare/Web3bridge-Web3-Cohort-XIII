@@ -3,12 +3,12 @@
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-
 const SchoolModule = buildModule("SchoolModule", (m) => {
 
-  const schoolManage = m.contract("SchoolManage");
+  const schoolManage = m.contract("SchoolManage"); 
 
   return { schoolManage };
 });
 
 export default SchoolModule;
+
