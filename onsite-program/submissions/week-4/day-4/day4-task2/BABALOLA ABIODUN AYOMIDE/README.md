@@ -1,13 +1,7 @@
-# Sample Hardhat Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
 
-Try running some of the following tasks:
+## School management contract address 
+`0x746EF312BE0d017e8B9727C1E68d6237b8137ABE`
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/SchoolManagementSystem.ts
-```
+## Todo management contract address
+`0x`
