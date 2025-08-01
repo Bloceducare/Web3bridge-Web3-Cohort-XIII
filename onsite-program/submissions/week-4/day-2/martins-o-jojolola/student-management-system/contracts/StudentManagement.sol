@@ -4,7 +4,6 @@ pragma solidity ^0.8.28;
 
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
-
 contract StudentManagementSystem {
     struct Student {
         uint id;
@@ -93,5 +92,17 @@ contract StudentManagementSystem {
 
     function getAllStudents() external view returns (Student[] memory) {
         return students;
+    }
+
+    function delete_student_pop_and_shift(uint studentId) external {
+        require(
+            studentId > 0 && studentId <= students.length,
+            "Invalid student ID"
+        );
+        uint lastIndex = students.length - 1;
+        if (studentId - 1 != lastIndex) {
+            students[studentId - 1] = students[lastIndex];
+        }
+        students.pop();
     }
 }
