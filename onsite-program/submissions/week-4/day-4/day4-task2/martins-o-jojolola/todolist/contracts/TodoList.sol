@@ -45,11 +45,6 @@ contract TodoList {
         _;
     }
 
-    event TodoCreated(address indexed todoAddress, string title);
-    event TodoUpdated(address indexed todoAddress, string newTitle);
-    event TodoStatusToggled(address indexed todoAddress, Status newStatus);
-    event TodoDeleted(address indexed todoAddress);
-
     function createTodo(
         address _todoAddress,
         string memory _title,
@@ -70,8 +65,6 @@ contract TodoList {
         });
 
         todoAddresses.push(_todoAddress);
-
-        emit TodoCreated(_todoAddress, _title);
     }
 
     function updateTodo(
@@ -89,8 +82,6 @@ contract TodoList {
         Todo storage todo = todoMap[_todoAddress];
         todo.title = _newTitle;
         todo.description = _newDescription;
-
-        emit TodoUpdated(_todoAddress, _newTitle);
     }
 
     function toggleTodoStatus(
@@ -102,8 +93,6 @@ contract TodoList {
         } else {
             todo.status = Status.Pending;
         }
-
-        emit TodoStatusToggled(_todoAddress, todo.status);
     }
 
     function getTodos() external view returns (Todo[] memory) {
@@ -126,8 +115,6 @@ contract TodoList {
                 break;
             }
         }
-
-        emit TodoDeleted(_todoAddress);
     }
 
     function getTodo(
