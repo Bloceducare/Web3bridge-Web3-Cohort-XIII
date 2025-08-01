@@ -35,14 +35,48 @@ contract Access {
         admin = msg.sender;
     }
 
-    function addOrUpdateEmployee(
+    // function addOrUpdateEmployee(
+    //     address _employeeAddress,
+    //     string memory _name,
+    //     Role _role,
+    //     bool _isEmployed
+    // ) public onlyAdmin {
+    //     require(_employeeAddress != address(0), "Invalid address");
+    //     require(bytes(_name).length != 0, "Name cannot be empty");
+
+    //     Employee memory newEmployee = Employee({
+    //         name: _name,
+    //         role: _role,
+    //         isEmployed: _isEmployed,
+    //         walletAddress: _employeeAddress
+    //     });
+
+    //     bool exists = isRegistered[_employeeAddress];
+
+    //     employees[_employeeAddress] = newEmployee;
+    //     isRegistered[_employeeAddress] = true;
+
+    //     if (exists) {
+    //         for (uint i = 0; i < allEmployees.length; i++) {
+    //             if (allEmployees[i].walletAddress == _employeeAddress) {
+    //                 allEmployees[i] = newEmployee;
+    //                 break;
+    //             }
+    //         }
+    //     } else {
+    //         allEmployees.push(newEmployee);
+    //     }
+    // }
+
+     
+    function addEmployee(
         address _employeeAddress,
         string memory _name,
         Role _role,
         bool _isEmployed
     ) public onlyAdmin {
         require(_employeeAddress != address(0), "Invalid address");
-        require(bytes(_name).length != 0, "Name cannot be empty");
+        require(!isRegistered[_employeeAddress], "Employee already exists");
 
         Employee memory newEmployee = Employee({
             name: _name,
@@ -51,20 +85,35 @@ contract Access {
             walletAddress: _employeeAddress
         });
 
-        bool exists = isRegistered[_employeeAddress];
-
         employees[_employeeAddress] = newEmployee;
         isRegistered[_employeeAddress] = true;
 
-        if (exists) {
-            for (uint i = 0; i < allEmployees.length; i++) {
-                if (allEmployees[i].walletAddress == _employeeAddress) {
-                    allEmployees[i] = newEmployee;
-                    break;
-                }
+        allEmployees.push(newEmployee);
+    }
+
+   function updateEmployee(
+        address _employeeAddress,
+        string memory _name,
+        Role _role,
+        bool _isEmployed
+    ) public onlyAdmin {
+        require(_employeeAddress != address(0), "Invalid address");
+        require(isRegistered[_employeeAddress], "Employee does not exist");
+
+        Employee memory updatedEmployee = Employee({
+            name: _name,
+            role: _role,
+            isEmployed: _isEmployed,
+            walletAddress: _employeeAddress
+        });
+
+        employees[_employeeAddress] = updatedEmployee;
+
+        for (uint i = 0; i < allEmployees.length; i++) {
+            if (allEmployees[i].walletAddress == _employeeAddress) {
+                allEmployees[i] = updatedEmployee;
+                break;
             }
-        } else {
-            allEmployees.push(newEmployee);
         }
     }
 
