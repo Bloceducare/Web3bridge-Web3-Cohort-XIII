@@ -1,0 +1,3 @@
+[submodule "onsite-program/submissions/week-4/day-6/Zacheus-Oluwasegun-EMS/lib/forge-std"]
+	path = onsite-program/submissions/week-4/day-6/Zacheus-Oluwasegun-EMS/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
