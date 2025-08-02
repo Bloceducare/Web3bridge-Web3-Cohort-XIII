@@ -1,19 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
+import "./EmsInterface.sol";
 
-import "EmsInterface.sol";
-
-
-//  struct Employee{
-//         address employee_address;
-//         uint256 salary;
-//         string name;
-//         string telephone;
-//         string house_address;
-//         Status status;
-//         Role role;
-//         bool exists;
-//     }
 
 contract EMS {
 
@@ -26,6 +14,7 @@ contract EMS {
     }
 
     error EMS__OnlyManager();
+    error EMS__InsufficientFunds();
 
     modifier onlyManager {
         if (msg.sender != manager) {
@@ -60,7 +49,11 @@ contract EMS {
             employees[_address].exists &&
             employees[_address].status == IEMS.Status.EMPLOYED
         ) {
-            _address.transfer(employees[_address].salary);
+            if (address(this).balance > employees[_address].salary) {
+                _address.transfer(employees[_address].salary);
+                return;
+            }
+            revert EMS__InsufficientFunds();
         }
     }
 
@@ -75,7 +68,12 @@ contract EMS {
         }
     }
 
-    function changeDetails(address payable _address, string calldata _name, string calldata _telephone, string calldata _house_address)external onlyManager {
+    function changeDetails(
+        address payable _address, 
+        string calldata _name, 
+        string calldata _telephone, 
+        string calldata _house_address
+    )external onlyManager {
         if (employees[_address].exists &&
             employees[_address].status != IEMS.Status.UNEMPLOYED
         ) {
