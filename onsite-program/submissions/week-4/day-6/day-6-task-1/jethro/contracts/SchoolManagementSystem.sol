@@ -7,7 +7,7 @@ interface ISalaryDisburser {
 }
 
 
-contract SchoolManagement is ISalaryDisburser {
+contract SchoolManagementSystem is ISalaryDisburser {
     
     enum Role { Teacher, Administrator, SupportStaff }
 
