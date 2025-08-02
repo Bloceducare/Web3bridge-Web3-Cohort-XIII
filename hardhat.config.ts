@@ -1,6 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-require('dotenv').config();
+require("dotenv").config();
 
 const { WALLET_KEY, LISK_API_KEY, LISK_URL_KEY } = process.env;
 
@@ -13,7 +13,7 @@ const config: HardhatUserConfig = {
     },
   },
   etherscan: {
-    apiKey: LISK_API_KEY || "632C1VWERZ6XBYMSN9A5TM1KFGSXTRJQ" as string,
+    apiKey: LISK_API_KEY as string,
   },
 };
 
