@@ -1,83 +1,24 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "./Staff.sol";
+import "../library/Error.sol";
+import "../interface/ITeacherManagement.sol";
 
 contract SchoolManagementSystem {
-    error TEACHER();
-    error INVALID_ID();
-    error INVALID_OWNER();
-    error YOURE_A_THIEF();
-    error InsufficientFunds();
-
     address public owner;
+    uint256 private uid;
+    mapping(address => Teacher) private teacherMapping;
+    Teacher[] public teachers;
 
+    // Constructor to set the owner
     constructor() {
         owner = msg.sender;
     }
 
+    // Modifier to restrict access to owner
     modifier onlyOwner() {
-        require(msg.sender == owner, "you are not the school owner");
+        require(msg.sender == owner, "Only owner can call this function");
         _;
-    }
-
-    enum Status {
-        UNEMPLOYED,
-        EMPLOYED,
-        ON_PROBATION
-    }
-
-    struct Teacher {
-        uint256 id;
-        address aza;
-        string name;
-        uint8 salary;
-        Status status;
-    }
-
-    uint256 private uid;
-
-    mapping(address => Teacher) private teacherMapping;
-    Teacher[] public teachers;
-
-    receive() external payable {}
-    fallback() external {}
-
-    function unboard_teacher(
-        string memory _name, 
-        uint8 _salary, 
-        address _aza
-    ) external {
-        uid++;
-
-        Teacher memory _teacher = Teacher(
-            uid,
-            _aza,
-            _name,
-            _salary,
-            Status.UNEMPLOYED
-        );
-
-        teacherMapping[msg.sender] = _teacher;
-        teachers.push(_teacher);
-    }
-
-    function get_balance() external view returns (uint256) {
-        return address(this).balance;
-    }
-
-    function transfer(address payable _to, uint256 _salary) external onlyOwner {
-        if (owner != msg.sender) {
-            revert YOURE_A_THIEF();
-        }
-        _to.transfer(_salary);
-    }
-
-    function active_staff(address _address) external view {
-        require(
-            teacherMapping[_address].status == Status.EMPLOYED,
-            "You are not an active staff"
-        );
     }
 
     modifier teacherExists(address _teacher) {
@@ -90,17 +31,60 @@ contract SchoolManagementSystem {
         _;
     }
 
-    function disburseSalaryToTeacher(address payable _teacher) 
-        external 
-        onlyOwner 
+    // Function to register a teacher
+    function registerTeacher(
+        string memory _name,
+        uint256 _salary,
+        address _aza
+    ) external onlyOwner {
+        // Check if teacher already exists
+        require(teacherMapping[_aza].aza == address(0), "Teacher already exists");
+        
+        uid++;
+
+        Teacher memory _teacher = Teacher(
+            uid,
+            _aza,
+            _name,
+            _salary,
+            Status.EMPLOYED
+        );
+
+        teacherMapping[_aza] = _teacher;
+        teachers.push(_teacher);
+    }
+
+    // Function to get all teachers
+    function getAllTeachers() external view returns (Teacher[] memory) {
+        return teachers;
+    }
+
+    // Function to pay a teacher
+    function payTeacher(address payable _teacher)
+        external
+        onlyOwner
         teacherExists(_teacher)
         teacherEmployed(_teacher)
     {
         uint256 salaryAmount = teacherMapping[_teacher].salary;
 
-        if (address(this).balance < salaryAmount) revert InsufficientFunds();
+        require(address(this).balance >= salaryAmount, "Insufficient contract balance");
 
         (bool success, ) = _teacher.call{value: salaryAmount}("");
         require(success, "Transfer failed");
     }
+
+    // Function to get contract balance
+    function get_balance() external view returns (uint256) {
+        return address(this).balance;
+    }
+
+    // Function to check if staff is active
+    function active_staff(address _address) external view returns (bool) {
+        return teacherMapping[_address].status == Status.EMPLOYED;
+    }
+
+    receive() external payable {}
+
+    fallback() external payable {}
 }
