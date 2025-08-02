@@ -36,7 +36,7 @@ contract staffMgt is IStaffMgt {
 
     receive() external payable {}
 
-    function payStaff(uint _amount) external override {
+    function payStaff(address _address,uint _amount) external override {
         StaffData memory staff = staffs[msg.sender];
 
         if (staff.status == StaffStatus.Employed && staff.salary == _amount) {
