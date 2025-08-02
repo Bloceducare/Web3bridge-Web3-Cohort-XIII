@@ -6,7 +6,7 @@ import "../interfaces/ITMS.sol";
 error NOT_FOUND();
 
 contract TMS is ITMS {
-    address owner;
+    address public owner;
 
     constructor() {
         owner = msg.sender;
@@ -14,22 +14,35 @@ contract TMS is ITMS {
 
     Teacher[] public Teachers;
 
-    mapping (address => Teacher[]) TeachersList;
-
     receive() external payable {}
 
     fallback() external {}
 
-    function RegisterTeacher(string memory _name, uint _salary, Status _status) external returns(Teacher[] memory){
+    function RegisterTeacher(string memory _name, uint _salary, Status _status) external returns(Teacher[] memory) {
         Teacher memory new_teacher = Teacher({name: _name, salary: _salary, status: _status});
         Teachers.push(new_teacher);
+        return Teachers;
+    }
+
+    function ViewTeachers() external view returns(Teacher[] memory) {
+        return Teachers;
     }
 
     function PaySalary(string memory _name, address payable _to) external {
-        if (Teacher.salary_) {
-            revert("NOT_FOUND"); 
+        bool found = false;
+        for (uint i = 0; i < Teachers.length; i++) {
+            if (keccak256(abi.encodePacked(Teachers[i].name)) == keccak256(abi.encodePacked(_name))) {
+                require(
+                    Teachers[i].status == Status.EMPLOYED || 
+                    Teachers[i].status == Status.PROBATION, 
+                    "Teacher not eligible for salary"
+                );
+                _to.transfer(Teachers[i].salary);
+                found = true;
+                break;
+            }
         }
-        Teacher memory salary_ = Teachers.salary;
-        _to.transfer(salary_);
+
+        if (!found) revert NOT_FOUND();
     }
 }
