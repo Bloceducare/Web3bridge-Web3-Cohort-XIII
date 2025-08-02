@@ -11,19 +11,18 @@ contract EmployeePayment is IEmployee {
     Employee[] public allEmployee; 
 
 
-    function registerUser(string memory _name, string memory _role, uint _salary, bool _isEmployed, uint _amountPaid) external {
-        Employee memory emp = Employee(_name, _role, _salary, _isEmployed, _amountPaid); 
+    function registerUser(string memory _name, string memory _role, bool _isEmployed, uint256 _amountPaid, uint256 _salary) external {
+        Employee memory emp = Employee(_name, _role, _isEmployed, _amountPaid, _salary); 
         allEmployee.push(emp); 
-        employee[msg.sender].push(emp); 
+        employee[msg.sender] = emp; 
     }
 
-    function updateEmploymentStatus(uint256 _index, string memory _name, string memory _role, uint256 _salary, bool _isEmployed, uint256 _amountPaid) external {
-        Employee storage emp = employee[msg.sender];
-        emp.name = emp._name; 
+    function updateEmploymentStatus(address _employeeAddress, string memory _role, uint256 salary, bool isEmployed) external {
+        Employee storage emp = employee[msg.sender]; 
         emp.role = emp._role; 
         emp.salary = emp._salary; 
         emp.isEmployed = emp._isEmployed; 
-        emp.amountPaid = emp._amountPaid; 
+        emp.amountPaid = emp._amountPaid; _
     }
 
     function payout(address addr, uint256 amount) external; 
