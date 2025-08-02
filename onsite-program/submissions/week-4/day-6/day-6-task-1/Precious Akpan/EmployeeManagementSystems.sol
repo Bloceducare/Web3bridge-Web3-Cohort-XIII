@@ -22,6 +22,7 @@ contract EmployeeManagementSystem is IEmployeeManagementSystem {
     }
 
     mapping(address => Employee) private employees;
+    mapping(address => bool) private isRegistered;
     address[] private employeeList;
     address public owner;
 
@@ -47,7 +48,7 @@ contract EmployeeManagementSystem is IEmployeeManagementSystem {
         require(employee != address(0), "Invalid address");
         require(salary > 0, "Salary must be greater than zero");
         require(employeeType <= uint8(EmployeeType.Security), "Invalid employee type");
-        require(employees[employee].status != EmploymentStatus.Active, "Employee already registered and active");
+        require(!isRegistered[employee], "Employee already registered");
 
         employees[employee] = Employee({
             employeeType: EmployeeType(employeeType),
@@ -55,6 +56,7 @@ contract EmployeeManagementSystem is IEmployeeManagementSystem {
             status: EmploymentStatus.Active,
             amountPaid: 0
         });
+        isRegistered[employee] = true;
         employeeList.push(employee);
         emit EmployeeRegistered(employee, EmployeeType(employeeType), salary);
     }
