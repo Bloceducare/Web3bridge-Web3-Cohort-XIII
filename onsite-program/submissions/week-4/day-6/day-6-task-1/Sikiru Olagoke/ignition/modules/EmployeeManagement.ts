@@ -4,7 +4,7 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
 const EmployeeManagementModule = buildModule(
-  "EmployementManagementModule",
+  "EmployeeManagementModule",
   (m) => {
     const employeeManagement = m.contract("EmployeeManagement");
 

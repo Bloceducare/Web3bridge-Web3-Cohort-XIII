@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 interface IEmployee {
     struct Employee {
         string name;
-        address payable user_address;
+        address user_address;
         uint256 salary;
         STATUS status;
         ROLE role;
@@ -28,12 +28,9 @@ interface IEmployee {
         uint256 _salary,
         STATUS _status,
         ROLE _role
-    ) external view returns (Employee[] memory);
-
-    function pay_employee(
-        address payable _employer_address,
-        uint256 _amount
     ) external;
+
+    function pay_employee(address _employer_address, uint256 _amount) external;
 
     function get_all_employees() external view returns (Employee[] memory);
 
