@@ -2,6 +2,7 @@
 pragma solidity ^0.8.28;
 
 contract TodoList {
+    // Custom error types for more descriptive error handling
     error InvalidTodoIndex(string reason);
     error EmptyTodoTitle(string reason);
     error EmptyTodoDescription(string reason);
@@ -9,11 +10,13 @@ contract TodoList {
     error TodoAlreadyExists(string reason);
     error UnauthorizedAccess(string reason);
 
+    // Enum to represent the status of a todo item
     enum Status {
         Pending,
         Completed
     }
 
+    // Struct to store the details of a todo item
     struct Todo {
         string title;
         string description;
@@ -21,9 +24,13 @@ contract TodoList {
         address creator;
     }
 
+    // Mapping to store each user's todo using their address
     mapping(address => Todo) private todoMap;
+
+    // Array to keep track of all todo addresses for retrieval
     address[] private todoAddresses;
 
+    // Modifier to ensure a todo exists for the given address
     modifier todoExists(address _addr) {
         if (bytes(todoMap[_addr].title).length == 0) {
             revert TodoNotFound("Todo not found");
@@ -31,6 +38,7 @@ contract TodoList {
         _;
     }
 
+    // Modifier to ensure a todo does not already exist for the given address
     modifier todoDoesNotExist(address _addr) {
         if (bytes(todoMap[_addr].title).length != 0) {
             revert TodoAlreadyExists("Todo already exists");
@@ -38,6 +46,7 @@ contract TodoList {
         _;
     }
 
+    // Modifier to restrict function access to the creator of the todo
     modifier onlyCreator(address _addr) {
         if (todoMap[_addr].creator != msg.sender) {
             revert UnauthorizedAccess("Only creator can modify this todo");
@@ -45,6 +54,7 @@ contract TodoList {
         _;
     }
 
+    // Function to create a new todo
     function createTodo(
         address _addr,
         string memory _taskTitle,
@@ -57,6 +67,7 @@ contract TodoList {
             revert EmptyTodoDescription("Todo description cannot be empty");
         }
 
+        // Create and store the new todo
         todoMap[_addr] = Todo({
             title: _taskTitle,
             description: _taskDesc,
@@ -64,9 +75,11 @@ contract TodoList {
             creator: msg.sender
         });
 
+        // Add the address to the tracking array
         todoAddresses.push(_addr);
     }
 
+    // Function to update an existing todo's title and description
     function updateTodo(
         address _addr,
         string memory _newTitle,
@@ -84,6 +97,7 @@ contract TodoList {
         todoItem.description = _newDesc;
     }
 
+    // Function to toggle a todo's status between Pending and Completed
     function toggleTodoStatus(
         address _addr
     ) external todoExists(_addr) onlyCreator(_addr) {
@@ -95,6 +109,7 @@ contract TodoList {
         }
     }
 
+    // Function to retrieve all todos
     function getTodos() external view returns (Todo[] memory) {
         Todo[] memory todos = new Todo[](todoAddresses.length);
         for (uint256 i = 0; i < todoAddresses.length; i++) {
@@ -103,11 +118,13 @@ contract TodoList {
         return todos;
     }
 
+    // Function to delete a specific todo
     function deleteTodo(
         address _addr
     ) external todoExists(_addr) onlyCreator(_addr) {
         delete todoMap[_addr];
 
+        // Remove the address from the tracking array
         for (uint256 i = 0; i < todoAddresses.length; i++) {
             if (todoAddresses[i] == _addr) {
                 todoAddresses[i] = todoAddresses[todoAddresses.length - 1];
@@ -117,6 +134,7 @@ contract TodoList {
         }
     }
 
+    // Function to retrieve a specific todo
     function getTodo(
         address _addr
     ) external view todoExists(_addr) returns (Todo memory) {

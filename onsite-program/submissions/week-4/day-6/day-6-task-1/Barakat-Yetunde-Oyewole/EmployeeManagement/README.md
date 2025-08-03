@@ -1,13 +1,2 @@
-# Sample Hardhat Project
-
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+Successfully verified contract EmployeeManagement on the block explorer.
+https://sepolia-blockscout.lisk.com/address/0x10E0C96fd9F684Dc8F3e7EC3018ff434b2DC61a2#code
