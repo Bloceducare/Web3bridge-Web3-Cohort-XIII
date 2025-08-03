@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
+import "./IEmployee.sol";
 
-abstract contract Employeemanagement {
+abstract contract Employee{
     enum Role { Mentor, Admin, Security }
 
     struct User {
