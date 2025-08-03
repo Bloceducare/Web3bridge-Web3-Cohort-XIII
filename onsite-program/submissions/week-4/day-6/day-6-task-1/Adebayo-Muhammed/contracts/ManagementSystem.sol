@@ -9,7 +9,9 @@ contract ManagementSystem is IManagementSystem {
     address[] public employeeList;
     
     modifier onlyOwner() {
-        if(msg.sender != owner) revert();
+        if(msg.sender != owner) 
+    
+        revert();
         _;
     }
     
