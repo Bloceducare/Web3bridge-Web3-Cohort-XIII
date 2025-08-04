@@ -69,6 +69,4 @@ External functions can be called internally using `this.functionName()`
 2. **Use appropriate visibility** - to prevent unintended access to critical functions
 3. **Internal functions** - can be helpful for upgradeable contracts where child contracts need access
 
----
-
-*Remember: Visibility specifiers are about access control in code, not about hiding data on the blockchain.*
+*Remember: Visibility specifiers are about access control in code, not about hiding data on the blockhain.*
