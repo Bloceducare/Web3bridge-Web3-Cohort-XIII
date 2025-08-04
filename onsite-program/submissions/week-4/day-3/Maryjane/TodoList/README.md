@@ -1,13 +1,17 @@
-# Sample Hardhat Project
+Deploying [ TodoListModule ]
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+Batch #1
+  Executed TodoListModule#TodoList
 
-Try running some of the following tasks:
+[ TodoListModule ] successfully deployed 🚀
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+Deployed Addresses
+
+TodoListModule#TodoList - 0xc2093b0878e9b7cbbB1D92Ad97B8927D4679E5ec
+
+Verifying deployed contracts
+
+Verifying contract "contracts/TodoList.sol:TodoList" for network lisk-sepolia...
+Successfully verified contract "contracts/TodoList.sol:TodoList" for network lisk-sepolia:
+  - https://sepolia-blockscout.lisk.com/address/0xc2093b0878e9b7cbbB1D92Ad97B8927D4679E5ec#code
+
