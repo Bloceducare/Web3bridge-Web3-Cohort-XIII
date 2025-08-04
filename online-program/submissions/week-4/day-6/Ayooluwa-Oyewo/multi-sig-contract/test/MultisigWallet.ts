@@ -22,8 +22,8 @@ describe("MultiSigWallet", function () {
       requiredConfirmations
     );
     await owner.sendTransaction({
-      to: multiSigWallet.target, // or multiSigWallet.getAddress() in Ethers v6
-      value: hre.ethers.parseEther("5"),
+      to: multiSigWallet.target,
+      value: hre.ethers.parseEther("5"), // default balance of 5ether
     });
 
     return {
@@ -312,7 +312,7 @@ describe("MultiSigWallet", function () {
 
       await hre.network.provider.send("hardhat_setBalance", [
         multiSigWallet.target, // or .address in Ethers v5
-        "0x0", // balance in hex
+        "0x0", // return balance to 0
       ]);
       await multiSigWallet.submitTransaction(
         destination,
