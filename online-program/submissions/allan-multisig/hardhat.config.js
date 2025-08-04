@@ -5,23 +5,23 @@ require("dotenv").config();
 module.exports = {
   solidity: "0.8.20",
   networks: {
-    liskSepolia: {
+    "lisk-sepolia-testnet": {
       url: "https://rpc.sepolia-api.lisk.com",
-      accounts: [process.env.PRIVATE_KEY],
       chainId: 4202,
+      accounts: [process.env.PRIVATE_KEY],
     },
   },
   etherscan: {
     apiKey: {
-      liskSepolia: process.env.ETHERSCAN_API_KEY,
+      "lisk-sepolia-testnet": process.env.LISK_API_KEY || 'empty',
     },
     customChains: [
       {
-        network: "liskSepolia",
+        network: "lisk-sepolia-testnet",
         chainId: 4202,
         urls: {
-          apiURL: "https://sepolia-explorer.lisk.com/api",  // ⚠️ Confirm if this is correct
-          browserURL: "https://sepolia-explorer.lisk.com",
+          apiURL: "https://sepolia-blockscout.lisk.com/api",
+          browserURL: "https://sepolia-blockscout.lisk.com",
         },
       },
     ],
