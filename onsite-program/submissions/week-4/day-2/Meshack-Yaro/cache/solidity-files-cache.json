@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/mvrck/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-2/Meshack-Yaro/contracts/StudentManagementSystem.sol": {
+      "lastModificationDate": 1753843338657,
+      "contentHash": "a92bfa60a5bcf7591084e16484d9519a",
+      "sourceName": "contracts/StudentManagementSystem.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "StudentManagementSystem"
+      ]
+    }
+  }
+}
