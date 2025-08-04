@@ -26,15 +26,15 @@ contract ERC20 is IERC20 {
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
     uint256 public totalSupply;
-    string public name = "Sample Token";
-    string public symbol = "STK";
-    uint8 public decimals = 18;
+    string public name;
+    string public symbol;
+    uint8 public decimals;
 
-    // constructor(string memory _name, string memory _symbol, uint8 _decimals) {
-    //     name = _name;
-    //     symbol = _symbol;
-    //     decimals = _decimals;
-    // }
+    constructor(string memory _name, string memory _symbol, uint8 _decimals) {
+        name = _name;
+        symbol = _symbol;
+        decimals = _decimals;
+    }
 
     function transfer(address _recipient, uint256 _amount)
         external
