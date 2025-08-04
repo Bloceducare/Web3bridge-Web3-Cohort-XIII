@@ -70,7 +70,7 @@ contract ERC20 is IERC20 {
         return true;
     }
 
-    function allowance (address sender, address spender) external returns (uint){
+    function allowance (address sender, address spender) external view returns (uint){
        return _allowance[sender][spender];
     }
 
