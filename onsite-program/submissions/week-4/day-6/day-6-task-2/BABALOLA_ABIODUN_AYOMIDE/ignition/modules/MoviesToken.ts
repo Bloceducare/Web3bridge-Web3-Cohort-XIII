@@ -5,7 +5,7 @@ import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
 
 const LockModule = buildModule("MoviesTokenModule", (m) => {
-  const lock = m.contract("MoviesToken");
+  const lock = m.contract("MoviesToken", ["MoviewToken","MKT", 100000000]);
   return { lock };
 });
 

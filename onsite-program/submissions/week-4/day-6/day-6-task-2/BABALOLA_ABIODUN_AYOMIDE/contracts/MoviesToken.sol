@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.28;
 import "./IERC20.sol";
-abstract contract MoviesToken is IERC20 {
+contract MoviesToken is IERC20 {
     string private tokenName;
     string private tokenSymbol;
     uint private tokenTotalSupply;
@@ -29,7 +29,6 @@ abstract contract MoviesToken is IERC20 {
         return tokenHolders[_owner];
     }
     
-    // approve(0x132456789023456789g61r24r775g23t32e, )
     function approve(address spender, uint256 value) external returns(bool){
         if(tokenHolders[msg.sender] >= value){
             tokenSpenders[msg.sender][spender] += value;
