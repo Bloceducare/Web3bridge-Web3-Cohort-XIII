@@ -85,7 +85,7 @@ contract MultiSigWallet {
         if(_owners.length == 0) {
             revert MultiSigWallet_OwnersRequired();
         }
-        if(_requiredConfirmations > 0 && _requiredConfirmations <= _owners.length) {
+        if(_requiredConfirmations == 0 || _requiredConfirmations > _owners.length) {
             revert MultiSigWallet_InvalidRequiredConfirmations();
         }
         for (uint256 i = 0; i < _owners.length; i++) {
@@ -144,7 +144,8 @@ contract MultiSigWallet {
         external 
         onlyOwner 
         transactionExists(transactionIndex) 
-        notExecuted(transactionIndex) 
+        notExecuted(transactionIndex)
+        
     {
         if(transactions[transactionIndex].confirmationCount < requiredConfirmations) {
             revert MultiSigWallet_NotEnoughConfirmations();
