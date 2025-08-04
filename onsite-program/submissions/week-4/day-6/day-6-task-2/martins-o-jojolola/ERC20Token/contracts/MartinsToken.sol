@@ -55,12 +55,13 @@ contract MartinsToken is IERC20Metadata {
         if (bytes(symbol_).length == 0) {
             revert Error.InvalidInput("Symbol cannot be empty");
         }
-        if (decimals_ < 0 || decimals_ > 18) {
+        if (decimals_ > 18) {
+            // Fixed: removed impossible decimals_ < 0 check
             revert Error.InvalidInput("Decimals must be between 0 and 18");
         }
         if (totalSupply_ == 0) {
             revert Error.InvalidAmount(
-                "Totaly supply cannot be zero",
+                "Total supply cannot be zero", // Fixed: typo "Totaly" -> "Total"
                 totalSupply_
             );
         }
@@ -153,10 +154,10 @@ contract MartinsToken is IERC20Metadata {
         address recipient,
         uint256 amount
     ) internal {
-        if (sender != address(0)) {
+        if (sender == address(0)) {
             revert Error.Unauthorized("Transfer from zero address", msg.sender);
         }
-        if (recipient != address(0)) {
+        if (recipient == address(0)) {
             revert Error.Unauthorized("Transfer to zero address", msg.sender);
         }
 
@@ -195,10 +196,11 @@ contract MartinsToken is IERC20Metadata {
         address spender,
         uint256 amount
     ) internal {
-        if (owner_ != address(0)) {
+        // Fixed: Changed != to == for both conditions
+        if (owner_ == address(0)) {
             revert Error.Unauthorized("Approve from zero address", msg.sender);
         }
-        if (spender != address(0)) {
+        if (spender == address(0)) {
             revert Error.Unauthorized("Approve to zero address", msg.sender);
         }
 
@@ -209,7 +211,7 @@ contract MartinsToken is IERC20Metadata {
     function setMaxTransferAmount(uint256 amount) external onlyOwner {
         if (amount == 0 || amount > _totalSupply) {
             revert Error.InvalidAmount(
-                "Amount cannot be zero or lesser than total supply ",
+                "Amount cannot be zero or greater than total supply", // Fixed: "lesser" -> "greater"
                 amount
             );
         }
@@ -233,7 +235,8 @@ contract MartinsToken is IERC20Metadata {
     }
 
     function mint(address to, uint256 amount) external onlyOwner {
-        if (to != address(0)) {
+        // Fixed: Changed != to ==
+        if (to == address(0)) {
             revert Error.Unauthorized("Mint to zero address", msg.sender);
         }
 
