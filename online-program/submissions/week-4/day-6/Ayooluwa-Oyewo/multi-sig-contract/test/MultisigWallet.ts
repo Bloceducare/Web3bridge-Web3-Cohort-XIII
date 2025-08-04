@@ -23,7 +23,7 @@ describe("MultiSigWallet", function () {
     );
     await owner.sendTransaction({
       to: multiSigWallet.target,
-      value: hre.ethers.parseEther("5"), // default balance of 5ether
+      value: hre.ethers.parseEther("5"),
     });
 
     return {
@@ -61,7 +61,57 @@ describe("MultiSigWallet", function () {
         await multiSigWallet.isOwner(hre.ethers.Wallet.createRandom().address)
       ).to.equal(false);
     });
-  });
+    it("Should revert if no owners are provided", async function () {
+      const MultiSigWallet = await hre.ethers.getContractFactory(
+        "MultiSigWallet"
+      );
+      await expect(
+        MultiSigWallet.deploy([], 1)
+      ).to.be.revertedWithCustomError(
+        MultiSigWallet,
+        "MultiSigWallet_OwnersRequired"
+      );
+    });
+    it("Should revert if required confirmations are invalid", async function () {
+      const MultiSigWallet = await hre.ethers.getContractFactory(
+        "MultiSigWallet"
+      );
+      const [owner] = await hre.ethers.getSigners();
+      await expect(
+        MultiSigWallet.deploy([owner.address], 2)
+      ).to.be.revertedWithCustomError(
+        MultiSigWallet,
+        "MultiSigWallet_InvalidRequiredConfirmations"
+      );
+    }
+    );
+    it("Should revert if duplicate owners are provided", async function () {
+      const MultiSigWallet = await hre.ethers.getContractFactory(
+        "MultiSigWallet"
+      );
+      const [owner] = await hre.ethers.getSigners();
+      await expect(
+        MultiSigWallet.deploy([owner.address, owner.address], 2)
+      ).to.be.revertedWithCustomError(
+        MultiSigWallet,
+        "MultiSigWallet_DuplicateOwnerAddress"
+      );
+    });
+    it(" Should revert if one of the address is a zero address", async function () {
+      const MultiSigWallet = await hre.ethers.getContractFactory(
+        "MultiSigWallet"
+      );
+      const [owner] = await hre.ethers.getSigners();
+          const zeroAddress = "0x0000000000000000000000000000000000000000";
+
+      await expect(
+        MultiSigWallet.deploy([owner.address, zeroAddress], 2)
+      ).to.be.revertedWithCustomError(
+        MultiSigWallet,
+        "MultiSigWallet_InvalidOwnerAddress"
+      );
+    });
+    });
 
   describe("Submit transaction Function", function () {
     it("Should submit a transaction", async function () {
@@ -312,7 +362,7 @@ describe("MultiSigWallet", function () {
 
       await hre.network.provider.send("hardhat_setBalance", [
         multiSigWallet.target, // or .address in Ethers v5
-        "0x0", // return balance to 0
+        "0x0", // balance in hex
       ]);
       await multiSigWallet.submitTransaction(
         destination,
