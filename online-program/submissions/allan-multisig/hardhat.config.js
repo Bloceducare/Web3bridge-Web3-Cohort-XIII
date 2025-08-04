@@ -13,15 +13,15 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      liskSepolia: "your-api-key-if-needed"  // optional: "" if no API key is needed
+      liskSepolia: process.env.ETHERSCAN_API_KEY,
     },
     customChains: [
       {
         network: "liskSepolia",
         chainId: 4202,
         urls: {
-          apiURL: "https://sepolia-explorer.lisk.com/api",  // ← You must confirm this API endpoint from Lisk Explorer docs
-          browserURL: "https://sepolia-explorer.lisk.com",   // ← This is the block explorer base URL
+          apiURL: "https://sepolia-explorer.lisk.com/api",  // ⚠️ Confirm if this is correct
+          browserURL: "https://sepolia-explorer.lisk.com",
         },
       },
     ],
