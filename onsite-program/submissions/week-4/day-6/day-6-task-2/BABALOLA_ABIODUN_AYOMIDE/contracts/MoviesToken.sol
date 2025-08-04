@@ -7,6 +7,7 @@ abstract contract MoviesToken is IERC20 {
     uint private tokenTotalSupply;
     mapping(address=> uint) private tokenHolders;
     mapping (address=> mapping(address => uint)) private tokenSpenders;
+    
     constructor(string memory _name, string memory _symbol, uint _totalSupply){
         tokenName = _name;
         tokenSymbol = _symbol;
@@ -27,7 +28,7 @@ abstract contract MoviesToken is IERC20 {
     function balanceOf(address _owner) external view returns (uint){
         return tokenHolders[_owner];
     }
-
+    
     // approve(0x132456789023456789g61r24r775g23t32e, )
     function approve(address spender, uint256 value) external returns(bool){
         if(tokenHolders[msg.sender] >= value){
@@ -64,6 +65,7 @@ abstract contract MoviesToken is IERC20 {
     function buyToken(uint quantity)external {
         tokenHolders[msg.sender] += quantity;
     }
+
 }
 
   

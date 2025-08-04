@@ -1,0 +1,8 @@
+
+{"chainId":4202,"type":"DEPLOYMENT_INITIALIZE"}
+{"artifactId":"MoviesTokenModule#MoviesToken","constructorArgs":[],"contractName":"MoviesToken","dependencies":[],"from":"0x453c407e06e4b8c8f9a862208ab45348ab2f8403","futureId":"MoviesTokenModule#MoviesToken","futureType":"NAMED_ARTIFACT_CONTRACT_DEPLOYMENT","libraries":{},"strategy":"basic","strategyConfig":{},"type":"DEPLOYMENT_EXECUTION_STATE_INITIALIZE","value":{"_kind":"bigint","value":"0"}}
+{"futureId":"MoviesTokenModule#MoviesToken","networkInteraction":{"data":"0x","id":1,"type":"ONCHAIN_INTERACTION","value":{"_kind":"bigint","value":"0"}},"type":"NETWORK_INTERACTION_REQUEST"}
+{"futureId":"MoviesTokenModule#MoviesToken","networkInteractionId":1,"nonce":7,"type":"TRANSACTION_PREPARE_SEND"}
+{"futureId":"MoviesTokenModule#MoviesToken","networkInteractionId":1,"nonce":7,"transaction":{"fees":{"maxFeePerGas":{"_kind":"bigint","value":"1000506"},"maxPriorityFeePerGas":{"_kind":"bigint","value":"1000000"}},"hash":"0xad7bc9f3ccecda4aa4268722ece5bb51e049163bd0ca0a2d9f0af4b1bd3ecb78"},"type":"TRANSACTION_SEND"}
+{"futureId":"MoviesTokenModule#MoviesToken","hash":"0xad7bc9f3ccecda4aa4268722ece5bb51e049163bd0ca0a2d9f0af4b1bd3ecb78","networkInteractionId":1,"receipt":{"blockHash":"0x38f912e5b4591e3efe0910cae744ed2ef0ef1a1b8600c5129379bbc26f7cd5dc","blockNumber":24485146,"contractAddress":"0x71207B2a98489Fd09b745E7f48EcC6a621F89B63","logs":[],"status":"SUCCESS"},"type":"TRANSACTION_CONFIRM"}
+{"futureId":"MoviesTokenModule#MoviesToken","result":{"address":"0x71207B2a98489Fd09b745E7f48EcC6a621F89B63","type":"SUCCESS"},"type":"DEPLOYMENT_EXECUTION_STATE_COMPLETE"}

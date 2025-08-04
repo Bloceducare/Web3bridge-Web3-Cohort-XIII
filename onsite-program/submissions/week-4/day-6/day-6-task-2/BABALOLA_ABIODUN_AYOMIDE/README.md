@@ -11,3 +11,6 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat ignition deploy ./ignition/modules/MoviesToken.ts
 ```
+
+## contract adddress
+`0x71207B2a98489Fd09b745E7f48EcC6a621F89B63`
