@@ -39,7 +39,7 @@ contract Staking {
             unlockTime: block.timestamp + lockPeriod
         });
 
-        emit Staked(msg.sender, amount, stakes[_staker][_tokenA].unlockTime);
+        emit Staked(_staker, amount, stakes[_staker][_tokenA].unlockTime);
     }
 
     function unstake(address _staker, address _tokenA, uint256 amount) external {
