@@ -77,5 +77,29 @@ describe("Staking", function () {
           staking.connect(user).unstake(user.address, tokenA.target, amount)
         ).to.be.revertedWith("Still locked");
       });
+
+      it("should allow unstaking after lock period", async () => {
+
+          const { staking, tokenA, tokenB, user, lockPeriod } = await loadFixture(deployStake);
+
+          const amount = ethers.parseEther("100");
+          await tokenA.connect(user).approve(staking.target, amount);
+          await tokenB.connect(user).approve(staking.target, amount);
+
+          await staking.connect(user).stake(user.address, tokenA.target, amount);
+      
+          await ethers.provider.send("evm_increaseTime", [lockPeriod + 1]);
+          await ethers.provider.send("evm_mine");
+      
+          await expect(staking.connect(user).unstake(user.address, tokenA.target, amount))
+            .to.emit(staking, "Unstaked");
+            console.log("Hiii")
+      
+          const stakeDetails = await staking.getStakeDetails(user.address, tokenA.target);
+          expect(stakeDetails.amount).to.equal(0);
+      
+          const finalTokenABalance = await tokenA.balanceOf(user.address);
+          expect(finalTokenABalance).to.equal(ethers.parseEther("1000"));
+      });
   })
 });
