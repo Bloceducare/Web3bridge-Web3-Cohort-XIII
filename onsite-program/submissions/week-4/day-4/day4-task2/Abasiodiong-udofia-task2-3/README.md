@@ -11,3 +11,6 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
+
+![School Management passing test](school-management-test-passing.png)
+![Second School Management passing test](school-management-test-passing2.png)
