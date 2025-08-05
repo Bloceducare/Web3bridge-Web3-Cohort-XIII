@@ -59,7 +59,7 @@ contract SMS {
         if (_index >= students[_account].length) {
             revert INDEX_OUT_OF_RANGE(); 
         }
-        Student[] storage student = students[msg.sender]; 
+        Student[] storage student = students[_account]; 
         student[_index].status = newStatus; 
     }
 
