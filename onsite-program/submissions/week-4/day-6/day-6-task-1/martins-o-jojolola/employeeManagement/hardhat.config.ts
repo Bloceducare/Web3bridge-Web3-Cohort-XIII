@@ -1,9 +1,10 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import { vars } from "hardhat/config";
+import "@typechain/hardhat";
 require("dotenv").config()
 
-const {LISK_SEPOLIA_URL} = process.env;
+const { LISK_SEPOLIA_URL } = process.env;
 
 const PRIVATE_KEY = vars.get("PRIVATE_KEY");
 
@@ -24,12 +25,12 @@ const config: HardhatUserConfig = {
     },
     customChains: [
       {
-          network: "lisk-sepolia",
-          chainId: 4202,
-          urls: {
-              apiURL: "https://sepolia-blockscout.lisk.com/api",
-              browserURL: "https://sepolia-blockscout.lisk.com"
-          }
+        network: "lisk-sepolia",
+        chainId: 4202,
+        urls: {
+          apiURL: "https://sepolia-blockscout.lisk.com/api",
+          browserURL: "https://sepolia-blockscout.lisk.com"
+        }
       }
     ]
   },

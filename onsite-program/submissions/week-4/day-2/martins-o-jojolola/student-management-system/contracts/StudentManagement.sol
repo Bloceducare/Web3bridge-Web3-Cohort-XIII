@@ -59,7 +59,7 @@ contract StudentManagementSystem {
             studentId > 0 && studentId <= students.length,
             "Invalid student ID"
         );
-        Student storage student = students[studentId - 1];
+        Student memory student = students[studentId - 1];
         student.data = StudentData(name, age, course, student_class);
     }
 
