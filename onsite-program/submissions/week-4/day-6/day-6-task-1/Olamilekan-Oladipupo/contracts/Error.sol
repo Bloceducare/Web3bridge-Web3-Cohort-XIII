@@ -5,4 +5,5 @@ library Error {
     error EMPLOYEE_NOT_FOUND();
     error EMPLOYEE_NOT_ACTIVE();
     error NOT_OWNERS_ADDRESS();
+    error EMPLOYEE_ALREADY_EXIST();
 }
