@@ -57,10 +57,51 @@ describe("ERC20Token Deployment", function () {
       const {erc20token, owner, otherAccount} = await loadFixture(deployERC20Token);
 
       const allowance = await erc20token._allowance(owner.address, otherAccount.address);
-      expect (allowance).to.equal(0);
-      
+      expect (allowance).to.equal(0);      
     }
-  }
+
+    it("Should return the actual allowance after approval", async function() {
+      const {erc20token, owner, otherAccount} = await loadFixture(deployERC20Token);
+      
+      await erc20token.approve(otherAccount.address, 50000);
+      const allowance = await erc20token.allowance(owner.address, otherAccount.address);
+
+      expect(allowance).to.equal(50000);
+    
+    });
+
+    it("Should update allowance if approval is called again", async function () {
+      const {erc20token, owner, otherAccount} = await loadFixture(deployERC20Token);
+
+      await erc20token.approve(otherAccount.address, 50000);
+      await erc20token.approve(otherAccount.address, 20000);
+
+      const allowance = await erc20token.allowance(owner.address, otherAccount.address);
+      
+      expect(allowance).to.equal(20000);
+      
+    });
+
+  });
+
+  describe("transferFrom", function () {
+    it("Should allow spender address transfer token after approval", async function() {
+      const {erc20token, owner, otherAccount} = await loadFixture(deployERC20Token);
+
+      await erc20token.approve(otherAccount.address, 50000);
+
+      await erc20token.connect(otherAccount).transferFrom(owner.address, otherAccount, 20000);
+
+      const ownerBalance = await erc20token.balanceOf(owner.address);
+      const spenderBalance = await erc20token.balanceOf(otherAccount.address);
+      const remainingAllowance = await erc20token.allowance(owner.address, otherAccount.address);
+
+      expect(ownerBalance).to.equal(100000000 - 20000);
+      expect(spenderBalance).to.equal(20000);
+      expect(remainingAllowance).to.equal(30000);
+
+    });
+  })
 
   //   it("Should set the right owner", async function () {
   //     const { lock, owner } = await loadFixture(deployOneYearLockFixture);
