@@ -14,14 +14,14 @@ clean:
 
 # Deploy contracts to sepolia 
 deploy-sepolia:
-	npx hardhat ignition deploy ./ignition/modules/AccessControl.ts --network lisk-sepolia
+	npx hardhat ignition deploy ./ignition/modules/Employee.ts --network lisk-sepolia
 
 # Deploy contracts to localhost
 deploy-localhost:
-	npx hardhat ignition deploy ./ignition/modules/AccessControl.ts --network localhost
+	npx hardhat ignition deploy ./ignition/modules/Employee.ts --network localhost
 
 verify-sepolia:
-	npx hardhat ignition deploy ignition/modules/AccessControl.ts --network lisk-sepolia --verify
+	npx hardhat ignition deploy ignition/modules/Employee.ts --network lisk-sepolia --verify
 
 # Lint with ESLint 
 lint: 
