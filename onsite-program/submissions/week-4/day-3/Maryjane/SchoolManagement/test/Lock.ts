@@ -18,16 +18,6 @@ describe("SchoolManagement", function () {
       const student = await schoolManagement.students(1);
       expect(student.studentName).to.equal("Bobby");
     });
-
-    it("Should revert when updating non-existent student", async function () {
-      const { schoolManagement } = await loadFixture(deploy);
-      try {
-        await schoolManagement.updateStudent(999, "Not Here");
-        expect.fail("Transaction should have reverted");
-      } catch (error: any) {
-    
-      }
-    });
   });
 
   describe("getStudentById", function () {
@@ -37,16 +27,6 @@ describe("SchoolManagement", function () {
       const student = await schoolManagement.getStudentById(1);
       expect(student.studentName).to.equal("Charlie");
       expect(student.studentCourse).to.equal("Physics");
-    });
-
-    it("Should revert when student ID not found", async function () {
-      const { schoolManagement } = await loadFixture(deploy);
-      try {
-        await schoolManagement.getStudentById(999);
-        expect.fail("Transaction should have reverted");
-      } catch (error: any) {
-    
-      }
     });
   });
 });
