@@ -1,17 +1,19 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.28;
+pragma solidity ^0.8.30;
 
 
+enum Gender{MALE,FEMALE}
+enum Status { ACTIVE, DEFERRED, RUSTICATED }
+ struct Student{
+    string name;
+    uint age;
+    Gender gender;
+    uint id;
+    Status status;
+}
 contract SchoolManagementSystem {
-    enum Gender{MALE,FEMALE}
-    enum Status { ACTIVE, DEFERRED, RUSTICATED }
-    struct Student{
-        string name;
-        uint age;
-        Gender gender;
-        uint id;
-        Status status;
-    }
+
+   
     uint private nextStudentId = 1000;
     error INVALID_ARGS();
     mapping (address=> Student[]) public usersSchool;
@@ -22,6 +24,7 @@ contract SchoolManagementSystem {
         uint id = nextStudentId++;
         usersSchool[msg.sender].push(Student(name, age, gender, id,Status.ACTIVE));
     }
+
     function updateStudentAge(uint age, uint id) external {
         require(age > 0, "Invalid age");
         Student[] storage students = usersSchool[msg.sender];
@@ -45,6 +48,7 @@ contract SchoolManagementSystem {
         }
         revert INVALID_ARGS();
     }
+
     function updateStudentProfile(uint age, uint id, string memory name) external{
         this.updateStudentAge(age, id);
         updateStudentProfile(name, id);
@@ -99,6 +103,7 @@ contract SchoolManagementSystem {
         }
         revert INVALID_ARGS();
     }
+
     function deleteStudent(uint id)external {
         Student[] storage students = usersSchool[msg.sender];
         for (uint count = 0; count < students.length; count++){
