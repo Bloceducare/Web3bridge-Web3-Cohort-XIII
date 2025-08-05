@@ -1,127 +1,163 @@
-import {
-  time,
-  loadFixture,
-} from "@nomicfoundation/hardhat-toolbox/network-helpers";
-import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
+import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { expect } from "chai";
-import hre from "hardhat";
+import { ethers } from "hardhat";
 
-describe("Lock", function () {
-  // We define a fixture to reuse the same setup in every test.
-  // We use loadFixture to run this setup once, snapshot that state,
-  // and reset Hardhat Network to that snapshot in every test.
-  async function deployOneYearLockFixture() {
-    const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-    const ONE_GWEI = 1_000_000_000;
-
-    const lockedAmount = ONE_GWEI;
-    const unlockTime = (await time.latest()) + ONE_YEAR_IN_SECS;
-
-    // Contracts are deployed using the first signer/account by default
-    const [owner, otherAccount] = await hre.ethers.getSigners();
-
-    const Lock = await hre.ethers.getContractFactory("Lock");
-    const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-    return { lock, unlockTime, lockedAmount, owner, otherAccount };
+describe("erc20token", () => {
+  async function deployContract() {
+    const [owner, otherAccount] = await ethers.getSigners(); 
+    const MyContract = await ethers.getContractFactory("erc20token");
+    const deployedContract = await MyContract.deploy();
+    return { deployedContract, owner, otherAccount };
   }
 
-  describe("Deployment", function () {
-    it("Should set the right unlockTime", async function () {
-      const { lock, unlockTime } = await loadFixture(deployOneYearLockFixture);
 
-      expect(await lock.unlockTime()).to.equal(unlockTime);
+  // Test totalSupply and mintToken
+  describe("Test function _totalSupply and mintToken", () => {
+    it("Should return 0 for total supply by default", async () => {
+      const { deployedContract: newContract } = await loadFixture(deployContract);
+      expect(await newContract._totalSupply()).to.equal(0);
     });
 
-    it("Should set the right owner", async function () {
-      const { lock, owner } = await loadFixture(deployOneYearLockFixture);
-
-      expect(await lock.owner()).to.equal(owner.address);
+    it("Should update totalSupply when token is minted", async () => {
+      const { deployedContract: newContract, owner } = await loadFixture(deployContract);
+      await newContract.mintToken(owner.address, 100);
+      expect(await newContract._totalSupply()).to.equal(100);
     });
 
-    it("Should receive and store the funds to lock", async function () {
-      const { lock, lockedAmount } = await loadFixture(
-        deployOneYearLockFixture
-      );
-
-      expect(await hre.ethers.provider.getBalance(lock.target)).to.equal(
-        lockedAmount
-      );
-    });
-
-    it("Should fail if the unlockTime is not in the future", async function () {
-      // We don't use the fixture here because we want a different deployment
-      const latestTime = await time.latest();
-      const Lock = await hre.ethers.getContractFactory("Lock");
-      await expect(Lock.deploy(latestTime, { value: 1 })).to.be.revertedWith(
-        "Unlock time should be in the future"
-      );
+    it("Should revert mintToken if caller is not owner", async () => {
+      const { deployedContract: newContract, otherAccount } = await loadFixture(deployContract);
+      await expect(
+        newContract.connect(otherAccount).mintToken(otherAccount.address, 50)
+      ).to.be.revertedWithCustomError(newContract, "ONLY_OWNER_CAN_MINT");
     });
   });
 
-  describe("Withdrawals", function () {
-    describe("Validations", function () {
-      it("Should revert with the right error if called too soon", async function () {
-        const { lock } = await loadFixture(deployOneYearLockFixture);
 
-        await expect(lock.withdraw()).to.be.revertedWith(
-          "You can't withdraw yet"
-        );
-      });
-
-      it("Should revert with the right error if called from another account", async function () {
-        const { lock, unlockTime, otherAccount } = await loadFixture(
-          deployOneYearLockFixture
-        );
-
-        // We can increase the time in Hardhat Network
-        await time.increaseTo(unlockTime);
-
-        // We use lock.connect() to send a transaction from another account
-        await expect(lock.connect(otherAccount).withdraw()).to.be.revertedWith(
-          "You aren't the owner"
-        );
-      });
-
-      it("Shouldn't fail if the unlockTime has arrived and the owner calls it", async function () {
-        const { lock, unlockTime } = await loadFixture(
-          deployOneYearLockFixture
-        );
-
-        // Transactions are sent using the first signer by default
-        await time.increaseTo(unlockTime);
-
-        await expect(lock.withdraw()).not.to.be.reverted;
-      });
+  // Test balanceOf and mintToken
+  describe("Test function balanceOf() and mintToken()", () => {
+    it("Should return 0 for balanceOf by default", async () => {
+      const { deployedContract: newContract, owner } = await loadFixture(deployContract);
+      expect(await newContract.balanceOf(owner.address)).to.equal(0);
     });
 
-    describe("Events", function () {
-      it("Should emit an event on withdrawals", async function () {
-        const { lock, unlockTime, lockedAmount } = await loadFixture(
-          deployOneYearLockFixture
-        );
+    it("Should update balanceOf when token is minted", async () => {
+      const { deployedContract: newContract, owner } = await loadFixture(deployContract);
+      await newContract.mintToken(owner.address, 200);
+      expect(await newContract.balanceOf(owner.address)).to.equal(200);
+    });
+  });
 
-        await time.increaseTo(unlockTime);
 
-        await expect(lock.withdraw())
-          .to.emit(lock, "Withdrawal")
-          .withArgs(lockedAmount, anyValue); // We accept any value as `when` arg
-      });
+  // Test transfer function
+  describe("Transfer function", function () {
+    it("Should transfer tokens between accounts", async function () {
+      const { deployedContract: newContract, owner, otherAccount } = await loadFixture(deployContract);
+
+      // Mint tokens so owner has balance
+      await newContract.mintToken(owner.address, ethers.parseUnits("1000", 18));
+
+      const ownerInitialBalance = await newContract.balanceOf(owner.address);
+      const receiverInitialBalance = await newContract.balanceOf(otherAccount.address);
+
+      const transferAmount = ethers.parseUnits("100", 18);
+      await newContract.trasfer(otherAccount.address, transferAmount);
+
+      const ownerFinalBalance = await newContract.balanceOf(owner.address);
+      const receiverFinalBalance = await newContract.balanceOf(otherAccount.address);
+
+      expect(ownerFinalBalance).to.equal(ownerInitialBalance - transferAmount);
+      expect(receiverFinalBalance).to.equal(receiverInitialBalance + transferAmount);
     });
 
-    describe("Transfers", function () {
-      it("Should transfer the funds to the owner", async function () {
-        const { lock, unlockTime, lockedAmount, owner } = await loadFixture(
-          deployOneYearLockFixture
-        );
+    it("Should revert if sender has insufficient balance", async function () {
+      const { deployedContract: newContract, otherAccount } = await loadFixture(deployContract);
 
-        await time.increaseTo(unlockTime);
+      const transferAmount = ethers.parseUnits("50", 18);
+      await expect(
+        newContract.connect(otherAccount).trasfer(ethers.ZeroAddress, transferAmount)
+      ).to.be.revertedWithCustomError(newContract, "INSUFFICIENT_BALANCE");
+    });
+  });
 
-        await expect(lock.withdraw()).to.changeEtherBalances(
-          [owner, lock],
-          [lockedAmount, -lockedAmount]
-        );
-      });
+
+  // Test approve and allowance
+  describe("Test approve() and allowance()", function () {
+    it("Should set allowance for spender", async function () {
+      const { deployedContract: newContract, owner, otherAccount } = await loadFixture(deployContract);
+      await newContract.mintToken(owner.address, ethers.parseUnits("500", 18));
+
+      await newContract.approve(otherAccount.address, ethers.parseUnits("100", 18));
+      expect(await newContract.connect(owner).allowance(otherAccount.address))
+        .to.equal(ethers.parseUnits("100", 18));
+    });
+
+    it("Should return true when approve is called", async function () {
+      const { deployedContract: newContract, owner, otherAccount } = await loadFixture(deployContract);
+      
+      // Wait for transaction to complete and verify allowance was set
+      await newContract.approve(otherAccount.address, ethers.parseUnits("50", 18));
+      expect(await newContract.connect(owner).allowance(otherAccount.address))
+        .to.equal(ethers.parseUnits("50", 18));
+    });
+  });
+
+
+  // Test transFrom
+  describe("Test transFrom()", function () {
+    it("Should transfer tokens using allowance", async function () {
+      const { deployedContract: newContract, owner, otherAccount } = await loadFixture(deployContract);
+
+      await newContract.mintToken(owner.address, ethers.parseUnits("500", 18));
+      await newContract.approve(otherAccount.address, ethers.parseUnits("100", 18));
+
+      await newContract.connect(otherAccount).transFrom(
+        owner.address,
+        otherAccount.address,
+        ethers.parseUnits("50", 18)
+      );
+
+      expect(await newContract.balanceOf(owner.address)).to.equal(ethers.parseUnits("450", 18));
+      expect(await newContract.balanceOf(otherAccount.address)).to.equal(ethers.parseUnits("50", 18));
+    });
+
+    it("Should revert if transFrom amount exceeds balance", async function () {
+      const { deployedContract: newContract, owner, otherAccount } = await loadFixture(deployContract);
+
+      await newContract.approve(otherAccount.address, ethers.parseUnits("100", 18));
+
+      await expect(
+        newContract.connect(otherAccount).transFrom(
+          owner.address,
+          otherAccount.address,
+          ethers.parseUnits("50", 18)
+        )
+      ).to.be.revertedWithCustomError(newContract, "INSUFFICIENT_BALANCE");
+    });
+
+    it("Should revert if transFrom amount is greater than allowed amount", async function () {
+      const { deployedContract: newContract, owner, otherAccount } = await loadFixture(deployContract);
+
+      await newContract.mintToken(owner.address, ethers.parseUnits("500", 18));
+      await newContract.approve(otherAccount.address, ethers.parseUnits("30", 18));
+
+      await expect(
+        newContract.connect(otherAccount).transFrom(
+          owner.address,
+          otherAccount.address,
+          ethers.parseUnits("50", 18)
+        )
+      ).to.be.revertedWithCustomError(newContract, "AMOUNT_LESS_THAN_ALLOWED_AMOUNT");
+    });
+  });
+
+
+  // Test contract initialization
+  describe("Contract initialization", function () {
+    it("Should set correct initial values", async function () {
+      const { deployedContract: newContract } = await loadFixture(deployContract);
+      
+      expect(await newContract._totalSupply()).to.equal(0);
+      expect(await newContract.totalSupply()).to.equal(0);
     });
   });
 });

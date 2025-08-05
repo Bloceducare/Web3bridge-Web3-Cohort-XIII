@@ -54,29 +54,24 @@ contract erc20token is Ierc20 {
     }
 
     function transFrom (address _from, address _to, uint _amount) external returns (bool){
-        if ( userBalances[_from] <= _amount) {
-            revert Lerc20.INSUFFICIENT_BALANCE();
-        }
-
-        uint allowed_amount = this.allowance(msg.sender);
-        if ( _amount <= allowed_amount) {
-            revert Lerc20.AMOUNT_LESS_THAN_ALLOWED_AMOUNT();
-        }
-        userBalances[_from] -= _amount;
-        allowances[_from][msg.sender] -= _amount;
-        userBalances[_to] += _amount; 
-
-        return true;
+    if ( userBalances[_from] < _amount) {
+        revert Lerc20.INSUFFICIENT_BALANCE();
     }
+
+    uint allowed_amount = allowances[_from][msg.sender];
+    if ( _amount > allowed_amount) { 
+        revert Lerc20.AMOUNT_LESS_THAN_ALLOWED_AMOUNT();
+    }
+    
+    userBalances[_from] -= _amount;
+    allowances[_from][msg.sender] -= _amount;
+    userBalances[_to] += _amount; 
+
+    return true;
+}
+    
 
     function _totalSupply() public view returns (uint){
         return totalSupply;
     }
-
-
-
-    
-
-
-
 }
