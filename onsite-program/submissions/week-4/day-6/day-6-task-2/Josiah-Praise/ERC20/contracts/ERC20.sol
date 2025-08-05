@@ -9,6 +9,7 @@ contract ERC20 is IERC20 {
         address indexed owner, address indexed spender, uint256 value
     );
 
+    address public owner;
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
@@ -16,7 +17,17 @@ contract ERC20 is IERC20 {
     string public symbol;
     uint8 public decimals;
 
+    error UnAuthorized();
+
+    modifier onlyOwner {
+        if (msg.sender != owner) {
+            revert UnAuthorized();
+        }
+        _;
+    }
+
     constructor(string memory _name, string memory _symbol, uint8 _decimals) {
+        owner = msg.sender;
         name = _name;
         symbol = _symbol;
         decimals = _decimals;
@@ -47,5 +58,25 @@ contract ERC20 is IERC20 {
         balanceOf[recipient] += amount;
         emit Transfer(sender, recipient, amount);
         return true;
+    }
+
+    function _mint(address to, uint256 amount) internal {
+        balanceOf[to] += amount;
+        totalSupply += amount;
+        emit Transfer(address(0), to, amount);
+    }
+
+    function _burn(address from, uint256 amount) internal {
+        balanceOf[from] -= amount;
+        totalSupply -= amount;
+        emit Transfer(from, address(0), amount);
+    }
+
+    function mint(address to, uint256 amount) external onlyOwner {
+        _mint(to, amount);
+    }
+
+    function burn(address from, uint256 amount) external onlyOwner {
+        _burn(from, amount);
     }
 }
