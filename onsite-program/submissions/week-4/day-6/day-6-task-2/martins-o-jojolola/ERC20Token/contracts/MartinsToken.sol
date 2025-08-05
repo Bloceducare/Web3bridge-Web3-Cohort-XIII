@@ -42,6 +42,7 @@ contract MartinsToken is IERC20Metadata {
         address indexed previousOwner,
         address indexed newOwner
     );
+    event Mint(address indexed to, uint256 amount);
 
     constructor(
         string memory name_,

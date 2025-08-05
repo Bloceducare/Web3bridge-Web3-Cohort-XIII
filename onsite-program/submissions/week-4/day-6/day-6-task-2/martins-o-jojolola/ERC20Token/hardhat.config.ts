@@ -1,6 +1,8 @@
 import { HardhatUserConfig } from "hardhat/config";
+import "@nomiclabs/hardhat-ethers";
 import "@nomicfoundation/hardhat-toolbox";
 import { vars } from "hardhat/config";
+import "@typechain/hardhat";
 require("dotenv").config()
 
 const {LISK_SEPOLIA_URL} = process.env;
