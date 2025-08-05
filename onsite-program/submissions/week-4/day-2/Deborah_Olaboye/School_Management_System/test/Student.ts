@@ -1,127 +1,167 @@
-// import {
-//   time,
-//   loadFixture,
-// } from "@nomicfoundation/hardhat-toolbox/network-helpers";
-// import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
-// import { expect } from "chai";
-// import hre from "hardhat";
+import {
+  time,
+  loadFixture,
+} from "@nomicfoundation/hardhat-toolbox/network-helpers";
+import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
+import { expect } from "chai";
+import hre from "hardhat";
 
-// describe("Lock", function () {
-//   // We define a fixture to reuse the same setup in every test.
-//   // We use loadFixture to run this setup once, snapshot that state,
-//   // and reset Hardhat Network to that snapshot in every test.
-//   async function deployOneYearLockFixture() {
-//     const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-//     const ONE_GWEI = 1_000_000_000;
+describe("SchoolManagementSystem", function () {
+  // We define a fixture to reuse the same setup in every test.
+  // We use loadFixture to run this setup once, snapshot that state,
+  // and reset Hardhat Network to that snapshot in every test.
+  async function deploySchoolManagementSystem() {
+    const SchoolManagementSystem = await hre.ethers.getContractFactory("SchoolManagementSystem");
+    const school = await SchoolManagementSystem.deploy();
 
-//     const lockedAmount = ONE_GWEI;
-//     const unlockTime = (await time.latest()) + ONE_YEAR_IN_SECS;
+    return { school };
+  }
 
-//     // Contracts are deployed using the first signer/account by default
-//     const [owner, otherAccount] = await hre.ethers.getSigners();
+  describe("School Deployment", function () {
+    it("Should register student", async function () {
+      const { school } = await loadFixture(deploySchoolManagementSystem);
 
-//     const Lock = await hre.ethers.getContractFactory("Lock");
-//     const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+      const name = "Deby"
 
-//     return { lock, unlockTime, lockedAmount, owner, otherAccount };
-//   }
+      const age = 14
 
-//   describe("Deployment", function () {
-//     it("Should set the right unlockTime", async function () {
-//       const { lock, unlockTime } = await loadFixture(deployOneYearLockFixture);
+      const email = "deboraholaboye@gmail.com"
 
-//       expect(await lock.unlockTime()).to.equal(unlockTime);
-//     });
+      const gender = 1
 
-//     it("Should set the right owner", async function () {
-//       const { lock, owner } = await loadFixture(deployOneYearLockFixture);
+      const status = 0
 
-//       expect(await lock.owner()).to.equal(owner.address);
-//     });
+      await school.RegisterStudent(name, age, email, gender, status);
 
-//     it("Should receive and store the funds to lock", async function () {
-//       const { lock, lockedAmount } = await loadFixture(
-//         deployOneYearLockFixture
-//       );
+      const student = await school.ViewStudents();
 
-//       expect(await hre.ethers.provider.getBalance(lock.target)).to.equal(
-//         lockedAmount
-//       );
-//     });
+      const get_students = student[0];
 
-//     it("Should fail if the unlockTime is not in the future", async function () {
-//       // We don't use the fixture here because we want a different deployment
-//       const latestTime = await time.latest();
-//       const Lock = await hre.ethers.getContractFactory("Lock");
-//       await expect(Lock.deploy(latestTime, { value: 1 })).to.be.revertedWith(
-//         "Unlock time should be in the future"
-//       );
-//     });
-//   });
+      expect(get_students.name).to.equal(name);
+      expect(get_students.age).to.equal(age);
+      expect(get_students.email).to.equal(email);
+      expect(get_students.gender).to.equal(gender);
+      expect(get_students.status).to.equal(status);
+    });
 
-//   describe("Withdrawals", function () {
-//     describe("Validations", function () {
-//       it("Should revert with the right error if called too soon", async function () {
-//         const { lock } = await loadFixture(deployOneYearLockFixture);
+    it("Should update student", async function () {
+      const { school } = await loadFixture(deploySchoolManagementSystem);
 
-//         await expect(lock.withdraw()).to.be.revertedWith(
-//           "You can't withdraw yet"
-//         );
-//       });
+      const name = "Deby"
 
-//       it("Should revert with the right error if called from another account", async function () {
-//         const { lock, unlockTime, otherAccount } = await loadFixture(
-//           deployOneYearLockFixture
-//         );
+      const age = 14
 
-//         // We can increase the time in Hardhat Network
-//         await time.increaseTo(unlockTime);
+      const email = "deboraholaboye@gmail.com"
 
-//         // We use lock.connect() to send a transaction from another account
-//         await expect(lock.connect(otherAccount).withdraw()).to.be.revertedWith(
-//           "You aren't the owner"
-//         );
-//       });
+      const gender = 1
 
-//       it("Shouldn't fail if the unlockTime has arrived and the owner calls it", async function () {
-//         const { lock, unlockTime } = await loadFixture(
-//           deployOneYearLockFixture
-//         );
+      const status = 0
 
-//         // Transactions are sent using the first signer by default
-//         await time.increaseTo(unlockTime);
+      await school.RegisterStudent(name, age, email, gender, status);
 
-//         await expect(lock.withdraw()).not.to.be.reverted;
-//       });
-//     });
+      const new_name = "Deborah"
 
-//     describe("Events", function () {
-//       it("Should emit an event on withdrawals", async function () {
-//         const { lock, unlockTime, lockedAmount } = await loadFixture(
-//           deployOneYearLockFixture
-//         );
+      const new_age = 18
 
-//         await time.increaseTo(unlockTime);
+      await school.UpdateStudent(0, new_name, new_age);
 
-//         await expect(lock.withdraw())
-//           .to.emit(lock, "Withdrawal")
-//           .withArgs(lockedAmount, anyValue); // We accept any value as `when` arg
-//       });
-//     });
+      const student = await school.ViewStudents();
 
-//     describe("Transfers", function () {
-//       it("Should transfer the funds to the owner", async function () {
-//         const { lock, unlockTime, lockedAmount, owner } = await loadFixture(
-//           deployOneYearLockFixture
-//         );
+      const updated_student = student[0];
 
-//         await time.increaseTo(unlockTime);
+      expect(updated_student.name).to.equal(new_name);
+      expect(updated_student.age).to.equal(new_age);
+    });
 
-//         await expect(lock.withdraw()).to.changeEtherBalances(
-//           [owner, lock],
-//           [lockedAmount, -lockedAmount]
-//         );
-//       });
-//     });
-//   });
-// });
+    it("Should delete student", async function () {
+      const { school } = await loadFixture(deploySchoolManagementSystem);
+
+      const name = "Deby"
+
+      const age = 14
+
+      const email = "deboraholaboye@gmail.com"
+
+      const gender = 1
+
+      const status = 0
+
+      await school.RegisterStudent(name, age, email, gender, status);
+
+      await school.DeleteStudent(0);
+
+      const students = await school.ViewStudents();
+
+      expect (students.length).to.equal(0);
+    });
+
+    it("Should change student status", async function () {
+      const { school } = await loadFixture(deploySchoolManagementSystem);
+
+      const name = "Deby"
+
+      const age = 14
+
+      const email = "deboraholaboye@gmail.com"
+
+      const gender = 1
+
+      const status = 0
+
+      await school.RegisterStudent(name, age, email, gender, status);
+
+      const new_status = 2
+
+      await school.ChangeStatus(0, new_status);
+
+      const student = await school.ViewStudents();
+
+      const updated_student = student[0];
+
+      expect (updated_student.status).to.equal(new_status);
+
+    });
+
+    it("Should get student by id", async function () {
+      const { school } = await loadFixture(deploySchoolManagementSystem);
+
+      const name = "Deby"
+
+      const age = 14
+
+      const email = "deboraholaboye@gmail.com"
+
+      const gender = 1
+
+      const status = 0
+
+      await school.RegisterStudent(name, age, email, gender, status);
+
+      await school.ViewStudent(0);
+
+      const student = await school.ViewStudents();
+
+      const get_student = student[0];
+
+      expect (get_student.name).to.equal(name);
+      expect (get_student.age).to.equal(age);
+      expect (get_student.email).to.equal(email);
+      expect (get_student.gender).to.equal(gender);
+      expect (get_student.status).to.equal(status);
+    });
+
+    it("Should get all students", async function () {
+      const { school } = await loadFixture(deploySchoolManagementSystem);
+
+      await school.RegisterStudent("Deby", 14, "deby@gmail.com", 1, 0);
+
+      await school.RegisterStudent("John", 14, "john@gmail.com", 0, 1);
+
+      await school.ViewStudents();
+
+      const student = await school.ViewStudents();
+
+      expect (student.length).to.equal(2);
+    });
+  });
+});
