@@ -24,6 +24,7 @@ interface ITMS {
         EmployeeRole role;
         bool paid;
     }
+    // owner() external view returns (address);
 
     function register_staff(address _account, string memory _name, uint _amount, Status _status, EmployeeRole _role) external ;
 
