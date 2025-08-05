@@ -13,20 +13,20 @@ describe("SchoolManagement", function () {
   describe("updateStudent", function () {
     it("Should update student name", async function () {
       const { schoolManagement } = await loadFixture(deploy);
-      await schoolManagement.registerStudent("Bob", "Mathematics", 22);
-      await schoolManagement.updateStudent(1, "Bobby");
+      await schoolManagement.registerStudent("Loveth", "Rust Programming", 22);
+      await schoolManagement.updateStudent(1, "Loveth");
       const student = await schoolManagement.students(1);
-      expect(student.studentName).to.equal("Bobby");
+      expect(student.studentName).to.equal("Loveth");
     });
   });
 
   describe("getStudentById", function () {
-    it("Should return student by ID", async function () {
+    it("Should return student by Id", async function () {
       const { schoolManagement } = await loadFixture(deploy);
-      await schoolManagement.registerStudent("Charlie", "Physics", 21);
+      await schoolManagement.registerStudent("Marijayne", "Solidity", 21);
       const student = await schoolManagement.getStudentById(1);
-      expect(student.studentName).to.equal("Charlie");
-      expect(student.studentCourse).to.equal("Physics");
+      expect(student.studentName).to.equal("Marijayne");
+      expect(student.studentCourse).to.equal("Solidity");
     });
   });
 });
