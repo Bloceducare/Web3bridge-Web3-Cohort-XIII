@@ -33,7 +33,6 @@ contract Token is IERC20 {
 
    
     function transfer(address to, uint256 value) external returns (bool){
-        require(balance[msg.sender] >= value, NOT_ENOUGH_BALANCE());
         if (balance[msg.sender] >= value){
             balance[msg.sender] -= value;
             balance[to] += value;
@@ -54,10 +53,17 @@ contract Token is IERC20 {
     }
 
     function approve(address spender, uint256 value) external returns (bool){
-        require(balance[msg.sender] >= value, CAN_NOT_APPROVE_ABOVE_BALANCE());
-        _allowance[msg.sender][spender] += value;
-        emit Approval(msg.sender, spender, value);
-        return true;
+        if (balance[msg.sender] >= value){
+            if (balance[msg.sender] >= _allowance[msg.sender][spender] + value ){
+                 _allowance[msg.sender][spender] += value;
+                emit Approval(msg.sender, spender, value);
+                return true;
+            }
+            return false;
+           
+        }
+        return false;
+        
     }
 
    
@@ -72,7 +78,7 @@ contract Token is IERC20 {
            }
            return false;
         }
-        else return false;
+        return false;
 
     }
 

@@ -1,2 +1,2 @@
 # Erc-20 token
-# deployed contract address := 0xF66e4cf4561f202578d8cF0A8eA64C04b80FA8E8
+# deployed contract address := 0x43115bdb56f76e471f0dF3CcD3Cee703F1044beb
