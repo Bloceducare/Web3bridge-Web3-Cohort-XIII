@@ -14,26 +14,62 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "BilalEnterprise",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.BilalEnterprise__factory>;
+    getContractFactory(
       name: "SchoolManage",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SchoolManage__factory>;
+    getContractFactory(
+      name: "IEMS",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IEMS__factory>;
 
+    getContractAt(
+      name: "BilalEnterprise",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.BilalEnterprise>;
     getContractAt(
       name: "SchoolManage",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.SchoolManage>;
+    getContractAt(
+      name: "IEMS",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IEMS>;
 
+    deployContract(
+      name: "BilalEnterprise",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.BilalEnterprise>;
     deployContract(
       name: "SchoolManage",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.SchoolManage>;
+    deployContract(
+      name: "IEMS",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IEMS>;
 
+    deployContract(
+      name: "BilalEnterprise",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.BilalEnterprise>;
     deployContract(
       name: "SchoolManage",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.SchoolManage>;
+    deployContract(
+      name: "IEMS",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IEMS>;
 
     // default types
     getContractFactory(
