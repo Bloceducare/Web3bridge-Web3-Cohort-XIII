@@ -16,8 +16,7 @@ describe("Staking", function () {
     const TokenA = await hre.ethers.getContractFactory("TokenA");
     const TokenB = await hre.ethers.getContractFactory("TokenB");
 
-    const tokenA = await TokenA.deploy(0);
-    tokenA.mint(owner.address, hre.ethers.parseEther("10000"));
+    const tokenA = await TokenA.deploy(hre.ethers.parseEther("10000000000"));
     await tokenA.transfer(otherAccount.address, hre.ethers.parseEther("1000"));
 
     const tokenB = await TokenB.deploy();
