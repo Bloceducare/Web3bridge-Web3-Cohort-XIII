@@ -25,6 +25,7 @@ contract MoviesToken is IERC20 {
     function symbol() external view returns(string memory){
         return tokenSymbol;
     }
+    
     function balanceOf(address _owner) external view returns (uint){
         return tokenHolders[_owner];
     }
