@@ -1,5 +1,4 @@
 #!/bin/bash
-# scripts/run-all-tests.sh
 
 echo "🧪 COMPREHENSIVE STAKING CONTRACT TEST SUITE"
 echo "=============================================="
@@ -65,14 +64,14 @@ echo ""
 
 # Step 2: Run unit tests
 print_status "info" "STEP 2: Running unit tests"
-if ! run_command "Unit tests" "npx hardhat test test/StakingContract.test.ts"; then
+if ! run_command "Unit tests" "npx hardhat test test/StakingContract.ts"; then
     print_status "warning" "Unit tests failed, but continuing..."
 fi
 echo ""
 
 # Step 3: Run integration tests
 print_status "info" "STEP 3: Running integration tests"
-if ! run_command "Integration tests" "npx hardhat test test/Integration.test.ts"; then
+if ! run_command "Integration tests" "npx hardhat test test/Integration.ts"; then
     print_status "warning" "Integration tests failed, but continuing..."
 fi
 echo ""
@@ -108,7 +107,7 @@ echo ""
 
 # Step 7: Run full deployment test
 print_status "info" "STEP 7: Running full deployment pipeline test"
-if ! run_command "Full deployment test" "npx hardhat run scripts/full-deployment-test.ts --network localhost"; then
+if ! run_command "Full deployment test" "npx hardhat run ignition/modules/StakingContract.ts --network localhost"; then
     print_status "warning" "Full deployment test failed"
 fi
 echo ""
@@ -151,7 +150,7 @@ fi
 
 echo ""
 echo "🧪 Running core tests..."
-if npx hardhat test test/StakingContract.test.ts --grep "Deployment|Staking Functionality|Unstaking Functionality"; then
+if npx hardhat test test/StakingContract.ts --grep "Deployment|Staking Functionality|Unstaking Functionality"; then
     echo "✅ Core tests passed"
 else
     echo "❌ Core tests failed"
@@ -164,7 +163,7 @@ npx hardhat node > /dev/null 2>&1 &
 HARDHAT_PID=$!
 sleep 3
 
-if npx hardhat run scripts/full-deployment-test.ts --network localhost > /dev/null 2>&1; then
+if npx hardhat run ignition/modules/StakingContract.ts --network localhost > /dev/null 2>&1; then
     echo "✅ Deployment test passed"
 else
     echo "❌ Deployment test failed"
@@ -181,7 +180,7 @@ echo "⛽ GAS USAGE ANALYSIS"
 echo "===================="
 
 echo "Compiling with gas reporter enabled..."
-REPORT_GAS=true npx hardhat test test/StakingContract.test.ts --grep "Gas Usage"
+REPORT_GAS=true npx hardhat test test/StakingContract.ts --grep "Gas Usage"
 
 echo ""
 echo "Running deployment gas analysis..."
@@ -203,7 +202,7 @@ echo "🔒 SECURITY AUDIT SIMULATION"
 echo "============================"
 
 echo "Running security-focused tests..."
-npx hardhat test test/Integration.test.ts --grep "Failure Scenarios and Attack Vectors"
+npx hardhat test test/IntegrationTest.ts --grep "Failure Scenarios and Attack Vectors"
 
 echo ""
 echo "Checking for common vulnerabilities..."

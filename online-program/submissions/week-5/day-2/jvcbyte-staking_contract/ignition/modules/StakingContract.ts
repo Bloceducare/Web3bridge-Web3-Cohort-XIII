@@ -18,10 +18,6 @@ const StakingModule = buildModule("StakingModule", (m) => {
         LOCK_PERIOD,
     ]);
 
-    // Set staking contract addresses on tokens
-    m.call(tokenA, "setStakingContract", [stakingContract]);
-    m.call(tokenB, "setStakingContract", [stakingContract]);
-
     // Initialize staking contract
     m.call(stakingContract, "_setStakingContract", []);
 

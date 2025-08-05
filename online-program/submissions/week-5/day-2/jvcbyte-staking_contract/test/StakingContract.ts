@@ -181,9 +181,9 @@ describe("Staking Contract System", function () {
         });
 
         it("Should revert staking without sufficient balance", async function () {
-            const { stakingContract, user1 } = await loadFixture(deployFixture);
+            const { tokenA, stakingContract, user1 } = await loadFixture(deployFixture);
 
-            const balance = await stakingContract.tokenA.balanceOf?.(user1.address) || 0n;
+            const balance = await tokenA.balanceOf(user1.address);
 
             await expect(
                 stakingContract.connect(user1).stake(balance + 1n)
@@ -357,13 +357,13 @@ describe("Staking Contract System", function () {
         });
 
         it("Should handle maximum uint256 values", async function () {
-            const { stakingContract, user1 } = await loadFixture(deployFixture);
+            const { tokenA, stakingContract, user1 } = await loadFixture(deployFixture);
 
             // Test with very large amount (but reasonable for testing)
             const largeAmount = ethers.parseEther("1000000");
 
             await stakingContract.mintTokenA(user1.address, largeAmount);
-            await stakingContract.tokenA.connect(user1).transfer(await stakingContract.getAddress(), largeAmount);
+            await tokenA.connect(user1).transfer(await stakingContract.getAddress(), largeAmount);
 
             await expect(
                 stakingContract.connect(user1).stake(largeAmount)
