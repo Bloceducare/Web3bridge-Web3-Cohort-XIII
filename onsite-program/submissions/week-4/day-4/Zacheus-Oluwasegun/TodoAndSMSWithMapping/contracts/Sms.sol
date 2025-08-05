@@ -26,9 +26,10 @@ contract SchoolManagementSystem {
 
     error INVALID_SENDER();
 
-    uint256 private uid;    
+    uint256 private uid;
     mapping(address => School) schools;
 
+    // this is just another type of reg
     function another_registration(StudentDetails memory details) external {
         uid = uid + 1;
 
@@ -77,7 +78,7 @@ contract SchoolManagementSystem {
             }
         }
 
-revert INVALID_ID();
+        revert INVALID_ID();
     }
 
     function get_student_by_id(
@@ -114,18 +115,19 @@ revert INVALID_ID();
     }
 
     function delete_student(uint256 _student_id) external {
-        StudentDetails[] storage students_of_owner = schools[msg.sender].students;
+        StudentDetails[] storage students_of_owner = schools[msg.sender]
+            .students;
 
         for (uint256 i; i < students_of_owner.length; i++) {
             if (students_of_owner[i].id == _student_id) {
                 students_of_owner[i] = students_of_owner[
                     students_of_owner.length - 1
-                ];                            
+                ];
                 students_of_owner.pop();
-                return ;
+                return;
             }
         }
-        
+
         revert STUDENT_NOT_FOUND();
     }
 
