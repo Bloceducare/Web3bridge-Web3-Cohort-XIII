@@ -25,17 +25,13 @@ contract MoviesToken is IERC20 {
     function symbol() external view returns(string memory){
         return tokenSymbol;
     }
-    
+
+    function buyToken(uint quantity)external {
+        tokenHolders[msg.sender] += quantity;
+    }
+
     function balanceOf(address _owner) external view returns (uint){
         return tokenHolders[_owner];
-    }
-    
-    function approve(address spender, uint256 value) external returns(bool){
-        if(tokenHolders[msg.sender] >= value){
-            tokenSpenders[msg.sender][spender] += value;
-            return true;
-        }
-        return false;
     }
 
     function transfer(address _to, uint value) external returns(bool){
@@ -46,7 +42,16 @@ contract MoviesToken is IERC20 {
         }
         return false;
     }
-      function allowance(address _owner, address _spender) external view returns (uint){
+    
+    function approve(address spender, uint256 value) external returns(bool){
+        if(tokenHolders[msg.sender] >= value){
+            tokenSpenders[msg.sender][spender] += value;
+            return true;
+        }
+        return false;
+    }
+
+    function allowance(address _owner, address _spender) external view returns (uint){
         return tokenSpenders[_owner][_spender];
     }
     
@@ -62,9 +67,8 @@ contract MoviesToken is IERC20 {
         }
         return false;
     }
-    function buyToken(uint quantity)external {
-        tokenHolders[msg.sender] += quantity;
-    }
+
+    
 
 }
 

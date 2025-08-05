@@ -2,7 +2,7 @@ import {
   time,
   loadFixture,
 } from "@nomicfoundation/hardhat-toolbox/network-helpers";
-import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
+// import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { expect } from "chai";
 import hre from "hardhat";
 
@@ -30,7 +30,6 @@ describe("MoviesToken contract test suite", () => {
     })
 
     describe("cnotract token can be gotten", async () => { 
-
         it("test users can buy token and balance is gotten", async () => {
             const {contractDeployed} = await loadFixture(deployMoviewContract);
             const [user1] = await hre.ethers.getSigners();
@@ -52,5 +51,35 @@ describe("MoviesToken contract test suite", () => {
             expect(await contractDeployed.balanceOf(acc1)).to.equal(340);
         })
     })
+
+    describe("transferFrom test scenarios", () => { 
+        it("test token approval", async () => { 
+            const { contractDeployed, acc1, acc2, acc3 } = await loadFixture(deployMoviewContract);
+            expect(await contractDeployed.balanceOf(acc3)).to.equal(0);
+            await contractDeployed.approve(acc3.address, 200);
+        })
+    })
+    
+    describe("approve", function () {
+        it("should not change token balance when approving", async () => {
+            const { contractDeployed, acc1, acc2 } = await loadFixture(deployMoviewContract);
+            const beforeBalance = await contractDeployed.balanceOf(acc1.address);
+            await contractDeployed.connect(acc1).approve(acc2.address, 200);
+            const afterBalance = await contractDeployed.balanceOf(acc1.address);
+            expect(afterBalance).to.equal(beforeBalance);
+        }); 
+    });
+
+  describe("allowance", function () {
+
+
+    it("should return 0 when no approval was made", async () => {
+      const { contractDeployed, acc1, acc2 } = await loadFixture(deployMoviewContract);
+      const allowance = await contractDeployed.allowance(acc1.address, acc2.address);
+      expect(allowance).to.equal(0);
+    });
+   
+  });
+
  
 })
