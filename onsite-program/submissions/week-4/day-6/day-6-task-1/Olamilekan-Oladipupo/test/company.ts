@@ -4,7 +4,7 @@ import {
 } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { expect } from "chai";
-import hre from "hardhat";
+import hre, { ethers } from "hardhat";
 
 
 describe ("Company", function(){
@@ -113,12 +113,28 @@ describe ("Company", function(){
             async function() {
             const { web3bridge, owner, employeeA, employeeB, employeeC } = await loadFixture(deployCompany);
 
+            await owner.sendTransaction({
+            to: web3bridge.target, 
+            value: ethers.parseEther("1.0"), 
+        });
+
             const _name = "Josh"
             await web3bridge.connect(employeeA).createEmployee(_name);
 
             const employee = await web3bridge.getEmployee(employeeA.address);
             expect(employee.name).to.equal(_name);
+
+            const _salary = 10000000;
+
+            await web3bridge.setEmployeeSalary(employeeA.address, _salary);
+
+            const balanceBeforePay = await ethers.provider.getBalance(employeeA.address);
+
             await web3bridge.paySalary(employeeA.address);
+
+            const balanceAfterPay = await ethers.provider.getBalance(employeeA.address);
+
+            expect(balanceAfterPay).to.above(balanceBeforePay);
 
         })
 

@@ -43,6 +43,8 @@ contract Company is ICompany {
         // Ether.transfer(_employeeAddress, myEmployees[_employeeAddress].salary);
         
     }
+
+
     function updateEmployeeStatus(address _employeeAddress, Status status) external{
         // require(ownersAddress == msg.sender, Error.NOT_OWNERS_ADDRESS());
         require(myEmployees[_employeeAddress].employeeAddress != address(0), Error.EMPLOYEE_NOT_FOUND());
@@ -62,6 +64,11 @@ contract Company is ICompany {
 
         myEmployees[_employeeAddress].salary = _newSalary;
     }
+
+    fallback() external {}
+
+    receive() external payable {}
+
 
 
 }
