@@ -28,7 +28,7 @@ contract Staking {
     function stake(address _staker, address _tokenA, uint256 amount) external {
         require(amount > 0, "Amount must be > 0");
 
-        require(IERC20(_tokenA).transferFrom(msg.sender, address(this), amount), "Transfer failed");
+        require(IERC20(_tokenA).transferFrom(_staker, address(this), amount), "Transfer failed");
 
 
         require(tokenB.mint(msg.sender, amount), "Reward mint failed");
@@ -47,13 +47,13 @@ contract Staking {
         require(details.amount >= amount, "Not enough staked");
         require(block.timestamp >= details.unlockTime, "Still locked");
 
-        tokenB.burnFrom(msg.sender, amount);
+        tokenB.burnFrom(_staker, amount);
 
         details.amount -= amount;
 
-        require(IERC20(_tokenA).transfer(msg.sender, amount), "Unstake failed");
+        require(IERC20(_tokenA).transfer(_staker, amount), "Unstake failed");
 
-        emit Unstaked(msg.sender, amount);
+        emit Unstaked(_staker, amount);
     }
 
     function getStakeDetails(address staker, address _tokenA) external view returns (address tokenA, uint256 amount, uint256 unlockTime) {
