@@ -7,7 +7,6 @@ contract MultiSigWallet {
     event TransactionConfirmed(uint256 indexed txId, address indexed owner);
     event TransactionRevoked(uint256 indexed txId, address indexed owner);
     event TransactionExecuted(uint256 indexed txId);
-    event Deposit(address indexed sender, uint256 value);
 
     address[] public owners;
     mapping(address => bool) public isOwner;
