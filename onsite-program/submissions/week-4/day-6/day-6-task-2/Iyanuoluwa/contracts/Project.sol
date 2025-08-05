@@ -56,7 +56,7 @@ contract ERC20 is IERC20 {
        if(sender == address(0)){
         revert InvalidSender();
        }
-       if(sender == address(0)){
+       if(recipient == address(0)){
         revert InvalidReceiver();
        }
        if (_balance[sender] < amount) {
