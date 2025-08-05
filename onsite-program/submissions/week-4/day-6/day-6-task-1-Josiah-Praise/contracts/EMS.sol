@@ -5,7 +5,7 @@ import "./EmsInterface.sol";
 
 contract EMS{
 
-    mapping(address => IEMS.Employee) public employees;
+    mapping(address => IEMS.Employee) internal employees;
     address payable public manager;
 
 
@@ -15,6 +15,7 @@ contract EMS{
 
     error EMS__OnlyManager();
     error EMS__InsufficientFunds();
+    error EMS__NotFoundError();
 
     modifier onlyManager {
         if (msg.sender != manager) {
@@ -45,24 +46,31 @@ contract EMS{
     }
 
     function payEmployee(address payable _address)external onlyManager {
+        if (employees[_address].exists == false)
+            revert EMS__NotFoundError();
+
         if (
-            employees[_address].exists &&
-            employees[_address].status == IEMS.Status.EMPLOYED
+            employees[_address].status != IEMS.Status.UNEMPLOYED
         ) {
             if (address(this).balance > employees[_address].salary) {
                 _address.transfer(employees[_address].salary);
             } else {
-            revert EMS__InsufficientFunds();
+                revert EMS__InsufficientFunds();
             }
         }
     }
 
     function getEmployee(address payable _address)external view returns(IEMS.Employee memory){
+        if (employees[_address].exists == false)
+            revert EMS__NotFoundError();
         return employees[_address];
     }
 
     function fireEmployee(address _address)external onlyManager {
-        if (employees[payable(_address)].exists && employees[payable(_address)].status == IEMS.Status.EMPLOYED) {
+        if (employees[_address].exists == false)
+            revert EMS__NotFoundError();
+
+        if (employees[payable(_address)].status != IEMS.Status.UNEMPLOYED) {
             IEMS.Employee storage firedEmployee = employees[payable(_address)];
             firedEmployee.status = IEMS.Status.UNEMPLOYED;
         }
