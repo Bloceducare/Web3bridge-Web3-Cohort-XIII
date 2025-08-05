@@ -3,19 +3,17 @@ import { expect } from "chai";
 import hre from "hardhat";
 
 describe("Token", function () {
-  // ✅ Shared fixture: deploy once, reuse in all tests
+  
   async function deployTokenFixture() {
     //const [owner, user] = await hre.ethers.getSigners();
-
     const Token = await hre.ethers.getContractFactory("Token");
     const token = await Token.deploy();
     //await token.waitForDeployment();
-
     return { token };
   }
 
   describe("Deployment", function () {
-    it("Should set the correct owner", async function () {
+    it("Should create a token by the owner", async function () {
       const name = "Test Token";
       const symbol = "TTK";
       const initialSupply = 10000;
