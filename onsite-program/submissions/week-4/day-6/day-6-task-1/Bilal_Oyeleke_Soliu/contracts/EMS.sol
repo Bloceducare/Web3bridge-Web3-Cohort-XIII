@@ -15,7 +15,7 @@ contract BilalEnterprise is IEMS {
     receive() external payable {}
     fallback() external payable {}
 
-    function registerUser(uint _salary, Role memory _role) external override {
+    function registerUser(uint _salary, Role _role) external override {
         address sender = msg.sender;
 
         // Prevent duplicate registration

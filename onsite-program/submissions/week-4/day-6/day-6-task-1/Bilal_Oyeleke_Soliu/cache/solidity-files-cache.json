@@ -36,6 +36,80 @@
       "artifacts": [
         "SchoolManage"
       ]
+    },
+    "/home/bilal/bilal_projects/Learning/web3bridge/another/onsite-program/submissions/week-4/day-6/day-6-task-1/Bilal_Oyeleke_Soliu/contracts/EMS.sol": {
+      "lastModificationDate": 1754391980721,
+      "contentHash": "b2172a13f0e4f8ce616a89b39a107171",
+      "sourceName": "contracts/EMS.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IEMS.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "BilalEnterprise"
+      ]
+    },
+    "/home/bilal/bilal_projects/Learning/web3bridge/another/onsite-program/submissions/week-4/day-6/day-6-task-1/Bilal_Oyeleke_Soliu/interfaces/IEMS.sol": {
+      "lastModificationDate": 1754391952301,
+      "contentHash": "60d73a9f966e86df812e86ca8377f4e2",
+      "sourceName": "interfaces/IEMS.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "IEMS"
+      ]
     }
   }
 }
