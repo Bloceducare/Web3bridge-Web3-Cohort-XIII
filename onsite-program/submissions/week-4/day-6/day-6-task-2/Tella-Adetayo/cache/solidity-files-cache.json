@@ -1,0 +1,153 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/adetayo/Documents/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-2/Tella-Adetayo/contracts/ERC20.sol": {
+      "lastModificationDate": 1754253285469,
+      "contentHash": "b722b2498f75c5aaceb00cb6fa7d041e",
+      "sourceName": "contracts/ERC20.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../library/Storage.sol",
+        "../library/error.sol",
+        "../interface/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "LEDATOKEN"
+      ]
+    },
+    "/home/adetayo/Documents/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-2/Tella-Adetayo/library/error.sol": {
+      "lastModificationDate": 1754251637975,
+      "contentHash": "2ff61e4aec5447078becf3f2fc59c659",
+      "sourceName": "library/error.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Error"
+      ]
+    },
+    "/home/adetayo/Documents/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-2/Tella-Adetayo/library/Storage.sol": {
+      "lastModificationDate": 1754251615726,
+      "contentHash": "08ac676edc86194ae26a2dece96379c2",
+      "sourceName": "library/Storage.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Storage"
+      ]
+    },
+    "/home/adetayo/Documents/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-2/Tella-Adetayo/interface/IERC20.sol": {
+      "lastModificationDate": 1754252324701,
+      "contentHash": "bb1106b66cfa1ce5b626defee35aa66a",
+      "sourceName": "interface/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    }
+  }
+}
