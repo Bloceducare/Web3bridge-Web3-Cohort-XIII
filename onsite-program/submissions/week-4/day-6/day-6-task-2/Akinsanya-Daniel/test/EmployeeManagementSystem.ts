@@ -93,9 +93,7 @@ describe("EmployeeManagementSystem", function () {
 
         })
 
-        })
-})
-
+        
       it("Should not pay employee if the sender is not an admin",async function(){
       const { employeeManagementSystem, owner,otherAccount } = await loadFixture(deployEmployeeManagementSystem);
       const address = owner.address;
@@ -123,6 +121,8 @@ describe("EmployeeManagementSystem", function () {
       await expect(employeeManagementSystem.connect(otherAccount).payEmployeeSalary(address,amount)).to.be.revertedWith("Employee is not Employed");
 
 })
+  });
+
 
 
 
@@ -144,4 +144,5 @@ const { employeeManagementSystem, owner,otherAccount } = await loadFixture(deplo
 
 })
 
+})
 });
