@@ -5,11 +5,10 @@ import hre from "hardhat";
 describe("Token", function () {
   
   async function deployTokenFixture() {
-    //const [owner, user] = await hre.ethers.getSigners();
+    const [owner, user] = await hre.ethers.getSigners();
     const Token = await hre.ethers.getContractFactory("Token");
-    const token = await Token.deploy();
-    //await token.waitForDeployment();
-    return { token };
+    const token = await Token.deploy(owner);
+    return { token, owner, user };
   }
 
   describe("Deployment", function () {
@@ -23,13 +22,10 @@ describe("Token", function () {
 
     describe("Update Token", function () {
       it("Should update token name", async function () {
-        const address = "0x1234567890123456789012345678901234567890";
         const newName = "TTK";
-
-        const { token } = await loadFixture(deployTokenFixture);
-        await token.updateTokenName(address, newName);
-
-        const tokenData = await token.tokens(address);
+        const { token, owner } = await loadFixture(deployTokenFixture);
+        await token.updateTokenName(owner, newName);
+        const tokenData = await token.getToken();
         expect(tokenData.name).to.equal(newName);
       });
     });
@@ -37,10 +33,8 @@ describe("Token", function () {
     describe("change owner", function () {
       it("Should change owner", async function () {
         const address = "0x1234567890123456789012345678901234567890";
-
         const { token } = await loadFixture(deployTokenFixture);
         await token.transferOwnerShip(address);
-
         const tokenData = await token.tokens(address);
       });
     });
@@ -48,22 +42,18 @@ describe("Token", function () {
     describe("Get Token Details", function () {
       it("Should get token details", async function () {
         const address = "0x1234567890123456789012345678901234567890";
-
         const { token } = await loadFixture(deployTokenFixture);
         await token.getTokenDetails(address);
         const tokenData = await token.tokens(address);
-       
       });
     });
 
     describe("Delete Token", function () {
       it("Should delete token", async function () {
         const address = "0x1234567890123456789012345678901234567890";
-
         const { token } = await loadFixture(deployTokenFixture);
         await token.deleteToken();
         const tokenData = await token.tokens(address);
-       
       });
     });
 

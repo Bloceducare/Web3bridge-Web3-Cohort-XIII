@@ -9,9 +9,23 @@ contract Token is IToken {
     mapping(address => TokenData) public tokens;
 
  
-    // constructor(address _initialOwner) {
-    //     owner = _initialOwner;
-    // }
+    constructor(address _owner) {
+        owner = _owner;
+    }
+
+    function getToken()
+        external
+        view
+        returns (string memory name, string memory symbol, uint256 totalSupply)
+    {
+        TokenData storage tokenData = tokens[msg.sender];
+        return (tokenData.name, tokenData.symbol, tokenData.totalSupply);
+    }
+
+    function setOwner(address _newOwner) external {
+        if (_newOwner != msg.sender) revert InvalidAddress();
+        owner = _newOwner;
+    }
 
     function createToken(
         string memory _name,
