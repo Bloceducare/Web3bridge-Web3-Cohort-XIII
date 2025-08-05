@@ -36,11 +36,11 @@ interface IEMS {
         ) external ;
 
 
-    function payEmployee(address payable _id)external returns(bool);
+    function payEmployee(address payable _id)external;
 
     function getEmployee(address payable _id) external view returns(Employee memory);
 
-    function deleteEmployee(address _address)external;
+    function fireEmployee(address _address)external;
 
     function changeDetails(address payable _address, string calldata _name, string calldata _telephone, string calldata _house_address)external;
 }

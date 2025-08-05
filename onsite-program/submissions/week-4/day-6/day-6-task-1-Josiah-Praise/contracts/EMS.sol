@@ -3,7 +3,7 @@ pragma solidity ^0.8.23;
 import "./EmsInterface.sol";
 
 
-contract EMS {
+contract EMS{
 
     mapping(address => IEMS.Employee) public employees;
     address payable public manager;
@@ -51,9 +51,9 @@ contract EMS {
         ) {
             if (address(this).balance > employees[_address].salary) {
                 _address.transfer(employees[_address].salary);
-                return;
-            }
+            } else {
             revert EMS__InsufficientFunds();
+            }
         }
     }
 
@@ -83,4 +83,6 @@ contract EMS {
             updatedEmployee.house_address = _house_address;
         }
     }
+
+    receive() external payable {}
 }
