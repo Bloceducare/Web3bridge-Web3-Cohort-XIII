@@ -9,20 +9,24 @@ describe("Lock", function () {
   // We define a fixture to reuse the same setup in every test.
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshot in every test.
-  async function deployOneYearLockFixture() {
-    const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-    const ONE_GWEI = 1_000_000_000;
+  async function deployStake() {
+    [owner, user] = await ethers.getSigners();
 
-    const lockedAmount = ONE_GWEI;
-    const unlockTime = (await time.latest()) + ONE_YEAR_IN_SECS;
+    TokenA = await ethers.getContractFactory("TokenA");
+    tokenA = await TokenA.deploy();
+    await tokenA.deployed();
 
-    // Contracts are deployed using the first signer/account by default
-    const [owner, otherAccount] = await ethers.getSigners();
+    TokenB = await ethers.getContractFactory("TokenB");
+    tokenB = await TokenB.deploy("TokenB", "TKB");
+    await tokenB.deployed();
 
-    const Lock = await ethers.getContractFactory("Lock");
-    const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+    // Mint tokens for user
+    await tokenA.mint(user.address, ethers.utils.parseEther("1000"));
 
-    return { lock, unlockTime, lockedAmount, owner, otherAccount };
+    Staking = await ethers.getContractFactory("Staking");
+    staking = await Staking.deploy(tokenB.target, lockPeriod);
+    await staking.deployed();
+
   }
 
   describe("Deployment", function () {

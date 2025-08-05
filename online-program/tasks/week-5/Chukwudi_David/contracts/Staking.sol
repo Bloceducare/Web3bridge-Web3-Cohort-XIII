@@ -2,11 +2,11 @@
 pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "./TokenB.sol";
 
 contract Staking {
 
-    ERC20Burnable public tokenB;
+    TokenB public tokenB;
     uint256 public lockPeriod;
 
     struct StakeDetails {
@@ -21,7 +21,7 @@ contract Staking {
     event Unstaked(address indexed user, uint256 amount);
 
     constructor(address _tokenB, uint256 _lockPeriod) {
-        tokenB = ERC20Burnable(_tokenB);
+        tokenB = TokenB(_tokenB);
         lockPeriod = _lockPeriod;
     }
 
