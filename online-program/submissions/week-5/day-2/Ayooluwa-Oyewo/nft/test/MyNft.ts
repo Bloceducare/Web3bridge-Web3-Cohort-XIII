@@ -43,6 +43,28 @@ describe("MyNft", function () {
       expect(await myNft.tokenURI(tokenId)).to.equal(tokenURI);
       expect(await myNft.getNextTokenId()).to.equal(1);
     });
+    it("Should allow another account to mint an NFT", async function () {
+      const { myNft, owner, otherAccount } = await loadFixture(
+        deployMyNftFixture
+      );
+      expect(await myNft.getNextTokenId()).to.equal(0);
+      const tokenURI = "https://example.com/token/1";
+
+      // Mint first NFT to owner
+      await myNft.mint(owner.address, tokenURI);
+      expect(await myNft.getNextTokenId()).to.equal(1);
+
+      // Mint second NFT to otherAccount
+      const tx = await myNft.mint(otherAccount.address, tokenURI);
+      await expect(tx)
+        .to.emit(myNft, "NftMinted")
+        .withArgs(1, otherAccount.address, tokenURI);
+
+      // Check the second NFT (token ID 1)
+      expect(await myNft.ownerOf(1)).to.equal(otherAccount.address);
+      expect(await myNft.tokenURI(1)).to.equal(tokenURI);
+      expect(await myNft.getNextTokenId()).to.equal(2);
+    });
 
     it("Should revert if the tokenURI is the empty string", async function () {
       const { myNft, owner } = await loadFixture(deployMyNftFixture);
@@ -66,9 +88,13 @@ describe("MyNft", function () {
       const tokenId = await myNft.getNextTokenId();
       await myNft.mint(owner.address, "https://example.com/token/1");
       expect(await myNft.ownerOf(tokenId)).to.equal(owner.address);
-      expect(await myNft.tokenURI(tokenId)).to.equal("https://example.com/token/1");
+      expect(await myNft.tokenURI(tokenId)).to.equal(
+        "https://example.com/token/1"
+      );
       expect(await myNft.balanceOf(owner.address)).to.equal(1);
-      expect(await myNft.burn(tokenId)).to.emit(myNft, "NftBurned").withArgs(tokenId);
+
+      const burnTx = await myNft.burn(tokenId);
+      await expect(burnTx).to.emit(myNft, "NftBurned").withArgs(tokenId);
       expect(await myNft.balanceOf(owner.address)).to.equal(0);
     });
   });
