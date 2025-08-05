@@ -9,4 +9,5 @@ library Errors {
     error InsufficientBalance(uint256 required, uint256 available);
     error NameCannotBeEmpty();
     error SalaryExceedsAgreedAmount(uint256 requested, uint256 agreed);
+    error UserAlreadyRegistered(address user);
 }

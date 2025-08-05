@@ -6,4 +6,5 @@ export const Errors = {
   InsufficientBalance: (required: string, available: string) => `InsufficientBalance(${required}, ${available})`,
   NameCannotBeEmpty: "NameCannotBeEmpty",
   SalaryExceedsAgreedAmount: (requested: string, agreed: string) => `SalaryExceedsAgreedAmount(${requested}, ${agreed})`,
-};
+  UserAlreadyRegistered: (user: string) => `UserAlreadyRegistered(${user})`
+}
