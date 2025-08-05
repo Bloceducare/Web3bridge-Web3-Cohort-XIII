@@ -36,7 +36,7 @@ contract SchoolManagementSystem {
 
     function DeleteStudent (uint id) external {
         require(id < students.length, "Student does not exist");
-        students[id] = students[students.length - 1]; // Swap with last
+        students[id] = students[students.length - 1];
         students.pop();
     }
 
