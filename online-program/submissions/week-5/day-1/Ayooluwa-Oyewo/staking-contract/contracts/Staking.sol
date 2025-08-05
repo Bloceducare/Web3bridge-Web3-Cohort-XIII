@@ -2,10 +2,10 @@
 pragma solidity ^0.8.28;
 
 import {ITokenB} from "./TokenB.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {ITokenA} from "./TokenA.sol";
 contract Staking {
     ITokenB public tokenB; // Token B for rewards (mintable & burnable)
-    IERC20 public tokenA;  // Token A for staking
+    ITokenA public tokenA;  // Token A for staking
     uint256 public lockPeriod;
 
     struct StakeInfo {
@@ -36,7 +36,7 @@ contract Staking {
         if(_tokenB == address(0)) revert Staking_RewardTokenAddressNotSet();
         if(_lockPeriod == 0) revert Staking_NoLockPeriodSet();
 
-        tokenA = IERC20(_tokenA);
+        tokenA = ITokenA(_tokenA);
         tokenB = ITokenB(_tokenB);
         lockPeriod = _lockPeriod;
 

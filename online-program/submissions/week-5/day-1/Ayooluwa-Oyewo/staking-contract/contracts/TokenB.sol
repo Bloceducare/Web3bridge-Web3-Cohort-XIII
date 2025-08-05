@@ -11,7 +11,7 @@ interface ITokenB is IERC20 {
     function burn(address from, uint256 amount) external;
     function setMinter(address minter, bool status) external;
 }
-contract TokenB is ERC20, Ownable {
+contract TokenB is ERC20, Ownable, ITokenB {
     mapping(address => bool) public isMinter;
 
     constructor() ERC20("Token B", "TKB") Ownable(msg.sender) {}
