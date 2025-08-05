@@ -1,0 +1,77 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\DELL\\blockchain_development\\web3bridge\\Web3bridge-Web3-Cohort-XIII\\onsite-program\\submissions\\week-4\\day-4\\day4-task2\\BABALOLA ABIODUN AYOMIDE\\contracts\\SchoolManagementSystem.sol": {
+      "lastModificationDate": 1754009147194,
+      "contentHash": "43e21fd042b36c3a6109f28554f0b5f1",
+      "sourceName": "contracts/SchoolManagementSystem.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "SchoolManagementSystem"
+      ]
+    },
+    "C:\\Users\\DELL\\blockchain_development\\web3bridge\\Web3bridge-Web3-Cohort-XIII\\onsite-program\\submissions\\week-4\\day-4\\day4-task2\\BABALOLA ABIODUN AYOMIDE\\contracts\\TodolistManagement.sol": {
+      "lastModificationDate": 1754011068428,
+      "contentHash": "f06cb1bce5690f6d4d3bc6a6160c05fc",
+      "sourceName": "contracts/TodolistManagement.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.30"
+      ],
+      "artifacts": [
+        "TodoList"
+      ]
+    }
+  }
+}
