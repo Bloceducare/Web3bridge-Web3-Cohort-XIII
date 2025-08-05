@@ -16,8 +16,8 @@ contract ERC20 is IERC20 {
         name = _name;
         symbol = _symbol;
         decimals = _decimals;
-        totalSupply = 10 * 10 ** _decimals;
-        balanceOf[msg.sender] = totalSupply;
+        // totalSupply = 10 * 10 ** _decimals;
+        // balanceOf[msg.sender] = totalSupply;
     }
 
     function transfer(
@@ -66,4 +66,8 @@ contract ERC20 is IERC20 {
         emit Transfer(_from, _to, _amount);
         return true;
     }
+    function _mint(address to, uint _amount) public {
+     balanceOf[to] += _amount;
+     totalSupply += _amount;
+}
 }
