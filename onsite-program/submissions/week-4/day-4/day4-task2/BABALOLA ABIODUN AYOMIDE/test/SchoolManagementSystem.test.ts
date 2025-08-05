@@ -1,11 +1,8 @@
 import { expect } from "chai";
 import hre from "hardhat";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
-// import Gender from "../contracts/SchoolManagementSystem.sol"
-const Gender = {
-  MALE: 0,
-  FEMALE: 1
-};
+
+enum Gender { MALE, FEMALE}
 
 enum Status { ACTIVE, DEFERRED, RUSTICATED }
 
@@ -27,8 +24,8 @@ describe("School Management tests", () => {
         })
     })
     describe("Tests student profile can be updated", async () => {
-        const {contractDeployed} = await loadFixture(deploySchoolContract);
-        it("tests user can register students with valid data", async ()=>{
+        it("tests user can register students with valid data", async () => {
+            const { contractDeployed } = await loadFixture(deploySchoolContract);
             const studentName = "name";
             let studentAge = 1;
             const gender = Gender.FEMALE;
@@ -41,8 +38,8 @@ describe("School Management tests", () => {
         })
     })
     describe("Tests student profile can be updated", async () => {
-        const {contractDeployed} = await loadFixture(deploySchoolContract);
-        it("tests user can register students with valid data", async ()=>{
+        it("tests user can register students with valid data", async () => {
+            const {contractDeployed} = await loadFixture(deploySchoolContract);
             let studentName = "name";
             let studentAge = 1;
             const gender = Gender.FEMALE;
@@ -50,19 +47,18 @@ describe("School Management tests", () => {
             const userSchool = await contractDeployed.getuserSchool();
             expect(userSchool.length).to.equal(1);
             studentAge = studentAge + 19
-            studentName == "name ow"
             await contractDeployed.updateStudentAge(studentAge,userSchool[0].id);
-            await contractDeployed.updateStudentProfile(studentName,userSchool[0].id);
             expect((await contractDeployed.getuserSchool())[0].age).to.equal(studentAge);
-            expect((await contractDeployed.getuserSchool())[0].age).to.equal(studentName);
-            await contractDeployed.updateStudentProfile(studentName,userSchool[0].id);
+            expect((await contractDeployed.getuserSchool())[0].name).to.equal(studentName);
+            studentName = "name ow"
+            await contractDeployed["updateStudentProfile(uint256,uint256,string)"](studentAge, userSchool[0].id, studentName);
             expect((await contractDeployed.getuserSchool())[0].age).to.equal(studentAge);
-            expect((await contractDeployed.getuserSchool())[0].age).to.equal(studentName);
+            expect((await contractDeployed.getuserSchool())[0].name).to.equal(studentName);
         })
     })
      describe("suspend student", async () => {
-        const {contractDeployed} = await loadFixture(deploySchoolContract);
-        it("tests user can register students with valid data", async ()=>{
+         it("tests user can register students with valid data", async () => {
+            const {contractDeployed} = await loadFixture(deploySchoolContract);
             const studentName = "name";
             let studentAge = 1;
             const gender = Gender.FEMALE;
@@ -74,12 +70,12 @@ describe("School Management tests", () => {
             userSchool = await contractDeployed.getuserSchool();
             expect(userSchool[0].status).to.equal(Status.DEFERRED);
             await contractDeployed.cancelStudentSuspension(studentId)
-            expect((await contractDeployed.getStudentBy(studentId)).status).equal(1);
+            expect((await contractDeployed.getStudentBy(studentId)).status).equal(0);
         })
      })
       describe("rusticate student", async () => {
-        const {contractDeployed} = await loadFixture(deploySchoolContract);
-        it("tests user can register students with valid data", async ()=>{
+          it("tests user can rusticate student", async () => {
+            const {contractDeployed} = await loadFixture(deploySchoolContract);
             const studentName = "name";
             let studentAge = 1;
             const gender = Gender.FEMALE;
@@ -87,16 +83,14 @@ describe("School Management tests", () => {
             let userSchool = await contractDeployed.getuserSchool();
             expect(userSchool.length).to.equal(1);
             const studentId = userSchool[0].id
-            await contractDeployed.suspendStudent(studentId);
+            await contractDeployed.rusticateStudent(studentId);
             userSchool = await contractDeployed.getuserSchool();
             expect(userSchool[0].status).to.equal(Status.RUSTICATED);
-            await contractDeployed.cancelStudentSuspension(studentId)
-            expect((await contractDeployed.getStudentBy(studentId)).status).equal(2);
         })
       })
      describe("delete student", async () => {
-        const {contractDeployed} = await loadFixture(deploySchoolContract);
-        it("tests user can register students with valid data", async ()=>{
+         it("tests user can delete student", async () => {
+            const {contractDeployed} = await loadFixture(deploySchoolContract);
             const studentName = "name";
             let studentAge = 1;
             const gender = Gender.FEMALE;
@@ -106,13 +100,13 @@ describe("School Management tests", () => {
             const studentId = userSchool[0].id
             await contractDeployed.suspendStudent(studentId);
             userSchool = await contractDeployed.getuserSchool();
-            expect(userSchool[0].status).to.equal(Status.RUSTICATED);
+            expect(userSchool[0].status).to.equal(Status.DEFERRED);
             await contractDeployed.cancelStudentSuspension(studentId)
-            expect((await contractDeployed.getStudentBy(studentId)).status).equal(2);
+            expect((await contractDeployed.getStudentBy(studentId)).status).equal(0);
             await contractDeployed.deleteStudent(studentId);
             expect((await contractDeployed.getuserSchool()).length).to.equal(0)
         })
-    })
+     })    
 })
 
 // TODO

@@ -25,12 +25,11 @@ contract SchoolManagementSystem {
         usersSchool[msg.sender].push(Student(name, age, gender, id,Status.ACTIVE));
     }
 
-    function updateStudentAge(uint age, uint id) external {
-        require(age > 0, "Invalid age");
+    function updateStudentAge(uint age, uint id) public {
         Student[] storage students = usersSchool[msg.sender];
-        for (uint i = 0; i < students.length; i++) {
-            if (students[i].id == id) {
-                students[i].age = age;
+        for (uint count = 0; count < students.length; count++){
+            if (students[count].id == id) {
+                students[count].age = age;
                 return;
             }
         }
@@ -50,8 +49,8 @@ contract SchoolManagementSystem {
     }
 
     function updateStudentProfile(uint age, uint id, string memory name) external{
-        this.updateStudentAge(age, id);
         updateStudentProfile(name, id);
+        updateStudentAge(age, id);
     }
 
     function suspendStudent(uint id) external{
