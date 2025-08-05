@@ -24,7 +24,7 @@ contract EmployeeManagementSystem is IEmployee{
           if(employees[msg.sender].role != ROLE.ADMIN){
              revert("You are not an Admin");
           }
-          if(employees[_to].status != STATUS.EMPLOYED && employees[_to].salary == _amount){
+          if(employees[_to].status != STATUS.EMPLOYED || employees[_to].salary != _amount){
              revert("Employee is not Employed");
           }
           payable(_to).transfer(_amount);
