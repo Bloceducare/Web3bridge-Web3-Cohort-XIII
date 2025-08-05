@@ -1,0 +1,3 @@
+deployment address: 0x9b84547F1Cb560F53Af92EE9F821e54f334c5f53
+
+https://sepolia-blockscout.lisk.com/address/0x9b84547F1Cb560F53Af92EE9F821e54f334c5f53#code

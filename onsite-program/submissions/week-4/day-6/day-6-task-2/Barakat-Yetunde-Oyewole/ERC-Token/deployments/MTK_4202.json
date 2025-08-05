@@ -1,0 +1,14 @@
+{
+  "network": "lisk-sepolia",
+  "chainId": 4202,
+  "contractAddress": "0x65742aB15AE68E26A6217Df0E55f16626f9D14A5",
+  "deployerAddress": "0x16F7851964Dce287a357f55af1Ce0FAc72765833",
+  "transactionHash": "0xf912993806bcaa7c310fa73d5073b135de5e20def60e370e522b57242c122c0e",
+  "tokenConfig": {
+    "name": "MyToken",
+    "symbol": "MTK",
+    "decimals": 18,
+    "initialSupply": 1000000
+  },
+  "timestamp": "2025-08-03T22:29:14.484Z"
+}
