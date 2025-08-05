@@ -26,7 +26,7 @@ describe("SchoolAccess", function () {
   });
 
   describe("updateEmployee", function () {
-    it("Should update existing employee", async function () {
+    it("Should update employee", async function () {
       const { schoolAccess } = await loadFixture(deploy);
       await schoolAccess.addEmployee(employeeWallet, "Loveth", 1, true);
       await schoolAccess.updateEmployee(employeeWallet, "Jane Adebayo", 2, false);
@@ -39,7 +39,7 @@ describe("SchoolAccess", function () {
   });
 
   describe("getAllEmployees", function () {
-    it("Should return all employees in array", async function () {
+    it("Should return all employee list", async function () {
       const { schoolAccess } = await loadFixture(deploy);
       await schoolAccess.addEmployee(employeeWallet, "Jane Adebayo", 2, false);
       const allEmployees = await schoolAccess.getAllEmployees();
