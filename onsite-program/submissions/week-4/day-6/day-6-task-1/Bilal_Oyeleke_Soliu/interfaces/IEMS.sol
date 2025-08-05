@@ -8,10 +8,10 @@ interface IEMS {
         OnProbation
     }
 
-    struct Role {
-        string mentor;
-        string admin;
-        string security;
+    enum Role {
+        Mentor,
+        Admin,
+        Security
     }
 
     struct Employee {
@@ -22,7 +22,7 @@ interface IEMS {
         EmploymentStatus status;
     }
 
-    function registerUser(uint _salary, Role memory _role) external;
+    function registerUser(uint _salary, Role _role) external;
     function getBalance(address _address) external view returns (uint);
     function paySalary(address payable _employee_address) external;
     function getEmployees() external view returns (Employee[] memory);
