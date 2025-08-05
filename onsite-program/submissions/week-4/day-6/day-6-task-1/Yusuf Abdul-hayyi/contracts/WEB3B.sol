@@ -23,6 +23,7 @@ contract WEB3B is IERC20 {
         decimals = _decimals;
         balanceOf[msg.sender] = _totalSupply;
         owner = msg.sender;
+        totalSupply = _totalSupply;
     }
     
     function transfer(address recipient, uint amount) external returns(bool) {
@@ -35,7 +36,6 @@ contract WEB3B is IERC20 {
         revert INSUFFICIENT_BALANCE();
     }
 
-
     function approve(address spender, uint256 amount) external returns(bool) {
 
             allowance[msg.sender][spender] = amount;
@@ -47,7 +47,7 @@ contract WEB3B is IERC20 {
         // require(balanceOf[msg.sender] >= amount, "Insufficient Balance")
         // require(allowance[msg.sender][spender] <= amount, "Allowance exceeded")
 
-        if (balanceOf[msg.sender] >= amount && allowance[msg.sender][sender] >= amount) {
+        if (balanceOf[msg.sender] >= amount && allowance[sender][msg.sender] >= amount) {
 
             allowance[sender][msg.sender] -= amount;
             balanceOf[sender] -= amount;
