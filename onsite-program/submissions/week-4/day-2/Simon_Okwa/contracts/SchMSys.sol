@@ -1,7 +1,8 @@
+
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.28;
 
-contract SchMSys {
+contract SchoolManagementSystem {
 
      enum Status { ACTIVE, DEFERRED, RUSTICATED }
 
@@ -9,18 +10,18 @@ contract SchMSys {
         string name;
         uint age;
         Status status;
-        bool exists; 
+        bool exists; // to track deleted or uninitialized entries
     }
 
     Student[] public students;
 
-    
+    // Register new student (ID = index in array)
     function registerStudent(string memory _name, uint _age) external {
         students.push(Student(_name, _age, Status.ACTIVE, true));
     }
 
-    
-    function updateStudent(uint _id, string memory _name, uint _age) public {
+    // Update student by index (used as ID)
+    function updateStudent(uint256 _id, string memory _name, uint256 _age) public {
         require(_id < students.length, "Invalid ID");
         require(students[_id].exists, "Student does not exist");
 
@@ -28,23 +29,25 @@ contract SchMSys {
         students[_id].age = _age;
     }
 
-       function deleteStudent(uint _id) public {
+    // Delete student by index
+    function deleteStudent(uint256 _id) public {
         require(_id < students.length, "Invalid ID");
         require(students[_id].exists, "Student already deleted");
 
-       
+        // Just mark as deleted
         students[_id].exists = false;
     }
 
-  
-    function changeStatus(uint _id, Status _status) public {
+    // Change student status
+    function changeStatus(uint256 _id, Status _status) public {
         require(_id < students.length, "Invalid ID");
         require(students[_id].exists, "Student does not exist");
 
         students[_id].status = _status;
     }
 
-    function getStudent(uint _id) public view returns (Student memory) {
+    // Get single student
+    function getStudent(uint256 _id) public view returns (Student memory) {
         require(_id < students.length, "Invalid ID");
         require(students[_id].exists, "Student does not exist");
 
@@ -55,8 +58,11 @@ contract SchMSys {
         return students;
     }
 
-
-    function getTotalStudents() public view returns (uint) {
+    // Get total count (including deleted entries)
+    function getTotalStudents() public view returns (uint256) {
         return students.length;
     }
 }
+
+    
+

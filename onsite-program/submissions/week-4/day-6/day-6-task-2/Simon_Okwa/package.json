@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write \"**/*.{js,ts,json,sol}\"",
+    "format:check": "prettier --check \"**/*.{js,ts,json,sol}\"",
+    "lint": "solhint \"contracts/**/*.sol\"",
+    "lint:fix": "solhint \"contracts/**/*.sol\" --fix"
   },
   "keywords": [],
   "author": "",
@@ -11,6 +15,8 @@
   "description": "",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",
-    "hardhat": "^2.26.1"
+    "hardhat": "^2.26.1",
+    "prettier-plugin-solidity": "^2.1.0",
+    "solhint": "^6.0.0"
   }
 }

@@ -6,7 +6,7 @@ import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
 const SchoolManagementSystemModule = buildModule("SchoolManagementSystemModule", (m) => {
 
-  const schoolmanagementsystem = m.contract("Lock");
+  const schoolmanagementsystem = m.contract("SchoolManagementSystem");
 
   return { schoolmanagementsystem };
 });
