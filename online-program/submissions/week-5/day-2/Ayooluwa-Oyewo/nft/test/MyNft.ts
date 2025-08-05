@@ -2,7 +2,6 @@ import {
   time,
   loadFixture,
 } from "@nomicfoundation/hardhat-toolbox/network-helpers";
-import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { expect } from "chai";
 import hre from "hardhat";
 
@@ -36,7 +35,7 @@ describe("MyNft", function () {
       const tokenId = await myNft.getNextTokenId();
       expect(tokenId).to.equal(0);
       const tokenURI = "https://example.com/token/1";
-      const tx = await myNft.mintNft(owner.address, tokenURI);
+      const tx = await myNft.mint(owner.address, tokenURI);
       await expect(tx)
         .to.emit(myNft, "NftMinted")
         .withArgs(0, owner.address, tokenURI);
@@ -49,15 +48,28 @@ describe("MyNft", function () {
       const { myNft, owner } = await loadFixture(deployMyNftFixture);
       const tokenURI = "";
       await expect(
-        myNft.mintNft(owner.address, tokenURI)
+        myNft.mint(owner.address, tokenURI)
       ).to.be.revertedWithCustomError(myNft, "MyNft_NoTokenURI");
     });
     it("Should revert if the recipient is the zero address", async function () {
       const { myNft } = await loadFixture(deployMyNftFixture);
       const tokenURI = "https://example.com/token/1";
       await expect(
-        myNft.mintNft(hre.ethers.ZeroAddress, tokenURI)
+        myNft.mint(hre.ethers.ZeroAddress, tokenURI)
       ).to.be.revertedWithCustomError(myNft, "MyNft_NoRecipient");
+    });
+  });
+
+  describe("Burning", function () {
+    it("Should burn an NFT", async function () {
+      const { myNft, owner } = await loadFixture(deployMyNftFixture);
+      const tokenId = await myNft.getNextTokenId();
+      await myNft.mint(owner.address, "https://example.com/token/1");
+      expect(await myNft.ownerOf(tokenId)).to.equal(owner.address);
+      expect(await myNft.tokenURI(tokenId)).to.equal("https://example.com/token/1");
+      expect(await myNft.balanceOf(owner.address)).to.equal(1);
+      expect(await myNft.burn(tokenId)).to.emit(myNft, "NftBurned").withArgs(tokenId);
+      expect(await myNft.balanceOf(owner.address)).to.equal(0);
     });
   });
 });

@@ -11,13 +11,15 @@ contract MyNft is ERC721URIStorage, Ownable {
 
     // events
     event NftMinted(uint256 indexed tokenId, address indexed recipient, string tokenURI);
-
+    event NftBurned(uint256 indexed tokenId);
     // errors
     error MyNft_NoRecipient();
     error MyNft_NoTokenURI();
     error MyNft_NotMinted();
+    error MyNft_NotOwner();
 
-    function mintNft(address recipient, string memory tokenURI) public returns (uint256) {
+
+    function mint(address recipient, string memory tokenURI) public returns (uint256) {
         if (recipient == address(0)) {
             revert MyNft_NoRecipient();
         }
@@ -29,6 +31,11 @@ contract MyNft is ERC721URIStorage, Ownable {
         _setTokenURI(tokenId, tokenURI);
         emit NftMinted(tokenId, recipient, tokenURI);
         return tokenId;
+    }
+
+    function burn(uint256 tokenId) public onlyOwner {
+        _burn(tokenId);
+        emit NftBurned(tokenId);
     }
 
     function getNextTokenId() external view returns (uint256) {
