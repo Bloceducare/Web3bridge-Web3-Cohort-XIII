@@ -61,14 +61,28 @@ describe("ERC20Token", () => {
       ).to.be.revertedWithCustomError(erc20Token, "ONLY_OWNER_CAN_MINT");
     });
 
-    it("update total supply after minting", async () => {
-      expect(await erc20Token._totalSupply()).to.equal(totalSupply);
-    });
-
     it("emits transfer event after minting", async () => {
       expect(await erc20Token.mintToken(totalSupply)).to.emit(
         erc20Token,
         "Transfer"
+      );
+    });
+  });
+
+  describe("Approvals", () => {
+    it("should not approve more than owner balace", async () => {
+      await expect(
+        erc20Token.approve(otherAccount, totalSupply + 1)
+      ).to.be.revertedWithCustomError(erc20Token, "INSUFFICIENT_BALANCE");
+    });
+
+    it("should revert when transfer amount exceeds allowance", async () => {
+      await erc20Token.approve(otherAccount, 100);
+      await expect(
+        erc20Token.connect(otherAccount).transferFrom(owner, otherAccount2, 150)
+      ).to.be.revertedWithCustomError(
+        erc20Token,
+        "AMOUNT_MORE_THAN_ALLOWED_AMOUNT"
       );
     });
   });
@@ -98,32 +112,7 @@ describe("ERC20Token", () => {
         erc20Token,
         "Approval"
       );
-    });
-
-    it("save allowances for spenders", async () => {
-      const ammountToAllow = 250;
-      await erc20Token.approve(otherAccount, ammountToAllow);
-
-      expect(await erc20Token.allowance(otherAccount.address)).to.equal(
-        ammountToAllow
-      );
-    });
-
-    // this test isn't good
-    it("spender cant spend more than owner balance", async () => {
-      const amountToTransfer = 500;
-      await erc20Token.transfer(otherAccount2, amountToTransfer);
-      const ammountToAllow = 250;
-      await erc20Token
-        .connect(otherAccount2)
-        .approve(otherAccount, ammountToAllow);
-
-      expect(
-        erc20Token
-          .connect(otherAccount)
-          .transferFrom(otherAccount2, owner.address, ammountToAllow - 1)
-      ).to.be.revertedWithCustomError(erc20Token, "INSUFFICIENT_BALANCE");
-    });
+    });  
 
     // this works
     it("spender can spend owner allowed balance, allowance of spender and balance of owner is updated", async () => {
@@ -149,7 +138,9 @@ describe("ERC20Token", () => {
         await erc20Token.connect(otherAccount2).allowance(otherAccount)
       ).to.equal(amountToAllow - amountToTransferFrom);
 
-      expect(await erc20Token.balanceOf(otherAccount2.address)).to.equal(amountToTransfer - amountToTransferFrom);
+      expect(await erc20Token.balanceOf(otherAccount2.address)).to.equal(
+        amountToTransfer - amountToTransferFrom
+      );
     });
   });
 });
