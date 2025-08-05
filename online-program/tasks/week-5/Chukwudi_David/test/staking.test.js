@@ -42,7 +42,7 @@ describe("Staking", function () {
 
   });
 
-  describe("Test Staking Contract", function () {
+  describe("Test Staking Part", function () {
 
       it("should allow a user to stake TokenA and receive TokenB", async () => {
 
@@ -61,4 +61,21 @@ describe("Staking", function () {
         expect(userTokenBBalance).to.equal(amount);
       });
   });
+
+  describe("Test Unstaking Part", function () {
+
+      it("should not allow unstaking before lock period", async () => {
+        const { staking, tokenA, user } = await loadFixture(deployStake);
+
+        const amount = ethers.parseEther("100");
+        await tokenA.connect(user).approve(staking.target, amount);
+        await staking.connect(user).stake(user.address, tokenA.target, amount);
+
+        console.log("In hereee")
+    
+        await expect(
+          staking.connect(user).unstake(user.address, tokenA.target, amount)
+        ).to.be.revertedWith("Still locked");
+      });
+  })
 });
