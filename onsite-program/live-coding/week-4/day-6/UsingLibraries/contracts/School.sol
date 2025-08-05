@@ -4,21 +4,21 @@ pragma solidity ^0.8.28;
 import "../interfaces/ISchool.sol";
 
 contract School is ISchool {
-    Student[] public students; // keep `public` for easier access in tests or frontends
+    Student[] public students; 
 
-    // Optional access control (uncomment if needed)
-    // address owner;
-    //
-    // error ONLY_OWNER_CAN_CALL();
-    //
-    // constructor() {
-    //     owner = msg.sender;
-    // }
-    //
-    // modifier OnlyOwner() {
-    //     require(owner == msg.sender, ONLY_OWNER_CAN_CALL());
-    //     _;
-    // }
+    
+    address owner;
+    
+    error ONLY_OWNER_CAN_CALL();
+    
+    constructor() {
+        owner = msg.sender;
+    }
+    
+    modifier OnlyOwner() {
+        require(owner == msg.sender, ONLY_OWNER_CAN_CALL());
+       _;
+    }
 
     mapping(address => Student[]) get_student_by_address_array;
     mapping(address => Student) get_student_by_address;
