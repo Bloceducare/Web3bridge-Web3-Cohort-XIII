@@ -23,7 +23,7 @@ contract ERC20Token is IERC20 {
     using LERC20 for * ;
 
     function mint(address _to, uint _amount) public {
-        if (_to != msg.sender) {
+        if (msg.sender != owner) {
             revert LERC20.ONLY_OWNER_CAN_CALL_THIS_FUNCTION();
         }
         totalSupply += _amount;
