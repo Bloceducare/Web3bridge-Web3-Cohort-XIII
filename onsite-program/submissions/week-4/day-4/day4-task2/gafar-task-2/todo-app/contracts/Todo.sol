@@ -21,14 +21,18 @@ contract TodoList {
       updated_todo.description = _new_description;
     }
 
-    function toggle_todo_status(uint256 _index) external {
-      Todo storage todo_status = todoMap[msg.sender];
-      todo_status.status = !todos[_index].status;
-    }
+   function toggle_todo_status() external {
+      Todo storage todo = todoMap[msg.sender];
+      todo.status = !todo.status;
+   }
 
-    function get_todos() external view returns (Todo[] memory){
-        return todos;
-    }
+   function get_todos() external view returns (Todo[] memory){
+      return todos;
+   }
+   
+   function get_user_todo(address _user) external view returns (Todo memory) {
+      return todoMap[_user];
+   }
 
    function delete_todo() external {
       delete todoMap[msg.sender];       
