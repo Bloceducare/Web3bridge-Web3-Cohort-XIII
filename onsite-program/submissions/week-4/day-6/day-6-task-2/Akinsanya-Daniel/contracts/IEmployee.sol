@@ -20,8 +20,8 @@ interface IEmployee {
 }
 
    enum STATUS {
-    EMPLOYED,
     NON_EMPLOYED, 
+    EMPLOYED,
     PROBABTION
    }
 
