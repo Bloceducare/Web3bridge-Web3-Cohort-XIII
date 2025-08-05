@@ -5,36 +5,32 @@ import "../library/Errors.sol";
 import "../interfaces/IERC20Token.sol";
 
 contract ERC20Token is IERC20Token {
-    string name = "Asset";
-    string symbol = "AST";
-    uint8 decimals = 18;
-    uint256 totalSupply = 5000e18;
-
-    address owner;
+    string public name = "Asset";
+    string public symbol = "AST";
+    uint8 public decimals = 18;
+    uint256 private _totalSupply = 5000e18;
 
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
 
-    event Transfer(address from, address to, uint256 value);
-    event Approval(address owner, address spender, uint256 value
-    );
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
 
     constructor() {
-        owner = msg.sender;
-        balanceOf[msg.sender] = 4000e18;
+        balanceOf[msg.sender] = _totalSupply;
+        emit Transfer(address(0), msg.sender, _totalSupply);
     }
 
     receive() external payable {}
-
     fallback() external {}
 
+    function totalSupply() public view returns (uint256) {
+        return _totalSupply;
+    }
+
     function transfer(address _to, uint256 _value) public {
-        if (balanceOf[msg.sender] < _value) {
-            revert Errors.InsufficientBalance();
-        }
-        if (owner != msg.sender) {
-            revert Errors.Unauthorized();
-        }
+        if (_to == address(0)) revert Errors.InvalidAddress();
+        if (balanceOf[msg.sender] < _value) revert Errors.InsufficientBalance();
 
         balanceOf[msg.sender] -= _value;
         balanceOf[_to] += _value;
@@ -42,34 +38,26 @@ contract ERC20Token is IERC20Token {
         emit Transfer(msg.sender, _to, _value);
     }
 
-    function transferFrom(address from, address to, uint256 value) external {
-        if (balanceOf[from] < value) {
-            revert Errors.InsufficientBalance();
-        }
-        if (allowance[from][msg.sender] < value) {
-            revert Errors.NotAllow();
-        }
-        if (from != address(0) || to != address(0)) {
-            revert Errors.InvalidAddress();
-        }
+    function approve(address _spender, uint256 _value) public {
+        if (_spender == address(0)) revert Errors.InvalidAddress();
 
-        balanceOf[from] -= value; // deduct value from sender
-        balanceOf[to] += value; // add value to receiver
-        allowance[from][msg.sender] -= value; // allow current user to send value to anither address
+        allowance[msg.sender][_spender] = _value;
+
+        emit Approval(msg.sender, _spender, _value);
     }
 
-    function approve(address _spender, uint256 _value) public {
-        if (_value > balanceOf[msg.sender]) {
-            revert Errors.InsufficientBalance();
+    function transferFrom(address from, address to, uint256 value) public {
+        if (from == address(0) || to == address(0)) revert Errors.InvalidAddress();
+        // if (balanceOf[from] < value) revert Errors.InsufficientBalance();
+        // if (allowance[from][msg.sender] < value) revert Errors.NotAllow();
+
+        unchecked {
+            balanceOf[from] -= value;
+            balanceOf[to] += value;
+            allowance[from][msg.sender] -= value;
         }
-        if (owner != msg.sender) {
-            revert Errors.Unauthorized();
-        }
-        if (_spender == address(0)) {
-            revert Errors.InvalidAddress();
-        }
-        allowance[msg.sender][_spender] = _value;
-        emit Approval(msg.sender, _spender, _value);
+
+        emit Transfer(from, to, value);
     }
 
     function contractBalance() external view returns (uint256) {
@@ -78,9 +66,11 @@ contract ERC20Token is IERC20Token {
 
     function getbalance() external view returns (uint256) {
         return balanceOf[msg.sender];
-    } // balance of interacting user
+    }
 
-    function getTokenDetails() public view returns (string memory, string memory, uint8, uint256)  {
-        return (name, symbol, decimals, totalSupply);
+    function getTokenDetails() public view returns (
+        string memory, string memory, uint8, uint256
+    ) {
+        return (name, symbol, decimals, _totalSupply);
     }
 }
