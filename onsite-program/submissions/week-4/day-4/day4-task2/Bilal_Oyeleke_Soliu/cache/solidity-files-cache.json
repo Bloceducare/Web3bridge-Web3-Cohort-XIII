@@ -1,0 +1,77 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/bilal/bilal_projects/Learning/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/day4-task2/Bilal_Oyeleke_Soliu/contracts/school_management_system.sol": {
+      "lastModificationDate": 1754011123530,
+      "contentHash": "d48d4f0fc10f9eaf797586ea07dabf56",
+      "sourceName": "contracts/school_management_system.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "SchoolManagement"
+      ]
+    },
+    "/home/bilal/bilal_projects/Learning/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/day4-task2/Bilal_Oyeleke_Soliu/contracts/todo.sol": {
+      "lastModificationDate": 1754011120660,
+      "contentHash": "b1aa2fb66b03ae8aad14ca4d7d483035",
+      "sourceName": "contracts/todo.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "TodoList"
+      ]
+    }
+  }
+}
