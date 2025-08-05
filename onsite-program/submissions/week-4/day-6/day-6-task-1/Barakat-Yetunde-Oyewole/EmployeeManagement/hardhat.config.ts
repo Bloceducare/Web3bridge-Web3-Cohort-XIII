@@ -9,6 +9,10 @@ const PRIVATE_KEY = vars.get("PRIVATE_KEY");
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
+  typechain: {
+    outDir: "typechain-types",
+    target: "ethers-v5", // Must match installed version
+  },
 
   networks: {
     'lisk-sepolia': {
