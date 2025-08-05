@@ -80,6 +80,5 @@ describe("MoviesToken contract test suite", () => {
     });
    
   });
-
  
 })
