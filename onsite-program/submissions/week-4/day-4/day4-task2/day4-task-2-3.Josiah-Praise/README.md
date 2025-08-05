@@ -14,4 +14,4 @@ A smart contract for managing student records. It uses the student's wallet addr
 An on-chain Todo List application that supports full CRUD (Create, Read, Update, Delete) functionality. The contract is optimized for gas efficiency by using a mapping for instant data lookups and an array of IDs for enumeration, making it scalable and cost-effective.
 
 *   **View on Lisk Sepolia Blockscout:**
-    [0x2a5cFfBA2D1581E832bA1EdAdBdefd7685eE2c3C](https://sepolia-blockscout.lisk.com/address/0x2a5cFfBA2D1581E832bA1EdAdBdefd7685eE2c3C#code)
+    [0x6Fe6940Aa7047D2bd3DF133B5e988DC914E7CabD](https://sepolia-blockscout.lisk.com/address/0x6Fe6940Aa7047D2bd3DF133B5e988DC914E7CabD#code)

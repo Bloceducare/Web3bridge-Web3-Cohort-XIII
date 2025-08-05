@@ -10,6 +10,11 @@ contract SchoolManagementSystem {
     mapping(address => Student) public s_students;
 
     address[] private s_allStudentAddresses;
+    address manager;
+
+    constructor(){
+        manager = msg.sender;
+    }
 
     enum Status {
         ACTIVE,
@@ -33,12 +38,19 @@ contract SchoolManagementSystem {
     }
 
     error School__NotFound();
+    error School__UnAuthorized();
     error School__StudentAlreadyExists();
 
     event StudentRegistered(address indexed studentAddress, string name);
     event StudentStatusChanged(address indexed studentAddress, Status newStatus);
     event StudentUpdated(address indexed studentAddress);
     event StudentDeleted(address indexed studentAddress);
+
+    modifier onlyManager{
+        if (msg.sender != manager)
+            revert School__UnAuthorized();
+        _;
+    }
 
     /**
      * @notice Registers a new student in the system using their wallet address.
@@ -50,7 +62,7 @@ contract SchoolManagementSystem {
         string calldata _telephone_number,
         uint8 _age,
         Sex _sex
-    ) external {
+    ) external onlyManager{
         if (s_students[_studentAddress].exists) {
             revert School__StudentAlreadyExists();
         }
@@ -72,7 +84,7 @@ contract SchoolManagementSystem {
     /**
      * @notice Changes the status of an existing student.
      */
-    function changeStudentStatus(address _studentAddress, Status _status) external {
+    function changeStudentStatus(address _studentAddress, Status _status) external onlyManager {
         if (!s_students[_studentAddress].exists) {
             revert School__NotFound();
         }
@@ -89,7 +101,7 @@ contract SchoolManagementSystem {
         string calldata _telephone_number,
         uint8 _age,
         Sex _sex
-    ) external {
+    ) external onlyManager{
         if (!s_students[_studentAddress].exists) {
             revert School__NotFound();
         }
@@ -106,7 +118,7 @@ contract SchoolManagementSystem {
     /**
      * @notice Soft-deletes a student by marking their record as not existing.
      */
-    function deleteStudent(address _studentAddress) external {
+    function deleteStudent(address _studentAddress) external onlyManager{
         if (!s_students[_studentAddress].exists) {
             revert School__NotFound();
         }
