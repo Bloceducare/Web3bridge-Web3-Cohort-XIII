@@ -59,6 +59,11 @@ contract Management is IManager{
     receive() external payable {
     }
 
+    function fundOwner() external payable {
+        require(msg.sender == owner, "Only owner can fund");
+        balances[owner] += msg.value;
+    }
+
     function transfer( address employeeAddress, uint salary) external returns (bool){
         // require(employeeAddress != address(0), "Invalid recipient");
         if (employeeAddress == address(0)) {

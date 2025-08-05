@@ -10,10 +10,8 @@ describe("Project (ERC20 Token)", function () {
   let user3: any;
 
   beforeEach(async function () {
-    // Get signers
     [owner, user1, user2, user3] = await hre.ethers.getSigners();
 
-    // Deploy the contract
     const Project = await hre.ethers.getContractFactory("ERC20");
     project = await Project.deploy();
   });
