@@ -12,20 +12,9 @@ contract ERC20 is IERC20 {
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
-    string public name;
-    string public symbol;
-    uint8 public decimals;
-
-    constructor(string memory _name, string memory _symbol, uint8 _decimals) {
-        name = _name;
-        symbol = _symbol;
-        decimals = _decimals;
-    }
-
-    function transfer(address recipient, uint256 amount)
-        external
-        returns (bool)
-    {
+   
+    function transfer(address recipient, uint256 amount) external returns (bool){
+        require(balanceOf[msg.sender] >= amount, "ERC20: transfer amount exceeds balance");
         balanceOf[msg.sender] -= amount;
         balanceOf[recipient] += amount;
         emit Transfer(msg.sender, recipient, amount);
@@ -38,10 +27,9 @@ contract ERC20 is IERC20 {
         return true;
     }
 
-    function transferFrom(address sender, address recipient, uint256 amount)
-        external
-        returns (bool)
-    {
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool){
+        require(allowance[sender][msg.sender] >= amount, "ERC20: transfer amount exceeds allowance");
+        require(balanceOf[sender] >= amount, "ERC20: transfer amount exceeds balance");
         allowance[sender][msg.sender] -= amount;
         balanceOf[sender] -= amount;
         balanceOf[recipient] += amount;
@@ -56,6 +44,7 @@ contract ERC20 is IERC20 {
     }
 
     function _burn(address from, uint256 amount) internal {
+        require(balanceOf[from] >= amount, "ERC20: burn amount exceeds balance");
         balanceOf[from] -= amount;
         totalSupply -= amount;
         emit Transfer(from, address(0), amount);
