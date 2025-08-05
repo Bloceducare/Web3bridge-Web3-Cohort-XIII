@@ -9,6 +9,7 @@ contract StudentSchool is Ipractise {
     receive() external payable {}
     address payable owner;
     mapping(address => Storage.Student) private studentData;
+    mapping(address => uint256) public balanceOf;
     constructor  () payable {
         owner =payable (msg.sender);
     }
@@ -51,11 +52,23 @@ contract StudentSchool is Ipractise {
     }
     
     
-    function pay_salary(address _address, uint _amount) external payable {
-        require(studentData[_address].owner ==msg.sender, Storage.NOT_VALID());
-        require(_amount>0, Storage.NOT_VALID());
 
-        payable (_address).transfer(_amount);
-    }
-    
+    function pay_salary(address _address, uint _amount) external payable {
+    require(msg.sender == owner, Storage.NOT_VALID()); // Only owner can pay
+    require(_amount > 0, Storage.NOT_VALID());
+    require(address(this).balance >= _amount, "Insufficient funds");
+
+    payable(_address).transfer(_amount);
+}
+
+function mint() external payable{
+    require(msg.value > 0, "Must send Ether");
+}
+
+// function mint(address _to, uint256 _amount) external {
+//         require(_to != address(0), "Invalid address");
+//         require(_amount > 0, "Amount must be > 0");
+//         balanceOf[_to] += _amount;
+//     }
+
 }
