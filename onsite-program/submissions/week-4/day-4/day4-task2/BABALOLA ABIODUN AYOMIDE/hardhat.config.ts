@@ -1,5 +1,6 @@
 import {HardhatUserConfig, vars} from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import "solidity-coverage";
 
 const PRIVATE_KEY = vars.get("PRIVATE_KEY");
 
