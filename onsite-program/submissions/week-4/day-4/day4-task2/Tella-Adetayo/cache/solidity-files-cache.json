@@ -1,0 +1,77 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/adetayo/Documents/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/day4-task2/Tella-Adetayo/contracts/SMS.sol": {
+      "lastModificationDate": 1754380758122,
+      "contentHash": "589f76b1119baa447a8ff2395c76fc45",
+      "sourceName": "contracts/SMS.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "SMS"
+      ]
+    },
+    "/home/adetayo/Documents/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/day4-task2/Tella-Adetayo/contracts/Todo.sol": {
+      "lastModificationDate": 1754356605419,
+      "contentHash": "b90d330a718eb99d96da2429e98c1e9c",
+      "sourceName": "contracts/Todo.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "TodoList"
+      ]
+    }
+  }
+}
