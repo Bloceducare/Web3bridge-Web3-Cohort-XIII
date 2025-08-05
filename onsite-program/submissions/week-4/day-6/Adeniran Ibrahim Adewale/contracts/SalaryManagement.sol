@@ -32,8 +32,8 @@ contract SalaryManagement is ISalaryManagement {
         }
     }
 
-    // function getTeacherInfo(address _teacher, uint index) public view returns (Teacher memory) {
-    //     return staffList[_teacher][index];
-    // }
+    function getTeacherInfo(address _teacher, uint index) public view returns (Teacher memory) {
+        return staffList[_teacher][index];
+    }
 
 }
