@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "./ImanagementSysten.sol";
+import "../contracts/IManagementSystem.sol";
 
 contract ManagementSystem is IManagementSystem {
     address public owner;
