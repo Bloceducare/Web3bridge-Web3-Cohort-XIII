@@ -65,7 +65,7 @@ contract Company is ICompany {
         myEmployees[_employeeAddress].salary = _newSalary;
     }
 
-    fallback() external {}
+    fallback() external  {}
 
     receive() external payable {}
 
