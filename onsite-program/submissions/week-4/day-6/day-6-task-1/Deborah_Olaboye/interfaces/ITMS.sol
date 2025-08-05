@@ -6,6 +6,7 @@ interface ITMS {
         string name;
         uint salary;
         Status status;
+        address wallet;
     }
 
     enum Status {

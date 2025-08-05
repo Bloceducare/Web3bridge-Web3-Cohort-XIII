@@ -14,12 +14,14 @@ contract TMS is ITMS {
 
     Teacher[] public Teachers;
 
+    mapping(address => string) teacher_detail;
+
     receive() external payable {}
 
     fallback() external {}
 
     function RegisterTeacher(string memory _name, uint _salary, Status _status) external returns(Teacher[] memory) {
-        Teacher memory new_teacher = Teacher({name: _name, salary: _salary, status: _status});
+        Teacher memory new_teacher = Teacher({name: _name, salary: _salary, status: _status, wallet: msg.sender});
         Teachers.push(new_teacher);
         return Teachers;
     }
