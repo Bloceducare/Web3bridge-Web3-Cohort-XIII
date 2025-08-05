@@ -1,127 +1,121 @@
-import {
-  time,
-  loadFixture,
-} from "@nomicfoundation/hardhat-toolbox/network-helpers";
-import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
+import { ethers } from "hardhat";
 import { expect } from "chai";
-import hre from "hardhat";
+import { Contract, Signer } from "ethers";
 
-describe("Lock", function () {
-  // We define a fixture to reuse the same setup in every test.
-  // We use loadFixture to run this setup once, snapshot that state,
-  // and reset Hardhat Network to that snapshot in every test.
-  async function deployOneYearLockFixture() {
-    const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-    const ONE_GWEI = 1_000_000_000;
+describe("ERC20", function () {
+  let token: any;
+  let owner: Signer;
+  let addr1: Signer;
+  let addr2: Signer;
 
-    const lockedAmount = ONE_GWEI;
-    const unlockTime = (await time.latest()) + ONE_YEAR_IN_SECS;
+  const NAME = "TestToken";
+  const SYMBOL = "TTK";
+  const DECIMALS = 18;
+  const ONE_TOKEN = ethers.parseUnits("1", DECIMALS);
+  const HUNDRED = ethers.parseUnits("100", DECIMALS);
 
-    // Contracts are deployed using the first signer/account by default
-    const [owner, otherAccount] = await hre.ethers.getSigners();
+  beforeEach(async () => {
+    [owner, addr1, addr2] = await ethers.getSigners();
+    const ERC20 = await ethers.getContractFactory("ERC20");
+    token = await ERC20.deploy(NAME, SYMBOL, DECIMALS);
+    await token.mint(await owner.getAddress(), HUNDRED);
+  });
 
-    const Lock = await hre.ethers.getContractFactory("Lock");
-    const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-    return { lock, unlockTime, lockedAmount, owner, otherAccount };
-  }
-
-  describe("Deployment", function () {
-    it("Should set the right unlockTime", async function () {
-      const { lock, unlockTime } = await loadFixture(deployOneYearLockFixture);
-
-      expect(await lock.unlockTime()).to.equal(unlockTime);
+  describe("Deployment", () => {
+    it("Should set name, symbol, and decimals", async () => {
+      expect(await token.name()).to.equal(NAME);
+      expect(await token.symbol()).to.equal(SYMBOL);
+      expect(await token.decimals()).to.equal(DECIMALS);
     });
 
-    it("Should set the right owner", async function () {
-      const { lock, owner } = await loadFixture(deployOneYearLockFixture);
-
-      expect(await lock.owner()).to.equal(owner.address);
+    it("Should mint initial supply to owner", async () => {
+      const balance = await token.balanceOf(await owner.getAddress());
+      expect(balance).to.equal(HUNDRED);
     });
 
-    it("Should receive and store the funds to lock", async function () {
-      const { lock, lockedAmount } = await loadFixture(
-        deployOneYearLockFixture
-      );
-
-      expect(await hre.ethers.provider.getBalance(lock.target)).to.equal(
-        lockedAmount
-      );
-    });
-
-    it("Should fail if the unlockTime is not in the future", async function () {
-      // We don't use the fixture here because we want a different deployment
-      const latestTime = await time.latest();
-      const Lock = await hre.ethers.getContractFactory("Lock");
-      await expect(Lock.deploy(latestTime, { value: 1 })).to.be.revertedWith(
-        "Unlock time should be in the future"
-      );
+    it("Should update totalSupply after mint", async () => {
+      const newAmount = ethers.parseUnits("50", DECIMALS);
+      await token.mint(await addr1.getAddress(), newAmount);
+      expect(await token.totalSupply()).to.equal(HUNDRED + newAmount);
+      expect(await token.balanceOf(await addr1.getAddress())).to.equal(newAmount);
     });
   });
 
-  describe("Withdrawals", function () {
-    describe("Validations", function () {
-      it("Should revert with the right error if called too soon", async function () {
-        const { lock } = await loadFixture(deployOneYearLockFixture);
-
-        await expect(lock.withdraw()).to.be.revertedWith(
-          "You can't withdraw yet"
-        );
-      });
-
-      it("Should revert with the right error if called from another account", async function () {
-        const { lock, unlockTime, otherAccount } = await loadFixture(
-          deployOneYearLockFixture
-        );
-
-        // We can increase the time in Hardhat Network
-        await time.increaseTo(unlockTime);
-
-        // We use lock.connect() to send a transaction from another account
-        await expect(lock.connect(otherAccount).withdraw()).to.be.revertedWith(
-          "You aren't the owner"
-        );
-      });
-
-      it("Shouldn't fail if the unlockTime has arrived and the owner calls it", async function () {
-        const { lock, unlockTime } = await loadFixture(
-          deployOneYearLockFixture
-        );
-
-        // Transactions are sent using the first signer by default
-        await time.increaseTo(unlockTime);
-
-        await expect(lock.withdraw()).not.to.be.reverted;
-      });
+  describe("Transfers", () => {
+    it("Should transfer tokens between accounts", async () => {
+      await token.transfer(await addr1.getAddress(), ONE_TOKEN);
+      expect(await token.balanceOf(await addr1.getAddress())).to.equal(ONE_TOKEN);
+      expect(await token.balanceOf(await owner.getAddress())).to.equal(HUNDRED - ONE_TOKEN);
     });
 
-    describe("Events", function () {
-      it("Should emit an event on withdrawals", async function () {
-        const { lock, unlockTime, lockedAmount } = await loadFixture(
-          deployOneYearLockFixture
-        );
-
-        await time.increaseTo(unlockTime);
-
-        await expect(lock.withdraw())
-          .to.emit(lock, "Withdrawal")
-          .withArgs(lockedAmount, anyValue); // We accept any value as `when` arg
-      });
+    it("Should emit Transfer event", async () => {
+      await expect(token.transfer(await addr1.getAddress(), ONE_TOKEN))
+        .to.emit(token, "Transfer")
+        .withArgs(await owner.getAddress(), await addr1.getAddress(), ONE_TOKEN);
     });
 
-    describe("Transfers", function () {
-      it("Should transfer the funds to the owner", async function () {
-        const { lock, unlockTime, lockedAmount, owner } = await loadFixture(
-          deployOneYearLockFixture
-        );
+    it("Should fail if sender has insufficient balance", async () => {
+      await expect(token.connect(addr1).transfer(await addr2.getAddress(), ONE_TOKEN))
+        .to.be.reverted;
+    });
+  });
 
-        await time.increaseTo(unlockTime);
+  describe("Approve & Allowance", () => {
+    it("Should approve spender", async () => {
+      await expect(token.approve(await addr1.getAddress(), ONE_TOKEN))
+        .to.emit(token, "Approval")
+        .withArgs(await owner.getAddress(), await addr1.getAddress(), ONE_TOKEN);
 
-        await expect(lock.withdraw()).to.changeEtherBalances(
-          [owner, lock],
-          [lockedAmount, -lockedAmount]
-        );
-      });
+      const allowance = await token.allowance(await owner.getAddress(), await addr1.getAddress());
+      expect(allowance).to.equal(ONE_TOKEN);
+    });
+
+    it("Should allow transferFrom if approved", async () => {
+      await token.approve(await addr1.getAddress(), ONE_TOKEN);
+      await token.connect(addr1).transferFrom(
+        await owner.getAddress(),
+        await addr2.getAddress(),
+        ONE_TOKEN
+      );
+
+      expect(await token.balanceOf(await addr2.getAddress())).to.equal(ONE_TOKEN);
+      expect(await token.balanceOf(await owner.getAddress())).to.equal(HUNDRED - ONE_TOKEN);
+
+      const remainingAllowance = await token.allowance(
+        await owner.getAddress(),
+        await addr1.getAddress()
+      );
+      expect(remainingAllowance).to.equal(0);
+    });
+
+    it("Should fail transferFrom without enough allowance", async () => {
+      await expect(
+        token.connect(addr1).transferFrom(
+          await owner.getAddress(),
+          await addr2.getAddress(),
+          ONE_TOKEN
+        )
+      ).to.be.reverted;
+    });
+  });
+
+  describe("Burn", () => {
+    it("Should burn tokens from specified account", async () => {
+      await token.burn(await owner.getAddress(), ONE_TOKEN);
+      expect(await token.balanceOf(await owner.getAddress())).to.equal(HUNDRED - ONE_TOKEN);
+      expect(await token.totalSupply()).to.equal(HUNDRED - ONE_TOKEN);
+    });
+
+    it("Should emit Transfer event to address(0) on burn", async () => {
+      await expect(token.burn(await owner.getAddress(), ONE_TOKEN))
+        .to.emit(token, "Transfer")
+        .withArgs(await owner.getAddress(), ethers.ZeroAddress, ONE_TOKEN);
+    });
+
+    it("Should fail if burn amount exceeds balance", async () => {
+      await expect(
+        token.burn(await addr1.getAddress(), ONE_TOKEN)
+      ).to.be.reverted;
     });
   });
 });
