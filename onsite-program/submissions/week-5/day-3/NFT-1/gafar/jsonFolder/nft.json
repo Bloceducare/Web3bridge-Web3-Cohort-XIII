@@ -1,0 +1,9 @@
+{
+  "name": "My NFT #1",
+  "description": "A unique digital collectible",
+  "image": "https://ipfs.io/ipfs/<your-image-CID>",
+  "attributes": [
+    { "trait_type": "Color", "value": "Blue" },
+    { "trait_type": "Rarity", "value": "Rare" }
+  ]
+}
