@@ -1,0 +1,11 @@
+{
+  "name": "My Motato NFT",
+  "description": "A simple NFT for testing",
+  "image": "https://gateway.pinata.cloud/ipfs/bafkreidwkyzhddh5qxs75a4cw43m33u7ccaprwidkyrmbm3nrzjp3s7tvu",
+  "attributes": [
+    {
+      "trait_type": "Color",
+      "value": "Blue"
+    }
+  ]
+}
