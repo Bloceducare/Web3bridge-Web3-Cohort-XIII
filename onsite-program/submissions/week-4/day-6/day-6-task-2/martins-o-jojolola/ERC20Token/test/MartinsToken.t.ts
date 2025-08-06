@@ -61,7 +61,6 @@ describe("MartinsToken", function () {
         .to.be.revertedWithCustomError(token, "InsufficientBalance")
         .withArgs(initialBalance, ethers.parseEther("1"));
 
-      // Ensure balance remains unchanged
       const finalBalance = await token.balanceOf(addr1Address);
       expect(finalBalance).to.equal(initialBalance);
     });
@@ -116,7 +115,6 @@ describe("MartinsToken", function () {
 
       await token.approve(addr1Address, ethers.parseEther("50"));
 
-      // Ensure balances remain unchanged
       const addr2Balance = await token.balanceOf(addr2Address);
       expect(addr2Balance).to.equal(0);
     });
