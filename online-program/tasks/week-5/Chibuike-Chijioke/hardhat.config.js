@@ -5,7 +5,7 @@ require("dotenv").config();
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.28",
-  defaultNetwork: "lisk-sepolia",
+  //   defaultNetwork: "lisk-sepolia",
   networks: {
     "lisk-sepolia": {
       url: "https://rpc.sepolia-api.lisk.com",
@@ -19,7 +19,7 @@ module.exports = {
     },
     customChains: [
       {
-        network: "lisk-sepolia",
+        // network: "lisk-sepolia",
         chainId: 4202,
         urls: {
           apiURL: "https://sepolia-blockscout.lisk.com/api",
