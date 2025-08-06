@@ -3,10 +3,10 @@ pragma solidity ^0.8.28;
 
 import "../Interfaces/IERC721.sol";
 
-contract CustomNFT is IERC721 {
+contract UniqueNFT is IERC721 {
     
-    string public name = "AMAS NFT";
-    string public symbol = "AMS";
+    string public name = "CUSTOM NFT";
+    string public symbol = "CTMNFT";
     uint256 private _tokenIdCounter;
 
     mapping(uint256 => address) private _owners;
@@ -26,7 +26,8 @@ contract CustomNFT is IERC721 {
     }
 
     constructor() {
-        _tokenIdCounter = 0;
+        // Start token IDs from 1
+                _tokenIdCounter =9;
     }
 
     function balanceOf(address owner) external view override returns (uint256) {

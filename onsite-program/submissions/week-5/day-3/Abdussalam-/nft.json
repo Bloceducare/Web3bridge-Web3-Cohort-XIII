@@ -1,0 +1,6 @@
+{
+  "name": "Custom NFT #1",
+  "description": "A unique custom NFT.",
+  "image": "https://coffee-urgent-owl-462.mypinata.cloud/ipfs/bafkreieo7zhm75y3nln2nd4rxmcujl4fjnmznoojr7rk72l72r4xwy5cuy",
+  "attributes": [{ "trait_type": "Type", "value": "Unique" }]
+}
