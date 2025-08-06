@@ -13,6 +13,7 @@ contract ERC20Token is IERC20Token {
     string public name;
     string public symbol;
     uint public decimals;
+    address public owner;
 
     mapping(address => uint) public balances;
     mapping(address => mapping(address => uint)) public _allowance;
@@ -21,11 +22,12 @@ contract ERC20Token is IERC20Token {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
 
-    constructor(string memory _name, string memory _symbol, uint256 _totalSupply) {
+    constructor(string memory _name, string memory _symbol, uint256 _totalSupply, address _address) {
         name = _name;
         symbol = _symbol;
         totalSupply = _totalSupply;
         balances[msg.sender] = _totalSupply;
+        owner = _address;
 
     }
 
