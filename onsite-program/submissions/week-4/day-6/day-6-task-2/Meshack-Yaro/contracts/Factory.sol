@@ -1,20 +1,20 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import {ERC20Token} "./ERC20Token.sol"
+import "./ERC20Token.sol";
 
 contract Factory {
     address[] public allERC20s;
 
 
-    function createContract(string memory _name, string memory _symbol, uint _decimals, uint _totalSupply) external {
-        owner = msg.sender;
-        Contract newContract = new Contract(_name, _symbol, _decimals, _totalSupply, msg.sender);
-        allErc20s.push(newContract);
+    function createChild(string memory _name, string memory _symbol, uint _totalSupply) external {
+       
+        ERC20Token erc20 = new ERC20Token(_name, _symbol, _totalSupply, msg.sender);
+        allERC20s.push(address(erc20));
 
     }
 
-    function getAllERC20s() external view returns(Address[] memory) {
+    function getAllERC20s() external view returns(address[] memory) {
         return allERC20s;
     }
 }

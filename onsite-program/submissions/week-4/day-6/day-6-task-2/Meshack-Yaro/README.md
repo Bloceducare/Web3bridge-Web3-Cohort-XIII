@@ -12,4 +12,5 @@ npx hardhat node
 npx hardhat ignition deploy ./ignition/modules/Lock.ts
 
 
-Deolyed ERC20TokenModule#ERC20Token - 0xc504a46480eA14C5C56D88607d11D70293a55F88
+Depolyed ERC20TokenModule#ERC20Token - 0xc504a46480eA14C5C56D88607d11D70293a55F88
+Deployed FactoryModule#Factory - 0x5bb3ac734e2d3dd7611E682796CE9e94B6394eF9
