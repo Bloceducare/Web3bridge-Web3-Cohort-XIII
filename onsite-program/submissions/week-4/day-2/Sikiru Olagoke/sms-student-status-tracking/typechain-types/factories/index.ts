@@ -2,3 +2,4 @@
 /* tslint:disable */
 /* eslint-disable */
 export { StudentManagement__factory } from "./StudentManagement__factory";
+export { StudentManagementFactory__factory } from "./StudentManagementFactory__factory";

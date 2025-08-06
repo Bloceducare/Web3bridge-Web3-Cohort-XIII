@@ -2,5 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { StudentManagement } from "./StudentManagement";
+export type { StudentManagementFactory } from "./StudentManagementFactory";
 export * as factories from "./factories";
 export { StudentManagement__factory } from "./factories/StudentManagement__factory";
+export { StudentManagementFactory__factory } from "./factories/StudentManagementFactory__factory";

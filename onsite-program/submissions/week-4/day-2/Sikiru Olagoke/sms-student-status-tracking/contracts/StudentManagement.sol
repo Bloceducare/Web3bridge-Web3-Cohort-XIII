@@ -2,6 +2,9 @@
 pragma solidity ^0.8.20;
 
 contract StudentManagement {
+
+  address owner;
+
     struct Student {
         uint id;
         string name;
@@ -24,6 +27,10 @@ contract StudentManagement {
     uint256 uniqueId = 0;
 
     Student[] students;
+
+    constructor(address _owner) {
+      owner = _owner;
+    }
 
     function register_student(
         string memory _name,
