@@ -26,6 +26,7 @@ contract SchoolManagement {
 
 
     function createStudent (string memory _name, uint256 _age) external {
+      require(bytes(_name).length > 0, "INVALID NAME");
         require(_age > 0 && _age < 50, "INVALID AGE");
 
         StudentData memory new_student_data_  = StudentData({
