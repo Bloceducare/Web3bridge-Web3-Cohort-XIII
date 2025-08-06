@@ -9,6 +9,7 @@ import "../Interfaces/IAMAS.sol";
     string public name;
     uint8 public decimals;
     uint public _totalsupply;
+    
     mapping (address => uint )balances;
     mapping ( address => mapping(address => uint)) allowed;
 
