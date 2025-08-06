@@ -12,14 +12,26 @@ describe("Salary Management", function () {
     const Payment = await hre.ethers.getContractFactory("SalaryManagement");
     const payment = await Payment.deploy();
     const provider = hre.ethers.provider;
+    const [deployer, staff1, staff] = await hre.ethers.getSigners();
 
     const address = "0x6Cac76f9e8d6F55b3823D8aEADEad970a5441b67";
-    const salary = 20;
+    const salary = 20n;
     const status = 0;
     const newStatus = 2;
     const index = 0;
 
-    return { payment, address, salary, status, newStatus, index, provider };
+    return {
+      payment,
+      address,
+      salary,
+      status,
+      newStatus,
+      index,
+      provider,
+      deployer,
+      staff1,
+      staff,
+    };
   }
 
   describe("Management Staff salary", function () {
@@ -31,72 +43,113 @@ describe("Salary Management", function () {
       await payment.registerTeacher(address, salary, status);
 
       const teacher = await payment.getTeacherInfo(address, 0);
-      const teacher_details = teacher;
 
-      expect(teacher_details.teacherAddress).to.equal(address);
-      expect(teacher_details.salary).to.equal(salary);
-      expect(teacher_details.status).to.equal(status);
+      expect(teacher.teacherAddress).to.equal(address);
+      expect(teacher.salary).to.equal(salary);
+      expect(teacher.status).to.equal(status);
     });
 
     it("Should update staff status", async function () {
-      const { payment, address, status, salary, index, newStatus } =
+      const { payment, status, salary, index, newStatus, staff1 } =
         await loadFixture(deploySalaryManagement);
 
-      await payment.registerTeacher(address, salary, status);
-      await payment.updateTeacherStatus(address, index, newStatus);
+      await payment.registerTeacher(staff1.address, salary, status);
 
-      const teacher = await payment.getTeacherInfo(address, 0);
+      await payment.updateTeacherStatus(staff1.address, index, newStatus);
+
+      const teacher = await payment.getTeacherInfo(staff1.address, index);
 
       expect(teacher.status).to.equal(newStatus);
     });
 
     it("Should pay staff salary", async function () {
-      const { payment, address, salary, status, index, newStatus, provider } =
+      const { payment, staff1, salary, status, index, provider, deployer } =
         await loadFixture(deploySalaryManagement);
 
-      await payment.registerTeacher(address, salary, status);
-      await payment.paySalary(address, index);
-      const teacher = await payment.getTeacherInfo(address, 0);
-      expect(teacher.salary).to.equal(salary);
+      await payment.registerTeacher(staff1.address, salary, status);
 
-      await payment.registerTeacher(address, salary, status);
-      const tx = await payment.paySalary(address, index);
-      await tx.wait();
+      const before = await provider.getBalance(staff1.address);
 
-      const before = await provider.getBalance(address);
-      console.log("balance after", before);
+      await deployer.sendTransaction({
+        to: staff1.address,
+        value: salary,
+      });
+      await payment.paySalary(staff1.address, index);
 
-      const after = await provider.getBalance(address);
-      console.log("balance after", after);
+      const after = await provider.getBalance(staff1.address);
 
-      expect(after).to.equal(salary);
+      expect(after).to.equal(before + salary);
     });
 
-    //     it("Should pay salary if employed", async function () {
-    //   const { payment, address, index, salary, status, provider } = await loadFixture(deploySalaryManagement);
-    //   // const salary = hre.ethers.parseEther("1");
-    //   // const status = 0; // Employed
+    //  it("Should pay staff salary", async function () {
+    //   const { payment, staff1, salary, status, index, provider, deployer } =
+    //     await loadFixture(deploySalaryManagement);
 
-    //   // Fund the contract
-    //   await hre.network.provider.send("hardhat_setBalance", [
-    //     payment.target,
-    //     hre.ethers.parseEther("50").toString(), // 10 ETH
-    //   ]);
+    //   await payment.registerTeacher(staff1.address, salary, status);
 
-    //   // const provider = hre.ethers.provider;
-    //   // const before = await provider.getBalance(address);
+    //   const before = await provider.getBalance(staff1.address);
 
-    //   await payment.registerTeacher(address, salary, status);
-    //   const tx = await payment.paySalary(address, index);
-    //   await tx.wait();
+    //   // await deployer.sendTransaction({
+    //   //   to: staff1.address,
+    //   //   value: salary,
+    //   // });
+    //   const tx = await payment.paySalary(staff1.address, index);
 
-    //   const before = await provider.getBalance(address);
-    //   console.log("balance after", before);
+    //   const after = await provider.getBalance(staff1.address);
 
-    //   const after = await provider.getBalance(address);
-    //   console.log("balance after", after);
-
-    //   expect(after).to.equal(salary);
+    //   expect(after).to.equal(before + salary);
     // });
+
+     it("Should not pay staff salary id not employed or terminated", async function () {
+      const { payment, staff1, salary, status, index, provider, deployer, newStatus } =
+        await loadFixture(deploySalaryManagement);
+
+      await payment.registerTeacher(staff1.address, salary, status);
+
+      const before = await provider.getBalance(staff1.address);
+      
+      await payment.updateTeacherStatus(staff1.address, index, 2);
+
+      await deployer.sendTransaction({
+        to: staff1.address,
+        value: salary,
+      });
+      await payment.paySalary(staff1.address, index);
+      const after = await provider.getBalance(staff1.address);
+
+      expect(after).to.equal(before + salary);
+    });
+
+    it("Should get employee info", async function () {
+      const { payment, staff1, salary, status, index } = await loadFixture(
+        deploySalaryManagement
+      );
+
+      await payment.registerTeacher(staff1.address, salary, status);
+
+      const employeeInfo = await payment.getTeacherInfo(staff1.address, index);
+
+      expect(employeeInfo.salary).to.equal(salary);
+      expect(employeeInfo.status).to.equal(status);
+      expect(employeeInfo.teacherAddress).to.equal(staff1.address);
+    });
+
+    it ("Should get all employees", async function () {
+      const { payment, staff1, salary, status , address} = await loadFixture(
+        deploySalaryManagement
+      );
+
+      await payment.registerTeacher(address, salary, status);
+
+      await payment.registerTeacher(staff1.address, salary, status);
+
+      const employees = await payment.getAllTeachers();
+      console.log(employees);
+
+      // expect(employees.length).to.equal(1);
+      // expect(employees[0].teacherAddress).to.equal(staff1.address);
+      // expect(employees[0].salary).to.equal(salary);
+      // expect(employees[0].status).to.equal(status);
+    });
   });
 });

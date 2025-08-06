@@ -21,4 +21,6 @@ interface ISalaryManagement {
     function paySalary(address _teacher, uint index) external;
 
     function getTeacherInfo(address _teacher, uint index) external  view returns (Teacher memory);
+
+    function getAllTeachers() external view returns (Teacher[] memory);
 }

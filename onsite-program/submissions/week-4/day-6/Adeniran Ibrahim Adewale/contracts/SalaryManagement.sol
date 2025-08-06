@@ -36,4 +36,7 @@ contract SalaryManagement is ISalaryManagement {
         return staffList[_teacher][index];
     }
 
+    function getAllTeachers() public view returns (Teacher[] memory) {
+        return staffList[admin];
+    }
 }
