@@ -61,20 +61,20 @@ describe("Erc20", function () {
     });
   });
 
-  // describe("Transfer", function () {
-  //   it("should transfer token to another address", async function () {
-  //     const { token, owner, initialSupply, otherAccount } = await loadFixture(deployToken);
-  //     const amount = hre.ethers.parseUnits("1000", 18);
-  //     await token.transfer(otherAccount.address, amount);
-  //     const ownerBalance = token.balanceOf(owner.address);
-  //     const ownerNewBalance = await ownerBalance - amount;
-  //     const otherAccountBalance = await token.balanceOf(otherAccount);
-  //     const otherAccountNewBalance = otherAccountBalance + amount;
+  describe("Transfer", function () {
+    it("should transfer token to another address", async function () {
+      const { token, owner, otherAccount } = await loadFixture(deployToken);
+      const amount = hre.ethers.parseUnits("1000", 18);
+      await token.transfer(otherAccount.address, amount);
+      // const ownerBalance = token.balanceOf(owner.address);
+      // const ownerNewBalance = await ownerBalance - amount;
+      const otherAccountBalance = await token.balanceOf(otherAccount);
+      // const otherAccountNewBalance = otherAccountBalance + amount;
 
-  //     expect(ownerBalance).to.equal(initialSupply.sub(amount));
-  //     expect(otherAccountBalance).to.equal(amount);
-  //   });
-  // });
+      // expect(ownerBalance).to.equal(initialSupply.sub(amount));
+      expect(otherAccountBalance).to.equal(amount);
+    });
+  });
 
   describe("Approve", function () {
     it("should approve a user to spend his money", async function () {
@@ -84,4 +84,29 @@ describe("Erc20", function () {
       expect(balanceOf).to.equal(initialSupply);
     });
   });
+
+  describe("Transfer From", function () {
+    it("should transfer token from an approved address to another address", async function () {
+      const { token, owner, otherAccount } = await loadFixture(deployToken);
+      const amount = hre.ethers.parseUnits("1000", 18);
+      console.log("Amount", amount);
+      await token.approve(otherAccount.address, amount);
+      await token.allowance(owner.address, otherAccount.address);
+      const ownerInitialBalance = await token.balanceOf(owner.address);
+      const otherInitialBalance = await token.balanceOf(otherAccount.address);
+      console.log("Owner Balance>>>>>>>>>>>", ownerInitialBalance);
+      console.log("Other Balance>>>>>>>>>>>", otherInitialBalance);
+      await token.connect(otherAccount).transferFrom(owner.address, otherAccount.address, amount);
+      const finalOwnerBalance = await token.balanceOf(owner.address)
+      const finalOtherBalance = await token.balanceOf(otherAccount.address);
+      console.log("Final Owner Balance>>>>>>>>>>>", finalOwnerBalance);
+      console.log("Other Balance>>>>>>>>>>>", finalOtherBalance);
+
+      // expect(approvedBalance).to.equal(amount);
+      // expect(await token.balanceOf(owner.address) - amount).to.equal(finalOwnerBalance);
+      // expect(finalOtherBalance).to.equal(await token.balanceOf(otherAccount.address));
+      expect(finalOwnerBalance).to.equal(ownerInitialBalance - amount);
+      expect(finalOtherBalance).to.equal(otherInitialBalance + amount);
+    });
+  })
 });

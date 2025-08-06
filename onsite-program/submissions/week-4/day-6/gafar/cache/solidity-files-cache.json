@@ -1,0 +1,85 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/gafar/solidity-practice/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/gafar/contracts/Employee.sol": {
+      "lastModificationDate": 1754393667883,
+      "contentHash": "db48768a53f013b630376102d9bbeee2",
+      "sourceName": "contracts/Employee.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": false
+          }
+        }
+      },
+      "imports": [
+        "../Interface/EmployeeInterface.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "EmployeeSystem"
+      ]
+    },
+    "/home/gafar/solidity-practice/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/gafar/Interface/EmployeeInterface.sol": {
+      "lastModificationDate": 1754390988131,
+      "contentHash": "5ee4af0cd62da5b619148d15c3e638ef",
+      "sourceName": "Interface/EmployeeInterface.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": false
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "IEmployee"
+      ]
+    }
+  }
+}

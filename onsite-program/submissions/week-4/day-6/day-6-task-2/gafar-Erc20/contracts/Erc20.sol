@@ -67,6 +67,7 @@ contract Erc20 is IErc20 {
         if(recipient == address(0)) revert ZERO_ADDRESS();
         if(_allowance[sender][msg.sender] < amount) revert INSUFFICIENT_FUND();
 
+        _balances[sender] -= amount;
         _allowance[sender][msg.sender] -= amount;
         _balances[recipient] += amount;
         return true;
