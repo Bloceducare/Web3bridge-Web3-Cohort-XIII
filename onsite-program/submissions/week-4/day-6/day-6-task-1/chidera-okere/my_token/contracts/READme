@@ -1,0 +1,28 @@
+# MyERC20Token Deployment
+
+## 🚀 Successfully Deployed!
+
+**Network:** Lisk Testnet (Chain ID: 4202)  
+**Contract Address:** `0xcE5eB186e2E838C177335200222D7EA762fEaAfe`  
+**Deployment ID:** sepolia-deployment
+
+## Quick Commands
+
+### Deploy
+
+```bash
+npx hardhat ignition deploy ./ignition/modules/Token.ts --network liskTestnet --deployment-id sepolia-deployment
+```
+
+### Verify Contract (Optional)
+
+```bash
+npx hardhat verify --network liskTestnet 0xcE5eB186e2E838C177335200222D7EA762fEaAfe
+```
+
+## Contract Details
+
+- **Name:** MyERC20Token
+- **Module:** TokenModule
+- **Status:** ✅ Deployed Successfully
+- **Files Compiled:** 3 Solidity files
