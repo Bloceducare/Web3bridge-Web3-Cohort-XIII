@@ -15,6 +15,7 @@ describe("EventContract", function () {
 
     const EventContract = await ethers.getContractFactory("EventContract");
     eventContract = await EventContract.deploy(baseURI);
+    await eventContract.waitForDeployment();
   });
 
   describe("Deployment", function () {
@@ -29,7 +30,7 @@ describe("EventContract", function () {
       const currentTime = Math.floor(Date.now() / 1000);
       const futureTime = currentTime + 86400;
 
-      await eventContract.connect(organizer).createEvent(
+      const tx = await eventContract.connect(organizer).createEvent(
         "Test Conference",
         "A test conference",
         futureTime,
@@ -39,6 +40,7 @@ describe("EventContract", function () {
         1,
         50
       );
+      await tx.wait();
 
       expect(await eventContract.eventCount()).to.equal(1);
       
@@ -51,7 +53,7 @@ describe("EventContract", function () {
       const currentTime = Math.floor(Date.now() / 1000);
       const futureTime = currentTime + 86400;
 
-      await eventContract.connect(organizer).createEvent(
+      const tx = await eventContract.connect(organizer).createEvent(
         "Free Workshop",
         "A free workshop",
         futureTime,
@@ -61,6 +63,7 @@ describe("EventContract", function () {
         0,
         25
       );
+      await tx.wait();
 
       expect(await eventContract.eventCount()).to.equal(1);
       
@@ -75,7 +78,7 @@ describe("EventContract", function () {
       const currentTime = Math.floor(Date.now() / 1000);
       const futureTime = currentTime + 86400;
 
-      await eventContract.connect(organizer).createEvent(
+      const tx = await eventContract.connect(organizer).createEvent(
         "Test Conference",
         "A test conference",
         futureTime,
@@ -85,12 +88,14 @@ describe("EventContract", function () {
         1,
         50
       );
+      await tx.wait();
     });
 
     it("Should buy a paid ticket", async function () {
-      await eventContract.connect(buyer).buyTicket(1, {
+      const tx = await eventContract.connect(buyer).buyTicket(1, {
         value: ethers.parseEther("0.1")
       });
+      await tx.wait();
 
       expect(await eventContract.ticketCount()).to.equal(1);
       
@@ -102,9 +107,10 @@ describe("EventContract", function () {
     it("Should fail with insufficient payment", async function () {
       let error;
       try {
-        await eventContract.connect(buyer).buyTicket(1, {
+        const tx = await eventContract.connect(buyer).buyTicket(1, {
           value: ethers.parseEther("0.05")
         });
+        await tx.wait();
       } catch (e: any) {
         error = e;
       }
@@ -118,7 +124,7 @@ describe("EventContract", function () {
       const currentTime = Math.floor(Date.now() / 1000);
       const futureTime = currentTime + 86400;
 
-      await eventContract.connect(organizer).createEvent(
+      const tx = await eventContract.connect(organizer).createEvent(
         "Free Workshop",
         "A free workshop",
         futureTime,
@@ -128,10 +134,12 @@ describe("EventContract", function () {
         0,
         25
       );
+      await tx.wait();
     });
 
     it("Should buy a free ticket", async function () {
-      await eventContract.connect(buyer).buyTicket(1);
+      const tx = await eventContract.connect(buyer).buyTicket(1);
+      await tx.wait();
 
       expect(await eventContract.ticketCount()).to.equal(1);
       
