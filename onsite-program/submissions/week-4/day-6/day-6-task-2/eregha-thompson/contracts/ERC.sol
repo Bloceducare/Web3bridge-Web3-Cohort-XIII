@@ -70,4 +70,9 @@ contract ERC20 is IERC20 {
      balanceOf[to] += _amount;
      totalSupply += _amount;
 }
+
+function getTokenDetails() external view returns (string memory _name, string memory _symbol, uint256 _tokenSupply, uint8 _decimals){
+    return ( name, symbol,_tokenSupply,_decimals); 
+
+}
 }

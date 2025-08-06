@@ -25,4 +25,5 @@ interface IERC20 {
         address indexed spender,
         uint256 value
     );
+    function getTokenDetails() external view returns(string memory _name, string memory _symbol, uint256 tokenSupply, uint8 decimals);
 }

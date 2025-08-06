@@ -17,6 +17,25 @@ describe("ERC20", function () {
     return { erc20, owner, otherAccount, thirdAccount };
   }
 
+
+  describe("deployment", function(){
+    it("should deploy successfully", async function (){
+       const { erc20, owner, otherAccount } = await loadFixture(deployERC20);
+       const address = await erc20.getAddress()
+       expect(address).to.be.properAddress;
+
+    })
+    it("should have correct token details", async function(){
+       const { erc20, owner, otherAccount } = await loadFixture(deployERC20);
+      const [name, symbol,tokenSupply,decimals] = await erc20.getTokenDetails();
+     
+      
+      expect(name).to.equal("GODBRAND")
+      expect(symbol).to.equal("GOD")
+      expect(tokenSupply).to.equal(0)
+      expect(decimals).to.equal(0)
+    })
+  })
   //TESTS FOR TRANSFERS
   describe("Transfers", function () {
     it("Should transfer the funds to the reciever", async function () {
@@ -131,7 +150,7 @@ describe("ERC20", function () {
         deployERC20
       );
       const approvedAmount = ethers.parseUnits("200", 8);
-      const transferAmount = ethers.parseUnits("300", 8); // More than approved
+      const transferAmount = ethers.parseUnits("300", 8);
 
       await erc20.approve(thirdAccount.address, approvedAmount);
 
