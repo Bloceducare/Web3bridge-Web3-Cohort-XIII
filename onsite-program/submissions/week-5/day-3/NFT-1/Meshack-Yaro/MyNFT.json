@@ -1,0 +1,6 @@
+{
+  "name": "My Test NFT",
+  "description": "A test NFT on Sepolia",
+  "image": "ipfs://bafkreiasoxifi73x5eisgkecpmuh74sppyvysqkdeysase5rk7i2mlsrnq",
+  "attributes": [{"trait_type": "Type", "value": "Collectible"}]
+}
