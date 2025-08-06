@@ -1,0 +1,7 @@
+# Sample Hardhat Project
+
+```shell
+Deployed Addresses
+
+NFTContractModule#NFTContract - 0x79d74E8799881524de20cc294744137Db840853f
+```
