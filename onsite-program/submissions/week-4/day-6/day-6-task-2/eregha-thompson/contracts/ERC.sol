@@ -9,13 +9,15 @@ contract ERC20 is IERC20 {
     string public name;
     string public symbol;
     uint8 public decimals;
+    address public owner;
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowed;
 
-    constructor(string memory _name, string memory _symbol, uint8 _decimals) {
+    constructor(string memory _name, string memory _symbol, uint8 _decimals, address _address) {
         name = _name;
         symbol = _symbol;
         decimals = _decimals;
+        owner = _address;
         // totalSupply = 10 * 10 ** _decimals;
         // balanceOf[msg.sender] = totalSupply;
     }
