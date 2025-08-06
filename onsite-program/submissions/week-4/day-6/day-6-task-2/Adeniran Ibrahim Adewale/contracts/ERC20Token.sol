@@ -48,14 +48,12 @@ contract ERC20Token is IERC20Token {
 
     function transferFrom(address from, address to, uint256 value) public {
         if (from == address(0) || to == address(0)) revert Errors.InvalidAddress();
-        // if (balanceOf[from] < value) revert Errors.InsufficientBalance();
-        // if (allowance[from][msg.sender] < value) revert Errors.NotAllow();
+        if (balanceOf[from] < value) revert Errors.InsufficientBalance();
+        if (allowance[from][msg.sender] < value) revert Errors.NotAllow();
 
-        unchecked {
-            balanceOf[from] -= value;
-            balanceOf[to] += value;
-            allowance[from][msg.sender] -= value;
-        }
+        balanceOf[from] -= value;
+        balanceOf[to] += value;
+        allowance[from][msg.sender] -= value;
 
         emit Transfer(from, to, value);
     }
