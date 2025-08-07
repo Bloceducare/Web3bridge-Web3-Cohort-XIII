@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: MIT
-// File: onsite-program/submissions/week-4/day-2/martins-o-jojolola/student-management-system/contracts/StudentManagement.sol
 pragma solidity ^0.8.28;
 
-// Uncomment this line to use console.log
-// import "hardhat/console.sol";
 contract StudentManagementSystem {
     struct Student {
         uint id;

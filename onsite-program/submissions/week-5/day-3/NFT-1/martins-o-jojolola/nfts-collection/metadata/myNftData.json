@@ -1,0 +1,37 @@
+{
+  "name": "Martins NFT #1",
+  "description": "This is my NFT deployed on Lisk testnet. It represents the beginning of a new journey into the world of decentralized digital assets.",
+  "image": "https://your-server.com/images/nft1.png",
+  "external_url": "https://your-website.com/nft/1",
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Cosmic Blue"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare"
+    },
+    {
+      "trait_type": "Power Level",
+      "value": 95,
+      "display_type": "number"
+    },
+    {
+      "trait_type": "Created Date",
+      "value": 1700000000,
+      "display_type": "date"
+    },
+    {
+      "trait_type": "Special",
+      "value": "First Edition"
+    }
+  ],
+  "properties": {
+    "creator": "Martins O. Jojolola",
+    "blockchain": "Lisk",
+    "network": "Testnet",
+    "contract_address": "0x...",
+    "token_standard": "ERC-721"
+  }
+}

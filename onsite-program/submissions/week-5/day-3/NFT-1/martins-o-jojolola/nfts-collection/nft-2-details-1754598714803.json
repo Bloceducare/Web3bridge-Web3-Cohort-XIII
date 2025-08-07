@@ -1,0 +1,23 @@
+{
+  "contractAddress": "0xB4A124C569ddC6D89faA71F2da0225f5e52c8b3f",
+  "tokenId": "2",
+  "owner": "0x4A78dFC52566063f50F8cf4eD52F513AEB866A0C",
+  "transactionHash": "0x410d053cd270eba7bd7560b47e9e3a4200b731ab6c01b52ddd4cd0997aaca347",
+  "blockNumber": 24642860,
+  "ipfs": {
+    "image": {
+      "hash": "bafkreieb73meovgp5cweuqm36celd6ilwowfu3oqo6if6einzu5yxd32fi",
+      "url": "https://gateway.pinata.cloud/ipfs/bafkreieb73meovgp5cweuqm36celd6ilwowfu3oqo6if6einzu5yxd32fi",
+      "gateway": "https://gateway.pinata.cloud/ipfs/bafkreieb73meovgp5cweuqm36celd6ilwowfu3oqo6if6einzu5yxd32fi"
+    },
+    "metadata": {
+      "hash": "bafkreietyxvg2r6gypeyvumdit4cdrfiyd2cxnmodbqzigttircofsh4um",
+      "url": "https://gateway.pinata.cloud/ipfs/bafkreietyxvg2r6gypeyvumdit4cdrfiyd2cxnmodbqzigttircofsh4um",
+      "gateway": "https://gateway.pinata.cloud/ipfs/bafkreietyxvg2r6gypeyvumdit4cdrfiyd2cxnmodbqzigttircofsh4um"
+    },
+    "tokenURI": "ipfs://bafkreietyxvg2r6gypeyvumdit4cdrfiyd2cxnmodbqzigttircofsh4um"
+  },
+  "mintedAt": "2025-08-07T20:31:54.803Z",
+  "name": "Martins NFT #1",
+  "description": "This is an amazing NFT created with Pinata IPFS storage on Lisk testnet!"
+}
