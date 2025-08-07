@@ -1,0 +1,79 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/adetayo/Documents/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-3/Tella-Adetayo/sms/contracts/SMS.sol": {
+      "lastModificationDate": 1754523091609,
+      "contentHash": "cf24c8ff666c6e60b1c3a012bf53b2a6",
+      "sourceName": "contracts/SMS.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "SMS"
+      ]
+    },
+    "/home/adetayo/Documents/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-3/Tella-Adetayo/sms/contracts/SMSFactory.sol": {
+      "lastModificationDate": 1754523246333,
+      "contentHash": "b30f206d30b3f92c8089585b3633997b",
+      "sourceName": "contracts/SMSFactory.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./SMS.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "SMSFactory"
+      ]
+    }
+  }
+}
