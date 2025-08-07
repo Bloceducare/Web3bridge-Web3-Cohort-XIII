@@ -1,0 +1,191 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/godbrand/Documents/GitHub/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-1/eregha-thompson/contracts/Lock.sol": {
+      "lastModificationDate": 1754553743948,
+      "contentHash": "7eee587c347fe6b1de50c96688cb9477",
+      "sourceName": "contracts/Lock.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Lock"
+      ]
+    },
+    "/home/godbrand/Documents/GitHub/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-1/eregha-thompson/contracts/employee.sol": {
+      "lastModificationDate": 1754563379079,
+      "contentHash": "2689766a5ea3030507d76c166767f2b4",
+      "sourceName": "contracts/employee.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interface.sol"
+      ],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "StudentSchool"
+      ]
+    },
+    "/home/godbrand/Documents/GitHub/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-1/eregha-thompson/contracts/interface.sol": {
+      "lastModificationDate": 1754553743949,
+      "contentHash": "fc98b77acd6b5c01c8aa8812d1e559f4",
+      "sourceName": "contracts/interface.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./library.sol"
+      ],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "Ipractise"
+      ]
+    },
+    "/home/godbrand/Documents/GitHub/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-1/eregha-thompson/contracts/library.sol": {
+      "lastModificationDate": 1754553743949,
+      "contentHash": "5ce659398dd4ff0a0127569754e23880",
+      "sourceName": "contracts/library.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "Storage"
+      ]
+    },
+    "/home/godbrand/Documents/GitHub/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-1/eregha-thompson/contracts/factory.sol": {
+      "lastModificationDate": 1754564133074,
+      "contentHash": "fd633147773a0ec1e78ac542ae6ee950",
+      "sourceName": "contracts/factory.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./employee.sol"
+      ],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "employeeFactory"
+      ]
+    }
+  }
+}
