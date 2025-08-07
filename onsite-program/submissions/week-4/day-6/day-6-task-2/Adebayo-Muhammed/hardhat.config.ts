@@ -4,7 +4,7 @@ require("dotenv").config();
 const { LISK_RPC_URL, PRIVATE_KEY, ETHERSCAN_KEY } = process.env;
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.30",
+  solidity: "0.8.28",
   
   networks: {
     lisk: {
