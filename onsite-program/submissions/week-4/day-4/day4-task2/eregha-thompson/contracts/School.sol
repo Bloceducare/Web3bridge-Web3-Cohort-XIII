@@ -10,6 +10,7 @@ contract SchoolManagementSystem {
         DEFERRED,
         RUSTICATED
     }
+    address schoolOwner;
 
     struct StudentDetails {
         uint256 id;
@@ -18,6 +19,9 @@ contract SchoolManagementSystem {
         uint256 age;
         Status status;
         address owner;
+    }
+    constructor(address _schoolAddress){
+        schoolOwner =_schoolAddress ;
     }
 
     error INVALID_SENDER();
