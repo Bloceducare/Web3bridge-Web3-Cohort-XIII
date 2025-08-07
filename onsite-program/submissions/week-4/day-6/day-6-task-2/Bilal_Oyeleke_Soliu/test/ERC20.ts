@@ -6,7 +6,11 @@ describe("Erc20Token", () => {
   async function deployContract() {
     const [owner, otherAccount] = await ethers.getSigners(); 
     const MyContract = await ethers.getContractFactory("ERC20Token");
-    const deployedContract = await MyContract.deploy();
+    const name = "TestToken";
+    const symbol = "TTK";
+    const decimals = 18;
+    const ownerAddress = owner.address;
+    const deployedContract = await MyContract.deploy(name, symbol, decimals, ownerAddress);
     return { deployedContract, owner, otherAccount };
   }
 

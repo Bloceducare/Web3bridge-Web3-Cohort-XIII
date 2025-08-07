@@ -5,22 +5,22 @@ import "../interfaces/IERC20.sol";
 import "../libraries/LERC20.sol";
 
 contract ERC20Token is IERC20 {
-    string name;
-    string symbol;
-    uint decimal;
-    address owner;
+    string public name;
+    string public symbol;
+    uint8 public decimals;
+    address public owner;
     uint public totalSupply;
     mapping(address => uint) public balances;
 
-    constructor() {
-        name = "BilalERC20Token";
-        symbol = "BETK";
-        decimal = 18;
-
-        owner = msg.sender;
+    constructor(string memory _name, string memory _symbol, uint8 _decimals, address _owner) { // Changed to uint8
+        name = _name;
+        symbol = _symbol;
+        decimals = _decimals;
+        owner = _owner;
     }
 
     using LERC20 for * ;
+
 
     function mint(address _to, uint _amount) public {
         if (msg.sender != owner) {
