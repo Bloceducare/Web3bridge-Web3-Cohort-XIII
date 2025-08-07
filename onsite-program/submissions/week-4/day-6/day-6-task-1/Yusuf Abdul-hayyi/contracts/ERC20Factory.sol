@@ -17,22 +17,6 @@ contract WEB3BFactory {
         
     }
 
-    function getname(uint index) external view returns (string memory) {
-        require(index < listOfweb3bContract.length, "Index out of bounds");
-        return listOfweb3bContract[index].name();   
-    }
-    function getSymbol(uint index) external view returns (string memory) {
-        require(index < listOfweb3bContract.length, "Index out of bounds");
-        return listOfweb3bContract[index].symbol();   
-    }
-    function getDecimals(uint index) external view returns (uint8) {
-        require(index < listOfweb3bContract.length, "Index out of bounds");
-        return listOfweb3bContract[index].decimals();   
-    }
-    function getTotalSupply(uint index) external view returns (uint256) {
-        require(index < listOfweb3bContract.length, "Index out of bounds");
-        return listOfweb3bContract[index].totalSupply();   
-    }
     function getAllWEB3Contract () external  view returns (WEB3B[] memory) {
         return listOfweb3bContract;
     }

@@ -8,7 +8,7 @@ contract TMSFactory {
     event TMSCreated(address indexed tmsAddress);
 
     function createTMS() external {
-        TMS newTMS = new TMS{value: msg.value}();
+        TMS newTMS = new TMS({value: msg.value}());
         tmsContracts.push(newTMS);
 
         emit TMSCreated(address(newTMS));
