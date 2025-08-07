@@ -1,0 +1,48 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/babatunde/Documents/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-3/Olayemi-Salami/contracts/ERC721.sol": {
+      "lastModificationDate": 1754482221843,
+      "contentHash": "c59e0d0337bf19b7ddf056c83344faca",
+      "sourceName": "contracts/ERC721.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Context",
+        "IERC165",
+        "IERC721",
+        "IERC721Metadata",
+        "IERC721Receiver",
+        "Nft",
+        "Ownable",
+        "Strings"
+      ]
+    }
+  }
+}
