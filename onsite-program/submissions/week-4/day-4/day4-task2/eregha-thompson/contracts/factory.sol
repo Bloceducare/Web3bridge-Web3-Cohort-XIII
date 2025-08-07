@@ -5,9 +5,10 @@ import "./School.sol";
 contract schoolFactory{
 address[] allSchools;
 
-function createFactory (address _schoolAddress) external{
+function createFactory () external{
    
-    SchoolManagementSystem school = new SchoolManagementSystem(_schoolAddress);
+    SchoolManagementSystem school = new SchoolManagementSystem();
+    
     allSchools.push(address(school));
 }
 
