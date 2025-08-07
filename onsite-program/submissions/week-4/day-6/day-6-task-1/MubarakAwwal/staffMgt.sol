@@ -5,7 +5,7 @@ import "./ISchool.sol";
 
 error TransferConditionsNotMet();
 
-contract staffMgt is IStaffMgt {
+contract staffMgt is IPayroll {
     enum StaffStatus { Employed, Probation, Unemployed }
 
     struct StaffData {
@@ -37,7 +37,7 @@ contract staffMgt is IStaffMgt {
     receive() external payable {}
 
     function payStaff(address _address,uint _amount) external override {
-        StaffData memory staff = staffs[msg.sender];
+        StaffData memory staff = staffs[_address];
 
         if (staff.status == StaffStatus.Employed && staff.salary == _amount) {
             payable(msg.sender).transfer(staff.salary);
