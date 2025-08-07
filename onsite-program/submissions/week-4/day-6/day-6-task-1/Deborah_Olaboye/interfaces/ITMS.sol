@@ -16,5 +16,6 @@ interface ITMS {
     }
 
     function RegisterTeacher (string memory _name, uint _salary, Status _status) external returns(Teacher[] memory);
+    function ViewTeachers() external view returns(Teacher[] memory);
     function PaySalary (string memory _name, address payable to) external;
 }

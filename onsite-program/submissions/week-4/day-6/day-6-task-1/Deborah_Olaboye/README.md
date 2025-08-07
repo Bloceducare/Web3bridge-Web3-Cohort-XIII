@@ -1,13 +1,4 @@
-# Sample Hardhat Project
+Deployed Addresses
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+TMSModule#TMS - 0x317884d7a0cAE2Fa64D1475d091E45574E5DaF85
+TMSModule#FactoryTMS - 0xc4AE01295cfAE3DA96b044F1a4284A93837a644C

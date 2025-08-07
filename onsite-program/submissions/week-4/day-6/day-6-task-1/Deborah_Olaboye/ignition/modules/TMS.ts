@@ -5,7 +5,7 @@ import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
 
 const TMSModule = buildModule("TMSModule", (m) => {
-  const tms = m.contract("TMS");
+  const tms = m.contract("FactoryTMS");
 
   return { tms };
 });

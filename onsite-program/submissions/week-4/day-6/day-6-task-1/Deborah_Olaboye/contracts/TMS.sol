@@ -6,10 +6,12 @@ import "../interfaces/ITMS.sol";
 error NOT_FOUND();
 
 contract TMS is ITMS {
-    address public owner;
+    address public owner;   
+    string public companyName;
 
-    constructor() {
-        owner = msg.sender;
+    constructor(string memory _companyName, address _owner) {
+        _owner = owner;
+        _companyName = companyName;
     }
 
     Teacher[] public Teachers;
