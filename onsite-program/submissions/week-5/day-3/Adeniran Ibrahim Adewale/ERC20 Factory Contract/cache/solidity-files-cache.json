@@ -1,0 +1,154 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/doctor-ibrahim/Desktop/WEB3BRIDGE TASK/Adeniran_Ibrahim_Adewale/onsite-program/submissions/week-5/day-3/Adeniran Ibrahim Adewale/ERC20 Factory Contract/contracts/Child.sol": {
+      "lastModificationDate": 1754512468900,
+      "contentHash": "ad274c6ab99d294160d80f94a66eeace",
+      "sourceName": "contracts/Child.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../library/Errors.sol",
+        "../interfaces/IERC20Token.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "Child"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/WEB3BRIDGE TASK/Adeniran_Ibrahim_Adewale/onsite-program/submissions/week-5/day-3/Adeniran Ibrahim Adewale/ERC20 Factory Contract/library/Errors.sol": {
+      "lastModificationDate": 1754512093339,
+      "contentHash": "8f7b08528dd38fe60ae687b2af2aeea1",
+      "sourceName": "library/Errors.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "Errors"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/WEB3BRIDGE TASK/Adeniran_Ibrahim_Adewale/onsite-program/submissions/week-5/day-3/Adeniran Ibrahim Adewale/ERC20 Factory Contract/interfaces/IERC20Token.sol": {
+      "lastModificationDate": 1754512056981,
+      "contentHash": "e93a1e5567822f6d10d6645057bbaa04",
+      "sourceName": "interfaces/IERC20Token.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "IERC20Token"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/WEB3BRIDGE TASK/Adeniran_Ibrahim_Adewale/onsite-program/submissions/week-5/day-3/Adeniran Ibrahim Adewale/ERC20 Factory Contract/contracts/ERC20Token.sol": {
+      "lastModificationDate": 1754512471365,
+      "contentHash": "c5e5338224d3c3a0eb3dad87be1808b2",
+      "sourceName": "contracts/ERC20Token.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Child.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "ERC20Token"
+      ]
+    }
+  }
+}
