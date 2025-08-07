@@ -32,6 +32,7 @@ contract SchoolManagementSystem {
             age: _age,
             status: Status.ACTIVE
         });
+        studentAddresses.push(studentAddress);
     }
 
     
