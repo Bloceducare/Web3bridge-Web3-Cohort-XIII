@@ -27,17 +27,22 @@ contract EmployeeManagement {
     EmployeeData[] public employees;
     mapping(address => EmployeeData) public addressToEmployee;
 
-    function create_employee(string memory _name, Role _role, address _address) external {
+    function create_employee(string memory _name, uint8 _role, address _address) external {
         if(bytes(_name).length == 0) {
             revert("Name cannot be empty");
         }
+        if (_role > 3) {
+            revert("Invalid role");
+        }
+        
+        Role role = Role(_role);  // Convert uint8 to Role enum
         
         EmployeeData memory new_employee = EmployeeData({
             name: _name,
-            status: Status.EMPLOYED,  
-            role: _role,  
-            salary: set_salary(_role),
-            grantedAccess: grant_access(_role)
+            status: Status.EMPLOYED,
+            role: role,
+            salary: set_salary(role),
+            grantedAccess: grant_access(role)
         });
 
         employees.push(new_employee);
@@ -46,13 +51,13 @@ contract EmployeeManagement {
 
     function grant_access(Role _role) internal pure returns(bool) {
         if (_role == Role.MENTORS || _role == Role.ENGINEERS) {
-            return true;  
+            return true;  // Fixed: was not returning in the if block
         }
         return false;
     }
 
-    function set_salary(Role _role) internal pure returns(uint256) {  
-        if (_role == Role.MENTORS) {  
+    function set_salary(Role _role) internal pure returns(uint256) {  // Added return type
+        if (_role == Role.MENTORS) {  // Fixed: was "MENTOR"
             return 10;
         } else if (_role == Role.MEDIA_TEAM) {
             return 5;
@@ -68,11 +73,16 @@ contract EmployeeManagement {
     function pay_employee(address payable _address) external payable returns(uint256) {
         EmployeeData memory employee_pay = addressToEmployee[_address];
 
+        // Check if employee exists by checking if name is not empty
+        if(bytes(employee_pay.name).length == 0) {
+            revert("Employee not employed");
+        }
+
         if(employee_pay.status != Status.EMPLOYED) {
             revert("Employee not employed");
         }
 
-        // Convert salary to wei
+        // Convert salary to wei (assuming salary is in ether)
         uint256 salary_wei = employee_pay.salary * 1 ether;
         
         // Check contract has enough balance
