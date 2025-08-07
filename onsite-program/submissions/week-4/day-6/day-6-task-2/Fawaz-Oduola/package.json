@@ -1,0 +1,16 @@
+{
+  "name": "fawaz-oduola",
+  "version": "1.0.0",
+  "description": "Contract Address: 0xee34f0D72A7abbF836f95706649b0E6067504f8A   Block Explorer: https://sepolia-blockscout.lisk.com/address/0xee34f0D72A7abbF836f95706649b0E6067504f8A",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "hardhat": "^2.26.1"
+  }
+}
