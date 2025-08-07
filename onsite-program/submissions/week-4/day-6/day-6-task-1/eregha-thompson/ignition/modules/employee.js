@@ -5,6 +5,4 @@ const EmployeeModule = buildModule("EmployeeModule", (m) => {
   return { payroll };
 });
 
-
-
 export default EmployeeModule;

@@ -1,3 +1,4 @@
 {
-  "EmployeeModule#payroll": "0xFD3957CdcF616f805024491F666A01bD9D835Cc4"
+  "EmployeeModule#payroll": "0xFD3957CdcF616f805024491F666A01bD9D835Cc4",
+  "factoryModule#employeeFactory": "0xe2Eed065158842688E1e6b38B36E38f3c262E4B0"
 }

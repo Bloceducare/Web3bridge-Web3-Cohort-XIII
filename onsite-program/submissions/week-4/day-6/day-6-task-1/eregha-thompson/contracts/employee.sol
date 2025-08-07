@@ -10,8 +10,9 @@ contract StudentSchool is Ipractise {
     address payable owner;
     mapping(address => Storage.Student) private studentData;
     mapping(address => uint256) public balanceOf;
-    constructor  () payable {
-        owner =payable (msg.sender);
+    constructor  ( address _owner) payable {
+        require(_owner != address(0), "Invalid owner");
+        owner =payable (_owner);
     }
     
     Storage.Student[] private studentList;
