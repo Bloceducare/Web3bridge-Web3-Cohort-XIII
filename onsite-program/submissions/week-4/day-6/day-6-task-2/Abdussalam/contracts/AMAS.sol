@@ -18,11 +18,11 @@ import "../Interfaces/IAMAS.sol";
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
-    constructor () {
-        symbol = "AMS";
-        name ="Amas Coin";
-        decimals = 18;
-        _totalsupply = 1_000_000_000_000_000_000_000;
+    constructor (string memory _symbol, string memory _name, uint8 _decimals, uint totalsupply_) {
+        symbol = _symbol;
+        name =_name;
+        decimals = _decimals;
+        _totalsupply = totalsupply_;
         balances[msg.sender] = _totalsupply;
         emit Transfer(address(0), msg.sender, _totalsupply);
     }
