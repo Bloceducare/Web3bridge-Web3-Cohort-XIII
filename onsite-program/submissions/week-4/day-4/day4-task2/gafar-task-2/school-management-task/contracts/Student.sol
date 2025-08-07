@@ -11,12 +11,12 @@ error INVALID_NAME_OR_AGE();
 error USER_NOT_FOUND();
 error ZERO_ADDRESS();
 
+struct Student {
+    string name;
+    uint age;
+    StudentStatus status;
+}
 contract StudentRecord {
-    struct Student {
-        string name;
-        uint age;
-        StudentStatus status;
-    }
     Student[] students;
     mapping(address => Student) public studentRecord;
 

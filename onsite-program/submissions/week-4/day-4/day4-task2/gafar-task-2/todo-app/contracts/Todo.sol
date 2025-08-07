@@ -1,12 +1,12 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
+struct Todo{
+   string title;
+   string description;
+   bool status;
+}
 contract TodoList {
-   struct Todo{
-      string title;
-      string description;
-      bool status;
-   }
    mapping(address userAddress => Todo) todoMap;
     
     Todo[] public todos;
