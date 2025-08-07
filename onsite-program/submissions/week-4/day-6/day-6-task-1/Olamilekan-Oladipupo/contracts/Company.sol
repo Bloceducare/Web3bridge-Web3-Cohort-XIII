@@ -9,10 +9,11 @@ contract Company is ICompany {
 
     mapping (address => Employee) myEmployees;
 
-    // address private ownersAddress;
-    // constructor (){
-    //     ownersAddress = msg.sender;
-    // }
+    address private ownersAddress;
+
+    constructor (address _ownersAddress){
+        ownersAddress = _ownersAddress;
+    }
 
 
     function createEmployee(string memory _name) external {
@@ -34,7 +35,7 @@ contract Company is ICompany {
     }
 
     function paySalary(address _employeeAddress) external{
-        // require(ownersAddress == msg.sender, Error.NOT_OWNERS_ADDRESS());
+        require(ownersAddress == msg.sender, Error.NOT_OWNERS_ADDRESS());
         require(myEmployees[_employeeAddress].employeeAddress != address(0), Error.EMPLOYEE_NOT_FOUND());
         require(myEmployees[_employeeAddress].status == Status.ACTIVE, Error.EMPLOYEE_NOT_ACTIVE());
 
@@ -46,7 +47,7 @@ contract Company is ICompany {
 
 
     function updateEmployeeStatus(address _employeeAddress, Status status) external{
-        // require(ownersAddress == msg.sender, Error.NOT_OWNERS_ADDRESS());
+        require(ownersAddress == msg.sender, Error.NOT_OWNERS_ADDRESS());
         require(myEmployees[_employeeAddress].employeeAddress != address(0), Error.EMPLOYEE_NOT_FOUND());
 
         myEmployees[_employeeAddress].status = status;
@@ -58,7 +59,7 @@ contract Company is ICompany {
     }
 
     function updateEmployeeSalary(address _employeeAddress, uint _newSalary) external{
-        // require(ownersAddress == msg.sender, Error.NOT_OWNERS_ADDRESS());
+        require(ownersAddress == msg.sender, Error.NOT_OWNERS_ADDRESS());
         require(myEmployees[_employeeAddress].employeeAddress != address(0), Error.EMPLOYEE_NOT_FOUND());
         require(myEmployees[_employeeAddress].status == Status.ACTIVE, Error.EMPLOYEE_NOT_ACTIVE());
 
@@ -68,7 +69,4 @@ contract Company is ICompany {
     fallback() external  {}
 
     receive() external payable {}
-
-
-
 }

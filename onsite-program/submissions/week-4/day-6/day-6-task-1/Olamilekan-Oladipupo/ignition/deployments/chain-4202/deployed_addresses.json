@@ -1,5 +1,6 @@
 {
   "CompanyModule#Company": "0x3d0daFC3bE041CADC0Ec83CB98772eEaf55e9122",
   "ErrorModule#Error": "0x3E5B36018bD136AfF29101FFA50B9bd6F6eCc33b",
-  "EtherModule#Ether": "0xa7AfcE302792038200A7060CcB4f72a2DFb26802"
+  "EtherModule#Ether": "0xa7AfcE302792038200A7060CcB4f72a2DFb26802",
+  "CompanyFactoryModule#CompanyFactory": "0xA9566fED446E2d18856Bd3BBCcBCa828c2beFabA"
 }

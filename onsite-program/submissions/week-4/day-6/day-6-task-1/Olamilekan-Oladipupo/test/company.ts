@@ -9,9 +9,10 @@ import hre, { ethers } from "hardhat";
 
 describe ("Company", function(){
     async function deployCompany(){
-        const Web3bridge = await hre.ethers.getContractFactory("Company");
-        const web3bridge = await Web3bridge.deploy();
         const [owner, employeeA, employeeB, employeeC] = await hre.ethers.getSigners();
+
+        const Web3bridge = await hre.ethers.getContractFactory("Company");
+        const web3bridge = await Web3bridge.deploy(owner.address);
 
         return {web3bridge, owner , employeeA, employeeB, employeeC}
 
