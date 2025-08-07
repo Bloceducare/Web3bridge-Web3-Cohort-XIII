@@ -1,6 +1,6 @@
 # Contract Deployed
 
-CA: 0x490060a0a9301aC21a9780774F7055129A00c3E9
+CA: 0xce6A7D17ccC39013B764CAd2cb84dc617C5104f5
 
 Successfully verified contract ERC20 on the block explorer.
-https://sepolia-blockscout.lisk.com/address/0x490060a0a9301aC21a9780774F7055129A00c3E9#code
+https://sepolia-blockscout.lisk.com/address/0xce6A7D17ccC39013B764CAd2cb84dc617C5104f5#code
