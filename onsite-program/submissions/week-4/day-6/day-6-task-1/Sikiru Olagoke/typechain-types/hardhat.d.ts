@@ -14,13 +14,13 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "EmployeeFactory",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.EmployeeFactory__factory>;
+    getContractFactory(
       name: "EmployeeManagement",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.EmployeeManagement__factory>;
-    getContractFactory(
-      name: "EmployeeManagementSystem",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.EmployeeManagementSystem__factory>;
     getContractFactory(
       name: "IEmployee",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -31,15 +31,15 @@ declare module "hardhat/types/runtime" {
     ): Promise<Contracts.Error__factory>;
 
     getContractAt(
+      name: "EmployeeFactory",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.EmployeeFactory>;
+    getContractAt(
       name: "EmployeeManagement",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.EmployeeManagement>;
-    getContractAt(
-      name: "EmployeeManagementSystem",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.EmployeeManagementSystem>;
     getContractAt(
       name: "IEmployee",
       address: string | ethers.Addressable,
@@ -52,13 +52,13 @@ declare module "hardhat/types/runtime" {
     ): Promise<Contracts.Error>;
 
     deployContract(
+      name: "EmployeeFactory",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.EmployeeFactory>;
+    deployContract(
       name: "EmployeeManagement",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.EmployeeManagement>;
-    deployContract(
-      name: "EmployeeManagementSystem",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.EmployeeManagementSystem>;
     deployContract(
       name: "IEmployee",
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -69,15 +69,15 @@ declare module "hardhat/types/runtime" {
     ): Promise<Contracts.Error>;
 
     deployContract(
+      name: "EmployeeFactory",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.EmployeeFactory>;
+    deployContract(
       name: "EmployeeManagement",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.EmployeeManagement>;
-    deployContract(
-      name: "EmployeeManagementSystem",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.EmployeeManagementSystem>;
     deployContract(
       name: "IEmployee",
       args: any[],

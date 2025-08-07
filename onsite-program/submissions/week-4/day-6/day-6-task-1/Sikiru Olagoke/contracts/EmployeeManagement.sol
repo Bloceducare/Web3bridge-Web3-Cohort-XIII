@@ -10,8 +10,8 @@ contract EmployeeManagement is IEmployee {
 
     mapping(address => Employee) employee;
 
-    constructor() {
-        owner = msg.sender;
+    constructor(address _owner) {
+        owner = _owner;
     }
 
     function create_employee(
