@@ -1,0 +1,16 @@
+{
+  "name": "TrinNodeNFT",
+  "description": "A genesis NFT from Trinnode.",
+  "image": "https://emerald-mad-whippet-73.mypinata.cloud/ipfs/bafkreic7qhotwfa4trjznmobfnfbf6kf725x5ruxybx33awmvx5c2cyw34",
+  "external_url": "https://lisk.com",
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Dark"
+    },
+    {
+      "trait_type": "Theme",
+      "value": "Tech/Genesis"
+    }
+  ]
+}
