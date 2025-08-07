@@ -1,0 +1,79 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\DELL\\blockchain_development\\solidity\\Web3bridge-Web3-Cohort-XIII\\onsite-program\\submissions\\week-4\\day-4\\day4-task-1\\BABALOLA_ABIODUN_AYOMIDE\\contracts\\EmployeeManagementSystem.sol": {
+      "lastModificationDate": 1754414447437,
+      "contentHash": "f8a4d996abfb884e77fca74d0bee59b6",
+      "sourceName": "contracts/EmployeeManagementSystem.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./errorLibrary.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "EmployeeManagementSystem"
+      ]
+    },
+    "C:\\Users\\DELL\\blockchain_development\\solidity\\Web3bridge-Web3-Cohort-XIII\\onsite-program\\submissions\\week-4\\day-4\\day4-task-1\\BABALOLA_ABIODUN_AYOMIDE\\contracts\\errorLibrary.sol": {
+      "lastModificationDate": 1754409273758,
+      "contentHash": "f750df53d8fc385a282726775228fdcd",
+      "sourceName": "contracts/errorLibrary.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.10"
+      ],
+      "artifacts": [
+        "Error"
+      ]
+    }
+  }
+}
