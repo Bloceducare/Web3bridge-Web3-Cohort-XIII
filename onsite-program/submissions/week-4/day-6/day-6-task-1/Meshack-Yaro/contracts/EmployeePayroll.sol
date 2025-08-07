@@ -64,8 +64,8 @@ contract EmployeePayroll is IEmployeePayroll{
 
     }
 
-    function payEmployee(address _to, uint _amount) external payable {
-
+    function payEmployee(address payable _to, uint _amount) external {
+        
 
     }
    
