@@ -1,13 +1,14 @@
-# Sample Hardhat Project
+Deployed Addresses
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+SchoolModule#SchoolManagementSystem - 0xB926b83d42829b58814EE3088C163B59496c0610
+SchoolModule#Factory - 0x499BABaB30D2820EaF1814ce74cbDd50cb2ecCC9
 
-Try running some of the following tasks:
+Verifying deployed contracts
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+Verifying contract "contracts/Student.sol:SchoolManagementSystem" for network lisk-sepolia...
+Contract contracts/Student.sol:SchoolManagementSystem already verified on network lisk-sepolia:
+  - https://sepolia-blockscout.lisk.com/address/0xB926b83d42829b58814EE3088C163B59496c0610#code
+
+Verifying contract "contracts/Factory.sol:Factory" for network lisk-sepolia...
+Successfully verified contract "contracts/Factory.sol:Factory" for network lisk-sepolia:
+  - https://sepolia-blockscout.lisk.com/address/0x499BABaB30D2820EaF1814ce74cbDd50cb2ecCC9#code

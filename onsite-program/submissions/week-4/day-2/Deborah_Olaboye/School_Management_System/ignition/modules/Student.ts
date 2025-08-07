@@ -4,9 +4,9 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
 const SchoolModule = buildModule("SchoolModule", (m) => {
-  const school = m.contract("SchoolManagementSystem");
+  const factory = m.contract("Factory");
 
-  return { school };
+  return { factory };
 });
 
 export default SchoolModule;

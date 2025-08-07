@@ -2,7 +2,9 @@
 pragma solidity 0.8.28;
 
 contract SchoolManagementSystem {
-
+    string schoolName;
+    address owner;
+    
     struct Student {
         string name;
         uint age;
@@ -22,6 +24,11 @@ contract SchoolManagementSystem {
         ACTIVE,
         DEFERRED,
         RUSTICATED 
+    }
+
+    constructor(string memory _schoolName, address _owner) {
+        schoolName = _schoolName;
+        owner = _owner;
     }
 
     function RegisterStudent (string memory _name, uint _age, string memory _email, Gender _gender, Status _status) external {
