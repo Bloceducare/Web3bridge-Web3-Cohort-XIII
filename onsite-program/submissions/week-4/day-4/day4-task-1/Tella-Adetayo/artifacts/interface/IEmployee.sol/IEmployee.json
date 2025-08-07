@@ -1,0 +1,148 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IEmployee",
+  "sourceName": "interface/IEmployee.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "getAllUsers",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "bool",
+              "name": "isEmployed",
+              "type": "bool"
+            },
+            {
+              "internalType": "enum Storage.Role",
+              "name": "role",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "salary",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "paidSoFar",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Storage.Employee[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "name": "getUser",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "bool",
+              "name": "isEmployed",
+              "type": "bool"
+            },
+            {
+              "internalType": "enum Storage.Role",
+              "name": "role",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "salary",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "paidSoFar",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Storage.Employee",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "enum Storage.Role",
+          "name": "_role",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_salary",
+          "type": "uint256"
+        }
+      ],
+      "name": "registerUser",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "enum Storage.Role",
+          "name": "_role",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bool",
+          "name": "_isEmployed",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_salary",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateUser",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
