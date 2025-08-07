@@ -4,7 +4,7 @@
 
 pragma solidity ^0.8.28;
 
-contract TodoList{
+contract TodoList {
     enum Status {
         PENDING,
         COMPLETED,
@@ -37,15 +37,9 @@ contract TodoList{
         todos[msg.sender][_index] = Todo(_title, description, _status);
     }
 
-    function getTodo(uint256 _index)
-        external
-        view
-        returns (
-            string memory,
-            string memory,
-            string memory
-        )
-    {
+    function getTodo(
+        uint256 _index
+    ) external view returns (string memory, string memory, string memory) {
         require(_index > todos[msg.sender].length, "Out of bounds.");
         string memory currentStatus;
         if (todos[msg.sender][_index].status == Status.PENDING) {
