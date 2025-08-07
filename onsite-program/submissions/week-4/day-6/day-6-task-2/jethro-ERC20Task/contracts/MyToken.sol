@@ -10,15 +10,17 @@ contract MyToken is IERC20 {
 
     TokenLibrary.TokenInfo public tokenInfo;
     uint256 private _totalSupply;
+    address public addressowner;
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
 
-    constructor(string memory name_, string memory symbol_, uint256 initialSupply) {
+    constructor(string memory name_, string memory symbol_, uint256 initialSupply, address creator_) {
         require(bytes(name_).length > 0, "Empty name");
         require(bytes(symbol_).length > 0, "Empty symbol");
         tokenInfo = TokenLibrary.TokenInfo(name_, symbol_, 18);
         _totalSupply = initialSupply;
         _balances[msg.sender] = initialSupply;
+        addressowner = creator_;
     }
 
     function totalSupply() external view override returns (uint256) {
