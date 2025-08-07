@@ -10,7 +10,7 @@ error NotElligible();
 contract TMS is  ITMS {
    Staff[] public staff;
    mapping(address => Staff) public address_to_staff;
-   address payable owner;
+   address public owner;
 
    constructor() payable {
       owner = payable(msg.sender);

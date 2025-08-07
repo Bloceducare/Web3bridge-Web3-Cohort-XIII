@@ -92,5 +92,6 @@ describe("TMS", function () {
       expect(staff.amount).to.equal(0);
     });
   });
+ // describe("check_pay", function () {")
 
 })
