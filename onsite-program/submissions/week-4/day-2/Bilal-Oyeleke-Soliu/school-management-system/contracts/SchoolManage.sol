@@ -24,8 +24,8 @@ contract SchoolManagement {
 
     Student[] public students;
 
-    constructor() {
-        owner = msg.sender;
+    constructor(address _owner) {
+        owner = _owner;
     }
 
     modifier onlyOwner() {

@@ -6,7 +6,7 @@ describe("SchoolManagement", () => {
   async function deploySchoolManageSystem() {
     const SchoolManage = await ethers.getContractFactory("SchoolManagement");
     const [deployer, addr1] = await ethers.getSigners();
-    const schoolManage = await SchoolManage.deploy();
+    const schoolManage = await SchoolManage.deploy(deployer.address);
     await schoolManage.waitForDeployment();
     return { schoolManage, deployer, addr1 };
   }
@@ -100,7 +100,7 @@ describe("SchoolManagement", () => {
       await schoolManage.deleteStudent(0);
 
       const students = await schoolManage.getStudents();
-      expect(students[0].name).to.equal(""); // deleted struct resets strings
+      expect(students[0].name).to.equal("");
     });
 
     it("Should revert delete when called by non-owner", async () => {
