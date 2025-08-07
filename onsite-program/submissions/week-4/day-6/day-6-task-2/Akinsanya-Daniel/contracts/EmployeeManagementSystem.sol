@@ -1,9 +1,15 @@
 // SPDX-License-Identifier: MIT
+pragma solidity 0.8.30;
 import "./IEmployee.sol";
 
 contract EmployeeManagementSystem is IEmployee{
     mapping(address => Employee) employees;
     uint256 uuid;
+    address owner;
+
+    constructor(address _owner){
+        owner = _owner;
+    }
 
     function registerEmployee(address _address,string memory _name,uint256 _age, uint256 _salary, ROLE _role) external{
         if(employees[_address].status == STATUS.EMPLOYED){
@@ -45,5 +51,6 @@ contract EmployeeManagementSystem is IEmployee{
 
     
   }
+  
 
 

@@ -7,7 +7,8 @@ import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
   
 const EmployeeManagementModule = buildModule("EmployeeManagementModule", (m) => {
-  const employeeManagementModule = m.contract("EmployeeManagementSystem");  
+  const address = "0x58A8D815eE6D1DDd027341650139B21c3258172b";
+  const employeeManagementModule = m.contract("EmployeeManagementSystem",[address]);  
     return {employeeManagementModule}
   });
 

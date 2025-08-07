@@ -1,5 +1,6 @@
 import { HardhatUserConfig,vars } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import "@nomicfoundation/hardhat-ignition";
 
 const PRIVATE_KEY = vars.get("PRIVATE_KEY");
 
