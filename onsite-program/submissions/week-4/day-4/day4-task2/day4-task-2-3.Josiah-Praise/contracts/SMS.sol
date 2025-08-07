@@ -177,4 +177,11 @@ contract SchoolManagementSystem {
 
         return activeStudents;
     }
+    
+    /**
+     * @notice for the factory contract to ping after deployment    
+     */
+    function ping(string calldata anyString)external pure returns(string memory){
+        return anyString;
+    }
 }
