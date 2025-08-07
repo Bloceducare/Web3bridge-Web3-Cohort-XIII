@@ -1,0 +1,157 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/adetayo/Documents/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-3/Tella-Adetayo/employee_access/contracts/Employee.sol": {
+      "lastModificationDate": 1754525882830,
+      "contentHash": "beff6bc2501fe565fca85b78c92f8592",
+      "sourceName": "contracts/Employee.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../library/Storage.sol",
+        "../interface/IEmployee.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Employee"
+      ]
+    },
+    "/home/adetayo/Documents/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-3/Tella-Adetayo/employee_access/library/Storage.sol": {
+      "lastModificationDate": 1754525133490,
+      "contentHash": "3f7aaf1857412b7708b8101a51dbbe00",
+      "sourceName": "library/Storage.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Storage"
+      ]
+    },
+    "/home/adetayo/Documents/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-3/Tella-Adetayo/employee_access/interface/IEmployee.sol": {
+      "lastModificationDate": 1754525516597,
+      "contentHash": "dbcdee274c2cab83383fff44633dda1d",
+      "sourceName": "interface/IEmployee.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../library/Storage.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "IEmployee"
+      ]
+    },
+    "/home/adetayo/Documents/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-3/Tella-Adetayo/employee_access/contracts/EmployeeFactory.sol": {
+      "lastModificationDate": 1754525924281,
+      "contentHash": "1b98efbd29213ff535dd577a800f8d4d",
+      "sourceName": "contracts/EmployeeFactory.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Employee.sol",
+        "../library/Storage.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "EmployeeFactory"
+      ]
+    }
+  }
+}
