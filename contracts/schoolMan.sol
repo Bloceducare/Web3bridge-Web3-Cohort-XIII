@@ -52,7 +52,6 @@ contract SchoolManagementSystem {
         }
     }
     
-    
     function deleteStudent(uint256 _studentId) public {
         for (uint256 i = 0; i < students.length; i++) {
             if (students[i].id == _studentId && students[i].exists == true) {
@@ -71,7 +70,7 @@ contract SchoolManagementSystem {
             }
         }
     }
-    
+
    
     function getStudent(uint256 _studentId) public view returns (uint256, string memory, uint256, Status) {
         for (uint256 i = 0; i < students.length; i++) {
