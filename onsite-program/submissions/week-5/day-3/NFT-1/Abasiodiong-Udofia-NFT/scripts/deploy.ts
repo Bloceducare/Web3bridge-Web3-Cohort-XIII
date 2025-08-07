@@ -5,7 +5,7 @@ async function main() {
   console.log("Deploying contracts with the account:", deployer.address);
 
   const MyNFT = await ethers.getContractFactory("MyNFT");
-  const myNFT = await MyNFT.deploy();
+  const myNFT = await MyNFT.deploy("OdiongNFT", "Odiong", process.env.WALLET_ADDRESS as string);
   await myNFT.waitForDeployment();
 
   console.log("MyNFT deployed to:", myNFT.target);
