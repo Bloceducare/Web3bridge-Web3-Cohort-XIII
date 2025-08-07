@@ -5,6 +5,11 @@ import "./Student.sol";
 contract Factory {
   StudentRecord[] public studentArray;
 
+  function createNewStudent() external {
+    StudentRecord todo = new StudentRecord();
+    studentArray.push(todo);
+  }
+
   function registerStudent(uint256 studentIndex, string memory name, uint age) external {
     return StudentRecord(address(studentArray[studentIndex])).register_student(name, age);
   }

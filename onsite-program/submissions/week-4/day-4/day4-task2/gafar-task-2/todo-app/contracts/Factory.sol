@@ -5,6 +5,11 @@ import "./Todo.sol";
 contract FactoryTodo {
   TodoList[] public todoArray;
 
+  function createNewTodo() external {
+    TodoList todo = new TodoList();
+    todoArray.push(todo);
+  }
+
   function createTodo(uint256 todoIndex, string memory _title, string memory _description) external {
     return TodoList(address(todoArray[todoIndex])).create_todo(_title, _description);
   }
