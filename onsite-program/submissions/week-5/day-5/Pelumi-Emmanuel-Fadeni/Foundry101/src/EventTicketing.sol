@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.20;
 
 import "./TicketToken.sol";
 import "./TicketNft.sol";
@@ -107,7 +107,7 @@ contract EventTicketing {
         );
     }
 
-    
+
 
     // BUY TICKET FUNCTION - Users buy tickets for existing events
     function buyTicket(uint256 _eventId) external {
