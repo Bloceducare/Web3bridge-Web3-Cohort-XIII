@@ -57,15 +57,16 @@ contract EventTicketing {
         );
         require(!ticketsLibrary[msg.sender].isActive, "Already has ticket");
 
-        IERC20(tokenAddress).transfer(owner,  myEvent.event_price);
+        IERC20(tokenAddress).transferFrom(msg.sender, owner,  myEvent.event_price);
+
+        tokenId++;
          
         // Mint NFT to buyer
-        TicketNFT(nftAddress).mint(msg.sender, tokenId);        
+        TicketNFT(nftAddress).safeMint(msg.sender);        
 
         ticketsLibrary[msg.sender] = Ticket(myEvent, true, tokenId);
         myEvent.tickets_sold = myEvent.tickets_sold + 1;
 
-        tokenId++;
 
         emit TicketBought(msg.sender);
     }
@@ -88,5 +89,9 @@ contract EventTicketing {
 
     function updateEventPrice(uint _price) external onlyOwner {
         myEvent.event_price = _price;
+    }
+
+    function getOwner() external view returns(address) {
+        return owner;
     }
 }
