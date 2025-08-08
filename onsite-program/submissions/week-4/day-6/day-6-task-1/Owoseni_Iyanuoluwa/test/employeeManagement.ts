@@ -43,7 +43,6 @@ describe("Management Contract", function () {
   describe("transfer", function () {
     beforeEach(async function () {
       await management.createEmployee(addr1.address, EMPLOYEE_NAME, SALARY, ROLE);
-      // Fund contract and owner's balance
       await management.fundOwner({ value: ethers.parseEther("10") });
     });
 

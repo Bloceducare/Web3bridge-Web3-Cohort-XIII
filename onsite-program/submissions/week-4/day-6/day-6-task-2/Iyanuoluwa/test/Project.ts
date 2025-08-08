@@ -41,11 +41,7 @@ describe("Project (ERC20 Token)", function () {
 
   describe("Transfer", function () {
     it("Should transfer tokens between accounts", async function () {
-      // First, we need to mint some tokens to owner (since there's no mint function, we'll simulate by adding balance)
-      // For testing purposes, we'll directly set the balance in the contract
-      // This is a limitation of the current contract - it doesn't have a mint function
-      
-      // Let's test the transfer function with zero balance first
+    
       await expect(
         project.transfer(user1.address, 100)
       ).to.be.revertedWithCustomError(project, "InsufficientBalance");
@@ -58,8 +54,7 @@ describe("Project (ERC20 Token)", function () {
     });
 
     it("Should emit Transfer event", async function () {
-      // This test would work if we had tokens to transfer
-      // For now, we'll test the event emission structure
+      
       const amount = 100;
       await expect(
         project.transfer(user1.address, amount)
@@ -93,11 +88,9 @@ describe("Project (ERC20 Token)", function () {
 
   describe("TransferFrom", function () {
     it("Should transfer tokens using transferFrom", async function () {
-      // First approve tokens
       const amount = 1000;
       await project.approve(user1.address, amount);
 
-      // Then transfer from
       await expect(
         project.connect(user1).transferFrom(owner.address, user2.address, amount)
       ).to.be.revertedWithCustomError(project, "InsufficientBalance");
@@ -116,7 +109,6 @@ describe("Project (ERC20 Token)", function () {
     });
 
     it("Should revert when insufficient allowance", async function () {
-      // Approve less than what we want to transfer
       await project.approve(user1.address, 100);
       
       await expect(
@@ -153,17 +145,14 @@ describe("Project (ERC20 Token)", function () {
 
   describe("Integration Tests", function () {
     it("Should handle complete transfer flow with approval", async function () {
-      // This test demonstrates the complete flow
-      // Note: Since there's no mint function, we can't test the full flow
-      // But we can test the approval and allowance mechanisms
+      
       
       const amount = 1000;
       
-      // Owner approves user1 to spend tokens
+      
       await project.approve(user1.address, amount);
       expect(await project.allowance(owner.address, user1.address)).to.equal(amount);
       
-      // User1 tries to transfer (will fail due to insufficient balance)
       await expect(
         project.connect(user1).transferFrom(owner.address, user2.address, amount)
       ).to.be.revertedWithCustomError(project, "InsufficientBalance");
