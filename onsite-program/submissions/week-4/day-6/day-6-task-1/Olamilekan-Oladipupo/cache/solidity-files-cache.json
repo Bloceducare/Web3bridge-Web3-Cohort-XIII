@@ -1,0 +1,191 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/olamilekan/Documents/web3/web3Bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-1/Olamilekan-Oladipupo/contracts/Company.sol": {
+      "lastModificationDate": 1754553236550,
+      "contentHash": "6d52f5c5e0d2b56f0ee87670d468e613",
+      "sourceName": "contracts/Company.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./CompanyInterface.sol",
+        "./Error.sol",
+        "./Ether.sol"
+      ],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "Company"
+      ]
+    },
+    "/home/olamilekan/Documents/web3/web3Bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-1/Olamilekan-Oladipupo/contracts/Error.sol": {
+      "lastModificationDate": 1754552817025,
+      "contentHash": "f5c2115fa73070d2b75cae6eda77fae4",
+      "sourceName": "contracts/Error.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "Error"
+      ]
+    },
+    "/home/olamilekan/Documents/web3/web3Bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-1/Olamilekan-Oladipupo/contracts/CompanyInterface.sol": {
+      "lastModificationDate": 1754552817024,
+      "contentHash": "b91b8ae2bab4d92fc3a780f4d4123b3c",
+      "sourceName": "contracts/CompanyInterface.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "ICompany"
+      ]
+    },
+    "/home/olamilekan/Documents/web3/web3Bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-1/Olamilekan-Oladipupo/contracts/Ether.sol": {
+      "lastModificationDate": 1754552817025,
+      "contentHash": "676045dc024c3008f69093ce8aeea297",
+      "sourceName": "contracts/Ether.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "Ether"
+      ]
+    },
+    "/home/olamilekan/Documents/web3/web3Bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-1/Olamilekan-Oladipupo/contracts/companyFactory.sol": {
+      "lastModificationDate": 1754565416527,
+      "contentHash": "3d9a0bb884488338327801f5994ba105",
+      "sourceName": "contracts/companyFactory.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Company.sol"
+      ],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "CompanyFactory"
+      ]
+    }
+  }
+}
