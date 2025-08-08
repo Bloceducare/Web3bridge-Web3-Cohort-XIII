@@ -1,0 +1,13 @@
+[profile.default]
+src = "src"
+test = "test"
+out = "out"
+libs = ["lib"]
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+
+[rpc_endpoints]
+lisk = "https://rpc.sepolia-api.lisk.com"
+
+[etherscan]
+lisk = { key = "123", url = "https://sepolia-api.lisk.com" }
