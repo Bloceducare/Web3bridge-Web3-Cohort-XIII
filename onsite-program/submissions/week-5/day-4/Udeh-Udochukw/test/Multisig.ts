@@ -18,7 +18,6 @@ describe("Multisig", function () {
       owner5.address,
     ]);
 
-    // Send some ETH to the contract
     await owner1.sendTransaction({
       to: multiSig.target,
       value: hre.ethers.parseEther("10"),
@@ -66,12 +65,10 @@ describe("Multisig", function () {
         deployMultiSigFixture
       );
 
-      // Submit transaction
       await multiSig
         .connect(owner1)
         .submitTransaction(recipient.address, hre.ethers.parseEther("1"), "0x");
 
-      // Sign transaction
       await multiSig.connect(owner1).signTransaction(0);
 
       const [, , , , signatures] = await multiSig.getTransaction(0);

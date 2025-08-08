@@ -6,16 +6,11 @@ import "./Multisig.sol";
 
 
 contract MultisigFactory {
-    event MultisigCreated(
-        address indexed multisigAddress,
-        address indexed creator,
-        address[5] owners
-    );
+ 
 
     address[] public deployedMultisigs;
 
     function createMultisig(address[5] memory owners) external returns (address) {
-        // Validate owners
         for (uint i = 0; i < owners.length; i++) {
             require(owners[i] != address(0), "Owner address cannot be zero");
             
@@ -29,7 +24,6 @@ contract MultisigFactory {
         
         deployedMultisigs.push(multisigAddress);
         
-        emit MultisigCreated(multisigAddress, msg.sender, owners);
         
         return multisigAddress;
     }
