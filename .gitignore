@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # macOS
 .DS_Store
 .DS_Store?
@@ -121,6 +122,11 @@ node_modules
 
 onsite-program/tasks/week-3/Abasiodiong-udofia
 
+=======
+node_modules
+.env
+
+>>>>>>> 48a195a6e060ac88f7b409aa3ec6f219e6e1abe3
 # Hardhat files
 /cache
 /artifacts

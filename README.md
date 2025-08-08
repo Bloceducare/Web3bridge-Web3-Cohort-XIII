@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Web3bridge Web3 Cohort XIII - GitHub Contribution Guide
 
 Welcome to the Web3Bridge Cohort XIII training program! This repository is used for submitting tasks, tracking student progress, and grading assessments. Follow this guide to ensure a smooth contribution process.
@@ -149,3 +150,18 @@ git push origin main
 
 Thank you for contributing to Web3Bridge Cohort XIII! Happy coding!
 
+=======
+# Sample Hardhat Project
+
+This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+
+Try running some of the following tasks:
+
+```shell
+npx hardhat help
+npx hardhat test
+REPORT_GAS=true npx hardhat test
+npx hardhat node
+npx hardhat ignition deploy ./ignition/modules/Lock.ts
+```
+>>>>>>> 48a195a6e060ac88f7b409aa3ec6f219e6e1abe3
