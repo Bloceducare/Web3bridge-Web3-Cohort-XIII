@@ -21,8 +21,8 @@ contract MultiSig{
     }
 
     constructor(address[] memory _owners, uint _confirmations) {
-        require(_owners.length > 5);
-        require(_confirmations >= 3);
+        require(_owners.length > 0);
+        require(_confirmations >= 0);
         require(_confirmations <= _owners.length);
         owners = _owners;
         required = _confirmations;

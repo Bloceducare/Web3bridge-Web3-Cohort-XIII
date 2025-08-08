@@ -17,6 +17,8 @@ const config: HardhatUserConfig = {
       url: RPC_URL,
       accounts: [`0x${PRIVATE_KEY}`],
       chainId: 4202,
+      gasPrice: 1000000000,
+      timeout: 600000,
     },
   },
   etherscan: {
