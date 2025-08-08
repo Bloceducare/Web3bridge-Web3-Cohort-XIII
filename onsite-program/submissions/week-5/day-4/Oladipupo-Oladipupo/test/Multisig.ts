@@ -21,7 +21,7 @@ describe("MultiSig", function () {
     it("should set the correct number of required signers", async function () {
       const { multiSig } = await loadFixture(deployMultiSig);      
       const required = await multiSig.getOfRequiredSigners();
-      expect(required).to.equal(2n);
+      expect(required).to.equal(2);
     });
 
     it("should return the correct signers addresses", async function () {
@@ -45,9 +45,7 @@ describe("MultiSig", function () {
       const { multiSig, signer1, signer2, signer3 } = await loadFixture(deployMultiSig);
       await multiSig.connect(signer1).proposeTransaction(signer3.address, 1000);
 
-      await expect(
-        multiSig.signTransaction(0)
-      ).to.be.revertedWithCustomError(multiSig, "TRANSACTION_ALREADY_SIGNED");
+      await expect(multiSig.signTransaction(0)).to.be.revertedWithCustomError(multiSig, "TRANSACTION_ALREADY_SIGNED");
     });
 
     it("should revert if non-signer tries to sign", async function () {
