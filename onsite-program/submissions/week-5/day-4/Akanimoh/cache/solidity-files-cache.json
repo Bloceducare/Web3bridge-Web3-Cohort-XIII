@@ -1,0 +1,79 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/akan_nigeria/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-4/Akanimoh/contracts/MultiSigWallet.sol": {
+      "lastModificationDate": 1754624530130,
+      "contentHash": "f03a4105b16fc36cefd50f8c5c251e62",
+      "sourceName": "contracts/MultiSigWallet.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "MultiSigWallet"
+      ]
+    },
+    "/home/akan_nigeria/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-4/Akanimoh/contracts/MultiSigWalletFactory.sol": {
+      "lastModificationDate": 1754620039021,
+      "contentHash": "a435ca163673d44a0a46444b9e381ed2",
+      "sourceName": "contracts/MultiSigWalletFactory.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./MultiSigWallet.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "MultiSigWalletFactory"
+      ]
+    }
+  }
+}
