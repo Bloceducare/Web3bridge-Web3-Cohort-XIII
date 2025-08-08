@@ -6,19 +6,7 @@ import "../interfaces/ISchool.sol";
 
 contract School is ISchool {
     Student[] public students;
-    // address owner;
-    //
-    // error ONLY_OWNER_CAN_CALL();
-    //
-    // constructor() {
-    //     owner = msg.sender;
-    // }
-    //
-    // modifier OnlyOwner() {
-    //     require(owner == msg.sender, ONLY_OWNER_CAN_CALL());
-    //     _;
-    // }
-
+    
     mapping(address => Student[]) get_student_by_address_array;
 
     mapping(address => Student) get_student_by_address;
