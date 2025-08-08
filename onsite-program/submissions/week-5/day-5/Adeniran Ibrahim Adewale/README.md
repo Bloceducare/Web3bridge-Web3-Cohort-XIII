@@ -64,3 +64,9 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+
+
+== Logs ==
+  EventTicketing deployed at: 0xc88229Ab87658823580E500aA4E4d5b48c10a604
+  AnotherContract deployed at: 0xA48c69773a797bE0a799237f2389ebf42551EF20
+  ThirdContract deployed at: 0x9f7ABE0e663fA89506A2d227A7321a5dCb89D5E5
