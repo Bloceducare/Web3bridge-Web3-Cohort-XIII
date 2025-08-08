@@ -13,10 +13,7 @@ const MultiSigModule = buildModule("MultiSigModule", (m) => {
 
   const requiredSignatures = 3;
 
-  const multiSig = m.contract("MultiSig", [owners, requiredSignatures], {
-    value: m.getParameter("initialValue", "5000000000000000000"), // 5 ETH in wei
-  });
-
+  const multiSig = m.contract("MultiSig", [owners, requiredSignatures])
   return { multiSig };
 });
   
