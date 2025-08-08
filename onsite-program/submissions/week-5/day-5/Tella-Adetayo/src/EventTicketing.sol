@@ -1,203 +1,143 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.20;
 
-import "./TicketNFT.sol";
+// import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./TicketToken.sol";
-import "openzeppelin-contracts/contracts/utils/structs/EnumerableSet.sol";
+import "./TicketNFT.sol";
 
-error TOTAL_TICKET_MUST_BE_GREATER_THAN_ZERO();
-error TICKET_END_DATE_MUST_BE_IN_FUTURE();
-error TICKET_PRICE_MUST_BE_GREATER_THAN_ZERO();
-error TICKET_NOT_FOUND();
-error NOT_ENOUGH_PAYMENT();
-error TICKETS_SOLD_OUT();
-error TICKET_SALE_INACTIVE();
-error ONLY_CREATOR();
-error WITHDRAW_FAILED();
-
-contract EventTicketing is TicketNFT, ReentrancyGuard {
-    using EnumerableSet for EnumerableSet.UintSet;
-
-    
-    struct EventTicketInfo {
+contract EventTicketing {
+    struct TicketInfo {
         uint256 tokenId; 
-        uint256 ticketPrice;   
-        uint256 totalTickets;   
-        uint256 ticketsSold;     
-        uint256 ticketStartDate;   
-        uint256 ticketEndDate;      
-        address payable creator;    
-        bool isSoldOut;
+        uint256 totalTickets; 
+        uint256 ticketsSold; 
+        uint256 ticketPrice; 
+        uint256 ticketStartDate;
+        uint256 ticketEndDate; 
+        address creator; 
+        bool isTicketSold; 
+        string eventName; 
     }
 
-    struct PurchaseInfo {
-        address buyer;
-        uint256 ticketsBought;
-        uint256 tokenId;            
-        uint256 purchaseTimestamp;
-        uint256 paid;               
-    }
-
-    mapping(uint256 => EventTicketInfo) public tickets;       
-    mapping(address => uint256[]) public userPurchasedEventIds;     
-    mapping(uint256 => PurchaseInfo[]) public ticketPurchases;     
-    mapping(uint256 => EnumerableSet.UintSet) private purchasers;   
-
-    // events
-    event TicketCreated(
-        uint256 indexed tokenId,
-        uint256 totalTickets,
-        uint256 ticketPrice,
-        uint256 ticketStartDate,
-        uint256 ticketEndDate,
-        address indexed creator
-    );
-
-    event TicketPurchased(
-        uint256 indexed tokenId,
-        address indexed buyer,
-        uint256 ticketsBought,
-        uint256 totalPaid,
-        uint256 purchaseId
-    );
-
-    event CreatorWithdrawn(
-        uint256 indexed tokenId,
-        address indexed creator,
-        uint256 amount
-    );
-
-    constructor() TicketNFT("EventTicketMeta", "ETM") {
-        
-    }
-
-    function createEventTicket(
-        string calldata tokenURI,
-        uint256 _totalTickets,
-        uint256 _ticketPrice,
-        uint256 _ticketEndDate
-    ) external returns (uint256) {
-        if (_totalTickets == 0) revert TOTAL_TICKET_MUST_BE_GREATER_THAN_ZERO();
-        if (_ticketPrice == 0) revert TICKET_PRICE_MUST_BE_GREATER_THAN_ZERO();
-        if (_ticketEndDate <= block.timestamp) revert TICKET_END_DATE_MUST_BE_IN_FUTURE();
-
-        // mint metadata NFT to creator (this NFT represents the event)
-        uint256 newTokenId = _mintTicket(msg.sender, tokenURI);
-
-        uint256 ticketStartDate = block.timestamp;
-
-        tickets[newTokenId] = EventTicketInfo({
-            tokenId: newTokenId,
-            ticketPrice: _ticketPrice,
-            totalTickets: _totalTickets,
-            ticketsSold: 0,
-            ticketStartDate: ticketStartDate,
-            ticketEndDate: _ticketEndDate,
-            creator: payable(msg.sender),
-            isSoldOut: false
-        });
-
-        emit TicketCreated(newTokenId, _totalTickets, _ticketPrice, ticketStartDate, _ticketEndDate, msg.sender);
-
-        return newTokenId;
+    struct BuyerInfo {
+        address buyer; 
+        uint256 ticketsBought; 
+        uint256 totalPrice; 
+        uint256 ticketId; 
+        uint256 purchaseId; 
+        uint256 purchaseTimestamp; 
     }
 
 
-    function buyTickets(uint256 tokenId, uint256 quantity) external payable nonReentrant {
-        if (quantity == 0) revert TICKET_PRICE_MUST_BE_GREATER_THAN_ZERO();
-        EventTicketInfo storage info = tickets[tokenId];
-        if (info.tokenId == 0) revert TICKET_NOT_FOUND();
-        if (block.timestamp < info.ticketStartDate || block.timestamp > info.ticketEndDate) revert TICKET_SALE_INACTIVE();
-        if (info.isSoldOut) revert TICKETS_SOLD_OUT();
+    TicketToken public paymentToken; 
+    TicketNFT public ticketNFT; 
+    uint256 internal currentID;
+    address public owner; 
 
-       
-        uint256 remaining = info.totalTickets - info.ticketsSold;
-        if (quantity > remaining) revert TICKETS_SOLD_OUT();
+    
 
-        uint256 required = info.ticketPrice * quantity;
-        if (msg.value < required) revert NOT_ENOUGH_PAYMENT();
 
-        
-        info.ticketsSold += quantity;
-        if (info.ticketsSold >= info.totalTickets) {
-            info.isSoldOut = true;
+    uint256 public creationFeePercentage; 
+    uint256 public purchaseFeePercentage;
+
+    mapping(uint256 => TicketInfo) public tickets; 
+    mapping(address => uint256[]) public userTickets; 
+    mapping(uint256 => BuyerInfo[]) public ticketPurchases;
+
+    error TICKET_MUST_BE_GREATER_THAN_ZERO();
+    error TICKET_DATE_SHOULD_BE_FUTURE();
+    error TICKET_PRICE_MUST_BE_GREATER_THAN_ZERO();
+    error INVALID_NUMBER_OF_TICKETS();
+    error TICKET_HAS_ALREADY_BEEN_SOLD(); 
+    error INCORRECT_AMOUNT_SENT();
+    error INCORRECT_CREATION_FEE_SENT();
+
+
+
+    constructor(address _token, address _nft, uint256 _creationFeePercentage, uint256 _purchaseFeePercentage) {
+        paymentToken = TicketToken(_token); 
+        ticketNFT = TicketNFT(_nft); 
+        purchaseFeePercentage = _purchaseFeePercentage; 
+        creationFeePercentage = _creationFeePercentage; 
+        owner = msg.sender; 
+    }
+
+    function createTicket(string calldata _tokenURI, uint256 _totalTickets, uint256 _ticketPrice, string calldata _eventName, uint256 _ticketEndDate) external payable { 
+        if (_totalTickets == 0) {
+            revert TICKET_MUST_BE_GREATER_THAN_ZERO();
         }
 
-       
-        uint256 purchaseId = ticketPurchases[tokenId].length + 1;
-        PurchaseInfo memory p = PurchaseInfo({
+        if (_ticketPrice == 0) {
+            revert TICKET_PRICE_MUST_BE_GREATER_THAN_ZERO();
+        } 
+
+        if (_ticketEndDate < block.timestamp) {
+            revert TICKET_DATE_SHOULD_BE_FUTURE();
+        }
+
+        currentID++;
+
+        ticketNFT.mintNFT(msg.sender, _tokenURI);
+
+        uint256 ticketStartDate = block.timestamp; 
+
+        tickets[currentID] = TicketInfo({
+            tokenId: currentID, 
+            totalTickets: _totalTickets, 
+            ticketsSold: 0, 
+            ticketPrice: _ticketPrice, 
+            ticketStartDate: ticketStartDate, 
+            ticketEndDate: _ticketEndDate, 
+            creator: msg.sender, 
+            isTicketSold: false, 
+            eventName: _eventName
+        });
+
+        uint256 creationFee = creationFeePercentage; 
+        if (msg.value != creationFee) {
+            revert INCORRECT_CREATION_FEE_SENT();
+        }
+
+        payable(owner).transfer(creationFee);
+    }
+
+    function purchaseTicket(uint256 _eventId, uint256 _ticketsToBuy, string memory _tokenURI) external payable {
+    TicketInfo storage ticket = tickets[_eventId];
+
+    if (ticket.ticketsSold + _ticketsToBuy > ticket.totalTickets) revert INVALID_NUMBER_OF_TICKETS();
+
+    uint256 totalPrice = ticket.ticketPrice * _ticketsToBuy; 
+    uint256 totalPriceWithFee = totalPrice + purchaseFeePercentage; 
+
+    if (msg.value != totalPriceWithFee) revert INCORRECT_AMOUNT_SENT();
+
+    payable(ticket.creator).transfer(totalPrice);
+    payable(owner).transfer(purchaseFeePercentage);
+
+    for (uint256 i = 0; i < _ticketsToBuy; i++) {
+        uint256 newTokenId = ticketNFT.mintNFT(msg.sender, _tokenURI);
+
+        ticketPurchases[_eventId].push(BuyerInfo({
             buyer: msg.sender,
-            ticketsBought: quantity,
-            tokenId: tokenId,
-            purchaseId: purchaseId,
-            purchaseTimestamp: block.timestamp,
-            paid: required
-        });
-        ticketPurchases[tokenId].push(p);
+            ticketsBought: 1, 
+            totalPrice: ticket.ticketPrice, 
+            ticketId: _eventId, 
+            purchaseId: newTokenId, 
+            purchaseTimestamp: block.timestamp
+        }));
 
-       
-        userPurchasedEventIds[msg.sender].push(tokenId);
-        purchasers[tokenId].add(uint256(uint160(msg.sender))); 
-
-        emit TicketPurchased(tokenId, msg.sender, quantity, required, purchaseId);
-        
-        if (msg.value > required) {
-            uint256 refund = msg.value - required;
-            (bool sent, ) = payable(msg.sender).call{value: refund}("");
-            
-            if (!sent) {
-                
-            }
+        ticket.ticketsSold++;
         }
     }
 
-    
-    function getPurchasesForEvent(uint256 tokenId) external view returns (PurchaseInfo[] memory) {
-        return ticketPurchases[tokenId];
+    function getUserTickets(address _user) external view returns (uint256[] memory) {
+        return userTickets[_user];
     }
 
-    
-    function getPurchasersForEvent(uint256 tokenId) external view returns (address[] memory) {
-        uint256 len = purchasers[tokenId].length();
-        address[] memory list = new address[](len);
-        for (uint256 i = 0; i < len; i++) {
-            list[i] = address(uint160(purchasers[tokenId].at(i)));
-        }
-        return list;
+    function getTicketInfo(uint256 _tokenID) external view returns (TicketInfo memory) {
+        return tickets[_tokenID];
     }
 
-   
-    function withdrawProceeds(uint256 tokenId) external nonReentrant {
-        EventTicketInfo storage info = tickets[tokenId];
-        if (info.tokenId == 0) revert TICKET_NOT_FOUND();
-        if (msg.sender != info.creator) revert ONLY_CREATOR();
-
-        
-        uint256 total = 0;
-        PurchaseInfo[] storage arr = ticketPurchases[tokenId];
-        for (uint256 i = 0; i < arr.length; i++) {
-            total += arr[i].paid;
-        }
-
-        
-        delete ticketPurchases[tokenId];
-
-        
-        (bool sent, ) = info.creator.call{value: total}("");
-        if (!sent) revert WITHDRAW_FAILED();
-
-        emit CreatorWithdrawn(tokenId, info.creator, total);
+    function getPurchaseInfo(uint256 _tokenID) external view returns (BuyerInfo[] memory) {
+        return ticketPurchases[_tokenID];
     }
-
-    function purchasesCount(uint256 tokenId) external view returns (uint256) {
-        return ticketPurchases[tokenId].length;
-    }
-
-    
-    function getUserPurchasedEvents(address user) external view returns (uint256[] memory) {
-        return userPurchasedEventIds[user];
-    }
-
-   
-    receive() external payable {}
 }

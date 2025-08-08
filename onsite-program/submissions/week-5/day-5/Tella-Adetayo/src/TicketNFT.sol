@@ -1,31 +1,20 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.20;
 
-/// @notice Minimal ERC721 wrapper that supports minting + tokenURI setting.
-/// Uses OpenZeppelin's ERC721URIStorage to keep _setTokenURI functionality.
+import {ERC721URIStorage, ERC721} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-import "openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "openzeppelin-contracts/contracts/access/Ownable.sol";
-import "openzeppelin-contracts/contracts/utils/Counters.sol";
+contract TicketNFT is ERC721URIStorage {
+    uint256 private _nextTokenId; 
 
+    constructor() ERC721("Casion", "CSN") {}
 
-contract TicketNFT is ERC721URIStorage, Ownable {
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
-
-    constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) {
+    function mintNFT(address _to, string memory _tokenURI) public returns (uint256) {
+        uint256 tokenId = _nextTokenId++; 
+        _mint(_to, tokenId); 
+        _setTokenURI(tokenId, _tokenURI); 
         
-    }
 
-    function _mintTicket(address to, string memory tokenURI_) internal returns (uint256) {
-        _tokenIds.increment();
-        uint256 newId = _tokenIds.current();
-        _safeMint(to, newId);
-        _setTokenURI(newId, tokenURI_);
-        return newId;
-    }
+        return tokenId; 
 
-    function currentId() public view returns (uint256) {
-        return _tokenIds.current();
     }
 }
