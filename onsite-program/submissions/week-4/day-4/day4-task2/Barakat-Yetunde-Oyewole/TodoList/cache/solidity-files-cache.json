@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/yetunde/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/day4-task2/Ema Gee/Barakat-Yetunde-Oyewole/TodoList/contracts/TodoList.sol": {
+      "lastModificationDate": 1754008811454,
+      "contentHash": "e341462e6d99ca0f4e1e2d99f297a686",
+      "sourceName": "contracts/TodoList.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "TodoList"
+      ]
+    }
+  }
+}
