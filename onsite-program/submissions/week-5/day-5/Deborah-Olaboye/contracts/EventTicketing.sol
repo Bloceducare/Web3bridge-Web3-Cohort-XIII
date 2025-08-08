@@ -9,11 +9,9 @@ contract EventTicketing is Ownable {
     struct Event {
         uint256 eventId;
         string name;
-        
         uint256 ticketPrice;
         uint256 totalTickets;
         uint256 ticketsSold;
-        
         string baseTokenURI;
         uint256[] ticketIds;
     }
