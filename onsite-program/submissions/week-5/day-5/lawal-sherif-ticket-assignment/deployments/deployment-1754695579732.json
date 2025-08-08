@@ -1,0 +1,10 @@
+{
+  "network": "liskSepolia",
+  "chainId": "4202",
+  "web3ConSystemAddress": "0x7D154b157208F812620C6188cAacB3c0B754b9e3",
+  "web3ConTokenAddress": "0xeb43ac4b5d82D989C598645C5cB576fB97094fe6",
+  "deployerAddress": "0x5d813b3c40b0b0e012e5156fc41963C56E3bf1DD",
+  "deploymentTime": "2025-08-08T23:26:19.561Z",
+  "transactionHash": "0x0225123234568be0fc0b1f8e3c678a45ceb6d257daa17856a28dd049964108df",
+  "blockNumber": 24691280
+}
