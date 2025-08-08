@@ -4,7 +4,7 @@ pragma solidity ^0.8.28;
 import "forge-std/Test.sol";
 import {EventFactory} from "src/TIcketSFTFactory.sol";
 import {BilalNFT} from "src/TicketNFT.sol";
-import {EventToken} from "src/TicketToken.sol";
+import {TicketToken} from "src/TicketToken.sol";
 
 contract FactoryFlowTest is Test {
     EventFactory public factory;
@@ -39,7 +39,7 @@ contract FactoryFlowTest is Test {
             
         ) = factory.events(0);
 
-        EventToken paymentToken = EventToken(erc20TokenAddr);
+        TicketToken paymentToken = TicketToken(erc20TokenAddr);
         BilalNFT ticketNFT = BilalNFT(nftTicketAddr);
 
         vm.startPrank(organizer);
@@ -56,7 +56,7 @@ contract FactoryFlowTest is Test {
         assertEq(paymentToken.balanceOf(organizer), (1000 - 50 + 10) * 10**18);
 
         vm.startPrank(organizer);
-        ticketNFT.mintBilalNFT(organizer, "ipfs://extra");
+        factory.mintExtraNFT(0, organizer, "ipfs://extra");
         vm.stopPrank();
 
         assertEq(ticketNFT.ownerOf(1), organizer);

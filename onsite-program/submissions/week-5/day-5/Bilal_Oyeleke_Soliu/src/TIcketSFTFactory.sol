@@ -32,8 +32,11 @@ contract EventFactory is Ownable {
         uint256 ticketPrice,
         uint256 totalTickets
     ) external returns (address erc20Address, address nftAddress) {
-        EventToken erc20 = new EventToken(tokenName, tokenSymbol, tokenSupply);
-        BilalNFT nft = new BilalNFT(nftName, nftSymbol, msg.sender);
+        // Token — minted fully to organizer
+        TicketToken erc20 = new TicketToken(tokenName, tokenSymbol, tokenSupply, msg.sender);
+
+        // NFT — ownership given to the factory so it can mint tickets
+        BilalNFT nft = new BilalNFT(nftName, nftSymbol, address(this));
 
         events[eventCount] = EventInfo({
             erc20Token: address(erc20),
@@ -61,5 +64,12 @@ contract EventFactory is Ownable {
 
         BilalNFT(evt.nftTicket).mintBilalNFT(msg.sender, tokenURI);
         evt.ticketsSold++;
+    }
+
+    function mintExtraNFT(uint256 eventId, address to, string memory tokenURI) external {
+        EventInfo storage evt = events[eventId];
+        require(msg.sender == evt.organizer, "Only organizer can mint extra NFTs");
+        
+        BilalNFT(evt.nftTicket).mintBilalNFT(to, tokenURI);
     }
 }
