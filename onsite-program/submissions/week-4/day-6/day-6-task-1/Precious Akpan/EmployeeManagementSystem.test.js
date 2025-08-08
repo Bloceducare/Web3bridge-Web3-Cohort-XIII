@@ -1,16 +1,22 @@
+import {
+  time,
+  loadFixture,
+} from "@nomicfoundation/hardhat-toolbox/network-helpers";
+import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { expect } from "chai";
 import hre from "hardhat";
-// const { ethers } = require("hardhat");
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
 describe("EmployeeManagementSystem", function () {
   let ems, owner, addr1, addr2, addr3;
-  const salary = hre.ethers.parseEther("1");
+  const salary = ethers.utils.parseEther("1");
 
   beforeEach(async function () {
-    [owner, addr1, addr2, addr3] = await hre.ethers.getSigners();
-    const EMS = await hre.ethers.getContractFactory("EmployeeManagementSystem");
+    [owner, addr1, addr2, addr3, ...addrs] = await ethers.getSigners();
+    const EMS = await ethers.getContractFactory("EmployeeManagementSystem");
     ems = await EMS.deploy();
-    await ems.waitForDeployment();
+    await ems.deployed();
   });
 
   describe("Deployment", function () {
@@ -28,7 +34,7 @@ describe("EmployeeManagementSystem", function () {
       expect(details[0]).to.equal(0); // EmployeeType.Mentor
       expect(details[1]).to.equal(salary);
       expect(details[2]).to.equal(0); // EmploymentStatus.Active
-      expect(details[3]).to.equal(0n); // amountPaid
+      expect(details[3]).to.equal(0); // amountPaid
     });
 
     it("Should not allow non-owner to register", async function () {
@@ -70,18 +76,18 @@ describe("EmployeeManagementSystem", function () {
 
     it("Should payout to active employee", async function () {
       await expect(
-        ems.payout(addr1.address, { value: hre.ethers.parseEther("0.5") })
+        ems.payout(addr1.address, { value: ethers.utils.parseEther("0.5") })
       )
         .to.emit(ems, "EmployeePayout")
-        .withArgs(addr1.address, hre.ethers.parseEther("0.5"));
+        .withArgs(addr1.address, ethers.utils.parseEther("0.5"));
       const details = await ems.getEmployeeDetails(addr1.address);
-      expect(details[3]).to.equal(hre.ethers.parseEther("0.5"));
+      expect(details[3]).to.equal(ethers.utils.parseEther("0.5"));
     });
 
     it("Should not payout more than salary", async function () {
-      await ems.payout(addr1.address, { value: hre.ethers.parseEther("0.7") });
+      await ems.payout(addr1.address, { value: ethers.utils.parseEther("0.7") });
       await expect(
-        ems.payout(addr1.address, { value: hre.ethers.parseEther("0.4") })
+        ems.payout(addr1.address, { value: ethers.utils.parseEther("0.4") })
       ).to.be.revertedWith("Amount exceeds agreed salary");
     });
 
