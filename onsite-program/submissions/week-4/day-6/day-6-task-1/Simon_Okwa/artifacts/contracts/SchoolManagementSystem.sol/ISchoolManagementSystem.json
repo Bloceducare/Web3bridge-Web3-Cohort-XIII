@@ -1,0 +1,87 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ISchoolManagementSystem",
+  "sourceName": "contracts/SchoolManagementSystem.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "get_all_employees",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "enum ISchoolManagementSystem.EmployeeRole",
+              "name": "role",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "salary",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isEmployed",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct ISchoolManagementSystem.EmployeeDetails[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_employee",
+          "type": "address"
+        }
+      ],
+      "name": "pay_salary",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_employee",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "enum ISchoolManagementSystem.EmployeeRole",
+          "name": "_role",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_salary",
+          "type": "uint256"
+        }
+      ],
+      "name": "register_employee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

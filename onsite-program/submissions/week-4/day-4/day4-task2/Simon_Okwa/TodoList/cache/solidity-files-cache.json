@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\Simon Okwa\\Desktop\\Web3bridge-Web3-Cohort-XIII\\onsite-program\\submissions\\week-4\\day-4\\day4-task2\\Simon_Okwa\\TodoList\\contracts\\TodoList.sol": {
+      "lastModificationDate": 1754010643742,
+      "contentHash": "39124d4298f7f6aecf39c33298ec62fa",
+      "sourceName": "contracts/TodoList.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "TodoList"
+      ]
+    }
+  }
+}
