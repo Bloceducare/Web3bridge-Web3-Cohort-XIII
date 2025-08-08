@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\mujahid\\Documents\\Web3bridge-Web3-Cohort-XIII\\onsite-program\\submissions\\week-4\\day-6\\Abdussalam-Abdulmujeeb\\contracts\\SalaryManagement.sol": {
+      "lastModificationDate": 1754517459024,
+      "contentHash": "4ea3c49964b64a64b5fb4c97d80c89a9",
+      "sourceName": "contracts/SalaryManagement.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.26"
+      ],
+      "artifacts": [
+        "SalaryManagement"
+      ]
+    }
+  }
+}
