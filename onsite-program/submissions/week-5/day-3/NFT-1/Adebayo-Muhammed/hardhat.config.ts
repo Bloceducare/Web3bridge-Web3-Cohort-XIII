@@ -5,7 +5,7 @@ require("dotenv").config();
 const { PRIVATE_KEY, ETHERSCAN_API_KEY, LISK_RPC_URL } = process.env;
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.28",
+  solidity: "^0.8.28",
   networks: {
     "lisk-sepolia-testnet": {
       url: "https://rpc.sepolia-api.lisk.com",
