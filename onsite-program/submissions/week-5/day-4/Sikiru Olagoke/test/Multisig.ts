@@ -19,6 +19,7 @@ describe("Multisig", function () {
     const multisig = await Multisig.deploy(
       [owner.address, owner1.address, owner2.address],
       3,
+      owner,
     );
 
     return { multisig, owner, owner1, owner2, owner3, otherAccount };
