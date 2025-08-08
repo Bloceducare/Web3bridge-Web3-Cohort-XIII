@@ -6,7 +6,7 @@ contract multisigFactory {
     address[] allmultisig;
 
     function createFactory(address[] memory _admins) external {
-        multisig multi = new multisig(_admins);
+        Multisig multi = new Multisig(_admins);
 
         allmultisig.push(address(multi));
     }

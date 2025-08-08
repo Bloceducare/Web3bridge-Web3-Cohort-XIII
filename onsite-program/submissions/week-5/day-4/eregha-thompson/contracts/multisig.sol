@@ -10,7 +10,7 @@ library Errors {
     error ONLY_ADMIN();
 }
 
-contract multisig {
+contract Multisig {
     struct Transaction {
         address spender;
         uint Amount;
@@ -96,8 +96,9 @@ contract multisig {
     ) external view returns (Transaction memory) {
         return transaction[ID];
     }
-    function _mint(address to, uint _amount) public {
-     balanceOf[to] += _amount;
-    }
+    // function getAdmin(address _address) external view returns(bool){
+    //     return isAdmin[_address];
+    // };
+    receive() external payable{}
 }
 
