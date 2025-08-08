@@ -1,0 +1,5 @@
+{
+  "name": "Daniel's First NFT",
+  "description": "A test NFT deployed using Hardhat and Pinata",
+  "image": "https://gateway.pinata.cloud/ipfs/bafkreif242dnhz6cibznuyvg6pmn4ncihugqsigl3vhr3ce4chqjkw36la"
+}
