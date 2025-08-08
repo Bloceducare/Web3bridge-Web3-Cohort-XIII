@@ -1,0 +1,4 @@
+  Deployed TicketToken at: 0x1b2Ba074F9d87dad5401ede20A19bcB5dB5efe94
+  Deployed TicketNft at: 0xb070005B8A02EfcfFb0E2fbb7F2e1C473Ba5199C
+  Deployed EventTicketing at: 0xC241d2512F1444B8C27B78B587CF8c90BbB9Df27
+  Transferred TicketNft ownership to: 0xC241d2512F1444B8C27B78B587CF8c90BbB9Df27
