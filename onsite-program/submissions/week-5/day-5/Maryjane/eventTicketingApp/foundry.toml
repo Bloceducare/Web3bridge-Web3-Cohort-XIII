@@ -1,0 +1,3 @@
+[default]
+rpc_url = "${RPC_URL}"
+private_key = "${PRIVATE_KEY}"
