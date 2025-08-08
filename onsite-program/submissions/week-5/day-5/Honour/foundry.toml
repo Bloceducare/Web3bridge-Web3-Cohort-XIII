@@ -1,0 +1,11 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+
+[rpc_endpoints]
+sepolia = "https://sepolia-blockscout.lisk.com/api"
+
+[etherscan]
+liskSepolia = {key = "123", url = "https://sepolia-blockscout.lisk.com/api"}
+
