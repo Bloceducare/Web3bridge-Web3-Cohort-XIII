@@ -11,3 +11,4 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
+Deployed CA: MultiSigFactoryModule#MultiSigFactory - 0x25ccE81d672000aA0E26E888bfAc14FB24E86858

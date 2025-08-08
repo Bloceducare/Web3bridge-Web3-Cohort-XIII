@@ -12,7 +12,7 @@ interface IMultiSig {
         
     }
 
-    function ProposedTransaction(address _to, uint256 _value, bytes memory _data) external returns (uint txId);
+    function proposedTransaction(address _to, uint256 _value, bytes memory _data) external returns (uint txId);
     function approveTransaction(uint256 _txId) external;
     function getTransaction(uint256 _txId) external view returns (address to, uint256 value, bytes memory data, bool executed, uint256 approvalCount);
 
