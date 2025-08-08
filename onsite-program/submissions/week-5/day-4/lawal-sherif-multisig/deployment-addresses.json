@@ -1,0 +1,10 @@
+{
+  "network": "liskSepolia",
+  "chainId": 4202,
+  "deployer": "0x5d813b3c40b0b0e012e5156fc41963C56E3bf1DD",
+  "contracts": {
+    "MultiSigWalletFactory": "0x204B7a8d1ead49281fA8352960c1131159649fb5",
+    "SampleMultiSigWallet": "0xd8510E099E835302b18C1d2a6F9a25d9b00a9341"
+  },
+  "timestamp": "2025-08-08T08:12:36.544Z"
+}
