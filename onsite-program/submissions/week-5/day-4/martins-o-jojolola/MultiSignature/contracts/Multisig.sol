@@ -1,33 +1,23 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.28;
+import "./interface/IMultisig.sol";
+import "./lib/Types.sol";
 
-contract MultiSig {
+contract MultiSig is IMultisig {
+    using Types for *;
+
     event Deposit(address indexed sender, uint amount, uint balance);
-    event SubmitTransaction(
-        address indexed owner,
-        uint indexed txIndex,
-        address indexed to,
-        uint value,
-        bytes data
-    );
-    event ConfirmTransaction(address indexed owner, uint indexed txIndex);
-    event RevokeConfirmation(address indexed owner, uint indexed txIndex);
-    event ExecuteTransaction(address indexed owner, uint indexed txIndex);
+    event TransactionSubmitted(uint indexed txIndex, address indexed owner);
+    event TransactionConfirmed(uint indexed txIndex, address indexed owner);
+    event TransactionExecuted(uint indexed txIndex, address indexed owner);
+    event TransactionRevoked(uint indexed txIndex, address indexed owner);
 
     address[] public owners;
     mapping(address => bool) public isOwner;
     uint public numConfirmationsRequired;
 
-    struct Transaction {
-        address to;
-        uint value;
-        bytes data;
-        bool executed;
-        uint numConfirmations;
-    }
-
     mapping(uint => mapping(address => bool)) public isConfirmed;
-    Transaction[] public transactions;
+    Types.Transaction[] public transactions;
 
     modifier onlyOwner() {
         require(isOwner[msg.sender], "not owner");
@@ -77,11 +67,11 @@ contract MultiSig {
         address _to,
         uint _value,
         bytes memory _data
-    ) public onlyOwner {
+    ) external override onlyOwner {
         uint txIndex = transactions.length;
 
         transactions.push(
-            Transaction({
+            Types.Transaction({
                 to: _to,
                 value: _value,
                 data: _data,
@@ -96,7 +86,8 @@ contract MultiSig {
     function confirmTransaction(
         uint _txIndex
     )
-        public
+        external
+        override
         onlyOwner
         txExists(_txIndex)
         notExecuted(_txIndex)
@@ -111,7 +102,7 @@ contract MultiSig {
 
     function executeTransaction(
         uint _txIndex
-    ) public onlyOwner txExists(_txIndex) notExecuted(_txIndex) {
+    ) external onlyOwner txExists(_txIndex) notExecuted(_txIndex) {
         Transaction storage transaction = transactions[_txIndex];
 
         require(
@@ -131,7 +122,7 @@ contract MultiSig {
 
     function revokeConfirmation(
         uint _txIndex
-    ) public onlyOwner txExists(_txIndex) notExecuted(_txIndex) {
+    ) external onlyOwner txExists(_txIndex) notExecuted(_txIndex) {
         Transaction storage transaction = transactions[_txIndex];
 
         require(isConfirmed[_txIndex][msg.sender], "tx not confirmed");
