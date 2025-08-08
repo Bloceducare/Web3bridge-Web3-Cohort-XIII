@@ -1,0 +1,8 @@
+{
+  "factoryAddress": "0x6e1b3836c1687dA3cb75dc384A795348F31f48a1",
+  "network": "lisk-sepolia",
+  "chainId": 4202,
+  "deployer": "0x4A78dFC52566063f50F8cf4eD52F513AEB866A0C",
+  "deploymentTime": "2025-08-06T21:10:44.326Z",
+  "testTokenCreated": true
+}
