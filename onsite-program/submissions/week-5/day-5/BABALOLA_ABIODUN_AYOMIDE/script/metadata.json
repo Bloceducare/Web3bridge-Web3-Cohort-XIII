@@ -1,0 +1,9 @@
+{
+  "name": "EventTicketingSystem",
+  "description": "An nft for the biggest event ever",
+  "image": "ipfs://bafkreihvtj37ne3uxemeuf3xoamc6765va73mgcgqsgls6oyc5qlcjn4si",
+  "attributes": [
+    { "trait_type": "position", "value": "sitting" },
+    { "trait_type": "color", "value": "ocean blue" }
+  ]
+}
