@@ -36,9 +36,6 @@ contract Web3ConSystem is ERC721, Ownable {
     string public constant metadataFolderCID = "bafybeiaeml3capus4fkpiy52tmve27es4vclvttakftxj5bapvlsjuxina";
 
     mapping(address => User) public users;
-    
-    event UserRegistered(address indexed user, string name);
-    event NFTMinted(address indexed user, uint256 tokenId);
 
     constructor() ERC721("Web3ConNFT", "W3CNFT") Ownable(msg.sender) {
         token = new Web3ConToken(address(this));
@@ -55,8 +52,6 @@ contract Web3ConSystem is ERC721, Ownable {
         });
         
         token.mint(msg.sender, REGISTRATION_REWARD);
-        
-        emit UserRegistered(msg.sender, _name);
     }
 
     function mintNFT() external {
@@ -68,8 +63,6 @@ contract Web3ConSystem is ERC721, Ownable {
         uint256 tokenId = nextTokenId;
         _mint(msg.sender, tokenId);
         nextTokenId++;
-        
-        emit NFTMinted(msg.sender, tokenId);
     }
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
@@ -110,3 +103,4 @@ contract Web3ConSystem is ERC721, Ownable {
         token.transfer(owner(), balance);
     }
 }
+
