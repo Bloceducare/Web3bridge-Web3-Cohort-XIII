@@ -1,0 +1,79 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/redfly/Documents/web3bridge-tasks/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-2/Sikiru Olagoke/sms-student-status-tracking/contracts/StudentManagement.sol": {
+      "lastModificationDate": 1754513331881,
+      "contentHash": "e6b7bdf4cadf38cb1b894efa0d648456",
+      "sourceName": "contracts/StudentManagement.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "StudentManagement"
+      ]
+    },
+    "/home/redfly/Documents/web3bridge-tasks/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-2/Sikiru Olagoke/sms-student-status-tracking/contracts/StudentManagementFactory.sol": {
+      "lastModificationDate": 1754513756762,
+      "contentHash": "529c0a1a39cfd32c7d0aee3778ad2f53",
+      "sourceName": "contracts/StudentManagementFactory.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./StudentManagement.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "StudentManagementFactory"
+      ]
+    }
+  }
+}
