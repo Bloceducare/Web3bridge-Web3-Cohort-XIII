@@ -4,3 +4,12 @@
 [submodule "onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts"]
 	path = onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "ticket-system/lib/forge-std"]
+	path = ticket-system/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "onsite-program/submissions/week-5/day-5/Olamilekan_Oladipupo/ticket-system/lib/forge-std"]
+	path = onsite-program/submissions/week-5/day-5/Olamilekan_Oladipupo/ticket-system/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "onsite-program/submissions/week-5/day-5/Olamilekan_Oladipupo/ticket-system/lib/openzeppelin-contracts"]
+	path = onsite-program/submissions/week-5/day-5/Olamilekan_Oladipupo/ticket-system/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
