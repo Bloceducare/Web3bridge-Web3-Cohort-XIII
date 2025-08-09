@@ -1,12 +1,11 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.28;
 
 import "./EventNFT.sol";
 import "./EventToken.sol";
 
 
 contract EventTicketSystem {
-
     struct Ticket{
         string eventName;
         uint ticketId;
@@ -42,6 +41,7 @@ contract EventTicketSystem {
     function getEventTicketPrice(string memory eventName)external view returns (uint){
         return eventTickets[eventName].price;
     }
+    
     function purchaseTicket(string memory eventName) external {
         if(allEvents[eventName] ==0 )revert TICKET_OUT_OF_SALES();
         if(eventToken.balanceOf(msg.sender)<eventTickets[eventName].price) revert INSUFFICIENT_BALANCE();

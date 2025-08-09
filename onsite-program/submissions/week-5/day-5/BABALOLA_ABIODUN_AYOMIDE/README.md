@@ -64,3 +64,7 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+## Contract deployment details
+ -- ticketNft contract address at:  `0xa7a64F344fd3df402666d15E72a386CFCcF354Ea`
+ -- ticketToken contract address at:  `0x75CE99AB9987710cA1F89041c49B52efcEb831F1`
+ -- EventTicketing contract address at:  `0x845F6B8D367B2769a43241153e0AdF011201b25d`

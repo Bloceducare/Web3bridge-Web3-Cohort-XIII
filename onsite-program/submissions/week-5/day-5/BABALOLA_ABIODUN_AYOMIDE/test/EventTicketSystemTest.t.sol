@@ -1,11 +1,10 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.28;
 
 import "../src/EventNFT.sol";
 import "../src/EventTicketSystem.sol";
 import "../src/EventToken.sol";
 import {Test} from "forge-std/Test.sol";
-import {console} from "forge-std/console.sol";
 
 contract EventTicketSystemTest is Test {
     EventTicketSystem public eventSystem;
