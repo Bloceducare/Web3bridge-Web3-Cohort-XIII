@@ -7,3 +7,9 @@
 [submodule "onsite-program/submissions/week-5/EventTicket/lib/forge-std"]
 	path = onsite-program/submissions/week-5/EventTicket/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "lib/openzeppelin-contracts"]
+	path = lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "onsite-program/submissions/week-5/day-5/Akinsanya-Daniel/EventTicket/lib/openzeppelin-contracts"]
+	path = onsite-program/submissions/week-5/day-5/Akinsanya-Daniel/EventTicket/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
