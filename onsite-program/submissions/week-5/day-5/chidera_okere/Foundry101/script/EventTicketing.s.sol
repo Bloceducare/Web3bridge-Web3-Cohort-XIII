@@ -27,7 +27,7 @@ contract DeployWithConfig is Script {
             TokenSale tokenSale
         ) = deployContracts();
 
-        // Setup contracts
+        // Setup contracts (including ownership transfer)
         setupContracts(token, nft, ticketing, tokenSale);
 
         // Verify deployment
@@ -44,15 +44,20 @@ contract DeployWithConfig is Script {
     ) {
         console.log("=== DEPLOYING CONTRACTS ===");
         
+        // Deploy TicketToken
         token = new TicketToken(INITIAL_TOKEN_SUPPLY);
         console.log("TicketToken:", address(token));
         
+        // Deploy TicketNft (owner will be the deployer initially)
         nft = new TicketNft();
         console.log("TicketNFT:", address(nft));
+        console.log("Initial NFT owner:", nft.owner());
         
+        // Deploy EventTicketing (without ownership transfer in constructor)
         ticketing = new EventTicketing(address(token), address(nft));
         console.log("EventTicketing:", address(ticketing));
         
+        // Deploy TokenSale
         tokenSale = new TokenSale(address(token), TOKEN_PRICE_IN_ETH);
         console.log("TokenSale:", address(tokenSale));
     }
@@ -65,13 +70,19 @@ contract DeployWithConfig is Script {
     ) internal {
         console.log("\n=== SETTING UP CONTRACTS ===");
         
+        // Transfer NFT ownership to EventTicketing contract
+        // This is done AFTER both contracts are deployed
+        console.log("Transferring NFT ownership...");
+        console.log("From:", nft.owner());
+        console.log("To:", address(ticketing));
+        
+        nft.transferOwnership(address(ticketing));
+        console.log("NFT ownership transferred successfully");
+        console.log("New NFT owner:", nft.owner());
+        
         // Transfer tokens to sale contract
         token.transfer(address(tokenSale), TOKENS_FOR_SALE);
         console.log("Transferred", TOKENS_FOR_SALE / 1e18, "TKT to TokenSale");
-        
-        // Verify NFT ownership was transferred
-        require(nft.owner() == address(ticketing), "NFT ownership transfer failed");
-        console.log("NFT ownership transferred to EventTicketing");
     }
 
     function verifyDeployment(
@@ -83,26 +94,40 @@ contract DeployWithConfig is Script {
         console.log("\n=== DEPLOYMENT VERIFICATION ===");
         
         // Verify token setup
-        assert(token.totalSupply() == INITIAL_TOKEN_SUPPLY);
-        assert(token.balanceOf(address(tokenSale)) == TOKENS_FOR_SALE);
+        require(token.totalSupply() == INITIAL_TOKEN_SUPPLY, "Token supply incorrect");
+        require(token.balanceOf(address(tokenSale)) == TOKENS_FOR_SALE, "TokenSale balance incorrect");
         console.log("Token balances correct");
         
         // Verify NFT ownership
-        assert(nft.owner() == address(ticketing));
+        require(nft.owner() == address(ticketing), "NFT ownership transfer failed");
         console.log("NFT ownership correct");
         
         // Verify contract references
-        assert(address(ticketing.ticketToken()) == address(token));
-        assert(address(ticketing.ticketNft()) == address(nft));
+        require(address(ticketing.ticketToken()) == address(token), "Token reference incorrect");
+        require(address(ticketing.ticketNft()) == address(nft), "NFT reference incorrect");
         console.log("Contract references correct");
+        
+        // Verify TokenSale setup
+        require(tokenSale.tokenPrice() == TOKEN_PRICE_IN_ETH, "Token price incorrect");
+        console.log("TokenSale configuration correct");
         
         console.log("ALL CONTRACTS DEPLOYED AND VERIFIED SUCCESSFULLY!");
         
         // Output addresses for frontend
-        console.log("\n=== CONTRACT ADDRESSES (save these for frontend) ===");
-        console.log("TICKET_TOKEN_ADDRESS=%s", address(token));
-        console.log("TICKET_NFT_ADDRESS=%s", address(nft));
-        console.log("EVENT_TICKETING_ADDRESS=%s", address(ticketing));
-        console.log("TOKEN_SALE_ADDRESS=%s", address(tokenSale));
+        console.log("\n=== CONTRACT ADDRESSES ===");
+        console.log("TicketToken:     ", address(token));
+        console.log("TicketNft:       ", address(nft));
+        console.log("EventTicketing:  ", address(ticketing));
+        console.log("TokenSale:       ", address(tokenSale));
+        
+        console.log("\n=== CONFIGURATION ===");
+        console.log("Initial Token Supply:", INITIAL_TOKEN_SUPPLY / 1e18, "TKT");
+        console.log("Tokens for Sale:     ", TOKENS_FOR_SALE / 1e18, "TKT");
+        console.log("Token Price:         ", TOKEN_PRICE_IN_ETH / 1e15, "milliETH");
+        
+        console.log("\n=== NEXT STEPS ===");
+        console.log("1. Users can buy TKT tokens from TokenSale contract");
+        console.log("2. Event organizers can create events via createTicket()");
+        console.log("3. Users can buy tickets with TKT and receive NFTs");
     }
 }

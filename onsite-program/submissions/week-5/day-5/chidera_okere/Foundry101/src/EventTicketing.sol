@@ -41,7 +41,7 @@ contract EventTicketing {
     constructor(address _ticketToken, address _ticketNft) {
         ticketToken = TicketToken(_ticketToken);
         ticketNft = TicketNft(_ticketNft);
-        ticketNft.transferOwnership(address(this)); // Set the contract deployer as the owner of the NFT contract
+        // ticketNft.transferOwnership(address(this)); // Set the contract deployer as the owner of the NFT contract
         nftTokenIdCounter = 1;  
     }
 
