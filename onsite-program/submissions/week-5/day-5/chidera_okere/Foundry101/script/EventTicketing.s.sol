@@ -7,6 +7,7 @@ import "forge-std/console.sol";
 import "../src/TicketToken.sol";
 import "../src/TicketNft.sol";
 import "../src/EventTicketing.sol";
+import "../src/TokenSale.sol";
 
 contract DeployWithConfig is Script {
     // Configuration
@@ -44,16 +45,16 @@ contract DeployWithConfig is Script {
         console.log("=== DEPLOYING CONTRACTS ===");
         
         token = new TicketToken(INITIAL_TOKEN_SUPPLY);
-        console.log("✓ TicketToken:", address(token));
+        console.log("TicketToken:", address(token));
         
         nft = new TicketNft();
-        console.log("✓ TicketNFT:", address(nft));
+        console.log("TicketNFT:", address(nft));
         
         ticketing = new EventTicketing(address(token), address(nft));
-        console.log("✓ EventTicketing:", address(ticketing));
+        console.log("EventTicketing:", address(ticketing));
         
         tokenSale = new TokenSale(address(token), TOKEN_PRICE_IN_ETH);
-        console.log("✓ TokenSale:", address(tokenSale));
+        console.log("TokenSale:", address(tokenSale));
     }
 
     function setupContracts(
@@ -66,11 +67,11 @@ contract DeployWithConfig is Script {
         
         // Transfer tokens to sale contract
         token.transfer(address(tokenSale), TOKENS_FOR_SALE);
-        console.log("✓ Transferred", TOKENS_FOR_SALE / 1e18, "TKT to TokenSale");
+        console.log("Transferred", TOKENS_FOR_SALE / 1e18, "TKT to TokenSale");
         
         // Verify NFT ownership was transferred
         require(nft.owner() == address(ticketing), "NFT ownership transfer failed");
-        console.log("✓ NFT ownership transferred to EventTicketing");
+        console.log("NFT ownership transferred to EventTicketing");
     }
 
     function verifyDeployment(
@@ -84,18 +85,18 @@ contract DeployWithConfig is Script {
         // Verify token setup
         assert(token.totalSupply() == INITIAL_TOKEN_SUPPLY);
         assert(token.balanceOf(address(tokenSale)) == TOKENS_FOR_SALE);
-        console.log("✓ Token balances correct");
+        console.log("Token balances correct");
         
         // Verify NFT ownership
         assert(nft.owner() == address(ticketing));
-        console.log("✓ NFT ownership correct");
+        console.log("NFT ownership correct");
         
         // Verify contract references
         assert(address(ticketing.ticketToken()) == address(token));
         assert(address(ticketing.ticketNft()) == address(nft));
-        console.log("✓ Contract references correct");
+        console.log("Contract references correct");
         
-        console.log("\n🎉 ALL CONTRACTS DEPLOYED AND VERIFIED SUCCESSFULLY!");
+        console.log("ALL CONTRACTS DEPLOYED AND VERIFIED SUCCESSFULLY!");
         
         // Output addresses for frontend
         console.log("\n=== CONTRACT ADDRESSES (save these for frontend) ===");
