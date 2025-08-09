@@ -65,6 +65,6 @@ $ anvil --help
 $ cast --help
 ```
 ## Contract deployment details
- -- ticketNft contract address at:  `0xa7a64F344fd3df402666d15E72a386CFCcF354Ea`
- -- ticketToken contract address at:  `0x75CE99AB9987710cA1F89041c49B52efcEb831F1`
- -- EventTicketing contract address at:  `0x845F6B8D367B2769a43241153e0AdF011201b25d`
+ -- ticketNft contract address at:  `0x3C30b793Aa1e670d9e98DD64A64B6604a7651129`
+ -- ticketToken contract address at:  `0x70D0d2Ef2857178938e3782C7c5b14700924765A`
+ -- EventTicketing contract address at:  `0x81E04f175d659FdaEd5767C5eE1586395dcF0436`
