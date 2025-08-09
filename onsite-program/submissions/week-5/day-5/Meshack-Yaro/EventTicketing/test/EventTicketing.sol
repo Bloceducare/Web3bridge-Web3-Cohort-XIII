@@ -4,7 +4,28 @@ pragma solidity ^0.8.28;
 import {Test, console} from "forge-std/Test.sol";
 import {EventTicketing} from "../src/EventTicketing.sol";
 
-contract CounterTest is Test {
+contract EventTicketingTest is Test {
+
+    EventTicketing public eventTicketing;
+
+    function setUp() public {
+        eventTicketing = new EventTicketing();
+
+    }
+    function test_createTcket() public {
+        eventTicketing.setTicketId(_ticketId);
+        eventTicketing.setName(_name);
+        eventTicketing.setTicketPrice(_ticketPrice);
+        eventTicketing.setTicketType(_ticketType.RARE);
+        eventTicketing.setStatus(_status.ONGOING);
+
+
+
+        assertEq();
+
+    }
+
+        
     // Counter public counter;
 
     // function setUp() public {
