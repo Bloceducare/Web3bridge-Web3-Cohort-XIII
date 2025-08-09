@@ -33,3 +33,5 @@ contract EventTicketingScript is Script {
   }
 }
 
+// forge script EventTicketingScript --rpc-url https://rpc.sepolia-api.lisk.com --etherscan-api-key 123 --verify --verifier blockscout  --verifier-url https://sepolia-blockscout.lisk.com/api --private-
+// key $PRIVATE_KEY --broadcast
