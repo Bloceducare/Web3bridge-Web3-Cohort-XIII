@@ -1,0 +1,9 @@
+{
+  "name": "TicketNft",
+  "description": "An nft for the biggest event ever",
+  "image": "ipfs://bafkreicwsh6jyytwntdekahyrxyowine3yavxwpys55jliqaikxrwoenci",
+  "attributes": [
+    { "trait_type": "Background", "value": "Blue" },
+    { "trait_type": "Power", "value": "100" }
+  ]
+}
