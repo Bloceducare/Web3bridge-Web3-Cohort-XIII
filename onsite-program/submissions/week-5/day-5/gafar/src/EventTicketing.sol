@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -100,6 +100,7 @@ contract EventTicketing {
 
         uint256 balance = paymentToken.balanceOf(msg.sender);
         if (balance < myEvent.price) revert Insufficient_Balance();
+        balance - myEvent.price;
 
         bool success = paymentToken.transferFrom(
             msg.sender,
