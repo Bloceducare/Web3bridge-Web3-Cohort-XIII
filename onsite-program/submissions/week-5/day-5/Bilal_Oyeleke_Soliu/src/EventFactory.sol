@@ -24,6 +24,7 @@ contract EventFactory is Ownable {
     error PAYMENT_FAILED();
     error ONLY_ORGANIZER_CAN_CALL();
     error TICKET_CLOSED();
+    error TOTAL_TICKETS_IS_NEEDED();
 
     uint256 public eventCount;
     mapping(uint256 => EventInfo) public events;
@@ -41,6 +42,9 @@ contract EventFactory is Ownable {
         uint256 _eventEndDate
     ) external returns (address erc20Address, address nftAddress) {
         // Token — minted fully to organizer
+        if(_totalTickets <= 0) {
+            revert TOTAL_TICKETS_IS_NEEDED();
+        }
         TicketToken erc20 = new TicketToken(_tokenName, _tokenSymbol, _tokenSupply, msg.sender);
 
         // NFT — ownership given to the factory so it can mint tickets
