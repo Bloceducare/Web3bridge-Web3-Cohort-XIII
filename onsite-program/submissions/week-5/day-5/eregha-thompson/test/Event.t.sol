@@ -58,7 +58,7 @@ contract EventTest is Test {
         eventTicket.buyTickets(0);
         EventTicketing.BuyTickets[] memory tickets = eventTicket.getBuyTickets(owner);
         assertEq(tickets[0]._buyer, owner);
-        
+        assertTrue(tickets[0].has_bought);
     }
    
 }
