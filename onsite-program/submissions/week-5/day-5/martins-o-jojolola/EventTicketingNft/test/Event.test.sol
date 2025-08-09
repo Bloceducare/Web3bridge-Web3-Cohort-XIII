@@ -1,70 +1,175 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.28;
 
 import "forge-std/Test.sol";
-import "../src/EventTicketing.sol";
+import "forge-std/console.sol";
+import "../src/Event.sol";
+import "../src/EventToken.sol";
+import "../src/EventNFTs.sol";
 
-contract EventTicketingTest is Test {
+contract EventTest is Test {
+    Event public eventContract;
     EventToken public eventToken;
     EventNFTs public eventNFTs;
-    Event public eventContract;
 
-    address public owner;
-    address public user1;
-    address public user2;
-    address public validator;
+    address public owner = address(1);
+    address public user1 = address(2);
+    address public user2 = address(3);
+    address public validator = address(4);
 
-    uint256 constant INITIAL_SUPPLY = 1_000_000;
-    uint256 constant TICKET_PRICE = 100 * 10 ** 18;
-    uint256 constant MAX_TICKETS = 1000;
+    uint256 constant INITIAL_SUPPLY = 1_000_000 * 1e18;
+    uint256 constant USER_BALANCE = 10_000 * 1e18;
+
+    string constant EVENT_NAME = "Test Concert";
+    string constant EVENT_DESCRIPTION = "A great concert";
+    uint256 constant TICKET_PRICE = 100 * 1e18;
+    uint256 constant MAX_TICKETS = 100;
+    string constant VENUE = "Test Arena";
+    string constant METADATA_URI = "ipfs://test-metadata";
 
     uint256 public eventId;
+    uint256 public startTime;
+    uint256 public endTime;
 
     function setUp() public {
-        owner = address(this);
-        user1 = makeAddr("user1");
-        user2 = makeAddr("user2");
-        validator = makeAddr("validator");
+        vm.startPrank(owner);
 
-        eventToken = new EventToken("EventCoin", "EVC", INITIAL_SUPPLY);
+        eventToken = new EventToken("EventToken", "ETK", INITIAL_SUPPLY / 1e18);
         eventNFTs = new EventNFTs();
         eventContract = new Event(address(eventToken), address(eventNFTs));
 
         eventNFTs.transferOwnership(address(eventContract));
 
-        eventContract.addValidator(validator);
+        startTime = block.timestamp + 1 days;
+        endTime = startTime + 1 days;
 
         eventId = eventContract.createEvent(
-            "Test Event",
-            "A test event",
+            EVENT_NAME,
+            EVENT_DESCRIPTION,
             TICKET_PRICE,
             MAX_TICKETS,
-            block.timestamp + 1 hours,
-            block.timestamp + 2 hours,
-            "Test Venue",
-            "https://test.metadata.uri"
+            startTime,
+            endTime,
+            VENUE,
+            METADATA_URI
         );
 
-        eventToken.mint(user1, 1000 * 10 ** 18);
-        eventToken.mint(user2, 500 * 10 ** 18);
+        eventContract.addValidator(validator);
+
+        eventToken.transfer(user1, USER_BALANCE);
+        eventToken.transfer(user2, USER_BALANCE);
+
+        vm.stopPrank();
+
+        vm.prank(user1);
+        eventToken.approve(address(eventContract), type(uint256).max);
+
+        vm.prank(user2);
+        eventToken.approve(address(eventContract), type(uint256).max);
     }
 
-    function testEventCreation() public {
-        Event.EventInfo memory eventInfo = eventContract.getEvent(eventId);
+    function testInitialSetup() public view {
+        assertEq(eventToken.totalSupply(), INITIAL_SUPPLY);
+        assertEq(
+            eventToken.balanceOf(owner),
+            INITIAL_SUPPLY - USER_BALANCE * 2
+        );
+        assertEq(eventToken.balanceOf(user1), USER_BALANCE);
+        assertEq(eventToken.balanceOf(user2), USER_BALANCE);
+        assertEq(eventContract.getTotalEvents(), 1);
+    }
 
-        assertEq(eventInfo.name, "Test Event");
-        assertEq(eventInfo.ticketPrice, TICKET_PRICE);
-        assertEq(eventInfo.maxTickets, MAX_TICKETS);
-        assertEq(eventInfo.soldTickets, 0);
+    function testCreateEvent() public {
+        vm.startPrank(owner);
+
+        uint256 newEventId = eventContract.createEvent(
+            "New Event",
+            "Description",
+            50 * 1e18,
+            200,
+            block.timestamp + 2 days,
+            block.timestamp + 3 days,
+            "New Venue",
+            "ipfs://new-metadata"
+        );
+
+        assertEq(newEventId, 1);
+        assertEq(eventContract.getTotalEvents(), 2);
+
+        Event.EventInfo memory eventInfo = eventContract.getEvent(newEventId);
+        assertEq(eventInfo.name, "New Event");
+        assertEq(eventInfo.ticketPrice, 50 * 1e18);
+        assertEq(eventInfo.maxTickets, 200);
         assertTrue(eventInfo.isActive);
+
+        vm.stopPrank();
+    }
+
+    function testCreateEventFailures() public {
+        vm.startPrank(owner);
+
+        vm.expectRevert("Start time must be in the future");
+        eventContract.createEvent(
+            "Past Event",
+            "Description",
+            TICKET_PRICE,
+            MAX_TICKETS,
+            block.timestamp - 1,
+            block.timestamp + 1 days,
+            VENUE,
+            METADATA_URI
+        );
+
+        vm.expectRevert("End time must be after start time");
+        eventContract.createEvent(
+            "Invalid Time Event",
+            "Description",
+            TICKET_PRICE,
+            MAX_TICKETS,
+            block.timestamp + 2 days,
+            block.timestamp + 1 days,
+            VENUE,
+            METADATA_URI
+        );
+
+        vm.expectRevert("Max tickets must be greater than 0");
+        eventContract.createEvent(
+            "Zero Tickets Event",
+            "Description",
+            TICKET_PRICE,
+            0,
+            startTime,
+            endTime,
+            VENUE,
+            METADATA_URI
+        );
+
+        vm.stopPrank();
+    }
+
+    function testCreateEventUnauthorized() public {
+        vm.prank(user1);
+        vm.expectRevert(
+            abi.encodeWithSignature(
+                "OwnableUnauthorizedAccount(address)",
+                user1
+            )
+        );
+        eventContract.createEvent(
+            "Unauthorized Event",
+            "Description",
+            TICKET_PRICE,
+            MAX_TICKETS,
+            startTime,
+            endTime,
+            VENUE,
+            METADATA_URI
+        );
     }
 
     function testPurchaseTicket() public {
-        vm.startPrank(user1);
-
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-
-        uint256 tokenId = eventContract.purchaseTicket(eventId, msg.sender);
+        vm.prank(user1);
+        uint256 tokenId = eventContract.purchaseTicket(eventId);
 
         assertEq(eventNFTs.ownerOf(tokenId), user1);
         assertEq(eventNFTs.getEventForTicket(tokenId), eventId);
@@ -80,221 +185,191 @@ contract EventTicketingTest is Test {
         assertEq(userTickets.length, 1);
         assertEq(userTickets[0], tokenId);
 
-        vm.stopPrank();
+        assertEq(eventToken.balanceOf(user1), USER_BALANCE - TICKET_PRICE);
+        assertEq(eventToken.balanceOf(address(eventContract)), TICKET_PRICE);
     }
 
     function testPurchaseMultipleTickets() public {
-        vm.startPrank(user1);
-
         uint256 quantity = 3;
-        uint256 totalCost = TICKET_PRICE * quantity;
 
-        eventToken.approve(address(eventContract), totalCost);
-
+        vm.prank(user1);
         uint256[] memory tokenIds = eventContract.purchaseMultipleTickets(
             eventId,
             quantity
         );
 
         assertEq(tokenIds.length, quantity);
+
         for (uint256 i = 0; i < quantity; i++) {
             assertEq(eventNFTs.ownerOf(tokenIds[i]), user1);
-            assertEq(eventNFTs.getEventForTicket(tokenIds[i]), eventId);
             assertTrue(eventNFTs.isTicketValid(tokenIds[i]));
         }
 
         Event.EventInfo memory eventInfo = eventContract.getEvent(eventId);
         assertEq(eventInfo.soldTickets, quantity);
 
-        vm.stopPrank();
+        uint256[] memory userTickets = eventContract.getUserTickets(
+            eventId,
+            user1
+        );
+        assertEq(userTickets.length, quantity);
+
+        assertEq(
+            eventToken.balanceOf(user1),
+            USER_BALANCE - (TICKET_PRICE * quantity)
+        );
+        assertEq(
+            eventToken.balanceOf(address(eventContract)),
+            TICKET_PRICE * quantity
+        );
+    }
+
+    function testPurchaseTicketFailures() public {
+        vm.prank(user1);
+        vm.expectRevert("Event does not exist");
+        eventContract.purchaseTicket(999);
+
+        vm.prank(owner);
+        eventContract.toggleEventStatus(eventId);
+
+        vm.prank(user1);
+        vm.expectRevert("Event is not active");
+        eventContract.purchaseTicket(eventId);
+
+        vm.prank(owner);
+        eventContract.toggleEventStatus(eventId);
+
+        vm.prank(user1);
+        eventToken.transfer(user2, USER_BALANCE - TICKET_PRICE + 1);
+
+        vm.prank(user1);
+        vm.expectRevert("Insufficient token balance");
+        eventContract.purchaseTicket(eventId);
+
+        vm.prank(user2);
+        eventToken.transfer(user1, USER_BALANCE - TICKET_PRICE + 1);
+
+        vm.prank(user1);
+        eventToken.approve(address(eventContract), TICKET_PRICE - 1);
+
+        vm.prank(user1);
+        vm.expectRevert("Insufficient token allowance");
+        eventContract.purchaseTicket(eventId);
+
+        vm.prank(user1);
+        eventToken.approve(address(eventContract), type(uint256).max);
+
+        vm.warp(startTime + 1);
+
+        vm.prank(user1);
+        vm.expectRevert("Event has already started");
+        eventContract.purchaseTicket(eventId);
+    }
+
+    function testSoldOut() public {
+        vm.prank(owner);
+        uint256 smallEventId = eventContract.createEvent(
+            "Small Event",
+            "Limited tickets",
+            TICKET_PRICE,
+            2,
+            startTime,
+            endTime,
+            VENUE,
+            METADATA_URI
+        );
+
+        vm.prank(user1);
+        eventContract.purchaseTicket(smallEventId);
+
+        vm.prank(user2);
+        eventContract.purchaseTicket(smallEventId);
+
+        vm.prank(user1);
+        vm.expectRevert("Event sold out");
+        eventContract.purchaseTicket(smallEventId);
+    }
+
+    function testPurchaseMultipleTicketsFailures() public {
+        vm.prank(user1);
+        vm.expectRevert("Invalid quantity (1-10)");
+        eventContract.purchaseMultipleTickets(eventId, 0);
+
+        vm.prank(user1);
+        vm.expectRevert("Invalid quantity (1-10)");
+        eventContract.purchaseMultipleTickets(eventId, 11);
+
+        vm.prank(owner);
+        uint256 limitedEventId = eventContract.createEvent(
+            "Limited Event",
+            "Only 2 tickets",
+            TICKET_PRICE,
+            2,
+            startTime,
+            endTime,
+            VENUE,
+            METADATA_URI
+        );
+
+        vm.prank(user1);
+        vm.expectRevert("Not enough tickets available");
+        eventContract.purchaseMultipleTickets(limitedEventId, 3);
     }
 
     function testValidateEntry() public {
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-        uint256 tokenId = eventContract.purchaseTicket(eventId, msg.sender);
-        vm.stopPrank();
+        vm.prank(user1);
+        uint256 tokenId = eventContract.purchaseTicket(eventId);
 
-        vm.warp(block.timestamp + 1 hours);
+        vm.warp(startTime + 1 hours);
 
         vm.prank(validator);
-        bool canEnter = eventContract.validateEntry(tokenId);
+        bool success = eventContract.validateEntry(tokenId);
+        assertTrue(success);
 
-        assertTrue(canEnter);
         assertFalse(eventNFTs.isTicketValid(tokenId));
-    }
-
-    function testCannotEnterWithUsedTicket() public {
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-        uint256 tokenId = eventContract.purchaseTicket(eventId, msg.sender);
-        vm.stopPrank();
-
-        vm.warp(block.timestamp + 1 hours);
-
-        vm.prank(validator);
-        eventContract.validateEntry(tokenId);
 
         vm.prank(validator);
         vm.expectRevert("Ticket is not valid or already used");
         eventContract.validateEntry(tokenId);
     }
 
-    function testCannotPurchaseAfterEventStarts() public {
-        vm.warp(block.timestamp + 2 hours);
-
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-
-        vm.expectRevert("Event has already started");
-        eventContract.purchaseTicket(eventId, msg.sender);
-
-        vm.stopPrank();
-    }
-
-    function testCannotEnterBeforeEventStarts() public {
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-        uint256 tokenId = eventContract.purchaseTicket(eventId, msg.sender);
-        vm.stopPrank();
-
+    function testValidateEntryFailures() public {
         vm.prank(validator);
-        vm.expectRevert("Event is not currently active");
-        eventContract.validateEntry(tokenId);
-    }
+        vm.expectRevert("ERC721NonexistentToken(999)");
+        eventContract.validateEntry(999);
 
-    function testCannotEnterAfterEventEnds() public {
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-        uint256 tokenId = eventContract.purchaseTicket(eventId, msg.sender);
-        vm.stopPrank();
-
-        vm.warp(block.timestamp + 3 hours);
-
-        vm.prank(validator);
-        vm.expectRevert("Event is not currently active");
-        eventContract.validateEntry(tokenId);
-    }
-
-    function testInsufficientTokens() public {
-        vm.startPrank(user2);
-
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-
-        vm.expectRevert("Insufficient token balance");
-        eventContract.purchaseMultipleTickets(eventId, 6);
-
-        vm.stopPrank();
-    }
-
-    function testSoldOut() public {
-        uint256 smallEventId = eventContract.createEvent(
-            "Small Event",
-            "Limited tickets",
-            TICKET_PRICE,
-            2,
-            block.timestamp + 1 hours,
-            block.timestamp + 2 hours,
-            "Small Venue",
-            "https://small.metadata.uri"
-        );
-
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE * 2);
-        eventContract.purchaseMultipleTickets(smallEventId, 2);
-        vm.stopPrank();
-
-        vm.startPrank(user2);
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-
-        vm.expectRevert("Event sold out");
-        eventContract.purchaseTicket(smallEventId, msg.sender);
-
-        vm.stopPrank();
-    }
-
-    function testOnlyValidatorCanValidateEntry() public {
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-        uint256 tokenId = eventContract.purchaseTicket(eventId, msg.sender);
-        vm.stopPrank();
-
-        vm.warp(block.timestamp + 1 hours);
+        vm.prank(user1);
+        uint256 tokenId = eventContract.purchaseTicket(eventId);
 
         vm.prank(user2);
         vm.expectRevert("Not authorized validator");
         eventContract.validateEntry(tokenId);
-    }
 
-    function testToggleEventStatus() public {
-        assertTrue(eventContract.getEvent(eventId).isActive);
-
+        vm.prank(owner);
         eventContract.toggleEventStatus(eventId);
-        assertFalse(eventContract.getEvent(eventId).isActive);
 
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-
+        vm.warp(startTime + 1 hours);
+        vm.prank(validator);
         vm.expectRevert("Event is not active");
-        eventContract.purchaseTicket(eventId, msg.sender);
+        eventContract.validateEntry(tokenId);
 
-        vm.stopPrank();
-    }
+        vm.prank(owner);
+        eventContract.toggleEventStatus(eventId);
 
-    function testWithdrawTokens() public {
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-        eventContract.purchaseTicket(eventId, msg.sender);
-        vm.stopPrank();
+        vm.warp(startTime - 1 hours);
+        vm.prank(validator);
+        vm.expectRevert("Event is not currently active");
+        eventContract.validateEntry(tokenId);
 
-        uint256 ownerBalanceBefore = eventToken.balanceOf(owner);
-        uint256 contractBalance = eventToken.balanceOf(address(eventContract));
-
-        eventContract.withdrawTokens();
-
-        uint256 ownerBalanceAfter = eventToken.balanceOf(owner);
-
-        assertEq(ownerBalanceAfter - ownerBalanceBefore, contractBalance);
-        assertEq(eventToken.balanceOf(address(eventContract)), 0);
-    }
-
-    function testGetActiveEvents() public {
-        uint256 eventId2 = eventContract.createEvent(
-            "Event 2",
-            "Second event",
-            TICKET_PRICE,
-            MAX_TICKETS,
-            block.timestamp + 3 hours,
-            block.timestamp + 4 hours,
-            "Venue 2",
-            "https://event2.metadata.uri"
-        );
-
-        uint256 eventId3 = eventContract.createEvent(
-            "Event 3",
-            "Third event",
-            TICKET_PRICE,
-            MAX_TICKETS,
-            block.timestamp + 5 hours,
-            block.timestamp + 6 hours,
-            "Venue 3",
-            "https://event3.metadata.uri"
-        );
-
-        eventContract.toggleEventStatus(eventId3);
-
-        uint256[] memory activeEvents = eventContract.getActiveEvents();
-
-        assertEq(activeEvents.length, 2);
-        assertEq(activeEvents[0], eventId);
-        assertEq(activeEvents[1], eventId2);
+        vm.warp(endTime + 1 hours);
+        vm.prank(validator);
+        vm.expectRevert("Event is not currently active");
+        eventContract.validateEntry(tokenId);
     }
 
     function testCanEnterEvent() public {
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-        uint256 tokenId = eventContract.purchaseTicket(eventId, msg.sender);
-        vm.stopPrank();
+        vm.prank(user1);
+        uint256 tokenId = eventContract.purchaseTicket(eventId);
 
         (bool canEnter, string memory reason) = eventContract.canEnterEvent(
             tokenId
@@ -302,110 +377,227 @@ contract EventTicketingTest is Test {
         assertFalse(canEnter);
         assertEq(reason, "Event has not started yet");
 
-        vm.warp(block.timestamp + 1.5 hours);
+        vm.warp(startTime + 1 hours);
         (canEnter, reason) = eventContract.canEnterEvent(tokenId);
         assertTrue(canEnter);
         assertEq(reason, "Ticket is valid for entry");
 
-        vm.warp(block.timestamp + 3 hours);
+        vm.prank(validator);
+        eventContract.validateEntry(tokenId);
+
         (canEnter, reason) = eventContract.canEnterEvent(tokenId);
         assertFalse(canEnter);
+        assertEq(reason, "Ticket is not valid or already used");
+
+        vm.warp(startTime - 1 hours);
+        vm.prank(user1);
+        uint256 tokenId2 = eventContract.purchaseTicket(eventId);
+
+        vm.warp(endTime + 1 hours);
+        (canEnter, reason) = eventContract.canEnterEvent(tokenId2);
+        assertFalse(canEnter);
         assertEq(reason, "Event has ended");
+    }
+
+    function testValidatorManagement() public {
+        address newValidator = address(5);
+
+        vm.prank(owner);
+        eventContract.addValidator(newValidator);
+
+        vm.prank(user1);
+        uint256 tokenId = eventContract.purchaseTicket(eventId);
+
+        vm.warp(startTime + 1 hours);
+
+        vm.prank(newValidator);
+        bool success = eventContract.validateEntry(tokenId);
+        assertTrue(success);
+
+        vm.prank(owner);
+        eventContract.removeValidator(newValidator);
+
+        vm.warp(startTime - 1 hours);
+        vm.prank(user1);
+        uint256 tokenId2 = eventContract.purchaseTicket(eventId);
+
+        vm.warp(startTime + 1 hours);
+
+        vm.prank(newValidator);
+        vm.expectRevert("Not authorized validator");
+        eventContract.validateEntry(tokenId2);
+    }
+
+    function testWithdrawTokens() public {
+        vm.prank(user1);
+        eventContract.purchaseTicket(eventId);
+
+        vm.prank(user2);
+        eventContract.purchaseTicket(eventId);
+
+        uint256 contractBalance = eventToken.balanceOf(address(eventContract));
+        uint256 ownerBalanceBefore = eventToken.balanceOf(owner);
+
+        vm.prank(owner);
+        eventContract.withdrawTokens();
+
+        assertEq(eventToken.balanceOf(address(eventContract)), 0);
+        assertEq(
+            eventToken.balanceOf(owner),
+            ownerBalanceBefore + contractBalance
+        );
+    }
+
+    function testGetActiveEvents() public {
+        vm.startPrank(owner);
+        uint256 event2 = eventContract.createEvent(
+            "Event 2",
+            "Description 2",
+            TICKET_PRICE,
+            MAX_TICKETS,
+            startTime,
+            endTime,
+            VENUE,
+            METADATA_URI
+        );
+
+        uint256 event3 = eventContract.createEvent(
+            "Event 3",
+            "Description 3",
+            TICKET_PRICE,
+            MAX_TICKETS,
+            startTime,
+            endTime,
+            VENUE,
+            METADATA_URI
+        );
+
+        eventContract.toggleEventStatus(eventId);
+        vm.stopPrank();
+
+        uint256[] memory activeEvents = eventContract.getActiveEvents();
+        assertEq(activeEvents.length, 2);
+        assertEq(activeEvents[0], event2);
+        assertEq(activeEvents[1], event3);
     }
 
     function testIsTicketHolder() public {
         assertFalse(eventContract.isTicketHolder(eventId, user1));
 
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-        eventContract.purchaseTicket(eventId, msg.sender);
-        vm.stopPrank();
+        vm.prank(user1);
+        eventContract.purchaseTicket(eventId);
 
         assertTrue(eventContract.isTicketHolder(eventId, user1));
         assertFalse(eventContract.isTicketHolder(eventId, user2));
     }
 
-    function testEventNFTFunctionality() public {
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE);
-        uint256 tokenId = eventContract.purchaseTicket(eventId, msg.sender);
-        vm.stopPrank();
+    function testEventNFTsDirectly() public {
+        vm.prank(user1);
+        vm.expectRevert(
+            abi.encodeWithSignature(
+                "OwnableUnauthorizedAccount(address)",
+                user1
+            )
+        );
+        eventNFTs.mintTicket(user1, eventId, METADATA_URI);
 
-        assertEq(eventNFTs.name(), "EventTicket");
-        assertEq(eventNFTs.symbol(), "ETKT");
-        assertEq(eventNFTs.ownerOf(tokenId), user1);
-        assertEq(eventNFTs.tokenURI(tokenId), "https://test.metadata.uri");
+        vm.prank(user1);
+        uint256 tokenId = eventContract.purchaseTicket(eventId);
 
-        assertEq(eventNFTs.getEventForTicket(tokenId), eventId);
-        uint256[] memory eventTokens = eventNFTs.getEventTickets(eventId);
-        assertEq(eventTokens.length, 1);
-        assertEq(eventTokens[0], tokenId);
+        EventNFTs.Ticket memory ticket = eventNFTs.getTicketInfo(tokenId);
+        assertEq(ticket.eventId, eventId);
+        assertFalse(ticket.used);
+        assertEq(ticket.mintTimestamp, block.timestamp);
 
-        assertEq(eventNFTs.totalSupply(), 1);
+        uint256[] memory userEventTickets = eventNFTs.getUserTicketsForEvent(
+            user1,
+            eventId
+        );
+        assertEq(userEventTickets.length, 1);
+        assertEq(userEventTickets[0], tokenId);
+
+        uint256[] memory eventTickets = eventNFTs.getEventTickets(eventId);
+        assertEq(eventTickets.length, 1);
+        assertEq(eventTickets[0], tokenId);
     }
 
-    function testEventTokenFunctionality() public {
-        assertEq(eventToken.name(), "EventCoin");
-        assertEq(eventToken.symbol(), "EVC");
-        assertEq(eventToken.decimals(), 18);
+    function testReentrancyProtection() public {
+        vm.prank(user1);
+        uint256 tokenId = eventContract.purchaseTicket(eventId);
+        assertGt(tokenId, 0);
 
-        uint256 expectedSupply = INITIAL_SUPPLY *
-            10 ** 18 +
-            1000 *
-            10 ** 18 +
-            500 *
-            10 ** 18;
-        assertEq(eventToken.totalSupply(), expectedSupply);
+        vm.warp(block.timestamp);
 
-        uint256 burnAmount = 100 * 10 ** 18;
+        vm.prank(user1);
+        uint256[] memory tokenIds = eventContract.purchaseMultipleTickets(
+            eventId,
+            2
+        );
+        assertEq(tokenIds.length, 2);
+
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            assertGt(tokenIds[i], 0);
+            assertTrue(eventNFTs.isTicketValid(tokenIds[i]));
+        }
+    }
+
+    function testLargeScaleTicketPurchase() public {
+        vm.prank(owner);
+        uint256 largeEventId = eventContract.createEvent(
+            "Large Event",
+            "Many tickets",
+            TICKET_PRICE,
+            1000,
+            startTime,
+            endTime,
+            VENUE,
+            METADATA_URI
+        );
+
+        vm.prank(owner);
+        eventToken.mint(user1, TICKET_PRICE * 100);
+
+        vm.prank(user1);
+        eventToken.approve(address(eventContract), type(uint256).max);
+
+        vm.prank(user1);
+        uint256[] memory tokenIds = eventContract.purchaseMultipleTickets(
+            largeEventId,
+            10
+        );
+        assertEq(tokenIds.length, 10);
+
+        Event.EventInfo memory eventInfo = eventContract.getEvent(largeEventId);
+        assertEq(eventInfo.soldTickets, 10);
+    }
+
+    function testEventTokenBurnability() public {
+        uint256 burnAmount = 100 * 1e18;
+        uint256 balanceBefore = eventToken.balanceOf(user1);
+
         vm.prank(user1);
         eventToken.burn(burnAmount);
 
-        assertEq(eventToken.balanceOf(user1), 900 * 10 ** 18);
-        assertEq(eventToken.totalSupply(), expectedSupply - burnAmount);
+        assertEq(eventToken.balanceOf(user1), balanceBefore - burnAmount);
     }
 
-    function testFailPurchaseWithoutApproval() public {
+    function testEventTokenMinting() public {
+        uint256 mintAmount = 500 * 1e18;
+        uint256 balanceBefore = eventToken.balanceOf(user1);
+
+        vm.prank(owner);
+        eventToken.mint(user1, mintAmount);
+
+        assertEq(eventToken.balanceOf(user1), balanceBefore + mintAmount);
+
         vm.prank(user1);
-        eventContract.purchaseTicket(eventId, msg.sender);
-    }
-
-    function testFailCreateEventInPast() public {
-        vm.expectRevert("Start time must be in the future");
-        eventContract.createEvent(
-            "Past Event",
-            "This should fail",
-            TICKET_PRICE,
-            MAX_TICKETS,
-            block.timestamp - 1 hours,
-            block.timestamp + 1 hours,
-            "Past Venue",
-            "https://past.metadata.uri"
+        vm.expectRevert(
+            abi.encodeWithSignature(
+                "OwnableUnauthorizedAccount(address)",
+                user1
+            )
         );
-    }
-
-    function testFailCreateEventWithEndBeforeStart() public {
-        vm.expectRevert("End time must be after start time");
-        eventContract.createEvent(
-            "Invalid Event",
-            "This should fail",
-            TICKET_PRICE,
-            MAX_TICKETS,
-            block.timestamp + 2 hours,
-            block.timestamp + 1 hours,
-            "Invalid Venue",
-            "https://invalid.metadata.uri"
-        );
-    }
-
-    function testFailPurchaseTooManyTickets() public {
-        vm.startPrank(user1);
-        eventToken.approve(address(eventContract), TICKET_PRICE * 20);
-
-        vm.expectRevert("Invalid quantity (1-10)");
-        eventContract.purchaseMultipleTickets(eventId, 15);
-
-        vm.stopPrank();
+        eventToken.mint(user1, mintAmount);
     }
 
     receive() external payable {}

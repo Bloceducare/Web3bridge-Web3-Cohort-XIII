@@ -3,8 +3,9 @@ pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "./TicketNft.sol";
-import "./TicketToken.sol";
+import "./lib/Counters.sol";
+import "./EventNFTs.sol";
+import "./EventToken.sol";
 
 contract Event is Ownable, ReentrancyGuard {
     using Counters for Counters.Counter;
@@ -115,9 +116,9 @@ contract Event is Ownable, ReentrancyGuard {
         emit EventStatusChanged(eventId, events[eventId].isActive);
     }
 
+    // FIXED: Only allow users to buy tickets for themselves
     function purchaseTicket(
-        uint256 eventId,
-        address buyer
+        uint256 eventId
     ) public nonReentrant returns (uint256) {
         EventInfo storage eventInfo = events[eventId];
 
@@ -128,14 +129,21 @@ contract Event is Ownable, ReentrancyGuard {
             block.timestamp < eventInfo.startTime,
             "Event has already started"
         );
+
+        // FIXED: Check allowance before attempting transfer
         require(
-            eventToken.balanceOf(buyer) >= eventInfo.ticketPrice,
+            eventToken.allowance(msg.sender, address(this)) >=
+                eventInfo.ticketPrice,
+            "Insufficient token allowance"
+        );
+        require(
+            eventToken.balanceOf(msg.sender) >= eventInfo.ticketPrice,
             "Insufficient token balance"
         );
 
         require(
             eventToken.transferFrom(
-                buyer,
+                msg.sender,
                 address(this),
                 eventInfo.ticketPrice
             ),
@@ -143,15 +151,20 @@ contract Event is Ownable, ReentrancyGuard {
         );
 
         uint256 tokenId = eventNFTs.mintTicket(
-            buyer,
+            msg.sender,
             eventId,
             eventInfo.metadataURI
         );
 
         eventInfo.soldTickets++;
-        userTickets[eventId][buyer].push(tokenId);
+        userTickets[eventId][msg.sender].push(tokenId);
 
-        emit TicketPurchased(eventId, tokenId, buyer, eventInfo.ticketPrice);
+        emit TicketPurchased(
+            eventId,
+            tokenId,
+            msg.sender,
+            eventInfo.ticketPrice
+        );
 
         return tokenId;
     }
@@ -175,6 +188,12 @@ contract Event is Ownable, ReentrancyGuard {
         );
 
         uint256 totalCost = eventInfo.ticketPrice * quantity;
+
+        // FIXED: Check allowance before attempting transfer
+        require(
+            eventToken.allowance(msg.sender, address(this)) >= totalCost,
+            "Insufficient token allowance"
+        );
         require(
             eventToken.balanceOf(msg.sender) >= totalCost,
             "Insufficient token balance"
