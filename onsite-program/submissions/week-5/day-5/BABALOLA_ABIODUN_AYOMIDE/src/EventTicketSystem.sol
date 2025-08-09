@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
+import "./EventNFT.sol";
+import "./EventToken.sol";
+
 
 contract EventTicketSystem {
 
@@ -9,27 +12,47 @@ contract EventTicketSystem {
         uint ticketId;
         uint price;
     }
-    EventToken eventToken;
+
     error INSUFFICIENT_TICKETS_LEFT();
     error TICKET_OUT_OF_SALES();
+    error INSUFFICIENT_BALANCE();
+
     mapping (string=> uint) private allEvents;
     mapping (string => Ticket) private eventTickets;
-    function createTickets(string memory eventName, uint quantity)external{
-        Ticket memory ticket = Ticket(eventName,quantity);
-        allEvents[eventName] = quantity;
+
+    EventToken private eventToken;
+    EventNFT private eventNFT;
+    address private owner;
+
+    constructor(address tokenAddress,address tokenNFT ){
+        eventToken = EventToken(tokenAddress);
+        eventNFT = EventNFT(tokenNFT);
+        owner = msg.sender;
     }
 
-    function getEventsTotalTicket(string memory eventName) external returns(uint){
+    function createTickets(string memory eventName, uint quantity, uint price)external{
+        Ticket memory ticket = Ticket(eventName,quantity,price);
+        allEvents[eventName] = quantity;
+        eventTickets[eventName]= ticket;
+    }
+
+    function getEventsTotalTicket(string memory eventName) external view returns(uint){
         return allEvents[eventName];
     }
-    function getEventTicketPrice(string memory eventName)external returns (uint){
+    function getEventTicketPrice(string memory eventName)external view returns (uint){
         return eventTickets[eventName].price;
     }
-    function purchaseTicket(string memory eventName, uint quantity) external {
+    function purchaseTicket(string memory eventName) external {
         if(allEvents[eventName] ==0 )revert TICKET_OUT_OF_SALES();
-        if(allEvents[eventName]<quantity)revert INSUFFICIENT_TICKETS_LEFT();
-        if(eventToken.balanceOf(msg.sender)) {};
-        allEvents[eventName]-=quantity;
-
+        if(eventToken.balanceOf(msg.sender)<eventTickets[eventName].price) revert INSUFFICIENT_BALANCE();
+        eventToken.transferFrom(msg.sender, owner, eventTickets[eventName].price);
+        allEvents[eventName]-=1;
+        eventNFT.mintToken(msg.sender,"https://gateway.pinata.cloud/ipfs/bafkreidywj6jwqdpnlndlussedj7u77dh47sjt5hm7ze6ufirow5prubzi");
+    }
+    function isHoldingNFT(address holder) external view returns(bool){
+        return eventNFT.balanceOf(holder)>0;
+    }
+    function getEventsTicketsLeft(string memory eventName)external view returns(uint){
+        return allEvents[eventName];
     }
 }

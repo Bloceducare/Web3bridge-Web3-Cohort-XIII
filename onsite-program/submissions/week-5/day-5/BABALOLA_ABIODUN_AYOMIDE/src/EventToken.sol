@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.10;
 
-import {IERC20} from "../lib/openzeppelin-contracts/lib/erc4626-tests/ERC4626.prop.sol";
+import {ERC20} from "../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 
-contract EventToken is IERC20{
-    constructor() constructor("Event Token", ){
-
+contract EventToken is ERC20{
+    constructor(uint initialSupply) ERC20("RAFIK TOKEN", "RTK"){
+        _mint(msg.sender, initialSupply * 10 ** decimals());
     }
 }
