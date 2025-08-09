@@ -1,0 +1,25 @@
+{
+  "contractAddress": "0x552Dcb633172AEB382f2faec1F528Ddea6Dd041c",
+  "network": "lisk-sepolia",
+  "deployer": "",
+  "baseURI": "ipfs://QmfE733vdAm7V3WQVQrE24yddUJvBYs4FAtLuaK5AsvZyz/",
+  "events": [
+    {
+      "eventId": 1,
+      "title": "Blockchain Conference 2024",
+      "organizer": "0x838Abf92E994e088e641399e91AcE43514038b90",
+      "ticketsSold": "2",
+      "totalTickets": "100"
+    },
+    {
+      "eventId": 2,
+      "title": "Web3 Workshop",
+      "organizer": "0x838Abf92E994e088e641399e91AcE43514038b90",
+      "ticketsSold": "1",
+      "totalTickets": "50"
+    }
+  ],
+  "timestamp": "2025-08-06T12:27:50.502Z",
+  "status": "success",
+  "errors": []
+}
