@@ -30,6 +30,6 @@ contract TokenSale {
         require(tokenAmount > 0, "Insufficient ETH for tokens");
         require(ticketToken.balanceOf(address(this)) >= tokenAmount, "Not enough tokens in sale contract");
         ticketToken.transfer(msg.sender, tokenAmount);
-        payable(owner).transfer(msg.value);
+        payable(owner).transfer(cost);
     }
 }

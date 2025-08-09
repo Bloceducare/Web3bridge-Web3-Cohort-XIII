@@ -37,8 +37,6 @@ contract EventTicketing {
     TicketToken public ticketToken;
     TicketNft public ticketNft;
 
-    event TicketCreated(uint256 indexed eventId, address indexed organizer);
-    event TicketPurchased(uint256 indexed eventId, address indexed buyer, uint256 nftTokenId);
 
     constructor(address _ticketToken, address _ticketNft) {
         ticketToken = TicketToken(_ticketToken);
@@ -67,8 +65,7 @@ contract EventTicketing {
         });
 
         ticketsList.push(newTicket);
-        
-        emit TicketCreated(ticketCount, msg.sender);
+    
         ticketCount++;
     }
 
@@ -90,7 +87,7 @@ contract EventTicketing {
         ticketToken.transferFrom(msg.sender, eventTicket.organizer, eventTicket.ticket_price);
         
     
-        uint256 nftId = nftTokenIdCounter;
+        uint256 nftId = nftTokenIdCounter ++;
         ticketNft.mint(msg.sender, nftId);
         nftTokenIdCounter++;
 
@@ -98,8 +95,6 @@ contract EventTicketing {
         eventTicket.ticket_quantity -= 1;
         userTickets[msg.sender].push(_eventId);
         eventAttendees[_eventId].push(msg.sender);
-
-        emit TicketPurchased(_eventId, msg.sender, nftId);
     }
 
     
