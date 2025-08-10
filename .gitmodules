@@ -12,4 +12,4 @@
 	url = https://github.com/foundry-rs/forge-std
 [submodule "onsite-program/submissions/week-5/day-5/Meshack-Yaro/EventTicketing/lib/openzeppelin-contracts"]
 	path = onsite-program/submissions/week-5/day-5/Meshack-Yaro/EventTicketing/lib/openzeppelin-contracts
-	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts

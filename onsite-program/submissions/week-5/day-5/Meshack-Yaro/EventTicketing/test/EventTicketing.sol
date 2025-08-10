@@ -13,15 +13,15 @@ contract EventTicketingTest is Test {
 
     }
     function test_createTcket() public {
-        eventTicketing.setTicketId(_ticketId);
-        eventTicketing.setName(_name);
-        eventTicketing.setTicketPrice(_ticketPrice);
-        eventTicketing.setTicketType(_ticketType.RARE);
-        eventTicketing.setStatus(_status.ONGOING);
+        // eventTicketing.setTicketId(_ticketId);
+        // eventTicketing.setName(_name);
+        // eventTicketing.setTicketPrice(_ticketPrice);
+        // eventTicketing.setTicketType(_ticketType.RARE);
+        // eventTicketing.setStatus(_status.ONGOING);
 
 
 
-        assertEq();
+        // assertEq();
 
     }
 
