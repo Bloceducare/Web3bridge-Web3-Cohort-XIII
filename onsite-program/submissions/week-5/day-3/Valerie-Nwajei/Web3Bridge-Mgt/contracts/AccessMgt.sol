@@ -4,9 +4,15 @@ pragma solidity ^0.8.28;
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
 
-contract AccessMgt{
+contract AccessMgt {
+    struct Employee {
+        string name;
+        address employeeAddress;
+        Role role;
+        bool isEmployed;
+    }
 
-    enum Role{
+    enum Role {
         MediaTeam,
         Mentors,
         Managers,
@@ -14,70 +20,68 @@ contract AccessMgt{
         Technicians,
         KitchenStaff
     }
-    struct Employee{
-        string name;
-        bool isEmployed;
-        Role role;
-    }
 
     Employee[] public employees;
-    address[] public addresses;
-
     mapping(address => Employee) public roles;
-    mapping(address=>bool) private existingEmployee;
 
-    function add_and_update_Employee(string memory _name, Role _role, address _address) external {
+    function add_and_update_Employee(
+        string memory _name,
+        Role _role,
+        address _address
+    ) external {
         require(_address != address(0), "Invalid address");
-        if(existingEmployee[_address] ==true){
-            for(uint i; i< employees.length; i++){
-            if(employees[i].isEmployed == true){
-                employees[i].name = _name;
-                employees[i].role = _role;
-            }else{
-                Employee memory newEmployee = Employee({
-            name: _name,
-            isEmployed: true,
-            role: _role
-        });
-            roles[_address]= newEmployee;
-            existingEmployee[_address]=true;
+        if (roles[_address].isEmployed) {
+            for (uint i; i < employees.length; i++) {
+                if (employees[i].isEmployed == true) {
+                    employees[i].name = _name;
+                    employees[i].role = _role;
+                }
+            }
+        } else {
+            Employee memory newEmployee = Employee({
+                name: _name,
+                employeeAddress: _address,
+                role: _role,
+                isEmployed: true
+            });
             employees.push(newEmployee);
-            }
+            roles[_address] = newEmployee;
         }
-        }
-        
-        
-    }
-    function fullAccess(address _address)external view returns(bool){
-            return (
-                existingEmployee[_address] == true &&
-                (
-                    roles[_address].role == Role.MediaTeam ||
-                    roles[_address].role == Role.Mentors ||
-                    roles[_address].role == Role.Managers
-                )
-            );        
     }
 
-    function terminateEmployee(address _address) external{
+    function fullAccess(address _address) external view returns (bool) {
+        return (
+            (roles[_address].role == Role.MediaTeam ||
+                roles[_address].role == Role.Mentors ||
+                roles[_address].role == Role.Managers)
+        );
+    }
+
+    function terminateEmployee(address _address) external {
         require(_address != address(0), "Invalid address");
-
-        for(uint i; i< employees.length; i++){
-            if(existingEmployee[_address] ==true){
-                existingEmployee[_address]=false;
-                roles[_address].isEmployed = false;
-            }else{
-                revert ("Employee does not exist");
+        require(roles[_address].isEmployed, "Employee does not exist");
+        roles[_address].isEmployed = false;
+        for (uint i; i < employees.length; i++) {
+            if (employees[i].employeeAddress == _address) {
+                employees[i] = employees[employees.length - 1];
+                employees.pop();
+                return;
             }
-    }
+        }
     }
 
-    function getEmployees() external view returns(Employee[] memory){
+    function getEmployees() external view returns (Employee[] memory) {
         return employees;
     }
 
-    function getEmployeesById(address _address)external view returns (Employee memory){
-        require(existingEmployee[_address], "Employee not found");
+    function getEmployeeCount() external view returns (uint) {
+        return employees.length;
+    }
+
+    function getEmployeesById(
+        address _address
+    ) external view returns (Employee memory) {
+        require(roles[_address].isEmployed, "Employee not found");
         return roles[_address];
     }
 }
