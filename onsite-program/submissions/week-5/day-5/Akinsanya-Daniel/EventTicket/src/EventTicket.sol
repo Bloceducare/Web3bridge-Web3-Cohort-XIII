@@ -22,8 +22,9 @@ contract EventTicket{
 
     mapping(uint256 => TicketDetails) tickets;
     constructor(address _token,address _nft){
-          ticketNft = TicketNft(_nft);
+          owner = msg.sender;
           ticketToken =  TicketToken(_token);
+          ticketNft = TicketNft(_nft);
     }
   
 
@@ -40,20 +41,16 @@ contract EventTicket{
     }
 
     function purchaseTicket(uint256 ticketId)external payable{
-       TicketDetails memory ticketDetails = tickets[ticketId];
-       require(ticketDetails.isActive == true,"ticket not available");
-       require(ticketToken.balanceOf(msg.sender) >= ticketDetails.ticketPrice,"Insufficient fundss");
-       bool success = ticketToken.transferFrom(msg.sender, ticketDetails.ticketOwner, ticketDetails.ticketPrice);
-       if(success){
-        ticketNft.mintTicket(msg.sender,ticketDetails.nftUrl);
-        ticketDetails.isActive = false;
-        return ;
-      }
-
-      revert("Failed");
+    TicketDetails storage ticketDetails = tickets[ticketId];
+    require(ticketDetails.isActive, "Ticket not available");
+    require(ticketToken.balanceOf(msg.sender) >= ticketDetails.ticketPrice, "Insufficient token balance");
+    
+    ticketToken.transferFrom(msg.sender, ticketDetails.ticketOwner, ticketDetails.ticketPrice);
+    ticketDetails.isActive = false;
+    ticketNft.mintTicket(msg.sender, ticketDetails.nftUrl);
        
        
-    }
+ }
 
     function getTicket(uint256 ticketId)external view returns(TicketDetails memory) {
         return tickets[ticketId];

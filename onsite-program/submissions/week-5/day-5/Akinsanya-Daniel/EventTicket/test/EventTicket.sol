@@ -11,15 +11,20 @@ contract EventTicketTest is Test {
     EventTicket eventTicket;
     TicketNft ticketNft;
     TicketToken ticketToken;
-    address user = address(0x1234); 
-    address ticketOwner = 0x02AF376f613938A58c9567128E82bf3536a76F27;
+    address user; 
+    address ticketOwner;
 
     function setUp() public {
+         user = 0x02AF376f613938A58c9567128E82bf3536a76F27;
+        ticketOwner = 0x58A8D815eE6D1DDd027341650139B21c3258172b;
+        vm.startPrank(user);
+
         ticketNft = new TicketNft();
-        ticketToken = new  TicketToken(2000000000000000000);
-        eventTicket = new EventTicket(address(ticketNft),address(ticketToken));
-        vm.prank(address(this));
-        ticketToken.transfer(user, 2000000000000000000);
+        ticketToken = new  TicketToken(9000000000000000000);
+        eventTicket = new EventTicket(address(ticketToken),address(ticketNft));
+       
+        ticketToken.transfer(ticketOwner, 4000000000000000000);
+        vm.stopPrank();
     }
 
     function testCreateTicket() public {
@@ -45,35 +50,38 @@ contract EventTicketTest is Test {
          eventTicket.createTicket(_ticketPrice,_eventName, _ticketAddress, _nftUrl);
     }
 
-    // function testPurchaseTicketSuccessfully()public {
-    //     uint256 _ticketPrice = 1000000000000000000;
-    //     string memory _eventName = "Olamide live in concert";
-    //     address _ticketAddress = 0x02AF376f613938A58c9567128E82bf3536a76F27;
-    //     string memory _nftUrl = "https://gateway.pinata.cloud/ipfs/bafkreif242dnhz6cibznuyvg6pmn4ncihugqsigl3vhr3ce4chqjkw36la";
-    //     vm.prank(ticketOwner);
-    //     eventTicket.createTicket(_ticketPrice, _eventName, _ticketAddress, _nftUrl);
+    function testPurchaseTicketSuccessfully()public {
+        uint256 _ticketPrice = 1000000000000000000;
+        string memory _eventName = "Olamide live in concert";
+        address _ticketAddress = ticketOwner;
+        string memory _nftUrl = "https://gateway.pinata.cloud/ipfs/bafkreif242dnhz6cibznuyvg6pmn4ncihugqsigl3vhr3ce4chqjkw36la";
+        vm.prank(ticketOwner);
+        eventTicket.createTicket(_ticketPrice, _eventName, _ticketAddress, _nftUrl);
+        vm.prank(user);
+        ticketToken.approve(address(eventTicket),_ticketPrice);
+        uint256 userBalanceBefore = ticketToken.balanceOf(user);
+        console.log("This is the user balance before");
+        console.log(userBalanceBefore);
+        uint256 ownerBalanceBefore = ticketToken.balanceOf(ticketOwner);
+        console.log("This is the owner balance before");
+        console.log(ownerBalanceBefore);
+        vm.prank(user);
+        eventTicket.purchaseTicket(1);
     
+        uint256 userBalanceAfter = ticketToken.balanceOf(user);
+        console.log("This is the user balance after");
+        console.logUint(userBalanceAfter);
     
-    //    deal(address(ticketToken), user, _ticketPrice); 
-    //    vm.prank(user);
-    //    ticketToken.approve(address(eventTicket), _ticketPrice); 
-    
-  
-    //    uint256 userBalanceBefore = ticketToken.balanceOf(user);
-    //    uint256 ownerBalanceBefore = ticketToken.balanceOf(_ticketAddress);
+        uint256 ownerBalanceAfter = ticketToken.balanceOf(ticketOwner);
+        console.log("This is the owner balance after"); 
+        console.logUint(ownerBalanceAfter);
+        assertEq(ticketToken.balanceOf(user), userBalanceBefore - _ticketPrice);
+        assertEq(ticketToken.balanceOf(ticketOwner), ownerBalanceBefore + _ticketPrice);
+        assertFalse(eventTicket.getTicket(1).isActive); 
+
+    }
     
 
-    //   vm.prank(user);
-    //   eventTicket.purchaseTicket(1); 
-    
-   
-    //   assertEq(ticketToken.balanceOf(user), userBalanceBefore - _ticketPrice);
-    //   assertEq(ticketToken.balanceOf(_ticketAddress), ownerBalanceBefore + _ticketPrice);
-    //   assertFalse(eventTicket.getTicket(1).isActive); 
-
-
-
-    // }
 
     function testPurchaseTicketWhenTicketIsNotAvailable()public{
     uint256 _ticketPrice = 1 ether;
@@ -86,11 +94,37 @@ contract EventTicketTest is Test {
     eventTicket.createTicket(_ticketPrice, _eventName, _ticketOwner, _nftUrl);
 
 
-    vm.expectRevert(bytes("ticket not available"));
+    vm.expectRevert(bytes("Ticket not available"));
     eventTicket.purchaseTicket(999); 
 
 
     }
 
+    function testPurchaseTicketWhenBalanceIsLess()public{
+
+    uint256 _ticketPrice = 9 ether;
+    string memory _eventName = "Burna event";
+    address _ticketAddress = ticketOwner;
+
+    string memory _nftUrl = "https://example.com/ticket.json";
+
+  
+    vm.prank(ticketOwner);
+   
+    eventTicket.createTicket(_ticketPrice, _eventName, _ticketAddress, _nftUrl);
+    vm.expectRevert(bytes("Insufficient token balance"));
+    vm.prank(user);
+    eventTicket.purchaseTicket(1); 
+   
+
+
     
-}
+   
+
+
+    }
+
+    }
+
+    
+
