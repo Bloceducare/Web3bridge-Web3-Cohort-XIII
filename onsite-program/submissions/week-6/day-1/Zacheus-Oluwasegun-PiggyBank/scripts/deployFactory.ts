@@ -5,10 +5,10 @@ async function main() {
 
   const PiggyBankFactory = await ethers.getContractFactory("PiggyBankFactory");
   const piggybankFactory = await PiggyBankFactory.deploy();
-   await piggybankFactory.waitForDeployment();
+  await piggybankFactory.waitForDeployment();
 
-   const contractAddress = await piggybankFactory.getAddress();
-  console.log("Web3BridgeGarage contract deployed to:", contractAddress);
+  const contractAddress = await piggybankFactory.getAddress();
+  console.log("PiggyBankFactory contract deployed to:", contractAddress);
 }
 
 main().catch((err) => {

@@ -35,11 +35,11 @@ contract PiggyBankFactory {
         return piggyBankAddress;
     }
     
-    function getUserPiggyBank(address _user) external view returns (address) {
+    function getUserPiggyBank(address _user) external view onlyAdmin returns (address) {
         return userPiggyBanks[_user];
     }
     
-    function getAllPiggyBanks() external view returns (address[] memory) {
+    function getAllPiggyBanks() external view  onlyAdmin returns (address[] memory) {
         return allPiggyBanks;
     }    
         

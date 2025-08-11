@@ -65,7 +65,7 @@ contract PiggyBank {
     function createSavingsAccount(
         string memory _name,
         uint _lockPeriod
-    ) external checkLockTime(_lockPeriod) returns (uint acct_id) {      
+    ) external onlyOwner checkLockTime(_lockPeriod) returns (uint acct_id) {      
 
         accountId = accountId + 1;        
         Account memory _new_account = Account(
@@ -148,6 +148,7 @@ contract PiggyBank {
         }
 
         myAccounts[_acct_id - 1].balance += _amount;
+        myAccounts[_acct_id - 1].isLocked = true;
         emit DeposiitCompleted(_amount, block.timestamp);
     }
 
@@ -183,6 +184,9 @@ contract PiggyBank {
         }
 
         myAccounts[_acct_id - 1].balance -= amount;
+        if (myAccounts[_acct_id - 1].balance == 0) {
+            myAccounts[_acct_id - 1].isLocked = false;
+        }
         emit WithdrawalCompleted(address(this).balance, block.timestamp);
     }
 }
