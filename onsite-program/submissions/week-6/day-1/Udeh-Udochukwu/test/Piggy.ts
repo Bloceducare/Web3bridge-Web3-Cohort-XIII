@@ -1,3 +1,4 @@
+import { GetContractTypeFromFactory } from './../../../../week-3/day-2/Daniel-Akinsanya-Hardhat/typechain-types/common';
 import { Piggy } from './../typechain-types/Piggy';
 import {
   loadFixture, time
@@ -5,7 +6,7 @@ import {
 import { expect,  } from "chai";
 import {ethers} from "hardhat";
 
-describe("piggy banks", function () {
+describe("piggy factory", function () {
  
  async function deployPiggyFactoryFixture() {
    // Get signers
@@ -35,18 +36,32 @@ describe("piggy banks", function () {
       })
 
     it("create piggy", async function () {
-      
+
          const currentTime = await time.latest();
          const unlockTime = currentTime + 60;
       const tokenAddress = ethers.ZeroAddress;
       
-        const { factory, user1 } = await loadFixture(deployPiggyFactoryFixture);
+        const { factory,admin,  user1 } = await loadFixture(deployPiggyFactoryFixture);
 
-        factory.connect(user1).createPiggyBank(unlockTime, tokenAddress, {value: ethers.parseEther("1")})
+        await factory.connect(user1).createPiggyBank(unlockTime, tokenAddress, {value: ethers.parseEther("1")})
        
         const userBanks = await factory.getUserPiggyBanks(user1.address);
-        expect(userBanks).to.have.lengthOf(1);
-      })
+        const myBanks = await factory.getMyPiggyBanks();
+        const piggy = await ethers.getContractAt("Piggy", userBanks[0]);
+        
+      expect(userBanks).to.have.lengthOf(1);
+      expect(myBanks).to.have.lengthOf(1);
+
+         expect(await piggy.unlockTime()).to.equal(unlockTime);
+         expect(await piggy.owner()).to.equal(user1.address);
+         expect(await piggy.admin()).to.equal(await factory.admin());
+         expect(await piggy.tokenAddress()).to.equal(tokenAddress);
+         expect(await piggy.isETH()).to.be.true;
+
+    })
+    
   })
+
+
 
 });
