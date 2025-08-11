@@ -12,12 +12,12 @@ contract MockERC20 is ERC20 {
         _mint(msg.sender, initialSupply);
     }
 
-    // Optional: mint function for testing
+    
     function mint(address to, uint256 amount) external {
         _mint(to, amount);
     }
 
-    // Optional: burn function for testing
+    
     function burn(address from, uint256 amount) external {
         _burn(from, amount);
     }
