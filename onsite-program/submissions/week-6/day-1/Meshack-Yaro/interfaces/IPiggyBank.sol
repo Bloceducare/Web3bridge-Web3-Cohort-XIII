@@ -8,8 +8,8 @@ interface IPiggyBank {
         WalletType walletType;
         uint balance;
         address tokenAddress;
-        uint lockUntil: 0;
-        uint createdAt: 0;
+        uint lockUntil;
+        uint createdAt;
         
     }
 

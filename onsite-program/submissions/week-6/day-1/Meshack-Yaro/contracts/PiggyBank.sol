@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import {IPiggyBank} from "./interface/IPiggyBank.sol";
-import {IERC20} from "@openzeppelin/contracts/ERC20/IERC20.sol";
+import { IPiggyBank } from "../interfaces/IPiggyBank.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 
 contract PiggyBank is IPiggyBank {
@@ -31,22 +31,24 @@ contract PiggyBank is IPiggyBank {
 
 
     function createAccount() external {
-        uint walletId = nextWallei IPiggytId[msg.sender]++;
+        uint walletId = nextWalletId[msg.sender]++;
         walletsByOwner[msg.sender].push(
             Wallet({
+                walletId: walletId,
                 owner: msg.sender,
                 walletType: WalletType.DEFAULT,
                 tokenAddress: address(0),
                 balance: 0,
                 lockUntil: 0,
+                createdAt: 0
 
-            });
-        )
+            })
+        );
     }
 
     function depositEther(uint _walletId, uint _lockPeriod) external payable {
         if (_walletId >= walletsByOwner[msg.sender].length) revert InvalidWalletId();
-        Wallet storage wallet = walletsByOwner[msg.sender][walletId];
+        Wallet storage wallet = walletsByOwner[msg.sender][_walletId];
 
         if (msg.value == 0) revert NoTokensSent();
         if (wallet.walletType != WalletType.DEFAULT && wallet.walletType != WalletType.ETHER) {
@@ -59,30 +61,30 @@ contract PiggyBank is IPiggyBank {
     }
 
     function depositERC20(uint _walletId, address _token, uint _amount, uint _lockPeriod) external payable {
-        if (walletId >= walletsByOwner[msg.sender].length) revert InvalidWalletId();
+        if (_walletId >= walletsByOwner[msg.sender].length) revert InvalidWalletId();
 
-        Wallet storage wallet = walletsByAddress[msg.sender][walletId];
+        Wallet storage wallet = walletsByOwner[msg.sender][_walletId];
         if (_amount <= 0) revert NoTokensSent();
 
         if (wallet.walletType != WalletType.DEFAULT && wallet.walletType != WalletType.ERC20) revert WalletAlreadySetForOtherTokenType();
 
-        IERC20(_token).transferFrom(msg.sender,  _amount);
+        IERC20(_token).transferFrom(msg.sender, address(this), _amount);
 
-        wallet.walletType = wallet.WalletType.ERC20;
+        wallet.walletType = WalletType.ERC20;
         wallet.tokenAddress = _token;
         wallet.balance += _amount;
         wallet.lockUntil = block.timestamp + _lockPeriod; 
     }
 
 
-    function withdraw(uint _accountId, uint _amount) external {
+    function withdraw(uint _walletId, uint _amount) external {
         if (_walletId >= walletsByOwner[msg.sender].length) revert InvalidWalletId();
-        Wallet storage wallet = walletsByAddress[_walletId];
+        Wallet storage wallet = walletsByOwner[msg.sender][_walletId];
         if (wallet.owner != msg.sender) revert NotAccountOwner();
         if (wallet.balance < _amount) revert InsuffucuentBalance();
 
         uint penalty;
-        if (block.timestamp < wallet.createdAt + wallet.lockPeriod) {
+        if (block.timestamp < wallet.createdAt + wallet.lockUntil) {
             penalty = (_amount * PENALTY_PERCENT) / 100;
             _transfer(wallet.walletType, wallet.tokenAddress, deployer, penalty);
         }
@@ -100,8 +102,8 @@ contract PiggyBank is IPiggyBank {
         }
     }
 
-    function getWallet(uint _walletId) external view returns (Account memory) {
-        if (_walletId >= walletsByOwner[_owner].length) revert InvalidWalletId();
-        return walletsByOwner[_owner][_walletId];
+    function getWallet(uint _walletId) external view returns (Wallet memory) {
+        if (_walletId >= walletsByOwner[msg.sender].length) revert InvalidWalletId();
+        return walletsByOwner[msg.sender][_walletId];
     }
 }
