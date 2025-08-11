@@ -1,0 +1,45 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/yetunde/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-3/NFT-1/Barakat-Yetunde-Oyewole/NFT-collection/contracts/NftCollection.sol": {
+      "lastModificationDate": 1754476762238,
+      "contentHash": "6827c2a058efc1fbccbed4fcd3f03761",
+      "sourceName": "contracts/NftCollection.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "DecentralizedNFT",
+        "IERC165",
+        "IERC721",
+        "IERC721Metadata",
+        "IERC721Receiver"
+      ]
+    }
+  }
+}
