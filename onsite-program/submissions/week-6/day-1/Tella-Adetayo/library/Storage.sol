@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.28;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 library Storage {
 
     struct Layout {
         address owner; 
+        address admin; 
         address factory; 
         address token; // address(0) => ETH
         uint256 createdAt; 
@@ -14,6 +17,8 @@ library Storage {
         uint16 feeBps; // 300 => 3.00%
         bool active; 
         bool initialized; 
+
+        IERC20 savingToken;
     }
 
     bytes32 internal constant STORAGE_SLOT = keccak256("piggyBank.storage"); 
