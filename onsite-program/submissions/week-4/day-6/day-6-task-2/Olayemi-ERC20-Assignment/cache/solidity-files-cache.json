@@ -1,0 +1,79 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/babatunde/Documents/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-2/Olayemi-ERC20-Assignment/contracts/ERC20.sol": {
+      "lastModificationDate": 1754383701258,
+      "contentHash": "ad44322f29bf8a7f440656ae457526dd",
+      "sourceName": "contracts/ERC20.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "/home/babatunde/Documents/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-6/day-6-task-2/Olayemi-ERC20-Assignment/contracts/IERC20.sol": {
+      "lastModificationDate": 1754263010491,
+      "contentHash": "d32b7c5c45e0ce4a465cb0623ff18afc",
+      "sourceName": "contracts/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    }
+  }
+}
