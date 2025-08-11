@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.28;
+import "../interfaces/IPiggyBank.sol";
 
 interface IERC20 {
     function transferFrom(address from, address to, uint256 amount) external returns (bool);
@@ -7,31 +8,9 @@ interface IERC20 {
     function balanceOf(address account) external view returns (uint256);
 }
 
-contract PiggyBank {
+contract PiggyBank is IPiggyBank {
     address public owner;
     address public admin;
-
-    enum WalletType {
-        EtherWallet,
-        ERC20Wallet
-    }
-
-    struct ERC20Bank {
-        string bankName;
-        address tokenAddress;
-        uint lockPeriod;
-        uint balance;
-        address bankOwner;
-        uint createdAt;
-    }
-
-    struct EthersBank {
-        string bankName;
-        uint lockPeriod;
-        uint balance;
-        address bankOwner;
-        uint createdAt;
-    }
 
     error NotYourBank();
     error BankNotFound();

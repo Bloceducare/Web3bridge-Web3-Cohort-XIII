@@ -12,15 +12,6 @@ describe("PiggyFactory", () => {
     return { deployedFactory, admin, user1, user2, user3 };
   }
 
-  async function deployMockToken() {
-    const [owner] = await ethers.getSigners();
-    
-    const MockToken = await ethers.getContractFactory("MockERC20");
-    const mockToken = await MockToken.deploy("Test Token", "TEST", ethers.parseEther("1000000"));
-    
-    return { mockToken, owner };
-  }
-
   describe("Factory Deployment", () => {
     it("Should set admin correctly", async () => {
       const { deployedFactory, admin } = await loadFixture(deployFactory);
