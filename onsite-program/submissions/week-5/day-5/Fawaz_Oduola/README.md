@@ -1,0 +1,3 @@
+ Deployed ticketToken at: 0x33766267Bd16854Fbef2882351b15f00700579E5
+  Deployed ticketNft at: 0x94c1866Ce67A9d61232a3B4Fdf830DC88C2dc36D
+  Deployed eventTicketing at: 0x4b8E8a4Ad5806a913139Cb3e3f1aae4173aBdfa6
