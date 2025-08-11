@@ -20,7 +20,7 @@ A smart contract system that allows users to create and manage multiple savings 
 ## 🚀 Deployment Details
 
 - **Network:** Lisk Testnet (`4202`)
-- **Factory Contract Address:** `0xb84672727349ec69F5BCf4FB0b35532d74eDbbE0`
+- **Factory Contract Address:** `0x038432D9d02C2883853C3d50131D99b5347D15Ab`
 - **Deployment Tool:** Hardhat Ignition
 
 ---
