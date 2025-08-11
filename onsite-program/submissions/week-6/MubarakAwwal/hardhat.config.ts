@@ -1,6 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import "@nomicfoundation/hardhat-verify"; // ✅ for contract verification
+import "@nomicfoundation/hardhat-verify"; // 
 
 require("dotenv").config();
 
