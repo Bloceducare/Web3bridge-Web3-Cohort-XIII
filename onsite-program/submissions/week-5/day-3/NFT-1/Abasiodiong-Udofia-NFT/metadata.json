@@ -1,0 +1,15 @@
+{
+  "name": "My First NFT",
+  "description": "A unique NFT deployed on Lisk Sepolia for testing.",
+  "image": "ipfs://bafkreihdnupusnviivalvwf3d6up6sqwhflw7qlswp66365idaidmlkteu",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Test NFT"
+    },
+    {
+      "trait_type": "Edition",
+      "value": "1"
+    }
+  ]
+}
