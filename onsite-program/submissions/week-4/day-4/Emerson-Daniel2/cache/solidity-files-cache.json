@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/majormaxx/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/Emerson-Daniel2/contracts/Todo2.sol": {
+      "lastModificationDate": 1754011342587,
+      "contentHash": "a96f3efbee425223a1868a5efbb7dd1c",
+      "sourceName": "contracts/Todo2.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TodoList"
+      ]
+    }
+  }
+}
