@@ -1,14 +1,8 @@
-// This setup uses Hardhat Ignition to manage smart contract deployments.
-// Learn more about it at https://hardhat.org/ignition
+import { buildModule} from "@nomicfoundation/hardhat-ignition/modules";
 
-import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
-;
-
-const ERCModule = buildModule("ERCModule", (m) => {
-
-  const erc20 = m.contract("MajorToken");
+export default buildModule("ERCModule", (m) => {
+  const initialSupply = 1000000; // 1M tokens, NOT in wei
+  const erc20 = m.contract("MajorToken", [initialSupply]);
 
   return { erc20 };
 });
-
-export default ERCModule;
