@@ -8,7 +8,7 @@ contract IPiggyBank {
         WalletType walletType;
         uint balance;
         address tokenAddress;
-        uint lockPeriod;
+        uint lockDuration;
         
     }
 
@@ -17,8 +17,8 @@ contract IPiggyBank {
     }
 
     function createAccount(string name, Account token) external;
-    function depositERC20(uint _walletId, address _token, uint _amount, bool _isLocked) external view payable returns (uint balance);
-    function depositEther(uint _walletId, address _token, uint _amount, bool _isLocked) external view payable returns (uint balance);
+    function depositEther(uint _walletId, uint _lockPeriodSeconds) external view payable;
+    function depositERC20(uint _walletId, address _token, uint _amount, uint _lockPeriodSeconds) external view payable;
     function withdraw(uint _walletId, uint amount) external view;
     
 }
