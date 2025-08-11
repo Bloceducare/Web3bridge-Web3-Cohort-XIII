@@ -30,13 +30,11 @@ contract PiggyBankSaving is IPiggyBank {
         _;
     }
 
-    function deposit() external payable onlyOwner {
-        uint256 amount;
+    function deposit(uint256 amount) external payable onlyOwner {
         if (!isERC20) {
-            amount = msg.value;
+            if (msg.value != amount) revert MismatchedDepositAmount();
             depositedAmount += amount;
         } else {
-            amount = IERC20(token).balanceOf(msg.sender);
             if (amount == 0) revert ZeroDeposit();
             IERC20(token).transferFrom(msg.sender, address(this), amount);
             depositedAmount += amount;
@@ -46,14 +44,21 @@ contract PiggyBankSaving is IPiggyBank {
     }
 
     function withdraw() external onlyOwner {
+        if (depositedAmount == 0) {
+            revert InsufficientBalance();
+        }
+
         uint256 penaltyFee = 0;
         uint256 defaultedPayout = depositedAmount;
         bool early = false;
 
         if (block.timestamp < lockEnd) {
             penaltyFee = (depositedAmount * 3) / 100;
+
             defaultedPayout = depositedAmount - penaltyFee;
             early = true;
+
+            emit Withdrawn(msg.sender, defaultedPayout, isERC20, early, penaltyFee);
 
             if (isERC20) {
                 IERC20(token).transfer(factoryAdmin, penaltyFee);
@@ -70,7 +75,7 @@ contract PiggyBankSaving is IPiggyBank {
             }
         }
 
-        emit Withdrawn(msg.sender, defaultedPayout, isERC20, early, penaltyFee);
+        emit Withdrawn(msg.sender, depositedAmount, isERC20, early, penaltyFee);
 
         depositedAmount = 0;
     }

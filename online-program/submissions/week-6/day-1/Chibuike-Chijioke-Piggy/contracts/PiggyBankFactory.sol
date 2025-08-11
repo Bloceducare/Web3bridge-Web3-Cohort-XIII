@@ -24,6 +24,9 @@ contract PiggyBankFactory {
     }
 
     function createPiggyVault(uint256 lockDuration, bool isERC20, address tokenAddress) external {
+        if (isERC20 && tokenAddress == address(0)) {
+            revert InvalidTokenAddress();
+        }
         PiggyBankSaving vault = new PiggyBankSaving(msg.sender, lockDuration, isERC20, tokenAddress, piggyAdmin);
 
         PiggyVaultInfo memory info = PiggyVaultInfo({
