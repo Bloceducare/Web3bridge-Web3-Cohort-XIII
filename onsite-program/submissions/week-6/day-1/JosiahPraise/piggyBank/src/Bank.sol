@@ -1,52 +1,69 @@
-// SPDX-License-Identifier: MIT
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
-import {Account} from "./Account.sol";
-import {Type} from "./lib.sol";
+import {Account} from "src/Account.sol";
+import {Type} from "src/lib.sol";
+import {Account} from "src/Account.sol";
 
 contract Bank {
-    address public immutable admin;
-    mapping(address => address[]) public userToAccounts;
-    address[] public allAccounts;
+    address public admin;
+    address[] public accounts;
 
-    error Bank__UserHasNoAccounts();
-    error Bank__AccountNotFoundForUser();
-    error Bank__ZeroAddressNotAllowed();
+    mapping(address => address[]) public userAccounts;
 
-    event AccountCreated(
-        address indexed owner, 
-        address indexed accountAddress, 
-        Type accountType, 
-        uint256 lockPeriod
-    );
+    event AccountCreated(address indexed owner, uint256 lockPeriod, Type accountType);
 
     constructor() {
         admin = msg.sender;
     }
 
-    function createAccount(
-        Type accountType,
-        uint256 lockPeriodInSeconds,
-        address erc20Address
-    ) external returns (address) {
-        // this becomes the admin of every new account
-        Account newAccount = new Account(admin, msg.sender, lockPeriodInSeconds, accountType, erc20Address);
+    function createAccount(Type accountType, uint256 lockPeriod, address erc20Address) external returns (address) {
+        // deploy account
+        // add to array of accounts
+        // add to userAccountsMap
+
+        // this contract will be the admin of every account created
+        Account newAccount = new Account(admin, msg.sender, lockPeriod, accountType, erc20Address);
         address accountAddress = address(newAccount);
 
-        allAccounts.push(accountAddress);
-        userToAccounts[msg.sender].push(accountAddress);
+        accounts.push(accountAddress);
+        userAccounts[msg.sender].push(accountAddress);
 
-        emit AccountCreated(msg.sender, accountAddress, accountType, lockPeriodInSeconds);
+        emit AccountCreated(msg.sender, lockPeriod, accountType);
+
         return accountAddress;
     }
 
-    function getAccountsForUser(address user) external view returns (address[] memory) {
-        return userToAccounts[user];
+    function getUserBalance(address user, address account) external view returns (uint256 balance) {
+        if (user == address(0)) {
+            revert("ZeroAddressError");
+        }
+
+        if (userAccounts[user].length == 0) {
+            revert("UserNotFound");
+        }
+
+        address[] memory accounts_ = userAccounts[user];
+
+        for (uint256 i; i < accounts_.length; ++i) {
+            if (accounts_[i] == account) {
+                Account accountContract = Account(account);
+                return accountContract.getBalance();
+            }
+        }
+
+        revert("AccountNotFound");
     }
 
- 
-    function getNumberOfAccountsForUser(address user) external view returns (uint256) {
-        if (user == address(0)) revert Bank__ZeroAddressNotAllowed();
-        return userToAccounts[user].length;
+    function getNumberAccounts(address user) external view returns (uint256 noOfAccounts) {
+        if (user == address(0)) {
+            revert("ZeroAddressError");
+        }
+
+        if (userAccounts[user].length == 0) {
+            revert("UserNotFound");
+        }
+
+        return userAccounts[user].length;
     }
 }

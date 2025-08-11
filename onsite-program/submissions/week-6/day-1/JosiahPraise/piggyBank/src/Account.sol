@@ -1,158 +1,188 @@
-// SPDX-License-Identifier: MIT
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
-import {Type} from "./lib.sol";
-import {IERC20} from "./IERC20.sol";
+import {Type} from "src/lib.sol";
+import {IERC20} from "src/IERC20.sol";
 
 contract Account {
-
     address public immutable owner;
     address public immutable admin;
-    address public immutable tokenAddress; // The ERC20 token for this account, if applicable
-    Type public immutable savingsType;
-
     uint256 public balance;
-    uint256 public lockPeriod; // The duration of the lock in seconds
-    uint256 public lockEndsAt; // The timestamp when the current lock period ends
+    Type public savingsType;
+    uint256 public lockPeriod;
+    uint256 public lastStartOfLockPeriod;
+    address tokenAddress;
 
-    bool internal locked; // Reentrancy guard
-
-    error Account__UnAuthorized();
-    error Account__InvalidAccountType(Type actualType, Type expectedType);
+    error Account__InvalidAccountType();
     error Account__InvalidTokenAddress();
     error Account__DepositFailed();
+    error Account__UnAuthorized();
+    error Account__AccountLocked();
     error Account__WithdrawalFailed();
-    error Account__InsufficientFunds(uint256 balance, uint256 amountToWithdraw);
-    error Account__ZeroAddressNotAllowed();
-    error Account__Reentrancy();
+    error Account__InsufficientFunds();
+    error Account__ZeroAddressError();
+    error Account__ReentrancyError();
 
-    event Deposit(address indexed depositor, uint256 amount);
-    event Withdrawal(address indexed withdrawer, address indexed to, uint256 amount, uint256 fee);
+    bool lock;
 
+    event Deposit(address indexed sender, Type indexed accountType);
+    event Withdrawal(address indexed owner, address indexed to, uint256 amount, Type indexed accountType);
+
+    /// @notice ensures onlyOwner has access
     modifier onlyOwner() {
-        if (msg.sender != owner) revert Account__UnAuthorized();
-        _;
-    }
-
-    modifier onlyAdminOrOwner() {
-        if (msg.sender != owner && msg.sender != admin) revert Account__UnAuthorized();
-        _;
-    }
-
-    modifier nonReentrant() {
-        if (locked) revert Account__Reentrancy();
-        locked = true;
-        _;
-        locked = false;
-    }
-
-    constructor(
-        address _admin,
-        address _owner,
-        uint256 _lockPeriodInSeconds,
-        Type _accountType,
-        address _erc20Address
-    ) {
-        if (_owner == address(0) || _admin == address(0)) {
-            revert Account__ZeroAddressNotAllowed();
+        if (msg.sender != owner) {
+            revert Account__UnAuthorized();
         }
-        if (_accountType == Type.ERC20 && _erc20Address == address(0)) {
+        _;
+    }
+
+    modifier onlyAdminAndOwner() {
+        if (msg.sender != owner && msg.sender != admin) {
+            revert Account__UnAuthorized();
+        }
+        _;
+    }
+
+    /// @notice takes in parameters to create a new account - ERC20 or ETH account
+    /// @dev reverts if the account is an ERC20 account and a user sends a zeroAddress--ignores otherwise
+    constructor(address _admin, address _owner, uint256 _lockPeriod, Type _accountType, address _erc20Address) {
+        owner = _owner;
+        admin = _admin;
+        savingsType = _accountType;
+        lockPeriod = _lockPeriod;
+        tokenAddress = _erc20Address;
+
+        if (savingsType == Type.ERC20 && _erc20Address == address(0)) {
+            revert Account__InvalidTokenAddress();
+        }
+        lastStartOfLockPeriod = block.timestamp;
+    }
+
+    /// @notice allows a user to send eth to their account
+    /// @dev reverts if the account is an ERC20 account and not ether account
+    /// @dev updates the user's balance and emits Deposit event if the deposit is successful
+    function depositEth() external payable {
+        if (savingsType == Type.ETHER) {
+            balance += msg.value;
+            emit Deposit(msg.sender, savingsType);
+        } else {
+            revert Account__InvalidAccountType();
+        }
+    }
+
+    /// @notice allows a user to deposit an erc20 token into this account
+    /// @dev user must have approved this account to take the respective amount of tokens
+    /// @dev reverts if the token
+    function depositERC20(uint256 value) external {
+        if (savingsType != Type.ERC20) {
+            revert Account__InvalidAccountType();
+        }
+        if (tokenAddress == address(0)) {
             revert Account__InvalidTokenAddress();
         }
 
-        owner = _owner;
-        admin = _admin;
-        lockPeriod = _lockPeriodInSeconds;
-        savingsType = _accountType;
-        tokenAddress = _erc20Address;
-        lockEndsAt = block.timestamp + lockPeriod;
+        // attempt to collect transfer the token to this contract
+        IERC20 tokenContract = IERC20(tokenAddress);
+
+        balance += value;
+
+        bool success = tokenContract.transferFrom(owner, address(this), value);
+
+        if (!success) {
+            revert Account__DepositFailed();
+        }
+
+        emit Deposit(owner, savingsType);
     }
 
-    /// @notice Allows the owner to deposit ETH into this ETH-based savings account.
-    function depositEth() external payable onlyOwner {
-        if (savingsType != Type.ETHER) {
-            revert Account__InvalidAccountType(savingsType, Type.ETHER);
+    /// @notice allows a user to withdraw Eth from their account
+    function withdrawETH(uint256 value, address to) external onlyOwner {
+        if (lock) {
+            revert Account__ReentrancyError();
         }
-        balance += msg.value;
-        emit Deposit(owner, msg.value);
-    }
-
-    /// @notice Allows the owner to deposit a pre-approved amount of ERC20 tokens.
-    function depositERC20(uint256 amount) external onlyOwner {
-        if (savingsType != Type.ERC20) {
-            revert Account__InvalidAccountType(savingsType, Type.ERC20);
-        }
-        if (amount == 0) return;
-
-        IERC20 token = IERC20(tokenAddress);
-        bool success = token.transferFrom(owner, address(this), amount);
-        if (!success) revert Account__DepositFailed();
-
-        balance += amount;
-        emit Deposit(owner, amount);
-    }
-
-    /// @notice Allows the owner to withdraw ETH. Charges a 3% fee if before the lock period ends.
-    function withdrawETH(uint256 amount, address to) external onlyOwner nonReentrant {
-        if (savingsType != Type.ETHER) revert Account__InvalidAccountType(savingsType, Type.ETHER);
-        if (to == address(0)) revert Account__ZeroAddressNotAllowed();
-        if (amount > balance) revert Account__InsufficientFunds(balance, amount);
-
-        uint256 fee = 0;
-        // Check if the withdrawal is happening BEFORE the lock period is over
-        if (block.timestamp < lockEndsAt) {
-            fee = (amount * 3) / 100;
+        if (to == address(0)) {
+            revert Account__ZeroAddressError();
         }
 
-        uint256 amountToSend = amount - fee;
-
-     
-        balance -= amount; 
-
-       
-        if (fee > 0) {
-            (bool successFee, ) = payable(admin).call{value: fee}("");
-            if (!successFee) revert Account__WithdrawalFailed();
+        if (savingsType == Type.ERC20) {
+            revert Account__InvalidAccountType();
         }
+
+        if (value > balance) {
+            revert Account__InsufficientFunds();
+        }
+
+        lock = true;
+        if (block.timestamp < lastStartOfLockPeriod + lockPeriod) {
+            uint256 fee = (balance * 3) / 100;
+
+            balance -= fee;
+
+            value -= fee;
+            payable(admin).transfer(fee);
+        }
+
+        // update balance
+        balance -= value;
+
+        // reset account
+        lastStartOfLockPeriod = block.timestamp;
+        (bool success,) = payable(to).call{value: value}("");
+
+        if (!success) {
+            revert Account__WithdrawalFailed();
+        }
+
         
-        
-        (bool successSend, ) = payable(to).call{value: amountToSend}("");
-        if (!successSend) revert Account__WithdrawalFailed();
-
-       
-        lockEndsAt = block.timestamp + lockPeriod;
-        emit Withdrawal(owner, to, amountToSend, fee);
+        lock = false;
+        emit Withdrawal(owner, to, value, savingsType);
     }
 
-    /// @notice Allows the owner to withdraw ERC20 tokens. Charges a 3% fee if before the lock period ends.
-    function withdrawERC20(uint256 amount, address to) external onlyOwner nonReentrant {
-        if (savingsType != Type.ERC20) revert Account__InvalidAccountType(savingsType, Type.ETHER);
-        if (to == address(0)) revert Account__ZeroAddressNotAllowed();
-        if (amount > balance) revert Account__InsufficientFunds(balance, amount);
-        
-        IERC20 token = IERC20(tokenAddress);
-        uint256 fee = 0;
-        // Check if the withdrawal is happening before the lock period is over
-        if (block.timestamp < lockEndsAt) {
-            fee = (amount * 3) / 100;
+    /// @notice sends ERC20 token to required address
+    function withdrawERC20(uint256 value, address to) external onlyOwner {
+         if (lock) {
+            revert Account__ReentrancyError();
+        }
+        if (to == address(0)) {
+            revert Account__ZeroAddressError();
         }
 
-        uint256 amountToSend = amount - fee;
-        
-        balance -= amount;
-
-        if (fee > 0) {
-            token.transfer(admin, fee);
+        if (savingsType == Type.ETHER) {
+            revert Account__InvalidAccountType();
         }
-        token.transfer(to, amountToSend);
 
-        // Reset the lock period
-        lockEndsAt = block.timestamp + lockPeriod;
-        emit Withdrawal(owner, to, amountToSend, fee);
+        if (value > balance) {
+            revert Account__InsufficientFunds();
+        }
+
+        IERC20 tokenContract = IERC20(tokenAddress);
+
+        lock = true;
+
+        if (block.timestamp < lastStartOfLockPeriod + lockPeriod) {
+            uint256 fee = (value * 3) / 100;
+
+            balance -= fee;
+
+            value -= fee;
+
+            tokenContract.transfer(admin, fee);
+        }
+
+        balance -= value;
+
+         // reset account
+        lastStartOfLockPeriod = block.timestamp;
+
+        tokenContract.transfer(to, value);
+
+       lock = false;
+
+        emit Withdrawal(owner, to, value, savingsType);
     }
-    
-    /// @notice Gets the balance of this account. Can only be called by the owner or admin.
-    function getBalance() external view onlyAdminOrOwner returns (uint256) {
+
+    /// @notice get all user's balance
+    function getBalance() external view onlyAdminAndOwner returns (uint256 balance_) {
         return balance;
     }
 }
