@@ -89,7 +89,9 @@ contract EventTicketing {
         if (ticketsByAddress[msg.sender] > 0) revert UserAlreadyOwnsATicket();
         
         // require(ticketToken.transferFrom(msg.sender, ticket.ticketPrice), "Transaction Failed!");
+
         
+
 
         ticketNft.safeMint(msg.sender, _ticketId);
 

@@ -14,5 +14,7 @@ contract TicketNft is ERC721 {
         _safeMint(_to, _tokenId);
     }
 
+    
+
 
 }
