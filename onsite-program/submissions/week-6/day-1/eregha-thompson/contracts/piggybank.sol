@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.30;
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {IERC20, ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "./piggyToken.sol";
+
+
 
 contract Savings_Account {
     string name;
@@ -12,13 +15,15 @@ contract Savings_Account {
     uint balance;
     address factoryAdmin;
     uint constant BREAKING_FEE = 3;
+    
 
     constructor(
         string memory _name,
         bool _isEther,
         uint _LockPeriod,
         address _owner,
-        address _admin
+        address _admin,
+        address _token_address
     ) {
         name = _name;
         isEther = _isEther;
@@ -26,7 +31,10 @@ contract Savings_Account {
         LockPeriod = _LockPeriod;
         createdAt = block.timestamp;
         factoryAdmin = _admin;
+        tokenaddress = _token_address;
     }
+
+    piggyToken PiggyToken;
     modifier onlyOwner() {
         require(msg.sender == owner, "You are not the owner of this account.");
 
