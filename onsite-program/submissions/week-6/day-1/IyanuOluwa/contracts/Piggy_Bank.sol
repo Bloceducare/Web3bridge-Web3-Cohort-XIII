@@ -190,7 +190,7 @@ contract PiggyBank is ReentrancyGuard {
         require(_savingsId < savings.length, "Invalid savings ID");
         
         Savings storage saving = savings[_savingsId];
-        bool canWithdraw = !saving.isWithdrawn && 
+        bool isWithdrawable = !saving.isWithdrawn && 
             (block.timestamp >= saving.depositTime + saving.lockPeriod);
             
         return (
@@ -199,7 +199,7 @@ contract PiggyBank is ReentrancyGuard {
             saving.depositTime,
             saving.tokenAddress,
             saving.isWithdrawn,
-            canWithdraw
+            isWithdrawable
         );
     }
     
@@ -291,20 +291,20 @@ contract PiggyBankFactory {
     }
     
     // Get user's balance for a specific token
-    function getUserTokenBalance(address _user, address _tokenAddress) external view returns (uint256) {
-        address piggyBankAddress = userToPiggyBank[_user];
-        if (piggyBankAddress == address(0)) {
-            return 0;
-        }
+    // function getUserTokenBalance(address _user, address _tokenAddress) external view returns (uint256) {
+    //     address piggyBankAddress = userToPiggyBank[_user];
+    //     if (piggyBankAddress == address(0)) {
+    //         return 0;
+    //     }
         
-        PiggyBank piggyBank = PiggyBank(piggyBankAddress);
-        return piggyBank.getTokenBalance(_tokenAddress);
-    }
+    //     PiggyBank piggyBank = PiggyBank(piggyBankAddress);
+    //     return piggyBank.getTokenBalance(_tokenAddress);
+    // }
     
-    // Get user's ETH balance
-    function getUserETHBalance(address _user) external view returns (uint256) {
-        return getUserTokenBalance(_user, address(0));
-    }
+    // // Get user's ETH balance
+    // function getUserETHBalance(address _user) external view returns (uint256) {
+    //     return getUserTokenBalance(_user, address(0));
+    // }
     
     // Admin function to check if a piggy bank is valid
     function validatePiggyBank(address _piggyBankAddress) external view returns (bool) {
