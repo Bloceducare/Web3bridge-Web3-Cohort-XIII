@@ -9,7 +9,7 @@ error INSUFFICENT_ALLOWANCE();
 error  AMOUNT_TO_DEPOSIT_IS_NOT_EQUAL_TO_AMOUNT();
 error INVALID_ID();
 error SAVING_ALREADY_WITHDRAWN();
-
+error UNAUTORIZED();
 contract PiggyBank is IPiggyBank {
     Token private token;
     address private owner;
@@ -81,7 +81,7 @@ contract PiggyBank is IPiggyBank {
     function withdraw(uint256 savingId) external returns (bool){
         Savings storage mySaving = savings[savingId];
         require(mySaving.isActive == true, SAVING_ALREADY_WITHDRAWN());
-        // uint256 duration = getDeadline(mySaving.duration);
+        require(mySaving.owner != address(0), UNAUTORIZED());
 
         if (mySaving.tokenType == TokenType.ERC20){
             if(block.timestamp >= mySaving.unlockDate){

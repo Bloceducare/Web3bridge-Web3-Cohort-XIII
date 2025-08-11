@@ -190,28 +190,88 @@ describe("PiggBank", function () {
       expect(await token.balanceOf(piggyBank.target)).to.equal(_amount2+_amount);
       expect(saving2.savingsId).to.equals(1);
     });
-    it("Should fail when withdraw is call with id < 0", async function () {
-      const {piggyBank, token, owner } = await loadFixture(deployPiggyBank);
-      
-
-      const _savingName = "Buy laptop";
-      const  _tokenType = 0;
-      const _amount = 100000;
-      const _duration = 0;
     
-      await token.approve(piggyBank.target, _amount);
+    describe("Withdraw", function () {
+  it("Should withdraw full ERC20 savings after unlock date", async function () {
+    const { piggyBank, token, owner } = await loadFixture(deployPiggyBank);
 
+    const _savingName = "ERC20 Saving";
+    const _tokenType = 0;
+    const _amount = 100000;
+    const _duration = 0;
 
-      await piggyBank.connect(owner).createSavings(_savingName, _tokenType, _amount, _duration);
-      const saving = await piggyBank.getSaving(0);
-      expect(saving.name).to.equal(_savingName);
-      expect(saving.tokenType).to.equal(_tokenType);
-      expect(saving.amount).to.equal(_amount);
-      expect(saving.duration).to.equal(_duration);
-      expect(await token.balanceOf(piggyBank.target)).to.equal(_amount);
+    await token.approve(piggyBank.target, _amount);
+    await piggyBank.createSavings(_savingName, _tokenType, _amount, _duration);
 
-      await expect(piggyBank.withdraw(1)).to.revertedWithCustomError(piggyBank,"SAVING_ALREADY_WITHDRAWN");
-    });
+    await time.increase(31 * 24 * 60 * 60);
+
+    await expect(piggyBank.withdraw(0)).not.to.be.reverted;
+  });
+
+  it("Should withdraw ERC20 savings with penalty before unlock date", async function () {
+    const { piggyBank, token, owner } = await loadFixture(deployPiggyBank);
+
+    const _savingName = "ERC20 Saving";
+    const _tokenType = 0;
+    const _amount = 100000;
+    const _duration = 0;
+
+    await token.approve(piggyBank.target, _amount);
+    await piggyBank.createSavings(_savingName, _tokenType, _amount, _duration);
+
+    await expect(piggyBank.withdraw(0)).not.to.be.reverted;
+  });
+
+  it("Should withdraw full Ether savings after unlock date", async function () {
+    const { piggyBank, owner } = await loadFixture(deployPiggyBank);
+
+    const _savingName = "ETH Saving";
+    const _tokenType = 1;
+    const _amount = ethers.parseEther("1").toString();
+    const _duration = 0;
+
+    await piggyBank.createSavings(_savingName, _tokenType, _amount, _duration, { value: _amount });
+
+    await time.increase(31 * 24 * 60 * 60);
+
+    await expect(piggyBank.withdraw(0)).not.to.be.reverted;
+  });
+
+  it("Should withdraw Ether savings with penalty before unlock date", async function () {
+    const { piggyBank, owner } = await loadFixture(deployPiggyBank);
+
+    const _savingName = "ETH Saving";
+    const _tokenType = 1;
+    const _amount = ethers.parseEther("1").toString();
+    const _duration = 0;
+
+    await piggyBank.createSavings(_savingName, _tokenType, _amount, _duration, { value: _amount });
+
+    await expect(piggyBank.withdraw(0)).not.to.be.reverted;
+  });
+
+  it("Should revert if savings already withdrawn", async function () {
+    const { piggyBank, token, owner } = await loadFixture(deployPiggyBank);
+
+    const _savingName = "ERC20 Saving";
+    const _tokenType = 0;
+    const _amount = 100000;
+    const _duration = 0;
+
+    await token.approve(piggyBank.target, _amount);
+    await piggyBank.createSavings(_savingName, _tokenType, _amount, _duration);
+
+    await piggyBank.withdraw(0);
+
+    await expect(piggyBank.withdraw(0)).to.revertedWithCustomError(piggyBank, "SAVING_ALREADY_WITHDRAWN");
+  });
+
+  it("Should revert if savings does not exist", async function () {
+    const { piggyBank } = await loadFixture(deployPiggyBank);
+
+    await expect(piggyBank.withdraw(999)).to.revertedWithCustomError(piggyBank, "SAVING_ALREADY_WITHDRAWN");
+  });
+});
 
     // it("Should remove fee when withdraw is called before due date", async function () {
     //   const {piggyBank, token, owner } = await loadFixture(deployPiggyBank);
