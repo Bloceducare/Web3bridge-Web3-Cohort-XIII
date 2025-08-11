@@ -11,16 +11,16 @@ import { ZeroAddress } from "ethers";
 describe("PiggyBank", function () {
   
   async function deployPiggyBank() {
-    const [owner, otherAccount] = await hre.ethers.getSigners();
+    const [owner, otherAccount,admin] = await hre.ethers.getSigners();
 
     const PiggyBank = await hre.ethers.getContractFactory("PiggyBank");
     const PiggyToken = await hre.ethers.getContractFactory("PiggyToken");
     const piggyToken = await PiggyToken.deploy(ethers.parseUnits("1000",18));
   
 
-    const piggyBank = await PiggyBank.deploy(piggyToken.getAddress())
+    const piggyBank = await PiggyBank.deploy(piggyToken.getAddress(), owner.address);
 
-    return { piggyBank, piggyToken, owner, otherAccount };
+    return { piggyBank, piggyToken, owner, otherAccount ,admin};
 
   }
 
@@ -222,24 +222,7 @@ describe("PiggyBank", function () {
       await(expect(piggyBank.connect(owner).withdtrawEth(accountId,0)).to.be.revertedWithCustomError(piggyBank,"NO_AMOUNT"));
     });
 
-    it("Should not withdraw Ether if the lock period is not over",async function(){
-      const {piggyBank,owner} = await loadFixture(deployPiggyBank);
-      const name = "Akinsanya";
-      const assetType =  0;
-      await piggyBank.createAccount(name,assetType,ZeroAddress)
-      const getAllAccounts = await piggyBank.getAllAccount();
-      const accountId = getAllAccounts[0].id;
-
-      const lockPeriod = 60;
-      await piggyBank.connect(owner).depositEth(accountId,lockPeriod,{
-        value: ethers.parseUnits("5",9)
-      })
-      const getAccount = await piggyBank.getAccount(accountId);
-
-      await(expect(piggyBank.connect(owner).withdtrawEth(accountId,getAccount.balance)).to.be.revertedWithCustomError(piggyBank,"LOCKED"));
-    });
-  });
-
+  })
   describe("Withdraw ERC20 Token",function(){
     it("Should withdraw ERC20 token if assetType is ERC20",async function(){
       const {piggyBank,piggyToken,owner} = await loadFixture(deployPiggyBank);
@@ -299,14 +282,7 @@ describe("PiggyBank", function () {
       await(expect(piggyBank.connect(owner).withdtrawErc20(accountId,0)).to.be.revertedWithCustomError(piggyBank,"NO_AMOUNT"));
     });
 
-    it("Should not withdraw ERC20 token if the lock period is not over",async function(){
-      const {piggyBank,piggyToken,owner} = await loadFixture(deployPiggyBank);
-      const name = "Akinsanya";
-      const assetType =  1;
-      await piggyBank.createAccount(name,assetType,piggyToken.getAddress())
-      const getAllAccounts = await piggyBank.getAllAccount();
-      const accountId = getAllAccounts[0].id;         
-});
+    
   
   })
 });

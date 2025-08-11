@@ -29,6 +29,8 @@ contract PiggyBank{
     }
 
     uint256 private uid;
+    address admin;
+
 
     mapping (address => uint256) balance;
     mapping (address => Account[]) userAccounts;
@@ -37,9 +39,10 @@ contract PiggyBank{
     PiggyToken piggyToken;
 
 
-      constructor(address _token){
+      constructor(address _token, address _admin){
     
         piggyToken =  PiggyToken(_token);
+        admin = _admin;
     }
 
         modifier onlyOwner(uint256 _accountId){
@@ -56,7 +59,9 @@ contract PiggyBank{
         new_account.id = uid;
         new_account.name = _name;
         new_account.assetType = _assetType;
-        new_account.tokenAddress = _tokenAddress;
+        new_account.tokenAddress = _assetType == AssetType.ERC20
+            ? (_tokenAddress == address(0) ? address(piggyToken) : _tokenAddress)
+            : address(0);
         new_account.balance = 0;
         new_account.owner = msg.sender;
         userAccount[new_account.id] = new_account;
@@ -90,9 +95,13 @@ contract PiggyBank{
         function withdtrawEth(uint256 _accountId,uint256 _amount) external onlyOwner(_accountId){
             require(_amount > 0,NO_AMOUNT());
             Account storage account = userAccount[_accountId];
-            require(block.timestamp > account.lockPeriod || block.timestamp == account.lockPeriod,LOCKED());
             require(account.assetType == AssetType.ETH, CAN_ONLY_WITHDRAW_ETH());
-            payable (account.owner).transfer(_amount);
+            uint256 fee;
+            if(block.timestamp < account.lockPeriod){
+                fee = (_amount * 3) / 100;
+                payable (admin).transfer(fee);
+            }
+            payable (account.owner).transfer(_amount - fee);
             account.balance -= _amount;
 
         }
@@ -100,9 +109,15 @@ contract PiggyBank{
         function withdtrawErc20(uint256 _accountId,uint256 _amount) external onlyOwner(_accountId){
             require(_amount > 0,NO_AMOUNT());
             Account storage account = userAccount[_accountId];
-            require(block.timestamp > account.lockPeriod || block.timestamp == account.lockPeriod,LOCKED());
             require(account.assetType == AssetType.ERC20, CAN_ONLY_WITHDRAW_ERC20TOKEN());
-            piggyToken.transfer(msg.sender, _amount);
+            uint256 fee;
+            if(block.timestamp < account.lockPeriod){
+                fee = (_amount * 3) / 100;
+                piggyToken.transfer(admin, fee);
+
+            }
+        
+            piggyToken.transfer(msg.sender, _amount - fee);
             account.balance -= _amount;
 
     }
