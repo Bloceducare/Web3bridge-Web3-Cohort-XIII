@@ -1,9 +1,14 @@
 [submodule "onsite-program/live-coding/week-5/day-4/Foundry101/lib/forge-std"]
 	path = onsite-program/live-coding/week-5/day-4/Foundry101/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+<<<<<<< HEAD
 [submodule "onsite-program/submissions/week-5/day-5/Emerson-Daniel/lib/forge-std"]
 	path = onsite-program/submissions/week-5/day-5/Emerson-Daniel/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
 [submodule "onsite-program/submissions/week-5/day-5/Emerson-Daniel/lib/openzeppelin-contracts"]
 	path = onsite-program/submissions/week-5/day-5/Emerson-Daniel/lib/openzeppelin-contracts
+=======
+[submodule "onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts"]
+	path = onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts
+>>>>>>> 8cc6082d0690b017ce1449fe86023218c86b4a76
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
