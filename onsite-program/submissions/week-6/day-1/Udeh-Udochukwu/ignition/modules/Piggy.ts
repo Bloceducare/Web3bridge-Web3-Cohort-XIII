@@ -1,15 +1,11 @@
-// This setup uses Hardhat Ignition to manage smart contract deployments.
-// Learn more about it at https://hardhat.org/ignition
-
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-const Piggy = buildModule("Piggy", (m) => {
-  const Piggy = m.contract("Piggy");
-  return { Piggy };
+const PiggyFactory = buildModule("PiggyFactory", (m) => {
+  const factory = m.contract("Factory");
+  return { factory };
 });
 
-export default Piggy;
-
+export default PiggyFactory;
 
 // Hardhat setup commands (run in terminal)
 // npx hardhat init
