@@ -60,7 +60,7 @@ contract PiggyBank is Ipiggy {
 
         for (uint i; i < users.length; i++) {
             if (users[i].accountType == AccountType.ETHERS) {
-                require(msg.value > 0, "Cannot send zero ethers");
+                require(_amount > 0, "Cannot send zero ethers");
                 account.balance += _amount;
             } else {
                 require(_tokenAddress != address(0), "Invalid token address");
@@ -88,6 +88,7 @@ contract PiggyBank is Ipiggy {
                 if (users[i].accountType == AccountType.ETHERS) {
                     payable(msg.sender).transfer(payoutAmount);
                     payable(owner).transfer(fee);
+                    account.balance -= _amount;
                 } else {
                     require(
                         _tokenAddress != address(0),
@@ -95,12 +96,13 @@ contract PiggyBank is Ipiggy {
                     );
                     IERC20 token = IERC20(_tokenAddress);
                     token.transfer(msg.sender, payoutAmount);
+                    account.balance -= payoutAmount;
                 }
-                account.balance -= payoutAmount;
             }
         } else {
             for (uint i; i < users.length; i++) {
                 if (users[i].accountType == AccountType.ETHERS) {
+                    payable(msg.sender).transfer(_amount);
                     account.balance -= _amount;
                 } else {
                     require(
@@ -108,6 +110,8 @@ contract PiggyBank is Ipiggy {
                         "Invalid token address"
                     );
                     require(_amount > 0, "Invalid amount");
+                    IERC20 token = IERC20(_tokenAddress);
+                    token.transfer(msg.sender, _amount);
                     account.balance -= _amount;
                 }
             }

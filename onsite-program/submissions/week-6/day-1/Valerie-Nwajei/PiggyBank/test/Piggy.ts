@@ -10,12 +10,12 @@ describe("PiggyBank", function () {
 
   async function deployPiggyBank() {
 
-    const [owner, user1] = await hre.ethers.getSigners();
+    const [owner, user1, user2] = await hre.ethers.getSigners();
 
     const PiggyBank = await hre.ethers.getContractFactory("PiggyBank");
     const piggy = await PiggyBank.deploy(owner);
 
-    return { piggy, owner, user1 };
+    return { piggy, owner, user1, user2 };
   }
 
   describe("Deployment", function () {
@@ -46,15 +46,40 @@ describe("PiggyBank", function () {
     });
     describe("Deposit", ()=>{
       it("should carry out deposit", async()=>{
+      const{piggy, user1} = await loadFixture(deployPiggyBank);
+      const now = Math.floor(Date.now() / 1000);
+      const unlockTime = now + 30 * 24 * 60 * 60;
+      const _amount = hre.ethers.parseEther("10");
+      await piggy.connect(user1).create_account("Jackson", hre.ethers.ZeroAddress, unlockTime, 0);
+      await piggy.connect(user1).deposit(hre.ethers.ZeroAddress, 1, _amount);
+      const acc = await piggy.userAccounts(user1.address, 0);
+      expect(acc.balance).to.equal(_amount);
+      });
+    })
+    describe("withdraw", ()=>{
+      it("Should withdraw", async()=>{
+      const{piggy, user1, user2} = await loadFixture(deployPiggyBank);
+      const now = Math.floor(Date.now() / 1000);
+      const unlockTime = now + 30 * 24 * 60 * 60;
+      const _amount = hre.ethers.parseEther("10");
+      const _address = "0x6b175474e89094c44da98b954eedeac495271d0f";
+      const withdrawAmount = hre.ethers.parseEther("5");
+      await piggy.connect(user1).create_account("Jackson", hre.ethers.ZeroAddress, unlockTime, 0);
+      await piggy.connect(user2).create_account("James", _address, unlockTime, 1);
+      await piggy.connect(user1).deposit(_address, 1, _amount);
+      const acc = await piggy.userAccounts(user1.address, 0);
+});
+    });
+    describe("Get Balances", ()=>{
+      it("should get user balance", async ()=>{
         const{piggy, user1} = await loadFixture(deployPiggyBank);
       const now = Math.floor(Date.now() / 1000);
       const unlockTime = now + 30 * 24 * 60 * 60;
       const _amount = hre.ethers.parseEther("10");
-      const bal = (await piggy.users(0)).balance;
-      await piggy.create_account("Jackson", hre.ethers.ZeroAddress, unlockTime, 0);
-      await piggy.deposit(hre.ethers.ZeroAddress, 1, _amount);
-      const _newbal = bal +_amount;
-      expect(_newbal).to.equal(10);
-      });
+      await piggy.connect(user1).create_account("Jackson", hre.ethers.ZeroAddress, unlockTime, 0);
+      await piggy.connect(user1).deposit(hre.ethers.ZeroAddress, 1, _amount);
+      const acc = await piggy.userAccounts(user1.address, 0);
+      expect(acc.balance).to.equal(_amount);
+      })
     })
   });
