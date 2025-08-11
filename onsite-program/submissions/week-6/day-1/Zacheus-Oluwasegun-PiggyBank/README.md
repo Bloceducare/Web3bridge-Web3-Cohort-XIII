@@ -4,6 +4,9 @@ This project demonstrates a basic Hardhat use case. It comes with a sample contr
 
 Try running some of the following tasks:
 
+## Deployment
+***Contract Address on lisk sepolia*** - ***0x9F026327D8D2E344184a6BEdECDfd862A2dAE46d***
+
 ```shell
 npx hardhat help
 npx hardhat test
