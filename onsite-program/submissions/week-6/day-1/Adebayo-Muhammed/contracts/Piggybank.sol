@@ -3,7 +3,7 @@ pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";  
+import "@openzeppelin/contracts/access/Ownable.sol"; 
 
 contract PiggyBank is ReentrancyGuard {
     struct SavingsAccount {
@@ -24,7 +24,7 @@ contract PiggyBank is ReentrancyGuard {
     event Deposited(uint256 indexed accountId, uint256 amount);
     event Withdrawn(uint256 indexed accountId, uint256 amount, bool earlyWithdrawal, uint256 fee);
     
-   modifier onlyOwner() {
+    modifier onlyOwner() {
         require(msg.sender == owner, "Not the owner");
         _;
     }
