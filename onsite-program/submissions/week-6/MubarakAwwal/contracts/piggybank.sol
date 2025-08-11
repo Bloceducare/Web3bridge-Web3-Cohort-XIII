@@ -8,7 +8,7 @@ contract PiggyBank is IPiggyBank {
     address public owner;
     address public admin;
     uint public lockPeriod;
-    address public tokenAddress; // 0 for Ether
+    address public tokenAddress;
     uint public startTime;
 
     constructor(address _owner, address _admin, uint _lockPeriod, address _tokenAddress) {
@@ -36,7 +36,7 @@ contract PiggyBank is IPiggyBank {
     function withdraw() external override onlyOwner {
         uint fee;
         if (block.timestamp < startTime + lockPeriod) {
-            fee = getBalance() * 3 / 100; // 3% fee
+            fee = getBalance() * 3 / 100;
         }
 
         if (tokenAddress == address(0)) {
