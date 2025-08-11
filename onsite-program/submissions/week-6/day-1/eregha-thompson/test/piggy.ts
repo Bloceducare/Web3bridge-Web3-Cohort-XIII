@@ -151,7 +151,7 @@ describe("Piggy vest", function () {
       const final_lockBalance = await hre.ethers.provider.getBalance(
         owner.getAddress()
       );
-      // const conv = await ethers.formatEther(final_lockBalance)
+     
       console.log(ethers.formatEther(final_lockBalance));
 
       const expectedFee = hre.ethers.parseEther("0.03");
@@ -161,9 +161,8 @@ describe("Piggy vest", function () {
 
   describe("deposit ERC20", function () {
     it("should deposit erc20", async function () {
-      const { piggy, owner,piggyToken, otherAddress, token } = await loadFixture(
-        deployPiggyVest
-      );
+      const { piggy, owner, piggyToken, otherAddress, token } =
+        await loadFixture(deployPiggyVest);
 
       const ownerBalance = await token.balanceOf(owner.address);
 
@@ -177,10 +176,9 @@ describe("Piggy vest", function () {
         ethers.parseEther("50")
       );
     });
-    it("should not send if amount higher than approved", async function () {
-      const { piggy, owner,piggyToken, otherAddress, token } = await loadFixture(
-        deployPiggyVest
-      );
+    it("only owner can send", async function () {
+      const { piggy, owner, piggyToken, otherAddress, token } =
+        await loadFixture(deployPiggyVest);
 
       const ownerBalance = await token.balanceOf(owner.address);
 
@@ -188,11 +186,32 @@ describe("Piggy vest", function () {
 
       await token
         .connect(owner)
-        .approve(piggyToken.target, ethers.parseEther("30"));
-      await expect(piggyToken.connect(owner).depositTokens(ethers.parseEther("50"))).to.revertedWith("failed")
-      expect(await token.balanceOf(piggyToken.target)).to.equal(
-        ethers.parseEther("50")
+        .approve(piggyToken.target, ethers.parseEther("300"));
+      await expect(
+        piggyToken.connect(otherAddress).depositTokens(ethers.parseEther("50"))
+      ).to.revertedWith("You are not the owner of this account.");
+     
+    });
+    it("should send break out fee token to admin", async function () {
+      const { piggy,piggyToken, owner, otherAddress,token } = await loadFixture(deployPiggyVest);
+
+     
+      await token
+        .connect(owner)
+        .approve(piggyToken.target, ethers.parseEther("30000000"));
+      await piggyToken.connect(owner).depositTokens(ethers.parseEther("50"));
+
+      const initial_Admin = await hre.ethers.provider.getBalance(
+        otherAddress.getAddress()
       );
+
+      const withdrawAmount = hre.ethers.parseEther("1");
+      await piggyToken.connect(owner).withdrawTokens(withdrawAmount);
+      const final_Admin = await hre.ethers.provider.getBalance(
+        otherAddress.getAddress()
+      );
+      const expectedFee = hre.ethers.parseEther("0.03");
+      expect(final_Admin - initial_Admin).to.be.equal(expectedFee);
     });
   });
 });
