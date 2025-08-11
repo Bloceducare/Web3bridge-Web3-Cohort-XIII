@@ -194,16 +194,18 @@ npx hardhat run ignition/modules/StakingContract.ts --network localhost | grep -
 kill $HARDHAT_PID 2>/dev/null
 echo ""
 echo "⛽ Gas analysis completed!"
+echo ""
 
 # scripts/security-audit.sh  
 #!/bin/bash
-
+echo ""
 echo "🔒 SECURITY AUDIT SIMULATION"
 echo "============================"
+echo ""
 
 echo "Running security-focused tests..."
 npx hardhat test test/IntegrationTest.ts --grep "Failure Scenarios and Attack Vectors"
-
+    
 echo ""
 echo "Checking for common vulnerabilities..."
 
@@ -216,9 +218,3 @@ echo "✅ State Consistency: Verified in integration tests"
 echo ""
 echo "🔒 Security audit simulation completed!"
 echo "⚠️  Note: This is not a substitute for professional security audit"
-
-# Make scripts executable
-chmod +x scripts/run-all-tests.sh
-chmod +x scripts/quick-test.sh
-chmod +x scripts/gas-analysis.sh
-chmod +x scripts/security-audit.sh

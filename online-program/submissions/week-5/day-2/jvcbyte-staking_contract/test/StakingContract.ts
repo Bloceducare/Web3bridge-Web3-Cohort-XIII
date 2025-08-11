@@ -27,8 +27,6 @@ describe("Staking Contract System", function () {
         );
 
         // Set staking contract addresses
-        await tokenA.setStakingContract(await stakingContract.getAddress());
-        await tokenB.setStakingContract(await stakingContract.getAddress());
         await stakingContract._setStakingContract();
 
         // Mint initial tokens to users
@@ -187,7 +185,7 @@ describe("Staking Contract System", function () {
 
             await expect(
                 stakingContract.connect(user1).stake(balance + 1n)
-            ).to.be.revertedWith("Transfer failed");
+            ).to.be.revertedWithCustomError(tokenA, "ERC20InsufficientBalance");
         });
 
         it("Should handle multiple stakes correctly", async function () {
