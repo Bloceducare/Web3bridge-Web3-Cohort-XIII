@@ -6,9 +6,9 @@ async function main() {
 
   const PiggyBankFactory = await ethers.getContractFactory("PiggyBankFactory");
   const factory = await PiggyBankFactory.deploy();
-  await factory.deployed();
+  await factory.waitForDeployment(); // Replace deployed() with waitForDeployment()
 
-  console.log("PiggyBankFactory deployed to:", factory.address);
+  console.log("PiggyBankFactory deployed to:", await factory.getAddress()); // Use getAddress() to get the deployed address
 }
 
 main()
@@ -17,3 +17,5 @@ main()
     console.error(error);
     process.exit(1);
   });
+
+// Deployed contracts: 0x45d8C24352c48644539Ed8B276CE70234a2CD17d
