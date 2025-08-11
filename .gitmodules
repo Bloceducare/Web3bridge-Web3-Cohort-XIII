@@ -7,3 +7,6 @@
 [submodule "onsite-program/submissions/week-5/EventTicket/lib/forge-std"]
 	path = onsite-program/submissions/week-5/EventTicket/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "onsite-program/submissions/week-6/day-1/Akinsanya-Daniel/Piggy_Bank/lib/forge-std"]
+	path = onsite-program/submissions/week-6/day-1/Akinsanya-Daniel/Piggy_Bank/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
