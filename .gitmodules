@@ -7,3 +7,6 @@
 [submodule "onsite-program/submissions/week-5/day-5/Josiah-Praise-Ticketing/lib/openzeppelin-contracts"]
 	path = onsite-program/submissions/week-5/day-5/Josiah-Praise-Ticketing/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "onsite-program/submissions/week-6/day-1/JosiahPraise/piggyBank/lib/openzeppelin-contracts"]
+	path = onsite-program/submissions/week-6/day-1/JosiahPraise/piggyBank/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts

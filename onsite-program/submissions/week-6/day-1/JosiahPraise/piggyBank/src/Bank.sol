@@ -11,7 +11,19 @@ contract Bank {
 
     mapping(address => address[]) public userAccounts;
 
+
+    error Bank__UnAuthorized();
+
     event AccountCreated(address indexed owner, uint256 lockPeriod, Type accountType);
+
+
+    modifier onlyAdmin {
+        if (msg.sender != admin) {
+            revert Bank__UnAuthorized();
+        }
+        _;
+    }
+
 
     constructor() {
         admin = msg.sender;
@@ -23,7 +35,7 @@ contract Bank {
         // add to userAccountsMap
 
         // this contract will be the admin of every account created
-        Account newAccount = new Account(admin, msg.sender, lockPeriod, accountType, erc20Address);
+        Account newAccount = new Account(address(this), admin, msg.sender, lockPeriod, accountType, erc20Address);
         address accountAddress = address(newAccount);
 
         accounts.push(accountAddress);
@@ -34,7 +46,7 @@ contract Bank {
         return accountAddress;
     }
 
-    function getUserBalance(address user, address account) external view returns (uint256 balance) {
+    function getUserBalance(address user, address account) external onlyAdmin view returns (uint256 balance) {
         if (user == address(0)) {
             revert("ZeroAddressError");
         }
@@ -55,7 +67,7 @@ contract Bank {
         revert("AccountNotFound");
     }
 
-    function getNumberAccounts(address user) external view returns (uint256 noOfAccounts) {
+    function getNumberAccounts(address user) external view onlyAdmin returns (uint256 noOfAccounts) {
         if (user == address(0)) {
             revert("ZeroAddressError");
         }

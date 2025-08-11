@@ -7,6 +7,7 @@ import {IERC20} from "src/IERC20.sol";
 contract Account {
     address public immutable owner;
     address public immutable admin;
+    address public immutable bankAddress;
     uint256 public balance;
     Type public savingsType;
     uint256 public lockPeriod;
@@ -36,8 +37,9 @@ contract Account {
         _;
     }
 
-    modifier onlyAdminAndOwner() {
-        if (msg.sender != owner && msg.sender != admin) {
+    /// @notice gives only the owner and the bank access
+    modifier onlyBankAndOwner() {
+        if (msg.sender != owner && msg.sender != bankAddress) {
             revert Account__UnAuthorized();
         }
         _;
@@ -45,12 +47,13 @@ contract Account {
 
     /// @notice takes in parameters to create a new account - ERC20 or ETH account
     /// @dev reverts if the account is an ERC20 account and a user sends a zeroAddress--ignores otherwise
-    constructor(address _admin, address _owner, uint256 _lockPeriod, Type _accountType, address _erc20Address) {
+    constructor(address _bankAddress, address _admin, address _owner, uint256 _lockPeriod, Type _accountType, address _erc20Address) {
         owner = _owner;
         admin = _admin;
         savingsType = _accountType;
         lockPeriod = _lockPeriod;
         tokenAddress = _erc20Address;
+        bankAddress = _bankAddress;
 
         if (savingsType == Type.ERC20 && _erc20Address == address(0)) {
             revert Account__InvalidTokenAddress();
@@ -133,14 +136,13 @@ contract Account {
             revert Account__WithdrawalFailed();
         }
 
-        
         lock = false;
         emit Withdrawal(owner, to, value, savingsType);
     }
 
     /// @notice sends ERC20 token to required address
     function withdrawERC20(uint256 value, address to) external onlyOwner {
-         if (lock) {
+        if (lock) {
             revert Account__ReentrancyError();
         }
         if (to == address(0)) {
@@ -171,18 +173,18 @@ contract Account {
 
         balance -= value;
 
-         // reset account
+        // reset account
         lastStartOfLockPeriod = block.timestamp;
 
         tokenContract.transfer(to, value);
 
-       lock = false;
+        lock = false;
 
         emit Withdrawal(owner, to, value, savingsType);
     }
 
     /// @notice get all user's balance
-    function getBalance() external view onlyAdminAndOwner returns (uint256 balance_) {
+    function getBalance() external view onlyBankAndOwner returns (uint256 balance_) {
         return balance;
     }
 }
