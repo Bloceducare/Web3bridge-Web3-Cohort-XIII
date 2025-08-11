@@ -113,47 +113,58 @@ contract PiggyBank {
     }
 
     /// Withdraw plan at index. onlyOwner of this piggy bank may withdraw.
-    function withdraw(uint256 _index) external onlyOwner nonReentrant {
-        require(_index < userToSavingsPlan[msg.sender].length, "Invalid plan");
-        SavingsPlan storage plan = userToSavingsPlan[msg.sender][_index];
-        require(plan.active, "Plan not active");
+  function withdraw(uint256 _index) external onlyOwner nonReentrant {
+    require(_index < userToSavingsPlan[msg.sender].length, "Invalid plan");
+    SavingsPlan storage plan = userToSavingsPlan[msg.sender][_index];
+    require(plan.active, "Plan not active");
 
-        // effects first: mark inactive to prevent reentrancy
-        plan.active = false;
+    // effects first: mark inactive to prevent reentrancy
+    plan.active = false;
 
-        uint256 withdrawAmount = plan.amount;
-        bool early = block.timestamp < plan.lockUntil;
-        uint256 fee = 0;
+    uint256 withdrawAmount = plan.amount;
+    bool early = block.timestamp < plan.lockUntil;
+    uint256 fee = 0;
 
-        if (early) {
-            fee = (plan.amount * 3) / 100; // 3%
-            withdrawAmount = plan.amount - fee;
-        } else {
-            // after lock: pay principal + interest
-            withdrawAmount = plan.amount + plan.interest;
-        }
-
-        // perform transfers (interactions)
-        address admin = IPiggyBankFactory(factory).admin();
-
+    if (early) {
+        fee = (plan.amount * 3) / 100; // 3%
+        withdrawAmount = plan.amount - fee;
+    } else {
+        // IMPORTANT: Only pay interest if contract has enough balance
+        // In a real system, you'd fund this separately or use a different mechanism
+        uint256 totalWithInterest = plan.amount + plan.interest;
+        
         if (plan.token == address(0)) {
-            // ETH paths — use call and require success
-            if (fee > 0) {
-                (bool sentFee, ) = payable(admin).call{value: fee}("");
-                require(sentFee, "admin fee send failed");
+            // For ETH, check if contract has enough balance
+            if (address(this).balance >= totalWithInterest) {
+                withdrawAmount = totalWithInterest;
+            } else {
+                withdrawAmount = plan.amount; // Just return principal
             }
-            (bool sentOwner, ) = payable(msg.sender).call{value: withdrawAmount}("");
-            require(sentOwner, "owner send failed");
         } else {
-            // ERC20 paths — check return values
-            if (fee > 0) {
-                require(IErc_20(plan.token).transfer(admin, fee), "fee transfer failed");
-            }
-            require(IErc_20(plan.token).transfer(msg.sender, withdrawAmount), "owner transfer failed");
+            // For tokens, just return principal + interest (assuming contract was funded)
+            withdrawAmount = totalWithInterest;
         }
-
-       
     }
+
+    // perform transfers (interactions)
+    address admin = IPiggyBankFactory(factory).admin();
+
+    if (plan.token == address(0)) {
+        // ETH paths — use call and require success
+        if (fee > 0) {
+            (bool sentFee, ) = payable(admin).call{value: fee}("");
+            require(sentFee, "admin fee send failed");
+        }
+        (bool sentOwner, ) = payable(msg.sender).call{value: withdrawAmount}("");
+        require(sentOwner, "owner send failed");
+    } else {
+        // ERC20 paths — check return values
+        if (fee > 0) {
+            require(IErc_20(plan.token).transfer(admin, fee), "fee transfer failed");
+        }
+        require(IErc_20(plan.token).transfer(msg.sender, withdrawAmount), "owner transfer failed");
+    }
+}
 
     // Get total balance for a user (all active plans combined)
     function getUserTotalBalance(address user) external view returns (uint256 ethBalance, uint256[] memory tokenBalances, address[] memory tokens) {
