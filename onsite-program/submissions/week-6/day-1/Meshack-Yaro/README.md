@@ -11,3 +11,5 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
+
+PiggyBankFactoryModule#PiggyBankFactory - 0x4303190c8820E896DA7D57833C36a45B593404C1

@@ -3,7 +3,7 @@ pragma solidity ^0.8.28;
 
 import {PiggyBank} from "./PiggyBank.sol";
 
-contract PiggyBAnkFactory {
+contract PiggyBankFactory {
     address public deployer;
     PiggyBank[] public piggyBanks;
 
