@@ -6,15 +6,23 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 
 contract TicketNft is ERC721 {
+
+    address public ticketingContract;
+
+    modifier onlyTicketing() {
+        require(msg.sender == ticketingContract, "Only EventTicketing can mint");
+        _;
+    }
+
     constructor() ERC721("TicketNft", "TNFT") {
+
+        ticketingContract = _ticketingContract;
 
     }
     
-    function safeMint(address _to, uint _tokenId) external {
+    function safeMint(address _to, uint _tokenId) external onlyTicketing(){
         _safeMint(_to, _tokenId);
     }
 
     
-
-
 }
