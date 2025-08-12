@@ -1,8 +1,10 @@
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { expect } from "chai";
 
-import hre, { ethers } from "hardhat";
+
+import hre from "hardhat";
 import { PiggyToken } from "../typechain-types";
+
 
 describe("Piggy vest", function () {
   async function deployPiggyVest() {
@@ -128,35 +130,7 @@ describe("Piggy vest", function () {
       const expectedFee = hre.ethers.parseEther("0.03");
       expect(final_Admin - initial_Admin).to.be.equal(expectedFee);
     });
-    it("should send money back to owner ", async function () {
-      const { piggy, owner, otherAddress } = await loadFixture(deployPiggyVest);
-
-      const initialownerBalance = await hre.ethers.provider.getBalance(
-        owner.getAddress()
-      );
-      console.log(ethers.formatEther(initialownerBalance));
-
-      const depositAmount = hre.ethers.parseEther("1");
-      await piggy.connect(owner).deposit({
-        value: depositAmount,
-      });
-
-      const afterLockBalance = await hre.ethers.provider.getBalance(
-        owner.getAddress()
-      );
-      console.log(ethers.formatEther(afterLockBalance));
-
-      const withdrawAmount = hre.ethers.parseEther("1");
-      await piggy.connect(owner).withdraw(withdrawAmount);
-      const final_lockBalance = await hre.ethers.provider.getBalance(
-        owner.getAddress()
-      );
-     
-      console.log(ethers.formatEther(final_lockBalance));
-
-      const expectedFee = hre.ethers.parseEther("0.03");
-      // expect ().to.be.equal()
-    });
+   
   });
 
   describe("deposit ERC20", function () {
@@ -193,25 +167,35 @@ describe("Piggy vest", function () {
      
     });
     it("should send break out fee token to admin", async function () {
-      const { piggy,piggyToken, owner, otherAddress,token } = await loadFixture(deployPiggyVest);
+       const { piggy, owner, piggyToken, otherAddress, token } =
+        await loadFixture(deployPiggyVest);
 
-     
+      const ownerBalance = await token.balanceOf(owner.address);
+
+      console.log(ethers.formatUnits(ownerBalance));
+
       await token
         .connect(owner)
         .approve(piggyToken.target, ethers.parseEther("30000000"));
       await piggyToken.connect(owner).depositTokens(ethers.parseEther("50"));
 
-      const initial_Admin = await hre.ethers.provider.getBalance(
-        otherAddress.getAddress()
-      );
+      const ownerBalance2 = await token.balanceOf(owner.address);
 
-      const withdrawAmount = hre.ethers.parseEther("1");
-      await piggyToken.connect(owner).withdrawTokens(withdrawAmount);
-      const final_Admin = await hre.ethers.provider.getBalance(
-        otherAddress.getAddress()
-      );
-      const expectedFee = hre.ethers.parseEther("0.03");
-      expect(final_Admin - initial_Admin).to.be.equal(expectedFee);
+      console.log(ethers.formatUnits(ownerBalance2));
+
+     
+      await piggyToken.connect(owner).withdrawTokens(ethers.parseEther("30"));
+      const ownerBalance3 = await token.balanceOf(owner.address);
+
+      console.log(ethers.formatUnits(ownerBalance3));
+      const final_Admin = await token.balanceOf(otherAddress.address);
+      console.log("final admin address", ethers.formatUnits(final_Admin));
+      
+      const piggyTokenbalance = await token.balanceOf(piggyToken.target);
+      console.log("contract balance", piggyTokenbalance);
+      expect(piggyTokenbalance).to.be.equal(ethers.parseEther("20"))
+      
+      expect(final_Admin ).to.be.equal(ethers.parseEther("0.9"));
     });
   });
 });
