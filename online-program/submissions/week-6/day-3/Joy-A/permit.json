@@ -8,7 +8,7 @@
       { "name": "deadline", "type": "uint256" }
     ]
   },
-  "primaryType": "Permit",
+  "Type": "Permit",
   "domain": {
     "name": "Dai Stablecoin",
     "version": "1",
