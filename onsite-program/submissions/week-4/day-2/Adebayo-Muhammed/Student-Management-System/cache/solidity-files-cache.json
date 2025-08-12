@@ -1,0 +1,77 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/macosbigsur/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-2/Adebayo-Muhammed/Student-Management-System/contracts/Lock.sol": {
+      "lastModificationDate": 1753831540558,
+      "contentHash": "7eee587c347fe6b1de50c96688cb9477",
+      "sourceName": "contracts/Lock.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Lock"
+      ]
+    },
+    "/Users/macosbigsur/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-2/Adebayo-Muhammed/Student-Management-System/contracts/SimpleSchoolManagement.sol": {
+      "lastModificationDate": 1753839758047,
+      "contentHash": "391506dabb542921900618b3a79f5237",
+      "sourceName": "contracts/SimpleSchoolManagement.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.30"
+      ],
+      "artifacts": [
+        "SchoolManagement"
+      ]
+    }
+  }
+}
