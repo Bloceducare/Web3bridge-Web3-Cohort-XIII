@@ -1,0 +1,24 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Hardhat
+/cache
+/artifacts
+
+# TypeChain
+/typechain
+/typechain-types
+
+# Coverage
+/coverage
+/coverage.json
+
+# Hardhat Ignition (local chain deployments)
+ignition/deployments/chain-31337
+
+# Temporary/Local practice folder
+PractiseFolder/
+**/PractiseFolder/
