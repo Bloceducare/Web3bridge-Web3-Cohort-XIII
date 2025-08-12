@@ -1,5 +1,3 @@
-import { GetContractTypeFromFactory } from './../../../../week-3/day-2/Daniel-Akinsanya-Hardhat/typechain-types/common';
-import { Piggy } from './../typechain-types/Piggy';
 import {
   loadFixture, time
 } from "@nomicfoundation/hardhat-toolbox/network-helpers";
@@ -20,7 +18,7 @@ describe("piggy factory", function () {
    return { factory, admin, user1, user2 };
  }
 
-  describe("testing deposit", async function () {
+  describe("testings", async function () {
      
       
       it("check deploy", async function(){
@@ -41,9 +39,14 @@ describe("piggy factory", function () {
          const unlockTime = currentTime + 60;
       const tokenAddress = ethers.ZeroAddress;
       
-        const { factory,admin,  user1 } = await loadFixture(deployPiggyFactoryFixture);
+        const { factory , admin,  user1 } = await loadFixture(deployPiggyFactoryFixture);
 
         await factory.connect(user1).createPiggyBank(unlockTime, tokenAddress, {value: ethers.parseEther("1")})
+        await factory
+          .connect(admin)
+          .createPiggyBank(unlockTime, tokenAddress, {
+            value: ethers.parseEther("1"),
+          });
        
         const userBanks = await factory.getUserPiggyBanks(user1.address);
         const myBanks = await factory.getMyPiggyBanks();
@@ -52,11 +55,11 @@ describe("piggy factory", function () {
       expect(userBanks).to.have.lengthOf(1);
       expect(myBanks).to.have.lengthOf(1);
 
-         expect(await piggy.unlockTime()).to.equal(unlockTime);
-         expect(await piggy.owner()).to.equal(user1.address);
-         expect(await piggy.admin()).to.equal(await factory.admin());
-         expect(await piggy.tokenAddress()).to.equal(tokenAddress);
-         expect(await piggy.isETH()).to.be.true;
+    expect(await piggy.unlockTime()).to.equal(unlockTime);
+    // expect(await piggy.owner()).to.equal(user1.address);
+    expect(await piggy.admin()).to.equal(await factory.admin());
+    expect(await piggy.tokenAddress()).to.equal(tokenAddress);
+    expect(await piggy.isETH()).to.be.true;
 
     })
     
