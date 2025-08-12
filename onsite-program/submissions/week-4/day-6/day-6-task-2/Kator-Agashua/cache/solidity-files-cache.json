@@ -1,0 +1,79 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\pc\\Desktop\\code\\Web3bridge-Web3-Cohort-XIII\\onsite-program\\submissions\\week-4\\day-6\\day-6-task-2\\Kator-Agashua\\contracts\\EngancheToken.sol": {
+      "lastModificationDate": 1754279157704,
+      "contentHash": "f6b6d0dde9f30a8d4eb2b55aa5bc252a",
+      "sourceName": "contracts/EngancheToken.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IEngancheToken.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "EngancheToken"
+      ]
+    },
+    "C:\\Users\\pc\\Desktop\\code\\Web3bridge-Web3-Cohort-XIII\\onsite-program\\submissions\\week-4\\day-6\\day-6-task-2\\Kator-Agashua\\interfaces\\IEngancheToken.sol": {
+      "lastModificationDate": 1754279061162,
+      "contentHash": "d5212bd05ffb3d790d09807a4c4e6c3e",
+      "sourceName": "interfaces/IEngancheToken.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "IEngancheToken"
+      ]
+    }
+  }
+}
