@@ -36,7 +36,9 @@ contract PigiVestFactory {
     }
     
    
-    function createEtherSavings(uint256 _unlockTime) external {
+    function createEtherSavings(uint256 _unlockTime) external payable {
+        require(msg.value > 0, "Must send ETH to create savings");
+        
         // Add current timestamp to the unlock time
         uint256 unlockTimestamp = block.timestamp + _unlockTime;
         
@@ -49,13 +51,17 @@ contract PigiVestFactory {
         
         address accountAddress = address(newAccount);
         
+        // Send ETH to the new contract
+        (bool sent, ) = accountAddress.call{value: msg.value}("");
+        require(sent, "Failed to send initial deposit to contract");
+        
         // Store account info
         accounts[accountAddress] = SavingsAccount({
             accountAddress: accountAddress,
             isERC20: false,
             tokenAddress: address(0),
             unlockTime: unlockTimestamp,
-            balance: 0
+            balance: msg.value
         });
         
         // Track user's accounts

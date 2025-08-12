@@ -20,10 +20,16 @@ contract PigiVestEther {
         address _owner,
         uint256 _unlockTime,
         address _factoryDeployer
-    ) {
+    ) payable {
         owner = _owner;
         unlockTime = _unlockTime;
         factoryDeployer = _factoryDeployer;
+        
+        // Update the ether balance with the initial deposit
+        if (msg.value > 0) {
+            etherBalance += msg.value;
+            emit Deposit(_owner, msg.value);
+        }
     }
 
     function DepositEther() public payable {
