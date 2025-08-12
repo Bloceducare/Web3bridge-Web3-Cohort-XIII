@@ -1,0 +1,24 @@
+{
+  "name": "hardhat-project",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile",
+    "deploy": "npx ts-node scripts/deploy-and-verify.ts",
+    "simulate": "npx ts-node scripts/simulate-event-ticketing.ts",
+    "test-contract": "npx ts-node scripts/test-contract.ts",
+    "generate-tickets": "npx ts-node scripts/generate-event-tickets.ts",
+    "upload-tickets": "npx ts-node scripts/upload-event-tickets.ts",
+    "test-pinata": "npx ts-node scripts/test-pinata.ts",
+    "deploy-ignition": "npx hardhat ignition deploy ignition/modules/EventContract.ts --network lisk-sepolia"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "hardhat": "^2.26.2"
+  },
+  "dependencies": {
+    "axios": "^1.11.0",
+    "canvas": "^3.1.2",
+    "dotenv": "^17.2.1",
+    "form-data": "^4.0.4"
+  }
+}
