@@ -16,3 +16,9 @@
 [submodule "onsite-program/submissions/week-5/day-5/Adeniran-Ibrahim-Adewale/lib/openzeppelin-contracts"]
 	path = onsite-program/submissions/week-5/day-5/Adeniran-Ibrahim-Adewale/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "onsite-program/submissions/week-6/task2/Adeniran Ibrahim Adewale/lib/forge-std"]
+	path = onsite-program/submissions/week-6/task2/Adeniran Ibrahim Adewale/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "onsite-program/submissions/week-6/task2/Adeniran Ibrahim Adewale/lib/openzeppelin-contracts"]
+	path = onsite-program/submissions/week-6/task2/Adeniran Ibrahim Adewale/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
