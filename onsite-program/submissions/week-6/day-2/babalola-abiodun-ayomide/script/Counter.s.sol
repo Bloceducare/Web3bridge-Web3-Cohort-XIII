@@ -2,17 +2,20 @@
 pragma solidity ^0.8.13;
 
 import {Script} from "forge-std/Script.sol";
-import {Counter} from "../src/Counter.sol";
+import {IPermit} from "../src/IPermit.sol";
 
 contract CounterScript is Script {
-    Counter public counter;
+    IPermit public Ipermit;
 
     function setUp() public {}
 
     function run() public {
         vm.startBroadcast();
+        Ipermit = IPermit(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
+        // Ipermit.permitTransferFrom(permit, transferDetails, owner, signature);
 
-        counter = new Counter();
+
+
 
         vm.stopBroadcast();
     }
