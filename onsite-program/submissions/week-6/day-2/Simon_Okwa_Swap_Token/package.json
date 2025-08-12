@@ -1,0 +1,31 @@
+{
+  "name": "permit-swap-hardhat",
+  "version": "1.0.0",
+  "description": "Hardhat project for off-chain signing (EIP-712) to permit Uniswap swaps",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.ts",
+    "sign-permit": "hardhat run scripts/signPermit.ts",
+    "relayer": "hardhat run scripts/relayer.ts",
+    "node": "hardhat node",
+    "clean": "hardhat clean"
+  },
+  "keywords": [
+    "hardhat",
+    "ethereum",
+    "uniswap",
+    "eip-712",
+    "permit"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.14",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@openzeppelin/contracts": "^5.4.0",
+    "dotenv": "^17.2.1",
+    "hardhat": "^2.26.3"
+  }
+}
