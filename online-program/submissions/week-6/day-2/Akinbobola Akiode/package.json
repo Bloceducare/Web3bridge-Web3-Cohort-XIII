@@ -1,0 +1,21 @@
+{
+    "name": "permit-swap-project",
+    "version": "1.0.0",
+    "description": "Foundry project for EIP-712 permit-based Uniswap swaps using pure Solidity",
+    "main": "index.js",
+    "scripts": {
+      "test": "forge test",
+      "build": "forge build",
+      "script:permit": "forge script script/PermitSwap.s.sol --rpc-url mainnet --broadcast"
+    },
+    "keywords": [
+      "foundry",
+      "uniswap",
+      "permit",
+      "eip-712",
+      "ethereum",
+      "solidity"
+    ],
+    "author": "",
+    "license": "MIT"
+  }
