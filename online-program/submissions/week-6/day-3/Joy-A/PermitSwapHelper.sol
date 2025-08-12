@@ -13,10 +13,6 @@ interface IERC20Permit {
     ) external;
 }
 
-interface IERC20 {
-    function transferFrom(address from, address to, uint256 amount) external returns (bool);
-    function approve(address spender, uint256 amount) external returns (bool);
-}
 
 interface IUniswap {
     function swapExactTokensForTokensSupportingFeeOnTransferTokens(
@@ -48,11 +44,7 @@ contract PermitSwapHelper {
         address to,
         uint256 swapDeadline
     ) external {
-        IERC20Permit(token).permit(owner, address(this), amountIn, permitDeadline, v, r, s);
-
-        require(IERC20(token).transferFrom(owner, address(this), amountIn), "transferFrom failed");
-
-        require(IERC20(token).approve(router, amountIn), "approve failed");
+        IERC20Permit(token).permit(owner, router, amountIn, permitDeadline, v, r, s);
 
         IUniswap(router).swapExactTokensForTokensSupportingFeeOnTransferTokens(
             amountIn,

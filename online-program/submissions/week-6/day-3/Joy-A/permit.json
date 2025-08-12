@@ -1,0 +1,25 @@
+{
+  "types": {
+    "Permit": [
+      { "name": "owner", "type": "address" },
+      { "name": "spender", "type": "address" },
+      { "name": "value", "type": "uint256" },
+      { "name": "nonce", "type": "uint256" },
+      { "name": "deadline", "type": "uint256" }
+    ]
+  },
+  "primaryType": "Permit",
+  "domain": {
+    "name": "Dai Stablecoin",
+    "version": "1",
+    "chainId": 1,
+    "verifyingContract": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+  },
+  "message": {
+    "owner": "0xD1668fB5F690C59Ab4B0CAbAd0f8C1617895052B",
+    "spender": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+    "value": "1000000000000000000",
+    "nonce": 0,
+    "deadline": 1710000000
+  }
+}
