@@ -135,3 +135,4 @@ onsite-program/tasks/week-3/Abasiodiong-udofia
 
 # Hardhat Ignition default folder for deployments against a local node
 ignition/deployments/chain-31337
+lib/openzeppelin-contracts/
