@@ -3,10 +3,14 @@
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-const LockModule = buildModule("LockModule", (m) => {
-  const lock = m.contract("Lock");
+const DAOModule = buildModule("GovernanceDAOModule", (m) => {
+  const daoft = m.contract("DAOMembershipNFT"); 
 
-  return { lock };
+  const gateway = m.contract("TokenGateway", [daoft]);
+  const dao = m.contract("GovernanceDAO", [gateway]);
+
+  return { daoft, gateway, dao };
 });
 
-export default LockModule;
+
+export default DAOModule;
