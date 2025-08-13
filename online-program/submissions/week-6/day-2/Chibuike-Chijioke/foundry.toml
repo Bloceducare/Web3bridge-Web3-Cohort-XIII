@@ -5,6 +5,10 @@ libs = ["lib"]
 optimizer = true
 optimizer_runs = 200
 via_ir = true
+[dependencies]
+OpenZeppelin = { git = "https://github.com/OpenZeppelin/openzeppelin-contracts.git"}
+permit2 = { git = "https://github.com/Uniswap/permit2.git" }
+solmate = { git = "https://github.com/transmissions11/solmate.git" }
 remappings = [
     "openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
     "permit2/=lib/permit2/src/",
