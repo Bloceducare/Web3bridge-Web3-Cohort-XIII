@@ -43,7 +43,6 @@ contract UniswapAddLiquidityScript is Script {
         uint256 nonce          = 1;
         uint256 deadline       = block.timestamp + 1 days;
 
-        // Build structs
         Permit2.TokenPermissions memory perm = Permit2.TokenPermissions({
             token: USDCAddress,
             amount: permitAmount
@@ -57,7 +56,7 @@ contract UniswapAddLiquidityScript is Script {
 
         Permit2.SignatureTransferDetails memory details = Permit2.SignatureTransferDetails({
             to: UNISWAPROUTER,
-            requestedAmount: requestedSpend
+            requestedAmount: 500
         });
 
         bytes32 tokenPermsHash = keccak256(
