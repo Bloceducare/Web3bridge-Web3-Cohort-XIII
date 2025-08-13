@@ -2,7 +2,9 @@
 src = "src"
 out = "out"
 libs = ["lib"]
-
+evm_version = "paris"
+solc_version = "0.8.28"
+auto_detect_solc = false
 
 remappings = [
     "@openzeppelin/contracts=lib/openzeppelin-contracts/contracts",
@@ -12,14 +14,10 @@ remappings = [
 ]
 
 [rpc_endpoints]
-liskSepolia = "https://rpc.sepolia-api.lisk.com"
-
-
-[profile.liskSepolia]
-chain_id = 4202
+lisk_sepolia = "https://rpc.sepolia-api.lisk.com"
 
 [etherscan]
-liskSepolia = { key = "123" }
+lisk-sepolia = { chain = 4202, key = "123", url = "https://sepolia-blockscout.lisk.com/api" }
 
 [profile.default.fuzz]
 runs = 256
@@ -27,4 +25,3 @@ runs = 256
 [profile.default.invariant]
 runs = 256
 depth = 15
-# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

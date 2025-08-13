@@ -90,7 +90,7 @@ contract PermitSwapV3Test is Test {
         return abi.encodePacked(r, s, v);
     }
 
-    function testPermitSignatureValid() public view {
+    function testPermitSignatureValid() public {
         bytes32 structHash = keccak256(
             abi.encode(
                 keccak256("PermitTransferFrom(TokenPermissions permitted,uint256 nonce,uint256 deadline)TokenPermissions(address token,uint256 amount)"),
