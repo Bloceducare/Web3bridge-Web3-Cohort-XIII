@@ -2,21 +2,19 @@
 pragma solidity ^0.8.13;
 
 import {Script} from "forge-std/Script.sol";
-import {IPermit} from "../src/IPermit.sol";
+import {IERC20Permit} from "../src/IERC20.sol";
 
 contract CounterScript is Script {
-    IPermit public Ipermit;
+    IERC20Permit public Ipermit;
 
     function setUp() public {}
 
     function run() public {
-        vm.startBroadcast();
-        Ipermit = IPermit(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
-        // Ipermit.permitTransferFrom(permit, transferDetails, owner, signature);
+vm.startBroadcast();
+        uint privateKey = 0xA11CE;
+        address newUser = vm.addr(privateKey);
 
 
-
-
-        vm.stopBroadcast();
+        vm.stopBroadcast();        
     }
 }
