@@ -1,0 +1,21 @@
+{
+  "title": "Asset Metadata",
+  "type": "object",
+  "name": "",
+  "description": "",
+  "image": "",
+  "roles": [
+    {
+      "id": "0x5cefc88e2d50f91b66109b6bb76803f11168ca3d1cee10cbafe864e4749970c7",
+      "name": "VOTER",
+      "description": "Vote for a proposal",
+      "supportsMultipleAssignments": false
+    },
+    {
+      "id": "0x06a3b33b0a800805559ee9c64f55afd8a43a05f8472feb6f6b77484ff5ac9c26",
+      "name": "PROPOSER",
+      "description": "Propose something",
+      "supportsMultipleAssignments": true
+    }
+  ]
+}
