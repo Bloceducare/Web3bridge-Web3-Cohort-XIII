@@ -2,6 +2,93 @@
 
 ![alt text](<Screenshot 2025-08-12 at 11.18.01 PM.png>)
 
+
+Compiler run successful!
+
+Ran 1 test for test/PermitSwap.t.sol:PermitSwapEIP712Test
+[PASS] testPermitAndSwap() (gas: 191924)
+Traces:
+  [245170] PermitSwapEIP712Test::testPermitAndSwap()
+    ├─ [0] VM::addr(<pk>) [staticcall]
+    │   └─ ← [Return] 0xe05fcC23807536bEe418f142D19fa0d21BB0cfF7
+    ├─ [44838] ERC20Mock::mint(0xe05fcC23807536bEe418f142D19fa0d21BB0cfF7, 1000000000000000000000 [1e21])
+    │   └─ ← [Stop]
+    ├─ [2583] ERC20Mock::nonces(0xe05fcC23807536bEe418f142D19fa0d21BB0cfF7) [staticcall]
+    │   └─ ← [Return] 0
+    ├─ [2383] ERC20Mock::DOMAIN_SEPARATOR() [staticcall]
+    │   └─ ← [Return] 0xa8ecc09c3bd7d05f277c5161805e37b7362b592a4cf057e4ce7ec34b7b1f11f2
+    ├─ [0] VM::sign("<pk>", 0x1a39d84c30512e01d55edcca75ffa7fec720d00516cbe6564cdb8c6ced7dd565) [staticcall]
+    │   └─ ← [Return] 28, 0xb7cd81d7d102cb84e87915448363172244d37d9fab209dcec57c9f129e532a96, 0x4369ef7048b0d6bead53bf17e6385f97671b54c80d2e7d63ada5b5eb634d1c25
+    ├─ [0] VM::prank(0xe05fcC23807536bEe418f142D19fa0d21BB0cfF7)
+    │   └─ ← [Return]
+    ├─ [175040] PermitSwapEIP712::permitAndSwapSimple(ERC20Mock: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], ERC20Mock: [0x2e234DAe75C793f67A35089C9d99245E1C58470b], 500000000000000000000 [5e20], 400000000000000000000 [4e20], 86401 [8.64e4], 28, 0xb7cd81d7d102cb84e87915448363172244d37d9fab209dcec57c9f129e532a96, 0x4369ef7048b0d6bead53bf17e6385f97671b54c80d2e7d63ada5b5eb634d1c25)
+    │   ├─ [47320] ERC20Mock::permit(0xe05fcC23807536bEe418f142D19fa0d21BB0cfF7, PermitSwapEIP712: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 500000000000000000000 [5e20], 86401 [8.64e4], 28, 0xb7cd81d7d102cb84e87915448363172244d37d9fab209dcec57c9f129e532a96, 0x4369ef7048b0d6bead53bf17e6385f97671b54c80d2e7d63ada5b5eb634d1c25)
+    │   │   ├─ [3000] PRECOMPILES::ecrecover(0x1a39d84c30512e01d55edcca75ffa7fec720d00516cbe6564cdb8c6ced7dd565, 28, 83136351082696006033706779410711742421991154880553905418139848477875631237782, 30492132341426720323534839509418490323897155063541890159101706346100914199589) [staticcall]
+    │   │   │   └─ ← [Return] 0x000000000000000000000000e05fcc23807536bee418f142d19fa0d21bb0cff7
+    │   │   └─ ← [Stop]
+    │   ├─ [24276] ERC20Mock::transferFrom(0xe05fcC23807536bEe418f142D19fa0d21BB0cfF7, PermitSwapEIP712: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 500000000000000000000 [5e20])
+    │   │   └─ ← [Return] true
+    │   ├─ [22828] ERC20Mock::approve(UniswapRouterMock: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 500000000000000000000 [5e20])
+    │   │   └─ ← [Return] true
+    │   ├─ [74458] UniswapRouterMock::swapExactTokensForTokens(500000000000000000000 [5e20], 400000000000000000000 [4e20], [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f, 0x2e234DAe75C793f67A35089C9d99245E1C58470b], 0xe05fcC23807536bEe418f142D19fa0d21BB0cfF7, 86401 [8.64e4])
+    │   │   ├─ [24276] ERC20Mock::transferFrom(PermitSwapEIP712: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], UniswapRouterMock: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a], 500000000000000000000 [5e20])
+    │   │   │   └─ ← [Return] true
+    │   │   ├─ [44838] ERC20Mock::mint(0xe05fcC23807536bEe418f142D19fa0d21BB0cfF7, 400000000000000000000 [4e20])
+    │   │   │   └─ ← [Stop]
+    │   │   └─ ← [Return] [500000000000000000000 [5e20], 400000000000000000000 [4e20]]
+    │   └─ ← [Stop]
+    ├─ [582] ERC20Mock::balanceOf(0xe05fcC23807536bEe418f142D19fa0d21BB0cfF7) [staticcall]
+    │   └─ ← [Return] 500000000000000000000 [5e20]
+    ├─ [582] ERC20Mock::balanceOf(0xe05fcC23807536bEe418f142D19fa0d21BB0cfF7) [staticcall]
+    │   └─ ← [Return] 400000000000000000000 [4e20]
+    └─ ← [Stop]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 [⠊] Compiling...
 [⠆] Compiling 21 files with Solc 0.8.17
@@ -93,9 +180,9 @@ home@MacBook-Pro-2 permit2 % forge test -vvvv
 [⠑] Solc 0.8.17 finished in 35.58s
 Compiler run successful with warnings:
 Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
---> test/PermitSwap.t.sol:91:9:
+ test/PermitSwap.t.sol:91:9:
 |
-91 | bytes calldata signature
+<!-- 91 | bytes calldata signature
 | ^^^^^^^^^^^^^^^^^^^^^^^^
 
 Ran 10 tests for test/PermitSwap.t.sol:PermitSwapEIP712Test
@@ -110,4 +197,4 @@ Traces:
 │ └─ ← [Return] 0
 └─ ← [Return]
 
-[PASS] testEventEmission() (gas: 166922)
+[PASS] testEventEmission() (gas: 166922) -->  -->

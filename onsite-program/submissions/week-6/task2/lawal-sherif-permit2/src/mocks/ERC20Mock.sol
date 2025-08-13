@@ -1,165 +1,124 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.28;
 
 import "../interfaces/IERC20.sol";
 
-/// @notice Simple ERC20 mock implementation for testing purposes
-/// @dev This is a basic implementation with minting capabilities for easy testing
 contract ERC20Mock is IERC20 {
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
-
+    mapping(address => uint256) public nonces; // For ERC20Permit
+    
     uint256 private _totalSupply;
     string public name;
     string public symbol;
     uint8 public decimals;
-
-    constructor(
-        string memory _name,
-        string memory _symbol,
-        uint8 _decimals,
-        uint256 _initialSupply
-    ) {
+    
+    // EIP-712 domain separator
+    bytes32 public DOMAIN_SEPARATOR;
+    
+    // EIP-712 type hash for permit
+    bytes32 public constant PERMIT_TYPEHASH = keccak256(
+        "Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)"
+    );
+    
+    constructor(string memory _name, string memory _symbol) {
         name = _name;
         symbol = _symbol;
-        decimals = _decimals;
+        decimals = 18; 
         
-        if (_initialSupply > 0) {
-            _mint(msg.sender, _initialSupply);
-        }
+        DOMAIN_SEPARATOR = keccak256(
+            abi.encode(
+                keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+                keccak256(bytes(_name)),
+                keccak256(bytes("1")),
+                block.chainid,
+                address(this)
+            )
+        );
     }
-
-    function totalSupply() public view override returns (uint256) {
+    
+    function totalSupply() external view override returns (uint256) {
         return _totalSupply;
     }
-
-    function balanceOf(address account) public view override returns (uint256) {
+    
+    function balanceOf(address account) external view override returns (uint256) {
         return _balances[account];
     }
-
-    function transfer(address to, uint256 amount) public override returns (bool) {
-        address owner = msg.sender;
-        _transfer(owner, to, amount);
+    
+    function transfer(address to, uint256 amount) external override returns (bool) {
+        _transfer(msg.sender, to, amount);
         return true;
     }
-
-    function allowance(address owner, address spender) public view override returns (uint256) {
+    
+    function allowance(address owner, address spender) external view override returns (uint256) {
         return _allowances[owner][spender];
     }
-
-    function approve(address spender, uint256 amount) public override returns (bool) {
-        address owner = msg.sender;
-        _approve(owner, spender, amount);
+    
+    function approve(address spender, uint256 amount) external override returns (bool) {
+        _approve(msg.sender, spender, amount);
         return true;
     }
-
-    function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
-        address spender = msg.sender;
-        _spendAllowance(from, spender, amount);
+    
+    function transferFrom(address from, address to, uint256 amount) external override returns (bool) {
+        uint256 currentAllowance = _allowances[from][msg.sender];
+        require(currentAllowance >= amount, "ERC20: insufficient allowance");
+        
         _transfer(from, to, amount);
+        _approve(from, msg.sender, currentAllowance - amount);
+        
         return true;
     }
-
-    /// @notice Mint tokens to a specific address (for testing purposes)
-    /// @param to Address to mint tokens to
-    /// @param amount Amount of tokens to mint
-    function mint(address to, uint256 amount) public {
-        _mint(to, amount);
-    }
-
-    /// @notice Burn tokens from a specific address (for testing purposes)
-    /// @param from Address to burn tokens from
-    /// @param amount Amount of tokens to burn
-    function burn(address from, uint256 amount) public {
-        _burn(from, amount);
-    }
-
-    /// @notice Set allowance directly (for testing purposes)
-    /// @param owner Token owner
-    /// @param spender Spender address
-    /// @param amount Allowance amount
-    function setAllowance(address owner, address spender, uint256 amount) public {
-        _allowances[owner][spender] = amount;
-        emit Approval(owner, spender, amount);
-    }
-
-    function _mint(address to, uint256 amount) internal {
-        require(to != address(0), "ERC20: mint to the zero address");
-
-        _totalSupply += amount;
-        unchecked {
-            // Overflow not possible: balance + amount is at most totalSupply + amount, which is checked above.
-            _balances[to] += amount;
-        }
-        emit Transfer(address(0), to, amount);
-    }
-
-    function _burn(address from, uint256 amount) internal {
-        require(from != address(0), "ERC20: burn from the zero address");
-
-        uint256 accountBalance = _balances[from];
-        require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
-        unchecked {
-            _balances[from] = accountBalance - amount;
-            // Overflow not possible: amount <= accountBalance <= totalSupply.
-            _totalSupply -= amount;
-        }
-
-        emit Transfer(from, address(0), amount);
-    }
-
-    function _transfer(address from, address to, uint256 amount) internal {
-        require(from != address(0), "ERC20: transfer from the zero address");
-        require(to != address(0), "ERC20: transfer to the zero address");
-
-        uint256 fromBalance = _balances[from];
-        require(fromBalance >= amount, "ERC20: transfer amount exceeds balance");
-        unchecked {
-            _balances[from] = fromBalance - amount;
-            // Overflow not possible: the sum of all balances is capped by totalSupply, and the sum is preserved by
-            // decrementing then incrementing.
-            _balances[to] += amount;
-        }
-
-        emit Transfer(from, to, amount);
-    }
-
-    function _approve(address owner, address spender, uint256 amount) internal {
-        require(owner != address(0), "ERC20: approve from the zero address");
-        require(spender != address(0), "ERC20: approve to the zero address");
-
-        _allowances[owner][spender] = amount;
-        emit Approval(owner, spender, amount);
-    }
-
-    function _spendAllowance(address owner, address spender, uint256 amount) internal {
-        uint256 currentAllowance = allowance(owner, spender);
-        if (currentAllowance != type(uint256).max) {
-            require(currentAllowance >= amount, "ERC20: insufficient allowance");
-            unchecked {
-                _approve(owner, spender, currentAllowance - amount);
-            }
-        }
-    }
-
-    /// @notice Helper function to create tokens with 18 decimals from a factory contract
-    /// @dev This should be called from a separate factory contract, not from within ERC20Mock itself
-    /// @param _name Token name
-    /// @param _symbol Token symbol
-    /// @param _initialSupply Initial supply (will be multiplied by 10^18)
-    /// @param _recipient Address to receive the initial supply
-    function initializeStandardToken(
-        string memory _name,
-        string memory _symbol,
-        uint256 _initialSupply,
-        address _recipient
+    
+    function permit(
+        address owner,
+        address spender,
+        uint256 value,
+        uint256 deadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
     ) external {
-        require(bytes(name).length == 0, "Already initialized");
-        name = _name;
-        symbol = _symbol;
-        decimals = 18;
-        if (_initialSupply > 0) {
-            _mint(_recipient, _initialSupply * 10**18);
-        }
+        require(deadline >= block.timestamp, "ERC20Permit: expired deadline");
+        
+        bytes32 structHash = keccak256(
+            abi.encode(
+                PERMIT_TYPEHASH,
+                owner,
+                spender,
+                value,
+                nonces[owner]++,
+                deadline
+            )
+        );
+        
+        bytes32 hash = keccak256(
+            abi.encodePacked("\x19\x01", DOMAIN_SEPARATOR, structHash)
+        );
+        
+        address signer = ecrecover(hash, v, r, s);
+        require(signer == owner, "ERC20Permit: invalid signature");
+        
+        _approve(owner, spender, value);
+    }
+    
+    function mint(address to, uint256 amount) external {
+        _totalSupply += amount;
+        _balances[to] += amount;
+    }
+    
+    function _transfer(address from, address to, uint256 amount) internal {
+        require(from != address(0), "ERC20: transfer from zero address");
+        require(to != address(0), "ERC20: transfer to zero address");
+        require(_balances[from] >= amount, "ERC20: insufficient balance");
+        
+        _balances[from] -= amount;
+        _balances[to] += amount;
+    }
+    
+    function _approve(address owner, address spender, uint256 amount) internal {
+        require(owner != address(0), "ERC20: approve from zero address");
+        require(spender != address(0), "ERC20: approve to zero address");
+        
+        _allowances[owner][spender] = amount;
     }
 }
