@@ -25,7 +25,7 @@ contract OffChainSigningTest is Test {
     }
 
     function testSwapWithPermit() public {
-       uint256 PRIVATE_KEY = 0x69936b6d2cd7b90d2b46302f1ce500955f8c0ba81610eab68d57af866510f5b9;
+       uint256 PRIVATE_KEY = 123;
        address userAddress = vm.addr(PRIVATE_KEY);
        uint256 amountIn = 20000000;
 
