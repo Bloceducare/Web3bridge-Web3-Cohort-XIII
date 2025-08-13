@@ -3,7 +3,7 @@ import { ethers } from "hardhat";
 import { TypedDataDomain, TypedDataField } from "ethers";
 
 async function main() {
-  const MAINNET_RPC_URL = await vars.get("ALCHEMY_API_KEY");
+  const MAINNET_RPC_URL = `https://eth-mainnet.g.alchemy.com/v2/${await vars.get("ALCHEMY_API_KEY")}`;
   const PRIVATE_KEY = await vars.get("PRIVATE_KEY");
 
   const provider = new ethers.JsonRpcProvider(MAINNET_RPC_URL);
@@ -48,7 +48,7 @@ async function main() {
   console.log("Permit signature:", signature);
 
   // Deploy swap executor on fork
-  const Executor = await ethers.getContractFactory("PermitSwapExecutor");
+  const Executor = await ethers.getContractFactory("Permit2Swap");
   const executor = await Executor.deploy(permit2Address, uniswapRouter);
   await executor.waitForDeployment();
 

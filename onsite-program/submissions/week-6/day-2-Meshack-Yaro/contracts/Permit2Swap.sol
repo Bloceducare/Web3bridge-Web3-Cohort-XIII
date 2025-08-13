@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import {IPermit2} from "./interfaces/IPermit2.sol";
-import {IUniswapV2Router02} from "./interfaces/IUniswapV2Router02.sol";
-import {IERC20} from "./interfaces/IERC20.sol";
+import {IPermit2} from "../interfaces/IPermit2.sol";
+import {IUniswapV2Router02} from "../interfaces/IUniswapV2Router02.sol";
+import {IERC20} from "../interfaces/IERC20.sol";
 
 contract Permit2Swap {
     IPermit2 public immutable permit2;
@@ -23,6 +23,9 @@ contract Permit2Swap {
         uint256 amountOutMin,
         uint256 deadline
     ) external {
+
+        require(path.length >= 2, "Invalid swap path");
+        require(deadline >= block.timestamp, "Deadline expired");
         permit2.permitTransferFrom(permit, transferDetails, owner, signature);
 
         IERC20(path[0]).approve(address(uniswapRouter), transferDetails.requestedAmount);
