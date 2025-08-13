@@ -11,7 +11,6 @@ interface IUniswapV2Factory {
 }
 
 contract UniswapAddLiquidityScript is Script {
-    // --- Addresses (mainnet) ---
     address assetHolder      = 0xf584F8728B874a6a5c7A8d4d387C9aae9172D621;
     address USDCAddress      = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
     address DAIAddress       = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
@@ -19,14 +18,12 @@ contract UniswapAddLiquidityScript is Script {
     address UNISWAPV2FACTORY = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
     address PERMIT2_ADDR     = 0x000000000022D473030F116dDEE9F6B43aC78BA3; // Uniswap Permit2
 
-    // EIP-712 constants for your (single) PermitTransferFrom shape
     bytes32 constant EIP712_DOMAIN_TYPEHASH =
     keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
     bytes32 constant NAME_HASH    = keccak256("Permit2");
     bytes32 constant VERSION_HASH = keccak256("1");
 
-    // For your interface: PermitTransferFrom(TokenPermissions permitted,uint256 nonce,uint256 deadline)
-    // and TokenPermissions(address token,uint256 amount)
+
     bytes32 constant TOKEN_PERMISSIONS_TYPEHASH =
     keccak256("TokenPermissions(address token,uint256 amount)");
     bytes32 constant PERMIT_TRANSFER_FROM_TYPEHASH =
@@ -36,16 +33,13 @@ contract UniswapAddLiquidityScript is Script {
     );
 
     function run() external {
-        // --- Optional: just show a balance so you know fork works ---
         vm.startBroadcast(assetHolder);
         uint256 usdcBal = IERC20(USDCAddress).balanceOf(assetHolder);
         console.log("USDC balance (assetHolder):", usdcBal);
         vm.stopBroadcast();
 
-        // ===== Create the Permit2 permit (single token permission) =====
-        // Example values — adjust as needed (USDC has 6 decimals)
-        uint256 permitAmount   = 1_000 * 1e6;           // authorize up to 1000 USDC
-        uint256 requestedSpend = 500 * 1e6;             // will actually transfer 500 USDC
+
+        uint256 permitAmount   = 1_000 * 1e6;
         uint256 nonce          = 1;
         uint256 deadline       = block.timestamp + 1 days;
 
@@ -62,11 +56,10 @@ contract UniswapAddLiquidityScript is Script {
         });
 
         Permit2.SignatureTransferDetails memory details = Permit2.SignatureTransferDetails({
-            to: UNISWAPROUTER,                 // recipient/spender target
+            to: UNISWAPROUTER,
             requestedAmount: requestedSpend
         });
 
-        // ===== Compute EIP-712 digest exactly as Permit2 expects =====
         bytes32 tokenPermsHash = keccak256(
             abi.encode(
                 TOKEN_PERMISSIONS_TYPEHASH,
@@ -96,16 +89,12 @@ contract UniswapAddLiquidityScript is Script {
 
         bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
 
-        // ===== Sign digest (owner must be the signer of this key) =====
-        uint256 ownerPk = vm.envUint("OWNER_PRIVATE_KEY"); // expects 0x-prefixed hex in .env
+        uint256 ownerPk = vm.envUint("OWNER_PRIVATE_KEY");
         address owner   = vm.addr(ownerPk);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPk, digest);
         bytes memory signature = abi.encodePacked(r, s, v);
 
-        // ===== Call Permit2 to apply the permit + transfer in one go =====
-        // NOTE: This ONLY performs the Permit2 signature verification and transfer.
-        // If you want to combine with a Uniswap swap, do it in the same tx/call after this.
-        vm.startBroadcast(owner); // broadcast as the signer/owner
+        vm.startBroadcast(owner);
         Permit2(PERMIT2_ADDR).permitTransferFrom(
             permit,
             details,
