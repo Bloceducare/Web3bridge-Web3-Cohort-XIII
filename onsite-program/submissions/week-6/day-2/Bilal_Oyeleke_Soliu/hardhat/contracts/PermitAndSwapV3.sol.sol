@@ -16,48 +16,35 @@ contract PermitAndSwapV3 {
     }
 
     /// permit -> transferFrom -> approve router -> exactInputSingle
+    /// Note: to avoid "stack too deep" we accept the Uniswap params as a single calldata struct.
     function permitAndSwapSingle(
         address tokenIn,
-        address tokenOut,
-        uint24 fee,
         address owner,
         uint256 amountIn,
-        uint256 amountOutMinimum,
         uint256 permitDeadline,
         uint8 v,
         bytes32 r,
         bytes32 s,
-        uint160 sqrtPriceLimitX96,
-        uint256 swapDeadline,
-        address recipient
+        ExactInputSingleParams calldata params
     ) external returns (uint256 amountOut) {
         require(amountIn > 0, "amountIn==0");
         require(owner != address(0), "owner zero");
+        // sanity checks: ensure provided struct matches tokenIn/amountIn
+        require(params.tokenIn == tokenIn, "tokenIn mismatch");
+        require(params.amountIn == amountIn, "amountIn mismatch");
 
         // 1) consume permit (sets allowance of this contract)
         IERC20Permit(tokenIn).permit(owner, address(this), amountIn, permitDeadline, v, r, s);
 
-        // 2) pull tokens from owner
-        bool ok = IERC20(tokenIn).transferFrom(owner, address(this), amountIn);
-        require(ok, "transferFrom failed");
+        // 2) pull tokens from owner (inline require to avoid extra locals)
+        require(IERC20(tokenIn).transferFrom(owner, address(this), amountIn), "transferFrom failed");
 
         // 3) approve Uniswap router
         require(IERC20(tokenIn).approve(address(swapRouter), amountIn), "approve failed");
 
-        // 4) swap
-        ExactInputSingleParams memory params = ExactInputSingleParams({
-            tokenIn: tokenIn,
-            tokenOut: tokenOut,
-            fee: fee,
-            recipient: recipient,
-            deadline: swapDeadline,
-            amountIn: amountIn,
-            amountOutMinimum: amountOutMinimum,
-            sqrtPriceLimitX96: sqrtPriceLimitX96
-        });
-
+        // 4) swap (forward calldata struct to router)
         amountOut = swapRouter.exactInputSingle(params);
 
-        emit PermitAndSwap(owner, tokenIn, amountIn, tokenOut, amountOut);
+        emit PermitAndSwap(owner, tokenIn, amountIn, params.tokenOut, amountOut);
     }
 }
