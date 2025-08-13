@@ -14,6 +14,7 @@ contract GovernanceDAO{
         uint votesAgainst;
         string description;
         uint deadline;
+        bool isExecuted;
     }
 
     uint private counter;
@@ -45,9 +46,25 @@ contract GovernanceDAO{
     function createProposal(string memory description, uint deadline)external returns(uint){
         require(isUser(msg.sender),"UNAUTHORISED");
         counter = counter+1;
-        Proposal memory proposal = Proposal(counter,0,0,description,deadline);
+        Proposal memory proposal = Proposal(counter,0,0,description,deadline,false);
         usersProposals[msg.sender][counter]= proposal;
         return counter;
     }
-   
+
+   function voteProposal(address owner,uint proposalId)external returns(bool){
+        Proposal storage proposal = usersProposals[owner][proposalId];
+        require(proposal.proposalId>0,"INVALID PROPOSAL ID");
+        require(!proposal.isExecuted,"PROPOSAL EXECUTED");
+        proposal.votesFor+=1;
+        return true;
+   }
+
+   function voteAgainstProposal(address owner,uint proposalId)external returns(bool){
+        Proposal storage proposal = usersProposals[owner][proposalId];
+        require(proposal.proposalId>0,"INVALID PROPOSAL ID");
+        require(!proposal.isExecuted,"PROPOSAL EXECUTED");
+        proposal.votesAgainst +=1 ;
+        return true;
+   }
+    
 }
