@@ -28,7 +28,7 @@ contract MockUniswapRouter {
     
     function getAmountsOut(uint amountIn, address[] calldata path)
         external
-        view
+        pure
         returns (uint[] memory amounts) {
         amounts = new uint[](path.length);
         amounts[0] = amountIn;

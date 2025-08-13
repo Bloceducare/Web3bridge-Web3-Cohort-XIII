@@ -5,7 +5,6 @@ import {ERC20} from "../lib/solmate/src/tokens/ERC20.sol";
 import {EIP712} from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 
 contract MockERC20Permit is ERC20, EIP712 {
-    mapping(address => uint256) public nonces;
     
     bytes32 private constant PERMIT_TYPEHASH =
         keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)");
@@ -28,7 +27,7 @@ contract MockERC20Permit is ERC20, EIP712 {
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) external {
+    ) public override {
         require(deadline >= block.timestamp, "PERMIT_DEADLINE_EXPIRED");
         
         unchecked {
