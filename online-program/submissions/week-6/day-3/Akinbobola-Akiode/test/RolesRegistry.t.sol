@@ -20,7 +20,6 @@ contract RolesRegistryTest is Test {
     function setUp() public {
         rolesRegistry = new RolesRegistry();
         
-        // Grant DEFAULT_ADMIN_ROLE to test addresses for the token IDs they'll be testing
         rolesRegistry.grantRole(rolesRegistry.DEFAULT_ADMIN_ROLE(), alice, tokenId1);
         rolesRegistry.grantRole(rolesRegistry.DEFAULT_ADMIN_ROLE(), alice, tokenId2);
     }

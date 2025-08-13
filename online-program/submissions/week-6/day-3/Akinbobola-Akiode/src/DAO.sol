@@ -80,7 +80,6 @@ contract DAO {
         return proposalId;
     }
     
-    // Alternative approach: Track eligible voters when they first interact
     mapping(address => bool) public eligibleVoters;
     address[] public eligibleVoterList;
     

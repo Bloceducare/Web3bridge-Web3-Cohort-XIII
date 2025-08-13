@@ -31,14 +31,12 @@ contract DAOTest is Test {
         nft.mint(carol);
         nft.mint(dave);
         
-        // Grant roles to specific NFTs
         rolesRegistry.grantRole(dao.PROPOSER_ROLE(), alice, aliceTokenId);
         rolesRegistry.grantRole(dao.VOTER_ROLE(), alice, aliceTokenId);
         rolesRegistry.grantRole(dao.VOTER_ROLE(), bob, bobTokenId);
         rolesRegistry.grantRole(dao.VOTER_ROLE(), carol, carolTokenId);
         rolesRegistry.grantRole(dao.EXECUTOR_ROLE(), dave, daveTokenId);
         
-        // Register voters
         vm.prank(alice);
         dao.registerAsVoter(aliceTokenId);
         vm.prank(bob);
@@ -122,7 +120,6 @@ contract DAOTest is Test {
         vm.prank(alice);
         uint256 proposalId = dao.createProposal("Test proposal", 100, aliceTokenId);
         
-        // Voting starts immediately when proposal is created, so this should succeed
         vm.prank(bob);
         dao.vote(proposalId, true, bobTokenId);
         

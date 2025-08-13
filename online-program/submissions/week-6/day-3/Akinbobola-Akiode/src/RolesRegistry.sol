@@ -18,7 +18,6 @@ contract RolesRegistry is IERC7432, IERC165 {
         _roleMembers[DEFAULT_ADMIN_ROLE][0].push(msg.sender);
         _roleMemberIndexes[DEFAULT_ADMIN_ROLE][0][msg.sender] = 0;
         
-        // Also grant admin role for common test token IDs to make testing easier
         _roles[DEFAULT_ADMIN_ROLE][1][msg.sender] = true;
         _roleMembers[DEFAULT_ADMIN_ROLE][1].push(msg.sender);
         _roleMemberIndexes[DEFAULT_ADMIN_ROLE][1][msg.sender] = 0;
@@ -54,7 +53,6 @@ contract RolesRegistry is IERC7432, IERC165 {
     }
     
     function grantRole(bytes32 role, address account, uint256 tokenId) external override {
-        // If the role has no admin set yet, allow DEFAULT_ADMIN_ROLE holders to grant it
         if (_roleAdmins[role] == bytes32(0)) {
             require(_roles[DEFAULT_ADMIN_ROLE][tokenId][msg.sender], "AccessControl: sender is not admin");
         } else {
@@ -74,9 +72,7 @@ contract RolesRegistry is IERC7432, IERC165 {
     
     function _grantRole(bytes32 role, address account, uint256 tokenId) internal {
         if (!_roles[role][tokenId][account]) {
-            // If this is the first time this role is being granted for this tokenId,
-            // set the admin role to DEFAULT_ADMIN_ROLE
-            if (_roleAdmins[role] == bytes32(0)) {
+                    if (_roleAdmins[role] == bytes32(0)) {
                 _roleAdmins[role] = DEFAULT_ADMIN_ROLE;
             }
             
