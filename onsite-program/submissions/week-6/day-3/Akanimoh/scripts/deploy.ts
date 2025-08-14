@@ -1,26 +1,29 @@
-const hre = require("hardhat");
+import { ethers } from "hardhat";
 
 async function main() {
-  const [deployer] = await hre.ethers.getSigners();
+  const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address);
 
   // Deploy MembershipNFT
-  const MembershipNFT = await hre.ethers.getContractFactory("MembershipNFT");
+  const MembershipNFT = await ethers.getContractFactory("MembershipNFT");
   const membershipNFT = await MembershipNFT.deploy();
   await membershipNFT.waitForDeployment();
-  console.log("MembershipNFT deployed to:", membershipNFT.target);
+  console.log("MembershipNFT deployed to:", await membershipNFT.getAddress());
 
   // Deploy RolesRegistry
-  const RolesRegistry = await hre.ethers.getContractFactory("RolesRegistry");
+  const RolesRegistry = await ethers.getContractFactory("RolesRegistry");
   const rolesRegistry = await RolesRegistry.deploy();
   await rolesRegistry.waitForDeployment();
-  console.log("RolesRegistry deployed to:", rolesRegistry.target);
+  console.log("RolesRegistry deployed to:", await rolesRegistry.getAddress());
 
   // Deploy TokenGatedDAO
-  const TokenGatedDAO = await hre.ethers.getContractFactory("TokenGatedDAO");
-  const dao = await TokenGatedDAO.deploy(membershipNFT.target, rolesRegistry.target);
+  const TokenGatedDAO = await ethers.getContractFactory("TokenGatedDAO");
+  const dao = await TokenGatedDAO.deploy(
+    await membershipNFT.getAddress(),
+    await rolesRegistry.getAddress()
+  );
   await dao.waitForDeployment();
-  console.log("TokenGatedDAO deployed to:", dao.target);
+  console.log("TokenGatedDAO deployed to:", await dao.getAddress());
 }
 
 main()
