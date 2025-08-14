@@ -1,0 +1,457 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/doctor-ibrahim/Desktop/Piggy Bank Factory/contracts/PiggyBank.sol": {
+      "lastModificationDate": 1754923255771,
+      "contentHash": "2083316925de58a2c2a003092eedef13",
+      "sourceName": "contracts/PiggyBank.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPiggyBank.sol",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "./messages/Error.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "PiggyBank"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/Piggy Bank Factory/contracts/interfaces/IPiggyBank.sol": {
+      "lastModificationDate": 1754923231300,
+      "contentHash": "a1f8d5736a74af0ffe2af5538dc51d98",
+      "sourceName": "contracts/interfaces/IPiggyBank.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "IPiggyBank"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/Piggy Bank Factory/contracts/PiggyBankFactory.sol": {
+      "lastModificationDate": 1754923456359,
+      "contentHash": "d573227c2d7b62f3b09b8cb19e90651d",
+      "sourceName": "contracts/PiggyBankFactory.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPiggyBankFactory.sol",
+        "./interfaces/IPiggyBank.sol",
+        "./PiggyBank.sol",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "./messages/Error.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "PiggyBankFactory"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/Piggy Bank Factory/contracts/interfaces/IPiggyBankFactory.sol": {
+      "lastModificationDate": 1754922480340,
+      "contentHash": "18249a61ddc2471bbf5982069a7da966",
+      "sourceName": "contracts/interfaces/IPiggyBankFactory.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "IPiggyBankFactory"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/Piggy Bank Factory/contracts/messages/Error.sol": {
+      "lastModificationDate": 1754921863486,
+      "contentHash": "48dfcc30d07198b001c9a0000f2b15b0",
+      "sourceName": "contracts/messages/Error.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "Error"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/Piggy Bank Factory/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1754920736674,
+      "contentHash": "9261adf6457863de3e9892f51317ec89",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.16"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/WEB3BRIDGE TASK/Adeniran_Ibrahim_Adewale/onsite-program/submissions/week-6/day-1/Adeniran Ibrahim Adewale/contracts/PiggyBank.sol": {
+      "lastModificationDate": 1754923754580,
+      "contentHash": "2083316925de58a2c2a003092eedef13",
+      "sourceName": "contracts/PiggyBank.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPiggyBank.sol",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "./messages/Error.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "PiggyBank"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/WEB3BRIDGE TASK/Adeniran_Ibrahim_Adewale/onsite-program/submissions/week-6/day-1/Adeniran Ibrahim Adewale/contracts/interfaces/IPiggyBank.sol": {
+      "lastModificationDate": 1754923754583,
+      "contentHash": "a1f8d5736a74af0ffe2af5538dc51d98",
+      "sourceName": "contracts/interfaces/IPiggyBank.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "IPiggyBank"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/WEB3BRIDGE TASK/Adeniran_Ibrahim_Adewale/onsite-program/submissions/week-6/day-1/Adeniran Ibrahim Adewale/contracts/messages/Error.sol": {
+      "lastModificationDate": 1754923754585,
+      "contentHash": "48dfcc30d07198b001c9a0000f2b15b0",
+      "sourceName": "contracts/messages/Error.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "Error"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/WEB3BRIDGE TASK/Adeniran_Ibrahim_Adewale/onsite-program/submissions/week-6/day-1/Adeniran Ibrahim Adewale/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1754923754446,
+      "contentHash": "9261adf6457863de3e9892f51317ec89",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.16"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/WEB3BRIDGE TASK/Adeniran_Ibrahim_Adewale/onsite-program/submissions/week-6/day-1/Adeniran Ibrahim Adewale/contracts/PiggyBankFactory.sol": {
+      "lastModificationDate": 1754923754581,
+      "contentHash": "d573227c2d7b62f3b09b8cb19e90651d",
+      "sourceName": "contracts/PiggyBankFactory.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPiggyBankFactory.sol",
+        "./interfaces/IPiggyBank.sol",
+        "./PiggyBank.sol",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "./messages/Error.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "PiggyBankFactory"
+      ]
+    },
+    "/home/doctor-ibrahim/Desktop/WEB3BRIDGE TASK/Adeniran_Ibrahim_Adewale/onsite-program/submissions/week-6/day-1/Adeniran Ibrahim Adewale/contracts/interfaces/IPiggyBankFactory.sol": {
+      "lastModificationDate": 1754923754583,
+      "contentHash": "18249a61ddc2471bbf5982069a7da966",
+      "sourceName": "contracts/interfaces/IPiggyBankFactory.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.25"
+      ],
+      "artifacts": [
+        "IPiggyBankFactory"
+      ]
+    }
+  }
+}
