@@ -1,0 +1,20 @@
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.10;
+
+import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import  "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+
+contract Nft is ERC721URIStorage{
+    uint256 private _nextTokenId;
+
+    constructor() ERC721("DAONft", "DNFT") {}
+
+    function mintRole(address to, string memory tokenURI) public returns(uint256){
+            uint256 tokenId = _nextTokenId++;
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, tokenURI);
+
+        return tokenId;
+    }
+
+}
