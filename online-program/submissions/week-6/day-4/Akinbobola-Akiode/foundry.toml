@@ -1,0 +1,12 @@
+[profile.default]
+solc_version = "0.8.28"
+src = "src"
+test = "test"
+out = "out"
+libs = ["lib"]
+
+fs_permissions = [
+  { access = "read", path = "." }
+]
+
+

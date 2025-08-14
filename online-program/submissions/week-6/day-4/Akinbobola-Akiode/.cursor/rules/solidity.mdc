@@ -1,0 +1,36 @@
+---
+alwaysApply: false
+---
+Solidity Best Practices & Error Prevention
+
+## ✅ Type Safety
+- **Match Argument Types Exactly** — Copy official function signatures from the ERC/EIP spec or audited code.
+- **Cast Explicitly Where Needed** — e.g., `uint256(value)`, `IERC721(nft).safeTransferFrom(...)`.
+- **Check Parameter Order in Calls** — Even if the types are correct, the wrong order will cause errors.
+- **Avoid Mixed Data Types in Arithmetic** — Always cast to the same type before performing calculations.
+- **Avoid `var` and Implicit Types** — Explicitly declare types for every variable.
+
+## ✅ Storage & Memory
+- **Keep Storage & Memory in Sync** — Match `memory` / `calldata` exactly as in the called function.
+- **Avoid Passing Memory to Calldata Functions** — Use proper conversions when needed.
+
+## ✅ Interfaces & Imports
+- **Use Minimal, Verified Interfaces** — No extra functions you don’t need.
+- **Always Use Correct Interfaces** — Example: call ERC721 functions through `IERC721` not `address`.
+- **Avoid Unused Imports & Variables** — Remove any that aren’t used to keep the code clean.
+
+## ✅ Function Visibility & Mutability
+- **Always Add Visibility (`public`, `external`, `internal`, `private`)**.
+- **Always Add Mutability (`view`, `pure`, `payable`)** when possible.
+- **Restrict Mutability** — If a function doesn’t change state, mark it `view` or `pure`.
+
+## ✅ Naming & Readability
+- **Name Parameters & Variables Clearly** — Avoid abbreviations unless industry-standard.
+- **Avoid Unicode / Special Characters** — Use only standard ASCII characters.
+- **Compile Early & Often** — After each logical section of code.
+
+## ✅ ERC721 / ERC1155 Safety
+- **For ERC1155/721 `safeTransferFrom`, Include All Required Params**:
+  ```solidity
+  IERC721(nft).safeTransferFrom(from, to, tokenId);
+  IERC1155(token).safeTransferFrom(from, to, tokenId, amount, "");
