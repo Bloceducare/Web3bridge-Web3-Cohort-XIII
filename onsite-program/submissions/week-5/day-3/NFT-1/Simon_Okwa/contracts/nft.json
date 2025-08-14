@@ -1,0 +1,12 @@
+{
+    "name": "My nft image",
+    "description": "Simple nft",
+    "image": "https://gateway.pinata.cloud/ipfs/bafkreiakakdapq6gryvp4vb57scpgz23halhd2hsa2bp6bfh7aar3qa7fm",
+    "attributes": [
+        {
+            "trait_type": "color",
+            "value": "Blue"
+        }
+    ]
+}
+   
