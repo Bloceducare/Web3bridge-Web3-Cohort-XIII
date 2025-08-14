@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "./RoleRegistry.sol";
 
-contract CustomDAOGovernance is Ownable, ReentrancyGuard {
+contract Governance is Ownable, ReentrancyGuard {
     RoleRegistry public immutable roleRegistry;
     address public immutable nftContract;
     bytes32 public constant PROPOSER_ROLE = keccak256("Proposer");
