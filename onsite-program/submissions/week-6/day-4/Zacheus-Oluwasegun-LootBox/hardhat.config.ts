@@ -39,10 +39,11 @@ const config: HardhatUserConfig = {
     "lisk-sepolia": {
       type: "http",
       chainType: "l1",
-      url: configVariable("SEPOLIA_RPC_URL"),
+      url: configVariable("LISK_SEPOLIA_RPC_URL"),
       accounts: [configVariable("PRIVATE_KEY")],
     },
   },
 };
 
 export default config;
+// https://rpc.sepolia-api.lisk.com""
