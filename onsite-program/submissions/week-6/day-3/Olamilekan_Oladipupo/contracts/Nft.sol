@@ -7,9 +7,6 @@ import  "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 contract Nft is ERC721URIStorage{
     uint256 private _nextTokenId;
 
-
-
-
     constructor() ERC721("DAONft", "DNFT") {}
 
     function mintRole(address to, string memory tokenURI) public returns(uint256){
