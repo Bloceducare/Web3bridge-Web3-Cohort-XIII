@@ -12,7 +12,7 @@ interface ITokenGatedDAO{
         bool executed;
     }
 
-    function createProposal(string _description,uint256 _tokenId, uint256 deadline,) external;
+    function createProposal(string calldata _description,uint256 _tokenId, uint256 deadline) external;
     function vote(uint256 proposalId, uint256 _tokenId,bool support) external;
     function executeProposal(uint256 proposalId, uint256 _tokenId) external;
     function getProposal(uint256 proposalId) external view returns (Proposal memory);

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.30;
-interface IMERC7432{
+interface IERC7432{
 
     struct Role {
     bytes32 roleId;
