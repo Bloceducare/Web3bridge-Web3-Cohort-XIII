@@ -1,9 +1,9 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-export default buildModule("CounterModule", (m) => {
-  const counter = m.contract("Counter");
+export default buildModule("LootBoxModule", (m) => {
+  const lootBox = m.contract("LootBox");
 
-  m.call(counter, "incBy", [5n]);
+  m.call(lootBox, "incBy", [5n]);
 
-  return { counter };
+  return { lootBox };
 });
