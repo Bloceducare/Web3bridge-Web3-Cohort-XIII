@@ -9,7 +9,15 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const LISK_EXPLORER_KEY = process.env.LISK_EXPLORER_KEY || (() => { throw new Error("LISK_EXPLORER_KEY is not defined"); })();
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.28",
+  solidity: {
+    version: "0.8.28",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+    },
+  },
   networks: {
     lisk: {
       url: LISK_URL_RPC,
