@@ -54,7 +54,7 @@ contract LootBox is Ownable {
         require(msg.value == FEE, "Incorrect fee");
 
         // Transfer fee to contract
-        (bool sent, ) = address(this).call{value: msg.value}("");
+        (bool sent, ) = address(this).call{value: FEE}("");
         require(sent, "Fee transfer failed");
 
         emit BoxOpened(msg.sender, FEE);
