@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import { RegisterNFT } from "./NFT.sol";
 import { IERC7432 } from "./interfaces/EIP-7432.sol";
 import "./interfaces/daoInterface.sol";
+import "dotenv/config";
 
 contract ManageDAO is daoInterface {
 
@@ -14,6 +15,8 @@ contract ManageDAO is daoInterface {
     error ROLE_EXPIRED();
     error PERMISSION_DENIED();
 
+    string constant NFT_METADATA_URI1 = getenv("NFT_METADATA_URI1");
+    string constant NFT_METADATA_URI2 = getenv("NFT_METADATA_URI2");
     address admin;
     mapping(address => Member) public members;
     mapping(RoleType => mapping(string => bool)) public permissions;
@@ -56,7 +59,7 @@ contract ManageDAO is daoInterface {
 
         if (_role == RoleType.protocolWorker) {
             RegisterNFT nft = new RegisterNFT("Protocol Worker NFT", "PWNFT", address(this));
-            tokenId = nft.mintWorkerNFT(_user, "https://example.com/worker-nft");
+            tokenId = nft.mintWorkerNFT(_user, NFT_METADATA_URI1);
             nftAddress = address(nft);
             IERC7432.Role memory newRole = IERC7432.Role(worker, nftAddress, tokenId, _user, uint64(_expirationDate), true, abi.encode(newData));
             eip7432Contract.grantRole(newRole);
@@ -64,7 +67,7 @@ contract ManageDAO is daoInterface {
 
         } else if (_role == RoleType.protocolContributor) {
             RegisterNFT nft = new RegisterNFT("Protocol Contributor NFT", "PCNFT", address(this));
-            tokenId = nft.mintContributorNFT(_user, "https://example.com/contributor-nft");
+            tokenId = nft.mintContributorNFT(_user, "NFT_METADATA_URI2");
             nftAddress = address(nft);
             IERC7432.Role memory newRole = IERC7432.Role(contributor, nftAddress, tokenId, _user, uint64(_expirationDate), true, abi.encode(newData));
             eip7432Contract.grantRole(newRole);
