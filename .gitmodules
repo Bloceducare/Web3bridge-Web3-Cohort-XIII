@@ -4,3 +4,9 @@
 [submodule "onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts"]
 	path = onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "lib/openzeppelin-contracts"]
+	path = lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "onsite-program/submissions/week-6/day-4/Valerie-Nwajei/Mystery-box/lib/chainlink"]
+	path = onsite-program/submissions/week-6/day-4/Valerie-Nwajei/Mystery-box/lib/chainlink
+	url = https://github.com/smartcontractkit/chainlink
