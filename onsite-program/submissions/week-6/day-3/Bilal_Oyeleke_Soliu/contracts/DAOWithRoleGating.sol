@@ -54,15 +54,6 @@ contract ManageDAO is daoInterface {
             revert MEMBER_ALREADY_EXISTS();
         }
 
-        Member memory newMember = Member({
-            name: _name,
-            age: _age,
-            user: _user,
-            expirationDate: _expirationDate,
-            data: _data,
-            role: _role
-        });
-
         if (_role == RoleType.protocolWorker) {
             RegisterNFT nft = new RegisterNFT("Protocol Worker NFT", "PWNFT", address(this));
             tokenId = nft.mintWorkerNFT(_user, "https://example.com/worker-nft");
@@ -80,15 +71,25 @@ contract ManageDAO is daoInterface {
             _roles[tokenId][contributor] = RoleData(_expirationDate, abi.encode(newData));
         }
 
-        members[_user] = newMember;
-        return newMember;
+        members[_user] = Member({
+            name: _name,
+            age: _age,
+            user: _user,
+            expirationDate: _expirationDate,
+            data: _data,
+            role: _role,
+            nftAddress: nftAddress,
+            tokenId: tokenId
+        });
+
+        return members[_user];
     }
 
     function getRoleExpiryDate(address _tokenAddress, uint256 _tokenId, bytes32 _roleId) public view returns (uint64) {
         return eip7432Contract.roleExpirationDate(_tokenAddress, _tokenId, _roleId);
     }
 
-    function createProposal(string memory _proposalName, string memory _proposalDescription, address _token_address, uint _tokenId) public {
+    function createProposal(string memory _proposalName, string memory _proposalDescription) public {
         if (bytes(_proposalName).length == 0 || bytes(_proposalDescription).length == 0) {
             revert CAN_NOT_BE_EMPTY();
         }
@@ -97,8 +98,13 @@ contract ManageDAO is daoInterface {
             revert NOT_A_MEMBER();
         }
 
-        bytes32 roleId = keccak256(abi.encodePacked(members[msg.sender].role));
-        uint64 expiryDate = getRoleExpiryDate(_token_address, _tokenId, roleId);
+        bytes32 roleId;
+        if (members[msg.sender].role == RoleType.protocolWorker) {
+            roleId = worker;
+        } else if (members[msg.sender].role == RoleType.protocolContributor) {
+            roleId = contributor;
+        }
+        uint64 expiryDate = getRoleExpiryDate(members[msg.sender].nftAddress, members[msg.sender].tokenId, roleId);
 
         if (expiryDate < block.timestamp) {
             revert ROLE_EXPIRED();

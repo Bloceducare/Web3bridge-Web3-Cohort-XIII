@@ -14,6 +14,8 @@ interface daoInterface {
         uint expirationDate;
         string data;
         RoleType role;
+        address nftAddress;
+        uint256 tokenId;
     }
 
     struct RoleData {   

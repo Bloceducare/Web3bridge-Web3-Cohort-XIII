@@ -78,9 +78,7 @@ describe("ManageDAO", function () {
       await expect(
         dao.connect(member1).createProposal(
           "New Idea",
-          "Description of idea",
-          hre.ethers.ZeroAddress,
-          1
+          "Description of idea"
         )
       ).to.emit(dao, "ProposalCreated");
     });
@@ -93,9 +91,7 @@ describe("ManageDAO", function () {
       await expect(
         dao.connect(member2).createProposal(
           "New Idea",
-          "Description of idea",
-          hre.ethers.ZeroAddress,
-          1
+          "Description of idea"
         )
       ).to.be.revertedWithCustomError(dao, "PERMISSION_DENIED");
     });
