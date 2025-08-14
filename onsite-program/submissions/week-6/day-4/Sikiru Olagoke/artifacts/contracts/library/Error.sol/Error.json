@@ -1,0 +1,103 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Error",
+  "sourceName": "contracts/library/Error.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "FailedToWithdrawFunds",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InsufficientValue",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidLength",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "sumOfRewardUnits",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amountDistributedPerOpen",
+          "type": "uint256"
+        }
+      ],
+      "name": "InvalidLootboxSupply",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidTokenAmount",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NoPendingRequest",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NoTokens",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotAllowed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotEligible",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "OpeningNotStarted",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "PendingOpenRequest",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RandomnessNotFulfilled",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "supply",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amountToOpen",
+          "type": "uint256"
+        }
+      ],
+      "name": "SupplyExceeded",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ZeroAmount",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122067461913ba9c793b1f03fb6a7285937e4b2ce19f53ed4317b51f900c69a995c864736f6c63430008120033",
+  "deployedBytecode": "0x6080604052600080fdfea264697066735822122067461913ba9c793b1f03fb6a7285937e4b2ce19f53ed4317b51f900c69a995c864736f6c63430008120033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
