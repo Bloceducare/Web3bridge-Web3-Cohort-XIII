@@ -54,6 +54,7 @@ contract Lootbox is VRFV2PlusWrapperConsumerBase, Ownable {
         erc721Token = RewardNFT(_erc721);
         erc1155Token = RewardMulti(_erc1155);
     }
+    
 
     /// @notice User pays exact ETH to open a lootbox
     function openLootbox() external payable {

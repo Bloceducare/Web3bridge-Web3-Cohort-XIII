@@ -26,6 +26,7 @@ describe("Lootbox Game", function () {
       parseEther("0.1"), // base fee
       1e9 // gas price link
     );
+    
     await vrfMock.waitForDeployment();
 
     // 3️⃣ Create subscription

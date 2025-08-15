@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract RewardNFT is ERC721URIStorage, Ownable {
     uint256 private _tokenId;
+    
     constructor() ERC721("Reward NFT", "RNFT") {}
     function mint(address to, string memory tokenURI) external onlyOwner {
         _mint(to, _tokenId);
@@ -13,3 +14,4 @@ contract RewardNFT is ERC721URIStorage, Ownable {
         _tokenId++;
     }
 }
+

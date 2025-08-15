@@ -23,6 +23,7 @@ async function main() {
     const rewardNFT = await RewardNFT.deploy();
     await rewardNFT.waitForDeployment();
     console.log(`RewardNFT deployed to: ${await rewardNFT.getAddress()}`);
+    
 
     // ========== 4. Deploy RewardMulti (ERC1155) ==========
     console.log("Deploying RewardMulti (ERC1155)...");
