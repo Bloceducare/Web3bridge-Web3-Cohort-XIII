@@ -87,7 +87,7 @@ contract LootBox is VRFConsumerBaseV2, Ownable, ReentrancyGuard {
         keyHash = _keyHash;
         subscriptionId = _subscriptionId;
         feeRecipient = _feeRecipient;
-        initialOwner= _initialOwner
+        _transferOwnership(initialOwner);
     }
 
     function createLootBoxType(
