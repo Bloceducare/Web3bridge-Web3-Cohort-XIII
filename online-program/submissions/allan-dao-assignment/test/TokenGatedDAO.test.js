@@ -1,6 +1,7 @@
-const { expect } = require("chai");
-const { ethers } = require("hardhat");
-const { time } = require("@nomicfoundation/hardhat-network-helpers");
+import { expect } from "chai";
+import hre from "hardhat";
+const { ethers } = hre;
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 describe("TokenGatedDAO", function () {
   let roleNFT, dao, owner, voter1, voter2, proposer, executor;
@@ -18,6 +19,9 @@ describe("TokenGatedDAO", function () {
     const TokenGatedDAO = await ethers.getContractFactory("TokenGatedDAO");
     dao = await TokenGatedDAO.deploy(await roleNFT.getAddress());
 
+    // Set DAO contract address in RoleNFT
+    await roleNFT.setDAOContract(await dao.getAddress());
+
     // Define roles
     VOTER_ROLE = ethers.keccak256(ethers.toUtf8Bytes("VOTER_ROLE"));
     PROPOSER_ROLE = ethers.keccak256(ethers.toUtf8Bytes("PROPOSER_ROLE"));
@@ -27,12 +31,13 @@ describe("TokenGatedDAO", function () {
     await roleNFT.mint(voter1.address);   // tokenId 0
     await roleNFT.mint(proposer.address); // tokenId 1
     await roleNFT.mint(executor.address); // tokenId 2
+    await roleNFT.mint(voter2.address);   // tokenId 3
 
-    futureTime = Math.floor(Date.now() / 1000) + 86400; // 1 day from now
+    futureTime = Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60; // 1 year from now
 
     // Assign roles to correct tokenIds
     await roleNFT.grantRole(VOTER_ROLE, 0, voter1.address, futureTime, true, "0x");
-    await roleNFT.grantRole(VOTER_ROLE, 0, voter2.address, futureTime, true, "0x");
+    await roleNFT.grantRole(VOTER_ROLE, 3, voter2.address, futureTime, true, "0x");
     await roleNFT.grantRole(PROPOSER_ROLE, 1, proposer.address, futureTime, true, "0x");
     await roleNFT.grantRole(EXECUTOR_ROLE, 2, executor.address, futureTime, true, "0x");
   });

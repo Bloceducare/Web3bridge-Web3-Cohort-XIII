@@ -1,4 +1,5 @@
-const { ethers } = require("hardhat");
+import hre from "hardhat";
+const { ethers } = hre;
 
 async function main() {
   const [deployer] = await ethers.getSigners();
@@ -15,6 +16,10 @@ async function main() {
   const dao = await TokenGatedDAO.deploy(await roleNFT.getAddress());
   await dao.waitForDeployment();
   console.log("TokenGatedDAO deployed to:", await dao.getAddress());
+
+  // Set DAO contract address in RoleNFT for efficient role checking
+  await roleNFT.setDAOContract(await dao.getAddress());
+  console.log("DAO contract address set in RoleNFT");
 
   // Setup initial roles
   console.log("\nSetting up initial roles...");

@@ -2,6 +2,7 @@
   "name": "allan-dao-assignment",
   "version": "1.0.0",
   "description": "Token-Gated DAO using ERC-7432 NFT Roles",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "npx hardhat test",
