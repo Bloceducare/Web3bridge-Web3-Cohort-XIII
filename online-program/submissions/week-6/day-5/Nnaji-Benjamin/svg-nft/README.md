@@ -90,3 +90,8 @@ cast send <CLOCK_ADDRESS> "mint(address)" <YOUR_ADDRESS> --rpc-url $RPC_URL --pr
 const uri = await clock.tokenURI(1);
 // Decode base64 -> JSON -> image field (another base64) to preview the SVG.
 ```
+
+### I removed the OpenZeppelin, use the command below to install
+```bash
+forge install OpenZeppelin/openzeppelin-contracts
+```
