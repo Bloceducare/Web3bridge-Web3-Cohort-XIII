@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/babatunde/Documents/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/day4-task2/Olayemi-Salami-Mapping/Olayemi-Todolist/contracts/TodoMapping.sol": {
+      "lastModificationDate": 1754009558105,
+      "contentHash": "a73e7085fea80883c717c4abb77beb35",
+      "sourceName": "contracts/TodoMapping.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "TodoMapping"
+      ]
+    }
+  }
+}
