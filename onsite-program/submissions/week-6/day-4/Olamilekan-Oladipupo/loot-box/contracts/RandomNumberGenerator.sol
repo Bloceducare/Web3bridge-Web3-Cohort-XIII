@@ -14,6 +14,8 @@ contract RandomNumberGenerator is VRFConsumerBaseV2 {
         address opener;
     }
 
+
+
     VRFCoordinatorV2Interface public vrfCoordinator;
 
     uint64 public subscriptionId;
