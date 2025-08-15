@@ -4,3 +4,27 @@
 [submodule "onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts"]
 	path = onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "onsite-program/submissions/week-5/day-5/Yusuf Abdul-hayyi/lib/forge-std"]
+	path = onsite-program/submissions/week-5/day-5/Yusuf Abdul-hayyi/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "onsite-program/submissions/week-5/day-5/Yusuf Abdul-hayyi/lib/openzeppelin-contracts"]
+	path = onsite-program/submissions/week-5/day-5/Yusuf Abdul-hayyi/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "onsite-program/submissions/week-6/task2/Yusuf Abdul-hayyi/lib/forge-std"]
+	path = onsite-program/submissions/week-6/task2/Yusuf Abdul-hayyi/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "onsite-program/submissions/week-6/task2/Yusuf Abdul-hayyi/lib/openzeppelin-contracts"]
+	path = onsite-program/submissions/week-6/task2/Yusuf Abdul-hayyi/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "onsite-program/submissions/week-6/task2/Yusuf-Abdul-hayyi/lib/forge-std"]
+	path = onsite-program/submissions/week-6/task2/Yusuf-Abdul-hayyi/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "onsite-program/submissions/week-6/task2/Yusuf-Abdul-hayyi/lib/openzeppelin-contracts"]
+	path = onsite-program/submissions/week-6/task2/Yusuf-Abdul-hayyi/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "onsite-program/submissions/week-6/task2/Yusuf-Abdul-hayyi/lib/permit2"]
+	path = onsite-program/submissions/week-6/task2/Yusuf-Abdul-hayyi/lib/permit2
+	url = https://github.com/Uniswap/permit2
+[submodule "onsite-program/submissions/week-6/task2/Yusuf-Abdul-hayyi/lib/v2-periphery"]
+	path = onsite-program/submissions/week-6/task2/Yusuf-Abdul-hayyi/lib/v2-periphery
+	url = https://github.com/Uniswap/v2-periphery
