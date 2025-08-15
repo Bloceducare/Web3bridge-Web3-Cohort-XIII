@@ -15,3 +15,7 @@ node_modules
 
 # Hardhat Ignition default folder for deployments against a local node
 ignition/deployments/chain-31337
+ignition/deployments/sepolia-deployment
+ignition/deployments/sepolia-deployment/build-info
+ignition/deployments/sepolia-deployment/deployed_addresses.json
+ignition/deployments/sepolia-deployment/journal.jsonl
