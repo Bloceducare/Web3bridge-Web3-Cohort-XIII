@@ -102,7 +102,8 @@ contract GameBox {
                 }
             }
             emit RewardGiven(msg.sender,KeyId);
-            Reward memory reward = Reward(KeyType.SILVER,keyId);
+            
+            Reward memory reward = Reward(KeyType.GOLD,keyId);
             allUserRewards[msg.sender][keyId]= reward;
             return reward;
         }
