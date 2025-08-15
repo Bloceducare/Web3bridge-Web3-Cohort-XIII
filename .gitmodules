@@ -4,3 +4,15 @@
 [submodule "onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts"]
 	path = onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "onsite-program/submissions/week-6/day-2/Bilal_Oyeleke_Soliu/lib/forge-std"]
+	path = onsite-program/submissions/week-6/day-2/Bilal_Oyeleke_Soliu/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "onsite-program/submissions/week-6/day-2/Bilal_Oyeleke_soliu/lib/forge-std"]
+	path = onsite-program/submissions/week-6/day-2/Bilal_Oyeleke_soliu/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "onsite-program/submissions/week-6/day-2/Bilal_Oyeleke_soliu/lib/solmate"]
+	path = onsite-program/submissions/week-6/day-2/Bilal_Oyeleke_soliu/lib/solmate
+	url = https://github.com/transmissions11/solmate
+[submodule "onsite-program/submissions/week-6/day-2/Bilal_Oyeleke_soliu/lib/openzeppelin-contracts"]
+	path = onsite-program/submissions/week-6/day-2/Bilal_Oyeleke_soliu/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
