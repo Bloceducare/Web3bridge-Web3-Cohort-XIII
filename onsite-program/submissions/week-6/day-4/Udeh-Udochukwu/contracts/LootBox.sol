@@ -12,11 +12,12 @@ contract LootBox is VRFConsumerBaseV2 {
     
     VRFCoordinatorV2Interface COORDINATOR;
     uint64 subscriptionId; // Your Chainlink VRF subscription ID
-    address vrfCoordinator = 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B; // Sepolia VRF Coordinator
-    bytes32 keyHash = 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae; // Sepolia keyHash
-    uint32 callbackGasLimit = 100000;
+    address vrfCoordinator = 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B;
+    bytes32 keyHash = 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae;
+    uint32 callbackGasLimit = 40000;
     uint16 requestConfirmations = 3;
-    uint32 numWords = 1;
+    uint32 numWords =  1;
+
 
     // Reward token contracts (set these to your deployed token addresses)
     IERC20 public erc20Token; // ERC20 token contract

@@ -1,48 +1,32 @@
-const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
+import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-const LootBoxModule = buildModule("LootBoxModule", (m : any) => {
-  // Deploy mock token contracts (for testing; replace with real addresses for production)
-  const erc20Token = m.contract("MockERC20", [
-    "Mock Token",
-    "MTK",
-    ethers.utils.parseEther("1000"),
-  ]);
-  const erc721Token = m.contract("MockERC721", ["Mock NFT", "MNFT"]);
-  const erc1155Token = m.contract("MockERC1155", []);
+const LootBoxModule = buildModule("LootBoxModule", (m) => {
+  // Deploy GameToken (ERC20)
+  const gameToken = m.contract("GameToken");
 
-  // Mock VRF Coordinator for local testing
-  const vrfCoordinatorMock = m.contract("VRFCoordinatorV2Mock", [0, 0]);
+  // Deploy GameNFT (ERC721)
+  const gameNFT = m.contract("GameNFT");
 
-  // Create and fund a VRF subscription
-  const subscription = m.call(vrfCoordinatorMock, "createSubscription", []);
-  const subscriptionId = m.getEventArgument(
-    subscription,
-    "SubscriptionCreated",
-    "subId"
-  );
+  // Deploy GameItem (ERC1155)
+  const gameItem = m.contract("GameItem");
 
-  m.call(vrfCoordinatorMock, "fundSubscription", [
-    subscriptionId,
-    ethers.utils.parseEther("10"),
-  ]);
+  // Deploy MockVRFCoordinatorV2 (for local testing)
+  // const mockVRF = m.contract("MockVRFCoordinatorV2");
 
   // Deploy LootBox with constructor arguments
+  const subscriptionId = 101100465632379702794377097390851483871355491715241812813078601518800015702776; // Mock subscription ID for local testing
   const lootBox = m.contract("LootBox", [
     subscriptionId,
-    erc20Token,
-    erc721Token,
-    erc1155Token,
+    gameToken,
+    gameNFT,
+    gameItem,
   ]);
 
-  // Add LootBox as a consumer to the VRF subscription
-  m.call(vrfCoordinatorMock, "addConsumer", [subscriptionId, lootBox]);
-
-  // Fund LootBox with tokens for rewards
-  m.call(erc20Token, "transfer", [lootBox, ethers.utils.parseEther("100")]);
-  m.call(erc721Token, "mint", [lootBox, 1]); // Mint NFT with tokenId 1
-  m.call(erc1155Token, "mint", [lootBox, 1, 5, "0x"]); // Mint 5 ERC1155 tokens with ID 1
-
-  return { lootBox, erc20Token, erc721Token, erc1155Token, vrfCoordinatorMock };
+  return { gameToken, gameNFT, gameItem, lootBox };
 });
 
-module.exports = LootBoxModule;
+export default LootBoxModule;
+//88cce449dd8ad6b3c2f6861b84888c316e0868d9a1ee3acbd09b2c58cfa7b46c
+
+// "npx hardhat vars set PRIVATE_KEY",
+//     "npx hardhat ignition deploy ignition/modules/Lock.ts --network liskTestnet --verify",
