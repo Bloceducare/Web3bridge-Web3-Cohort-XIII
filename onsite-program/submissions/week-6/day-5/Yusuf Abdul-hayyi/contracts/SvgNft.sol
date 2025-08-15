@@ -6,12 +6,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 
-contract TimeSVG is ERC721, Ownable {
+contract SvgNft is ERC721, Ownable {
     using Strings for uint256;
 
     uint256 private _tokenIdCounter;
 
-    constructor() ERC721("TimeSVG", "TSVG") Ownable(msg.sender) {}
+    constructor() ERC721("SvgNft", "SVGNFT") Ownable(msg.sender) {}
 
     /// Mint a token to caller
     function mint() external onlyOwner {
@@ -21,7 +21,7 @@ contract TimeSVG is ERC721, Ownable {
 
     /// Build dynamic metadata with current blockchain time
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        require(_exists(tokenId), "TimeSVG: nonexistent token");
+        //require(_exists(tokenId), "TimeSVG: nonexistent token");
         // Get current time from block.timestamp
         uint256 ts = block.timestamp;
         uint256 secsOfDay = ts % 86400; // seconds since midnight UTC
