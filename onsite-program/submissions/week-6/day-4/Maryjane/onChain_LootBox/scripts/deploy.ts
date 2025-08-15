@@ -1,4 +1,4 @@
-// scripts/deploy.ts
+
 import { ethers } from "hardhat";
 
 async function main() {
@@ -6,12 +6,12 @@ async function main() {
 
   console.log("Deploying contracts with account:", deployer.address);
 
-  // --- CONFIGURE THESE VALUES ---
+  // Configuration for the LootBox contract
   const VRF_COORDINATOR = "0x1427b01389e71499e3529629342e9a82598a3282"; // Lisk Sepolia VRF Coordinator
-  const SUB_ID = 12345n; // Replace with your actual Chainlink subscription ID
-  const KEY_HASH = "0x473912708fe4925378888d4779167aa542f227892296c6989021162d14b4e2e4"; // Example key hash
-  const BOX_FEE = ethers.parseEther("0.01"); // 0.01 ETH
-  const TREASURY = ethers.ZeroAddress; // Use ZeroAddress for address(0)
+  const SUB_ID = 12345n; // actual Chainlink subscription ID
+  const KEY_HASH = "0x473912708fe4925378888d4779167aa542f227892296c6989021162d14b4e2e4"; // key hash
+  const BOX_FEE = ethers.parseEther("0.01"); 
+  const TREASURY = ethers.ZeroAddress; // address(0)
   // ------------------------------
 
   console.log("Box fee (wei):", BOX_FEE.toString());
