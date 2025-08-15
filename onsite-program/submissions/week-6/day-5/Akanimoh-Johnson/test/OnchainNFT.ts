@@ -15,8 +15,8 @@ describe("TimeNFT", function () {
 
   describe("Deployment", function () {
     it("Should have correct name and symbol", async function () {
-      expect(await timeNFT.name()).to.equal("Dynamic Time NFT");
-      expect(await timeNFT.symbol()).to.equal("DTIME");
+      expect(await timeNFT.name()).to.equal("Time NFT");
+      expect(await timeNFT.symbol()).to.equal("TME");
     });
 
     it("Should start token IDs from 1", async function () {
