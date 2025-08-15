@@ -1,10 +1,11 @@
 import type { HardhatUserConfig } from "hardhat/config";
-
+import hardhatVerify from "@nomicfoundation/hardhat-verify";
+import hardhatKeystore from "@nomicfoundation/hardhat-Keystore";
 import hardhatToolboxMochaEthersPlugin from "@nomicfoundation/hardhat-toolbox-mocha-ethers";
 import { configVariable } from "hardhat/config";
 
 const config: HardhatUserConfig = {
-  plugins: [hardhatToolboxMochaEthersPlugin],
+  plugins: [hardhatToolboxMochaEthersPlugin, hardhatVerify, hardhatKeystore],
   solidity: {
     profiles: {
       default: {
@@ -17,6 +18,7 @@ const config: HardhatUserConfig = {
             enabled: true,
             runs: 200,
           },
+          viaIR: true,
         },
       },
     },
@@ -30,12 +32,20 @@ const config: HardhatUserConfig = {
       type: "edr-simulated",
       chainType: "op",
     },
-    sepolia: {
+    lisksepolia: {
       type: "http",
       chainType: "l1",
       url: configVariable("LISK_SEPOLIA_URL"),
       accounts: [configVariable("PRIVATE_KEY")],
     },
+  },
+  verify: {
+    etherscan: {
+      apiKey: configVariable("ETHERSCAN_API_KEY"),
+    },
+     blockscout: {
+      enabled: true,
+    }
   },
 };
 

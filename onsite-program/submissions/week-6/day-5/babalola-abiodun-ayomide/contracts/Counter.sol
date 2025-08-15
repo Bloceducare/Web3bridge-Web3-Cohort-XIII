@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 
-contract DynamicTimeNFT is ERC721 {
+contract RAFIKNFT is ERC721 {
     using Strings for uint;
     uint256 private _tokenIdCounter = 1001;
     address private owner;
@@ -15,7 +15,6 @@ contract DynamicTimeNFT is ERC721 {
     }
 
     function mint(address to) public {
-        require(owner == msg.sender,"UNAUTHORISED");
         uint256 tokenId = _tokenIdCounter++;
         _safeMint(to, tokenId);
     }
@@ -32,13 +31,10 @@ contract DynamicTimeNFT is ERC721 {
         string memory svg = string(
             abi.encodePacked(
                 '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">',
-                '<rect width="100%" height="100%" fill="#121212"/>',
-                '<text x="50%" y="40%" fill="#080700ff" font-family="Courier New, monospace" font-size="24" text-anchor="middle" dominant-baseline="middle">RAFIK</text>',
-                '<text x="50%" y="50%" fill="#000000ff" font-family="Courier New, monospace, futura" font-size="32" text-anchor="middle" dominant-baseline="middle">',
+                '<rect width="100%" height="100%" fill="#21281eff"/>',
+                '<text x="50%" y="40%" fill="#080700ff" font-family="Courier New, monospace" font-size="24" text-anchor="middle" dominant-baseline="middle">RAFIK BAND</text>',
+                '<text x="50%" y="50%" fill="#55ff00ff" font-family="Courier New, monospace, futura" font-size="36" text-anchor="middle" dominant-baseline="middle">',
                 _formatTime(hrs, mins, secs),
-                "</text>",
-                '<text x="50%" y="60%" fill="#FFFFFF" font-family="Courier New, monospace" font-size="14" text-anchor="middle" dominant-baseline="middle"> ',
-                Strings.toString(timestamp),
                 "</text>",
                 "</svg>"
             )
