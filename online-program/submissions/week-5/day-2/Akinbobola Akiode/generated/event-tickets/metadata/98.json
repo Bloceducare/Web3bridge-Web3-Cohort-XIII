@@ -1,0 +1,35 @@
+{
+  "name": "Event Ticket #98",
+  "description": "This is ticket #98 for the event \"Blockchain Conference 2024\" on 2024-12-15.",
+  "image": "ipfs://QmYourIPFSHash/98.svg",
+  "attributes": [
+    {
+      "trait_type": "Event ID",
+      "value": 1
+    },
+    {
+      "trait_type": "Ticket Number",
+      "value": 98
+    },
+    {
+      "trait_type": "Event Name",
+      "value": "Blockchain Conference 2024"
+    },
+    {
+      "trait_type": "Event Date",
+      "value": "2024-12-15"
+    },
+    {
+      "trait_type": "Event Type",
+      "value": "Paid"
+    },
+    {
+      "trait_type": "Ticket ID",
+      "value": 98
+    },
+    {
+      "trait_type": "Price",
+      "value": "0.00028"
+    }
+  ]
+}
