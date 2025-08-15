@@ -4,8 +4,8 @@ import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256'
 import { networkConfig } from '../network-config'
 import { Lootbox } from '../typechain-types'
-import whitelist from './data/whitelist.json'
-import tokens from './data/tokens.json'
+//import whitelist from './data/whitelist.json'
+//import tokens from './data/tokens.json'
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -28,7 +28,7 @@ function getTokenTypeId(tokenType: string) {
   }
 }
 
-/* async function setTokenAllowance(
+ async function setTokenAllowance(
   token: Lootbox.TokenStruct,
   toAddress: string,
 ) {
@@ -84,11 +84,11 @@ function getTokenTypeId(tokenType: string) {
       throw new Error(`Invalid token type ${token.tokenType}`)
   }
 }
-*/
+
 const feePerOpen = process.env.LOOTBOX_FEE_PER_OPEN
 const amountDistributedPerOpen = process.env.LOOTBOX_AMOUNT_DISTRIBUTED_PER_OPEN
 const openStartTimestamp = process.env.LOOTBOX_OPEN_START_TIMESTAMP
-const existingSubscriptionId  = (process.env.VRF_SUBSCRIPTION_ID)
+const existingSubscriptionId = process.env.VRF_SUBSCRIPTION_ID
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -103,56 +103,56 @@ async function main() {
   }
 
   // Map tokens data
-  if (!tokens || !tokens.length) {
-    throw new Error('Missing tokens data!')
-  }
+  //if (!tokens || !tokens.length) {
+  //  throw new Error('Missing tokens data!')
+  //}
 
-  const transformedTokens = tokens
-    .map((token) => {
-      if (!token.tokenType) {
-        throw new Error('Missing token type!')
-      }
-      if (!token.assetContract) {
-        throw new Error('Missing asset contract address!')
-      }
-      if (token.tokenType === 'ERC721') {
-        if (!token.tokenIds || !token.tokenIds.length) {
-          throw new Error('Missing token IDs for ERC721!')
-        }
-        return token.tokenIds.map((tokenId) => ({
-          tokenType: token.tokenType,
-          assetContract: token.assetContract,
-          tokenId,
-          totalAmount: '1',
-          amountPerUnit: '1',
-        }))
-      } else {
-        if (!token.tokenId && token.tokenType === 'ERC1155') {
-          throw new Error('Missing token ID for ERC1155 token!')
-        }
-        if (!token.totalAmount) {
-          throw new Error('Missing total amount!')
-        }
-        return {
-          tokenType: token.tokenType,
-          assetContract: token.assetContract,
-          tokenId: token.tokenId || '0',
-          totalAmount: token.totalAmount,
-          amountPerUnit: token.amountPerUnit,
-        }
-      }
-    })
-    .flat()
+  //const transformedTokens = tokens
+ //   .map((token) => {
+//      if (!token.tokenType) {
+ //       throw new Error('Missing token type!')
+  //    }
+  //    if (!token.assetContract) {
+ //       throw new Error('Missing asset contract address!')
+  //    }
+  //    if (token.tokenType === 'ERC721') {
+  //      if (!token.tokenIds || !token.tokenIds.length) {
+  //        throw new Error('Missing token IDs for ERC721!')
+   //     }
+   //     return token.tokenIds.map((tokenId) => ({
+   //       tokenType: token.tokenType,
+   //       assetContract: token.assetContract,
+     //     tokenId,
+     //     totalAmount: '1',
+    //      amountPerUnit: '1',
+    //    }))
+ //     } else {
+ //       if (!token.tokenId && token.tokenType === 'ERC1155') {
+//          throw new Error('Missing token ID for ERC1155 token!')
+//        }
+ //       if (!token.totalAmount) {
+//          throw new Error('Missing total amount!')
+//        }
+ //       return {
+ //         tokenType: token.tokenType,
+//          assetContract: token.assetContract,
+//          tokenId: token.tokenId || '0',
+ //         totalAmount: token.totalAmount,
+ //         amountPerUnit: token.amountPerUnit,
+ //       }
+//      }
+//    })
+ //   .flat()
 
-  const lootboxTokens: Lootbox.TokenStruct[] = transformedTokens.map(
-    (token) => ({
-      tokenType: getTokenTypeId(token.tokenType),
-      assetContract: token.assetContract,
-      tokenId: token.tokenId,
-      totalAmount: token.totalAmount,
-    }),
-  )
-  const perUnitAmounts = transformedTokens.map((token) => token.amountPerUnit)
+ // const lootboxTokens: Lootbox.TokenStruct[] = transformedTokens.map(
+ //   (token) => ({
+ //     tokenType: getTokenTypeId(token.tokenType),
+ //     assetContract: token.assetContract,
+ //     tokenId: token.tokenId,
+ //     totalAmount: token.totalAmount,
+ //   }),
+ // )
+//  const perUnitAmounts = transformedTokens.map((token) => token.amountPerUnit)
 
   // Create and fund a VRF subscription if existing one is not configured
   const { chainId } = network.config
@@ -186,29 +186,31 @@ async function main() {
   }
 
   // Generate whitelist root
-  let whitelistRoot = ethers.constants.HashZero
-  if (whitelist && whitelist.length) {
-    const merkleTree = new MerkleTree(whitelist, keccak256, {
-      sortPairs: true,
-      hashLeaves: true,
-    })
-    whitelistRoot = merkleTree.getHexRoot()
-    console.log('Generated whitelist root', whitelistRoot)
-  }
+ // let whitelistRoot = ethers.constants.HashZero
+//  if (whitelist && whitelist.length) {
+ //   const merkleTree = new MerkleTree(whitelist, keccak256, {
+//      sortPairs: true,
+//      hashLeaves: true,
+//    })
+//    whitelistRoot = merkleTree.getHexRoot()
+ //   console.log('Generated whitelist root', whitelistRoot)
+//  }
 
   // Precompute Lootbox contract address
   const [deployer] = await ethers.getSigners()
   const lootboxAddress = ethers.utils.getContractAddress({
     from: deployer.address,
     nonce:
-      (await ethers.provider.getTransactionCount(deployer.address)) +
-      lootboxTokens.length,
+      (await ethers.provider.getTransactionCount(deployer.address))
   })
 
+
+  
+
   // Set token allowances for Lootbox contract
-  for (const token of lootboxTokens) {
-   // await setTokenAllowance(token, lootboxAddress)
-  }
+  //for (const token of lootboxTokens) {
+  // await setTokenAllowance(token, lootboxAddress)
+ // }
 
   // Deploy Lootbox contract
   const feeInWei = ethers.utils.parseEther(feePerOpen)
@@ -218,12 +220,10 @@ async function main() {
     : Math.floor(Date.now() / 1000)
 
   const constructorArguments = [
-    lootboxTokens,
-    perUnitAmounts,
+
     feeInWei,
     amountDistributedPerOpen,
     openStartTimestampInUnix,
-    whitelistRoot,
     keyHash,
     vrfCoordinatorV2,
     subscriptionId,
@@ -231,7 +231,7 @@ async function main() {
   const lootboxFactory = await ethers.getContractFactory('Lootbox')
   const lootbox = await lootboxFactory.deploy(...constructorArguments, {
     gasLimit: 30000000,
-    gasPrice: ethers.utils.parseUnits("100", 'gwei')
+    gasPrice: ethers.utils.parseUnits("10", 'gwei')
 
   })
   await lootbox.deployed()
@@ -263,6 +263,6 @@ async function main() {
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {
-  console.error(error)
+  console.error(error.message)
   process.exitCode = 1
 })

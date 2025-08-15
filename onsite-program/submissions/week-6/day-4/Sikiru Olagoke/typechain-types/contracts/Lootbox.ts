@@ -46,9 +46,11 @@ export declare namespace Lootbox {
 
 export interface LootboxInterface extends utils.Interface {
   functions: {
+    "acceptOwnership()": FunctionFragment;
     "canClaimRewards(address)": FunctionFragment;
     "claimRewards(address)": FunctionFragment;
     "getLootboxTokens()": FunctionFragment;
+    "lastRequestId()": FunctionFragment;
     "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "onERC1155Received(address,address,uint256,uint256,bytes)": FunctionFragment;
     "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
@@ -56,7 +58,9 @@ export interface LootboxInterface extends utils.Interface {
     "privateOpen(uint64,bytes32[])": FunctionFragment;
     "publicOpen(uint64)": FunctionFragment;
     "rawFulfillRandomWords(uint256,uint256[])": FunctionFragment;
-    "renounceOwnership()": FunctionFragment;
+    "requestIds(uint256)": FunctionFragment;
+    "s_vrfCoordinator()": FunctionFragment;
+    "setCoordinator(address)": FunctionFragment;
     "setPrivateOpen(bool)": FunctionFragment;
     "setWhitelistRoot(bytes32)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
@@ -66,9 +70,11 @@ export interface LootboxInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "acceptOwnership"
       | "canClaimRewards"
       | "claimRewards"
       | "getLootboxTokens"
+      | "lastRequestId"
       | "onERC1155BatchReceived"
       | "onERC1155Received"
       | "onERC721Received"
@@ -76,7 +82,9 @@ export interface LootboxInterface extends utils.Interface {
       | "privateOpen"
       | "publicOpen"
       | "rawFulfillRandomWords"
-      | "renounceOwnership"
+      | "requestIds"
+      | "s_vrfCoordinator"
+      | "setCoordinator"
       | "setPrivateOpen"
       | "setWhitelistRoot"
       | "supportsInterface"
@@ -84,6 +92,10 @@ export interface LootboxInterface extends utils.Interface {
       | "withdraw"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "acceptOwnership",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "canClaimRewards",
     values: [PromiseOrValue<string>]
@@ -94,6 +106,10 @@ export interface LootboxInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getLootboxTokens",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "lastRequestId",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -139,8 +155,16 @@ export interface LootboxInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>[]]
   ): string;
   encodeFunctionData(
-    functionFragment: "renounceOwnership",
+    functionFragment: "requestIds",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "s_vrfCoordinator",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setCoordinator",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setPrivateOpen",
@@ -161,6 +185,10 @@ export interface LootboxInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
 
   decodeFunctionResult(
+    functionFragment: "acceptOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "canClaimRewards",
     data: BytesLike
   ): Result;
@@ -170,6 +198,10 @@ export interface LootboxInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getLootboxTokens",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "lastRequestId",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -194,8 +226,13 @@ export interface LootboxInterface extends utils.Interface {
     functionFragment: "rawFulfillRandomWords",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "requestIds", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "renounceOwnership",
+    functionFragment: "s_vrfCoordinator",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setCoordinator",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -217,17 +254,35 @@ export interface LootboxInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
+    "CoordinatorSet(address)": EventFragment;
     "OpenRequestFulfilled(uint256,uint256)": EventFragment;
     "OpenRequested(address,uint256,uint256)": EventFragment;
+    "OwnershipTransferRequested(address,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
+    "RequestFulfilled(uint256,uint256[])": EventFragment;
+    "RequestSent(uint256,uint32)": EventFragment;
     "RewardsClaimed(address,uint256,tuple[])": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "CoordinatorSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OpenRequestFulfilled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OpenRequested"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferRequested"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RequestFulfilled"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RequestSent"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardsClaimed"): EventFragment;
 }
+
+export interface CoordinatorSetEventObject {
+  vrfCoordinator: string;
+}
+export type CoordinatorSetEvent = TypedEvent<
+  [string],
+  CoordinatorSetEventObject
+>;
+
+export type CoordinatorSetEventFilter = TypedEventFilter<CoordinatorSetEvent>;
 
 export interface OpenRequestFulfilledEventObject {
   requestId: BigNumber;
@@ -253,9 +308,21 @@ export type OpenRequestedEvent = TypedEvent<
 
 export type OpenRequestedEventFilter = TypedEventFilter<OpenRequestedEvent>;
 
+export interface OwnershipTransferRequestedEventObject {
+  from: string;
+  to: string;
+}
+export type OwnershipTransferRequestedEvent = TypedEvent<
+  [string, string],
+  OwnershipTransferRequestedEventObject
+>;
+
+export type OwnershipTransferRequestedEventFilter =
+  TypedEventFilter<OwnershipTransferRequestedEvent>;
+
 export interface OwnershipTransferredEventObject {
-  previousOwner: string;
-  newOwner: string;
+  from: string;
+  to: string;
 }
 export type OwnershipTransferredEvent = TypedEvent<
   [string, string],
@@ -264,6 +331,29 @@ export type OwnershipTransferredEvent = TypedEvent<
 
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
+
+export interface RequestFulfilledEventObject {
+  requestId: BigNumber;
+  randomWords: BigNumber[];
+}
+export type RequestFulfilledEvent = TypedEvent<
+  [BigNumber, BigNumber[]],
+  RequestFulfilledEventObject
+>;
+
+export type RequestFulfilledEventFilter =
+  TypedEventFilter<RequestFulfilledEvent>;
+
+export interface RequestSentEventObject {
+  requestId: BigNumber;
+  numWords: number;
+}
+export type RequestSentEvent = TypedEvent<
+  [BigNumber, number],
+  RequestSentEventObject
+>;
+
+export type RequestSentEventFilter = TypedEventFilter<RequestSentEvent>;
 
 export interface RewardsClaimedEventObject {
   opener: string;
@@ -304,6 +394,10 @@ export interface Lootbox extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    acceptOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     canClaimRewards(
       opener: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -322,6 +416,8 @@ export interface Lootbox extends BaseContract {
         perUnitAmounts: BigNumber[];
       }
     >;
+
+    lastRequestId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     onERC1155BatchReceived(
       arg0: PromiseOrValue<string>,
@@ -368,7 +464,15 @@ export interface Lootbox extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    renounceOwnership(
+    requestIds(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    s_vrfCoordinator(overrides?: CallOverrides): Promise<[string]>;
+
+    setCoordinator(
+      _vrfCoordinator: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -388,7 +492,7 @@ export interface Lootbox extends BaseContract {
     ): Promise<[boolean]>;
 
     transferOwnership(
-      newOwner: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -396,6 +500,10 @@ export interface Lootbox extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
+
+  acceptOwnership(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   canClaimRewards(
     opener: PromiseOrValue<string>,
@@ -415,6 +523,8 @@ export interface Lootbox extends BaseContract {
       perUnitAmounts: BigNumber[];
     }
   >;
+
+  lastRequestId(overrides?: CallOverrides): Promise<BigNumber>;
 
   onERC1155BatchReceived(
     arg0: PromiseOrValue<string>,
@@ -461,7 +571,15 @@ export interface Lootbox extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  renounceOwnership(
+  requestIds(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  s_vrfCoordinator(overrides?: CallOverrides): Promise<string>;
+
+  setCoordinator(
+    _vrfCoordinator: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -481,7 +599,7 @@ export interface Lootbox extends BaseContract {
   ): Promise<boolean>;
 
   transferOwnership(
-    newOwner: PromiseOrValue<string>,
+    to: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -490,6 +608,8 @@ export interface Lootbox extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    acceptOwnership(overrides?: CallOverrides): Promise<void>;
+
     canClaimRewards(
       opener: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -508,6 +628,8 @@ export interface Lootbox extends BaseContract {
         perUnitAmounts: BigNumber[];
       }
     >;
+
+    lastRequestId(overrides?: CallOverrides): Promise<BigNumber>;
 
     onERC1155BatchReceived(
       arg0: PromiseOrValue<string>,
@@ -554,7 +676,17 @@ export interface Lootbox extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+    requestIds(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    s_vrfCoordinator(overrides?: CallOverrides): Promise<string>;
+
+    setCoordinator(
+      _vrfCoordinator: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     setPrivateOpen(
       privateOpenEnabled: PromiseOrValue<boolean>,
@@ -572,7 +704,7 @@ export interface Lootbox extends BaseContract {
     ): Promise<boolean>;
 
     transferOwnership(
-      newOwner: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -580,6 +712,9 @@ export interface Lootbox extends BaseContract {
   };
 
   filters: {
+    "CoordinatorSet(address)"(vrfCoordinator?: null): CoordinatorSetEventFilter;
+    CoordinatorSet(vrfCoordinator?: null): CoordinatorSetEventFilter;
+
     "OpenRequestFulfilled(uint256,uint256)"(
       requestId?: null,
       randomness?: null
@@ -600,14 +735,38 @@ export interface Lootbox extends BaseContract {
       requestId?: null
     ): OpenRequestedEventFilter;
 
+    "OwnershipTransferRequested(address,address)"(
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null
+    ): OwnershipTransferRequestedEventFilter;
+    OwnershipTransferRequested(
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null
+    ): OwnershipTransferRequestedEventFilter;
+
     "OwnershipTransferred(address,address)"(
-      previousOwner?: PromiseOrValue<string> | null,
-      newOwner?: PromiseOrValue<string> | null
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
     OwnershipTransferred(
-      previousOwner?: PromiseOrValue<string> | null,
-      newOwner?: PromiseOrValue<string> | null
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
+
+    "RequestFulfilled(uint256,uint256[])"(
+      requestId?: null,
+      randomWords?: null
+    ): RequestFulfilledEventFilter;
+    RequestFulfilled(
+      requestId?: null,
+      randomWords?: null
+    ): RequestFulfilledEventFilter;
+
+    "RequestSent(uint256,uint32)"(
+      requestId?: null,
+      numWords?: null
+    ): RequestSentEventFilter;
+    RequestSent(requestId?: null, numWords?: null): RequestSentEventFilter;
 
     "RewardsClaimed(address,uint256,tuple[])"(
       opener?: null,
@@ -622,6 +781,10 @@ export interface Lootbox extends BaseContract {
   };
 
   estimateGas: {
+    acceptOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     canClaimRewards(
       opener: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -633,6 +796,8 @@ export interface Lootbox extends BaseContract {
     ): Promise<BigNumber>;
 
     getLootboxTokens(overrides?: CallOverrides): Promise<BigNumber>;
+
+    lastRequestId(overrides?: CallOverrides): Promise<BigNumber>;
 
     onERC1155BatchReceived(
       arg0: PromiseOrValue<string>,
@@ -679,7 +844,15 @@ export interface Lootbox extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    renounceOwnership(
+    requestIds(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    s_vrfCoordinator(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setCoordinator(
+      _vrfCoordinator: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -699,7 +872,7 @@ export interface Lootbox extends BaseContract {
     ): Promise<BigNumber>;
 
     transferOwnership(
-      newOwner: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -709,6 +882,10 @@ export interface Lootbox extends BaseContract {
   };
 
   populateTransaction: {
+    acceptOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     canClaimRewards(
       opener: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -720,6 +897,8 @@ export interface Lootbox extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getLootboxTokens(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    lastRequestId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     onERC1155BatchReceived(
       arg0: PromiseOrValue<string>,
@@ -766,7 +945,15 @@ export interface Lootbox extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    renounceOwnership(
+    requestIds(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    s_vrfCoordinator(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    setCoordinator(
+      _vrfCoordinator: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -786,7 +973,7 @@ export interface Lootbox extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     transferOwnership(
-      newOwner: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

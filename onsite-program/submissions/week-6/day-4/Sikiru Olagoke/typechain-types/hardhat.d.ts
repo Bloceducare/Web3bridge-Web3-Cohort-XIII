@@ -13,13 +13,37 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
-      name: "VRFCoordinatorV2Interface",
+      name: "ConfirmedOwner",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.VRFCoordinatorV2Interface__factory>;
+    ): Promise<Contracts.ConfirmedOwner__factory>;
     getContractFactory(
-      name: "VRFConsumerBaseV2",
+      name: "ConfirmedOwnerWithProposal",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.VRFConsumerBaseV2__factory>;
+    ): Promise<Contracts.ConfirmedOwnerWithProposal__factory>;
+    getContractFactory(
+      name: "IOwnable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IOwnable__factory>;
+    getContractFactory(
+      name: "IVRFCoordinatorV2Plus",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IVRFCoordinatorV2Plus__factory>;
+    getContractFactory(
+      name: "IVRFMigratableConsumerV2Plus",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IVRFMigratableConsumerV2Plus__factory>;
+    getContractFactory(
+      name: "IVRFSubscriptionV2Plus",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IVRFSubscriptionV2Plus__factory>;
+    getContractFactory(
+      name: "VRFV2PlusClient",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VRFV2PlusClient__factory>;
+    getContractFactory(
+      name: "VRFConsumerBaseV2Plus",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VRFConsumerBaseV2Plus__factory>;
     getContractFactory(
       name: "AccessControl",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -190,15 +214,45 @@ declare module "hardhat/types/runtime" {
     ): Promise<Contracts.VRFCoordinatorV2Mock__factory>;
 
     getContractAt(
-      name: "VRFCoordinatorV2Interface",
+      name: "ConfirmedOwner",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.VRFCoordinatorV2Interface>;
+    ): Promise<Contracts.ConfirmedOwner>;
     getContractAt(
-      name: "VRFConsumerBaseV2",
+      name: "ConfirmedOwnerWithProposal",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.VRFConsumerBaseV2>;
+    ): Promise<Contracts.ConfirmedOwnerWithProposal>;
+    getContractAt(
+      name: "IOwnable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IOwnable>;
+    getContractAt(
+      name: "IVRFCoordinatorV2Plus",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IVRFCoordinatorV2Plus>;
+    getContractAt(
+      name: "IVRFMigratableConsumerV2Plus",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IVRFMigratableConsumerV2Plus>;
+    getContractAt(
+      name: "IVRFSubscriptionV2Plus",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IVRFSubscriptionV2Plus>;
+    getContractAt(
+      name: "VRFV2PlusClient",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VRFV2PlusClient>;
+    getContractAt(
+      name: "VRFConsumerBaseV2Plus",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VRFConsumerBaseV2Plus>;
     getContractAt(
       name: "AccessControl",
       address: string,

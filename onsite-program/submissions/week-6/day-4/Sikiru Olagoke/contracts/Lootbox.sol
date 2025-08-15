@@ -9,13 +9,25 @@ import {ERC721Holder} from "@openzeppelin/contracts/token/ERC721/utils/ERC721Hol
 import {ERC1155Holder} from "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {VRFCoordinatorV2Interface} from "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
-import {VRFConsumerBaseV2} from "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
+ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
+import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
 import {Error} from "./library/Error.sol";
 
-contract Lootbox is VRFConsumerBaseV2, ERC721Holder, ERC1155Holder, Ownable {
+contract Lootbox is VRFConsumerBaseV2Plus, ERC721Holder, ERC1155Holder {
     using SafeERC20 for IERC20;
+
+
+    struct RequestStatus {
+        bool fulfilled; // whether the request has been successfully fulfilled
+        bool exists; // whether a requestId exists
+        uint256[] randomWords;
+    }
+
+
+         // Past request IDs.
+    uint256[] public requestIds;
+    uint256 public lastRequestId;
 
     // The tokens that are part of the lootbox
     mapping(uint256 => Token) private s_tokens;
@@ -63,6 +75,14 @@ contract Lootbox is VRFConsumerBaseV2, ERC721Holder, ERC1155Holder, Ownable {
 
     // The gas limit for the random number callback
     uint32 private constant CALLBACK_GASLIMIT = 200_000;
+  
+    // Extra args
+    bytes EXTRA_ARGS = VRFV2PlusClient._argsToBytes(
+                    VRFV2PlusClient.ExtraArgsV1({
+                        nativePayment: false
+                    })
+                );
+
 
     // The number of blocks confirmed before the request is considered fulfilled
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
@@ -77,10 +97,12 @@ contract Lootbox is VRFConsumerBaseV2, ERC721Holder, ERC1155Holder, Ownable {
     address private immutable i_vrfCoordinatorV2;
 
     // The subscription ID for the VRF request
-    uint64 private immutable i_vrfSubscriptionId;
+    uint256 private immutable i_vrfSubscriptionId;
 
     // The VRF request IDs and their corresponding parameters as well as the randomness when fulfilled
     mapping(uint256 => Request) private s_requests;
+
+    mapping(uint256 => RequestStatus) private s_requests_status;
 
     // The VRF request IDs and their corresponding openers
     mapping(address => uint256) private s_openerRequests;
@@ -92,7 +114,13 @@ contract Lootbox is VRFConsumerBaseV2, ERC721Holder, ERC1155Holder, Ownable {
         uint256 randomness;
     }
 
+
+
     event OpenRequested(address opener, uint256 amountToOpen, uint256 requestId);
+
+     event RequestSent(uint256 requestId, uint32 numWords);
+
+    event RequestFulfilled(uint256 requestId, uint256[] randomWords);
 
     // Emitted when a randomness request is fulfilled and the lootbox rewards can be claimed
 
@@ -103,31 +131,29 @@ contract Lootbox is VRFConsumerBaseV2, ERC721Holder, ERC1155Holder, Ownable {
 
     //  CONSTRUCTOR
     constructor(
-        Token[] memory tokens,
-        uint256[] memory perUnitAmounts,
+        //Token[] memory tokens,
         uint128 feePerOpen,
         uint64 amountDistributedPerOpen,
         uint64 openStartTimestamp,
-        bytes32 whitelistRoot,
         bytes32 vrfKeyHash,
         address vrfCoordinatorV2,
-        uint64 vrfSubscriptionId
-    ) VRFConsumerBaseV2(vrfCoordinatorV2) {
-        uint64 tokenCount = uint64(tokens.length);
+        uint256 vrfSubscriptionId
+    ) VRFConsumerBaseV2Plus(vrfCoordinatorV2) {
+       // uint64 tokenCount = uint64(tokens.length);
 
-        if (tokenCount == 0) revert Error.NoTokens();
-        if (tokenCount != perUnitAmounts.length) revert Error.InvalidLength();
+       // if (tokenCount == 0) revert Error.NoTokens();
+        //if (tokenCount != perUnitAmounts.length) revert Error.InvalidLength();
 
-        s_supply = _calculateLootboxSupply(tokens, perUnitAmounts, amountDistributedPerOpen);
+       // s_supply = _calculateLootboxSupply(tokens, perUnitAmounts, amountDistributedPerOpen);
 
-        _transferTokenBatch(tokens, _msgSender(), address(this));
+      //  _transferTokenBatch(tokens, msg.sender, address(this));
 
-        for (uint256 i = 0; i < tokenCount; i += 1) {
-            s_tokens[i] = tokens[i];
-        }
-        s_tokensCount = tokenCount;
+     //   for (uint256 i = 0; i < tokenCount; i += 1) {
+       //     s_tokens[i] = tokens[i];
+       // }
+      //  s_tokensCount = tokenCount;
 
-        s_perUnitAmounts = perUnitAmounts;
+        //s_perUnitAmounts = perUnitAmounts;
         s_feePerOpen = feePerOpen;
         s_amountDistributedPerOpen = amountDistributedPerOpen;
         s_openStartTimestamp = openStartTimestamp;
@@ -136,10 +162,10 @@ contract Lootbox is VRFConsumerBaseV2, ERC721Holder, ERC1155Holder, Ownable {
         i_vrfCoordinatorV2 = vrfCoordinatorV2;
         i_vrfSubscriptionId = vrfSubscriptionId;
 
-        if (whitelistRoot != bytes32(0)) {
-            s_privateOpen = true;
-            s_whitelistRoot = whitelistRoot;
-        }
+      //  if (whitelistRoot != bytes32(0)) {
+        //    s_privateOpen = true;
+        //    s_whitelistRoot = whitelistRoot;
+      //  }
     }
 
     // OPEN FUNCTIONS
@@ -205,13 +231,34 @@ contract Lootbox is VRFConsumerBaseV2, ERC721Holder, ERC1155Holder, Ownable {
 
     // Requests randomness from Chainlink VRF
     function _requestRandomness() internal returns (uint256 requestId) {
-        requestId = VRFCoordinatorV2Interface(i_vrfCoordinatorV2).requestRandomWords(
-            i_vrfKeyHash, i_vrfSubscriptionId, REQUEST_CONFIRMATIONS, CALLBACK_GASLIMIT, NUMWORDS
+ // Will revert if subscription is not set and funded.
+        requestId = s_vrfCoordinator.requestRandomWords(
+            VRFV2PlusClient.RandomWordsRequest({
+                keyHash: i_vrfKeyHash,
+                subId: i_vrfSubscriptionId,
+                requestConfirmations: REQUEST_CONFIRMATIONS,
+                callbackGasLimit: CALLBACK_GASLIMIT,
+                numWords: NUMWORDS,
+                extraArgs: VRFV2PlusClient._argsToBytes(
+                    VRFV2PlusClient.ExtraArgsV1({
+                        nativePayment: true
+                    })
+                )
+            })
         );
+
+        s_requests_status[requestId] = RequestStatus({
+         randomWords: new uint256[](0), 
+         fulfilled: true,
+         exists: false});
+        requestIds.push(requestId);
+        lastRequestId = requestId;
+        emit RequestSent(requestId, NUMWORDS);
+        return requestId;
     }
 
     // VRFConsumerBaseV2
-    function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
+    function fulfillRandomWords(uint256 requestId, uint256[] calldata randomWords) internal override {
         s_requests[requestId].randomness = randomWords[0];
         emit OpenRequestFulfilled(requestId, randomWords[0]);
     }
@@ -220,7 +267,7 @@ contract Lootbox is VRFConsumerBaseV2, ERC721Holder, ERC1155Holder, Ownable {
 
     // Verifies that the user is in the whitelist merkle tree
     function _verify(bytes32[] memory proof) internal view returns (bool) {
-        bytes32 leaf = keccak256(abi.encodePacked(_msgSender()));
+        bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
         return MerkleProof.verify(proof, s_whitelistRoot, leaf);
     }
 
@@ -248,7 +295,7 @@ contract Lootbox is VRFConsumerBaseV2, ERC721Holder, ERC1155Holder, Ownable {
 
     // Creates a lootbox open request for the given amount
     function _requestOpen(uint64 amountToOpen) internal {
-        address opener = _msgSender();
+        address opener = msg.sender;
 
         // solhint-disable-next-line not-rely-on-time
         if (s_openStartTimestamp > block.timestamp) revert Error.OpeningNotStarted();
@@ -257,13 +304,13 @@ contract Lootbox is VRFConsumerBaseV2, ERC721Holder, ERC1155Holder, Ownable {
         if (msg.value < s_feePerOpen * amountToOpen) revert Error.InsufficientValue();
         if (s_openerRequests[opener] != 0) revert Error.PendingOpenRequest();
 
-        uint256 requestId = _requestRandomness();
+      //  uint256 requestId = _requestRandomness();
 
-        s_requests[requestId] = Request({opener: opener, amountToOpen: amountToOpen, randomness: 0});
+      //  s_requests[requestId] = Request({opener: opener, amountToOpen: amountToOpen, randomness: 0});
 
-        s_openerRequests[opener] = requestId;
+     //   s_openerRequests[opener] = requestId;
 
-        emit OpenRequested(opener, amountToOpen, requestId);
+    //    emit OpenRequested(opener, amountToOpen, requestId);
     }
 
     // Claims the rewards for the given lootbox open request
