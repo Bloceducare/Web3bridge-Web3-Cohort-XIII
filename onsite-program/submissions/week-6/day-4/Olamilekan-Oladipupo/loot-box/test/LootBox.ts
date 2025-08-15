@@ -13,7 +13,6 @@ describe("LootBox", function () {
   beforeEach(async () => {
     [owner, user] = await ethers.getSigners();
 
-    // Deploy mocks
     const RNG = await ethers.getContractFactory("MockRNG");
     rng = await RNG.deploy();
 
@@ -29,19 +28,16 @@ describe("LootBox", function () {
     erc1155 = await ERC1155.deploy();
     await erc1155.mint(owner.address, 42, 10);
 
-    // Deploy LootBox
     const LootBox = await ethers.getContractFactory("LootBox");
     lootBox = await LootBox.deploy(rng.address, ethers.parseEther("0.01"));
 
-    // Transfer tokens to LootBox for rewards
     await erc20.transfer(lootBox.address, 100);
     await erc721.transferFrom(owner.address, lootBox.address, 1);
     await erc1155.safeTransferFrom(owner.address, lootBox.address, 42, 5, "0x");
 
-    // Add rewards
-    await lootBox.addReward(0, erc20.address, 10, 1); // ERC20
-    await lootBox.addReward(1, erc721.address, 1, 2); // ERC721
-    await lootBox.addReward(2, erc1155.address, 42, 3); // ERC1155
+    await lootBox.addReward(0, erc20.address, 10, 1);
+    await lootBox.addReward(1, erc721.address, 1, 2);
+    await lootBox.addReward(2, erc1155.address, 42, 3);
   });
 
   it("should only allow owner to add rewards", async () => {

@@ -10,13 +10,12 @@ interface IRNGConsumer {
 
 contract RandomNumberGenerator is VRFConsumerBaseV2 {
     struct Callback {
-        address consumer; // contract to callback
-        address opener;   // original user who opened
+        address consumer;
+        address opener;
     }
 
     VRFCoordinatorV2Interface public vrfCoordinator;
 
-    // Chainlink VRF configuration
     uint64 public subscriptionId;
     bytes32 public keyHash;
     uint32 public callbackGasLimit;
@@ -25,10 +24,8 @@ contract RandomNumberGenerator is VRFConsumerBaseV2 {
 
     address public owner;
 
-    // requestId => callback data
     mapping(uint256 => Callback) public callbacks;
 
-    // optional consumer allowlist
     mapping(address => bool) public allowedConsumer;
 
     event RandomRequested(uint256 indexed requestId, address indexed consumer, address indexed opener);
@@ -69,7 +66,6 @@ contract RandomNumberGenerator is VRFConsumerBaseV2 {
         emit ConfigUpdated(_keyHash, _callbackGasLimit, _requestConfirmations, _numWords);
     }
 
-    // Called by consumer (e.g., LootBox). Consumer must be allowlisted.
     function requestRandom(address opener) external returns (uint256 requestId) {
 //        require(allowedConsumer[msg.sender], "consumer not allowed");
         requestId = vrfCoordinator.requestRandomWords(
@@ -83,7 +79,6 @@ contract RandomNumberGenerator is VRFConsumerBaseV2 {
         emit RandomRequested(requestId, msg.sender, opener);
     }
 
-    // Chainlink VRF callback
     function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
         Callback memory data = callbacks[requestId];
         require(data.consumer != address(0), "unknown requestId");
@@ -92,7 +87,6 @@ contract RandomNumberGenerator is VRFConsumerBaseV2 {
         uint256 val = randomWords[0];
         emit RandomFulfilled(requestId, data.consumer, data.opener, val);
 
-        // Callback to consumer
         IRNGConsumer(data.consumer).onRandomnessReady(requestId, val, data.opener);
     }
 }
