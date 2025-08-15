@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "./PiggyBank.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract PiggyBankFactory is Ownable {
-    using Address for address payable;
+contract PiggyBankFactory {
+    address public owner;
 
-    uint256 public constant BREAKING_FEE_BPS = 300; // 3%
-    uint256 public constant BPS_DENOMINATOR = 10_000;
-
-    mapping(address => address[]) private _userPiggyBanks;
+    mapping(address => address[]) private userPiggyBanks;
 
     struct PiggyInfo {
         address owner;
@@ -20,35 +18,60 @@ contract PiggyBankFactory is Ownable {
     mapping(address => PiggyInfo) public piggyInfo;
 
     event PiggyBankCreated(address indexed piggy, address indexed owner, uint256 lockPeriod);
+    event WithdrawETH(address indexed to, uint256 amount);
+    event WithdrawToken(address indexed token, address indexed to, uint256 amount);
 
-    function createPiggyBank(address owner, uint256 lockPeriodSeconds) external returns (address) {
-        require(owner != address(0), "owner zero");
-        require(lockPeriodSeconds > 0, "lockPeriod must be > 0");
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not factory owner");
+        _;
+    }
 
-        PiggyBank child = new PiggyBank(owner, lockPeriodSeconds, address(this));
-        address childAddr = address(child);
+    constructor() {
+        owner = msg.sender; // Set deployer as factory owner
+    }
 
-        _userPiggyBanks[owner].push(childAddr);
-        piggyInfo[childAddr] = PiggyInfo({owner: owner, lockPeriod: lockPeriodSeconds, createdAt: block.timestamp});
+    function createPiggyBank(address piggyOwner, uint256 lockPeriodSeconds) external returns (address) {
+        PiggyBank piggyBank = new PiggyBank(piggyOwner, lockPeriodSeconds, address(this));
+        address piggyBankAddress = address(piggyBank);
 
-        emit PiggyBankCreated(childAddr, owner, lockPeriodSeconds);
+        userPiggyBanks[piggyOwner].push(piggyBankAddress);
+        piggyInfo[piggyBankAddress] = PiggyInfo({
+            owner: piggyOwner,
+            lockPeriod: lockPeriodSeconds,
+            createdAt: block.timestamp
+        });
 
-        return childAddr;
+        emit PiggyBankCreated(piggyBankAddress, piggyOwner, lockPeriodSeconds);
+
+        return piggyBankAddress;
     }
 
     function getPiggyBanks(address account) external view returns (address[] memory) {
-        return _userPiggyBanks[account];
+        return userPiggyBanks[account];
     }
 
     function getPiggyBankCount(address account) external view returns (uint256) {
-        return _userPiggyBanks[account].length;
+        return userPiggyBanks[account].length;
     }
 
     function totalBalanceOf(address account, address token) external view returns (uint256 total) {
-        address[] memory arr = _userPiggyBanks[account];
+        address[] memory arr = userPiggyBanks[account];
         for (uint256 i = 0; i < arr.length; i++) {
-            total += PiggyBank(arr[i]).balanceOf(token);
+            total += PiggyBank(payable(arr[i])).balanceOf(token);
         }
+    }
+
+
+    function withdrawETH(uint256 amount) external onlyOwner {
+        require(address(this).balance >= amount, "Insufficient ETH balance");
+        payable(owner).transfer(amount);
+        emit WithdrawETH(owner, amount);
+    }
+
+    function withdrawToken(address token, uint256 amount) external onlyOwner {
+        require(IERC20(token).balanceOf(address(this)) >= amount, "Insufficient token balance");
+        IERC20(token).transfer(owner, amount);
+        emit WithdrawToken(token, owner, amount);
     }
 
     receive() external payable {}
