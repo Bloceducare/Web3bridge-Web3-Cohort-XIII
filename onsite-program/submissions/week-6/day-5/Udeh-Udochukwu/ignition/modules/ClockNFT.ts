@@ -5,7 +5,7 @@ const ClockNFT = buildModule("ClockNFT", (m) => {
   const clockNFT = m.contract("ClockNFT");
 
   // Your specific address as the deployer (this will be msg.sender)
-  const numberOfTokensToMint = 5;
+  const numberOfTokensToMint = 1;
 
   // Mint tokens - the mint() function automatically mints to msg.sender
   for (let i = 0; i < numberOfTokensToMint; i++) {
