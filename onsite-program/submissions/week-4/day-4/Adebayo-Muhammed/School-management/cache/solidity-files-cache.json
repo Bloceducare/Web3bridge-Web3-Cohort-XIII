@@ -1,0 +1,77 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/macosbigsur/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/Adebayo-Muhammed/TodoMapping/contracts/Lock.sol": {
+      "lastModificationDate": 1754005705560,
+      "contentHash": "7eee587c347fe6b1de50c96688cb9477",
+      "sourceName": "contracts/Lock.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Lock"
+      ]
+    },
+    "/Users/macosbigsur/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/Adebayo-Muhammed/TodoMapping/contracts/Schoolmanagement.sol": {
+      "lastModificationDate": 1754008889106,
+      "contentHash": "c6fb7a4c07e12f44d03327c31d70334c",
+      "sourceName": "contracts/Schoolmanagement.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "SchoolManagementSystem"
+      ]
+    }
+  }
+}
