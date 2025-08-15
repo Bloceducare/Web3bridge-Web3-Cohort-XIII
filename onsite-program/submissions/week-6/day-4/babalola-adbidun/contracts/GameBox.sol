@@ -77,11 +77,31 @@ contract GameBox {
         if(key._keyType== KeyType.SILVER){
             mod= uint16(randomNumber%100);
             div = mod%2;
-            div==1?token.mint(msg.sender,mod): {
+            div == 1 ? token.mint(msg.sender,mod); : {
                 token.mint(msg.sender, mod/2);
                 nfts.mint(msg.sender,counter);
             }
-             emit RewardGiven(msg.sender,KeyId);
+            emit RewardGiven(msg.sender,KeyId);
+            Reward memory reward = Reward(KeyType.SILVER,keyId);
+            allUserRewards[msg.sender][keyId]= reward;
+            return reward;
+        }
+        if(key._keyType== KeyType.GOLD){
+            mod= uint16(randomNumber%1000);
+            div = mod%3;
+            div == 0 ? token.mint(msg.sender,mod); : {
+                div== 1?
+               {
+                    token.mint(msg.sender, mod/2);
+                    nfts.mint(msg.sender,counter);
+                }
+                :{
+                    token.mint(msg.sender,mod*2);
+                    nfts.mint(msg.sender,counter);
+                    //MultiToken mint
+                }
+            }
+            emit RewardGiven(msg.sender,KeyId);
             Reward memory reward = Reward(KeyType.SILVER,keyId);
             allUserRewards[msg.sender][keyId]= reward;
             return reward;
