@@ -1,0 +1,27 @@
+{
+  "name": "allan-dao-assignment",
+  "version": "1.0.0",
+  "description": "Token-Gated DAO using ERC-7432 NFT Roles",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx hardhat test",
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.js",
+    "deploy:localhost": "npx hardhat run scripts/deploy.js --network localhost"
+  },
+  "keywords": [
+    "dao",
+    "nft",
+    "erc7432",
+    "governance",
+    "web3"
+  ],
+  "author": "Allan Robinson",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "*",
+    "hardhat": "^2.26.3"
+  }
+}
