@@ -16,3 +16,6 @@
 [submodule "onsite-program/submissions/week-6/day-2/Bilal_Oyeleke_soliu/lib/openzeppelin-contracts"]
 	path = onsite-program/submissions/week-6/day-2/Bilal_Oyeleke_soliu/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "onsite-program/submissions/week-6/day-4/Bilal_Oyeleke_Soliu/lib/chainlink-brownie-contracts"]
+	path = onsite-program/submissions/week-6/day-4/Bilal_Oyeleke_Soliu/lib/chainlink-brownie-contracts
+	url = https://github.com/smartcontractkit/chainlink-brownie-contracts

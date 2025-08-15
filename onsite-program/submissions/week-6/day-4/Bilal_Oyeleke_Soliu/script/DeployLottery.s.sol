@@ -15,9 +15,9 @@ contract DeployScript is Script {
         uint256 deployerPrivateKey = vm.parseUint(privateKeyStr);
         address deployer = vm.addr(deployerPrivateKey);
         
-        uint256 subscriptionId = vm.envUint("VRF_SUBSCRIPTION_ID");
-        address vrfCoordinator = vm.envAddress("VRF_COORDINATOR");
-        bytes32 keyHash = vm.envBytes32("VRF_KEY_HASH");
+        uint256 subscriptionId = vm.envUint("0x779877A7B0D9E8603169DdbD7836e478b4624789");
+        address vrfCoordinator = vm.envAddress("0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B");
+        bytes32 keyHash = vm.envBytes32("0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae");
         
         console.log("Deploying contracts with account:", deployer);
         console.log("Account balance:", deployer.balance);
