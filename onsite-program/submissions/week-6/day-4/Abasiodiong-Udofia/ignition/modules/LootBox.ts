@@ -6,6 +6,7 @@ const LootBoxModule = buildModule("LootBoxModule", (m) => {
   const keyHash = m.getParameter("keyHash", "0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c");
   const fee = m.getParameter("fee", BigInt(100000000000000000));
 
+  // const lootBox = m.contract("LootBox", [vrfCoordinator, subscriptionId, keyHash, fee]);
   const lootBox = m.contract("LootBox");
 
   return { lootBox };
