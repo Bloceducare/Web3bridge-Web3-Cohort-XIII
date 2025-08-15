@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time NFT Viewer</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏰</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 400px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #nftContainer {
+            margin-top: 20px;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #svgContainer {
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #000;
+            border-radius: 50%;
+        }
+        #svgContainer svg {
+            display: block;
+            margin: 0 auto;
+        }
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+        .time-display {
+            text-align: center;
+            font-size: 24px;
+            margin: 20px 0;
+            color: #333;
+        }
+        .day-display {
+            text-align: center;
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .attributes {
+            margin-top: 20px;
+        }
+        .attributes h3 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .attributes ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .attributes li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .error {
+            color: #d32f2f;
+            background-color: #ffebee;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>⏰ Time NFT Viewer</h1>
+    <div class="input-group">
+        <label for="rpcUrl">RPC URL:</label>
+        <input type="text" id="rpcUrl" value="https://base-sepolia.drpc.org">
+    </div>
+    <div class="input-group">
+        <label for="contractAddress">Contract Address:</label>
+        <input type="text" id="contractAddress" value="0xF4F87a68Ef928a040D93E1a0505DBfc8209D81E7">
+    </div>
+    <div class="input-group">
+        <label for="tokenId">Token ID:</label>
+        <input type="text" id="tokenId" value="1">
+    </div>
+    <div class="input-group">
+        <button id="loadNft">🔄 Load NFT</button>
+    </div>
+    
+    <div id="nftContainer">
+        <p>Click "Load NFT" to view the current time from the blockchain.</p>
+        <div id="blockchainTimestamp" class="time-display"></div>
+        <div id="svgContainer">
+            <img id="nftImage" style="max-width: 100%;" alt="NFT Image">
+        </div>
+        <div class="attributes">
+            <h3>Metadata</h3>
+            <pre id="metadata"></pre>
+        </div>
+    </div>
+
+    <script>
+        // Add event listener when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('loadNft').addEventListener('click', loadNFT);
+        });
+
+        // Function to call JSON-RPC
+        async function callRpc(method, params) {
+            const rpcUrl = document.getElementById('rpcUrl').value;
+            try {
+                const response = await fetch(rpcUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        jsonrpc: '2.0',
+                        id: 1,
+                        method: method,
+                        params: params
+                    })
+                });
+                const data = await response.json();
+                return data.result;
+            } catch (error) {
+                console.error('RPC Error:', error);
+                throw new Error('Failed to call RPC: ' + error.message);
+            }
+        }
+
+        // Function to decode base64
+        function base64Decode(str) {
+            try {
+                // Handle both URL-safe and standard base64
+                str = str.replace(/-/g, '+').replace(/_/g, '/');
+                // Add padding if needed
+                const pad = str.length % 4;
+                if (pad) {
+                    if (pad === 1) {
+                        throw new Error('Invalid base64 string');
+                    }
+                    str += new Array(5 - pad).join('=');
+                }
+                return decodeURIComponent(Array.prototype.map.call(
+                    atob(str),
+                    c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                ).join(''));
+            } catch (e) {
+                console.error('Error decoding base64:', e);
+                return '';
+            }
+        }
+
+        // Function to decode ABI-encoded string
+        function decodeAbiString(hex) {
+            try {
+                // Remove 0x prefix
+                hex = hex.startsWith('0x') ? hex.slice(2) : hex;
+                // The first 32 bytes is the offset, next 32 bytes is the length
+                const length = parseInt(hex.slice(64, 128), 16) * 2;
+                const data = hex.slice(128, 128 + length);
+                // Convert hex to string
+                let str = '';
+                for (let i = 0; i < data.length; i += 2) {
+                    const byte = data.substr(i, 2);
+                    if (byte === '00') break; // Stop at null terminator
+                    str += String.fromCharCode(parseInt(byte, 16));
+                }
+                return str;
+            } catch (e) {
+                console.error('Error decoding ABI string:', e);
+                return '';
+            }
+        }
+
+        // Function to convert hex to string
+        function hexToString(hex) {
+            let str = '';
+            for (let i = 2; i < hex.length; i += 2) {
+                const byte = hex.substr(i, 2);
+                if (byte === '00') break; // Stop at null terminator
+                str += String.fromCharCode(parseInt(byte, 16));
+            }
+            return str;
+        }
+
+        // Function to decode base64
+        function decodeBase64(base64) {
+            try {
+                // Handle both URL-safe and standard base64
+                base64 = base64.replace(/-/g, '+').replace(/_/g, '/');
+                // Add padding if needed
+                const pad = base64.length % 4;
+                if (pad) {
+                    if (pad === 1) {
+                        throw new Error('Invalid base64 string');
+                    }
+                    base64 += new Array(5 - pad).join('=');
+                }
+                return decodeURIComponent(Array.prototype.map.call(
+                    atob(base64),
+                    c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                ).join(''));
+            } catch (e) {
+                console.error('Error decoding base64:', e);
+                return '';
+            }
+        }
+
+        // Function to parse tokenURI
+        async function parseTokenURI(tokenURI) {
+            try {
+                // The tokenURI is a base64 encoded JSON string that starts with 'data:application/json;base64,'
+                const base64Data = tokenURI.split(',')[1];
+                const jsonString = base64Decode(base64Data);
+                return JSON.parse(jsonString);
+            } catch (error) {
+                console.error('Error parsing tokenURI:', error);
+                throw new Error('Failed to parse NFT data: ' + error.message);
+            }
+        }
+
+        async function loadNFT() {
+            try {
+                const contractAddress = document.getElementById('contractAddress').value;
+                const tokenId = document.getElementById('tokenId').value;
+                
+                // Get the current block timestamp
+                const block = await callRpc('eth_getBlockByNumber', ['latest', false]);
+                if (block && block.timestamp) {
+                    const timestamp = parseInt(block.timestamp, 16);
+                    document.getElementById('blockchainTimestamp').textContent = 
+                        `${timestamp} (${new Date(timestamp * 1000).toISOString()})`;
+                }
+                
+                // Call tokenURI function
+                const data = '0xc87b56dd' + BigInt(tokenId).toString(16).padStart(64, '0');
+                const result = await callRpc('eth_call', [{
+                    to: contractAddress,
+                    data: data
+                }, 'latest']);
+                
+                if (!result || result === '0x') {
+                    throw new Error('Empty response from contract');
+                }
+                
+                // First try to decode as ABI-encoded string
+                let tokenURI = decodeAbiString(result);
+                let isAbiEncoded = tokenURI.length > 0;
+                
+                // If ABI decoding didn't work, try direct hex to string
+                if (!isAbiEncoded) {
+                    tokenURI = hexToString(result);
+                }
+                
+                console.log('Raw response (hex):', result);
+                console.log('Decoded tokenURI:', tokenURI);
+                
+                // Display raw response for debugging
+                const debugInfo = [
+                    'Response type: ' + (isAbiEncoded ? 'ABI-encoded' : 'raw hex'),
+                    'Raw hex: ' + result,
+                    'Decoded: ' + tokenURI,
+                    'Length: ' + tokenURI.length,
+                    'First 10 chars: ' + tokenURI.substring(0, 10),
+                    'Char codes: ' + Array.from(tokenURI.substring(0, Math.min(10, tokenURI.length)))
+                        .map(c => c.charCodeAt(0)).join(', ')
+                ];
+                
+                document.getElementById('metadata').textContent = debugInfo.join('\n');
+                
+                // Check if the response is valid JSON
+                const trimmedURI = tokenURI.trim();
+                if ((trimmedURI.startsWith('{') && trimmedURI.endsWith('}')) || 
+                    (trimmedURI.startsWith('[') && trimmedURI.endsWith(']'))) {
+                    try {
+                        const metadata = JSON.parse(trimmedURI);
+                        document.getElementById('metadata').textContent = 'Direct JSON response:\n' + 
+                            JSON.stringify(metadata, null, 2);
+                        return;
+                    } catch (e) {
+                        console.log('Not a direct JSON response');
+                    }
+                }
+                
+                // Try to find the base64 part if it's a data URL
+                const base64Match = tokenURI.match(/data:[^;]+;base64,([^\s"]+)/i);
+                if (!base64Match) {
+                    // If no base64, try to extract any potential JSON
+                    const jsonMatch = tokenURI.match(/\{[^}]*\}|\[[^\]]*\]/);
+                    if (jsonMatch) {
+                        try {
+                            const metadata = JSON.parse(jsonMatch[0]);
+                            document.getElementById('metadata').textContent = 
+                                'Extracted JSON from response:\n' + JSON.stringify(metadata, null, 2);
+                            return;
+                        } catch (e) {
+                            console.log('Could not parse as JSON');
+                        }
+                    }
+                    
+                    throw new Error('Could not find base64 data in response. Raw response: ' + 
+                        result.substring(0, 100) + '...');
+                }
+                
+                const base64Data = base64Match[1];
+                console.log('Base64 data:', base64Data.substring(0, 100) + '...');
+                
+                try {
+                    const jsonData = decodeBase64(base64Data);
+                    console.log('Decoded JSON:', jsonData);
+                    const metadata = JSON.parse(jsonData);
+                    
+                    // Display metadata
+                    document.getElementById('metadata').textContent = JSON.stringify(metadata, null, 2);
+                    
+                    // Display image if available
+                    if (metadata.image) {
+                        let imageData = metadata.image;
+                        // Handle both base64 and direct SVG data URLs
+                        if (imageData.startsWith('data:image/svg+xml;base64,')) {
+                            const imageBase64 = imageData.split(',')[1];
+                            document.getElementById('nftImage').src = `data:image/svg+xml;base64,${imageBase64}`;
+                        } else if (imageData.startsWith('data:image/svg+xml,')) {
+                            // Handle unencoded SVG data URL
+                            const svgData = decodeURIComponent(imageData.split(',')[1]);
+                            document.getElementById('nftImage').src = `data:image/svg+xml,${encodeURIComponent(svgData)}`;
+                        } else {
+                            // Try to display as is
+                            document.getElementById('nftImage').src = imageData;
+                        }
+                        
+                        // Display blockchain timestamp
+                        if (metadata.attributes && metadata.attributes[0]?.value) {
+                            const blockchainTimestamp = parseInt(metadata.attributes[0].value);
+                            document.getElementById('blockchainTimestamp').textContent = 
+                                `${blockchainTimestamp} (${new Date(blockchainTimestamp * 1000).toISOString()})`;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error parsing metadata:', e);
+                    // If JSON parsing fails, show the raw data
+                    document.getElementById('metadata').textContent = 'Raw response: ' + tokenURI + 
+                        '\n\nError parsing metadata: ' + e.message;
+                }
+                
+            } catch (error) {
+                const errorMsg = 'Error: ' + error.message + '\n\n' + error.stack;
+                document.getElementById('metadata').textContent = errorMsg;
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
