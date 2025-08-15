@@ -183,7 +183,7 @@ contract LootBox is VRFConsumerBaseV2, Ownable {
 
     s_supply = _calculateLootboxSupply(tokens, perUnitAmounts, amountDistributedPerOpen);
 
-    // _transferTokenBatch(tokens, _msgSender(), address(this));
+    _transferTokenBatch(tokens, _msgSender(), address(this));
 
     for (uint256 i = 0; i < tokenCount; i += 1) {
       s_tokens[i] = tokens[i];
