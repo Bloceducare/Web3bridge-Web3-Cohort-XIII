@@ -1,6 +1,1 @@
-[submodule "onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts"]
-	path = onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts
-	url = https://github.com/OpenZeppelin/openzeppelin-contracts
 [submodule "online-program/submissions/week-6/day-4/Nnaji-Benjamin/loot-box-v2/lib/openzeppelin-contracts"]
-	path = online-program/submissions/week-6/day-4/Nnaji-Benjamin/loot-box-v2/lib/openzeppelin-contracts
-	url = https://github.com/OpenZeppelin/openzeppelin-contracts
