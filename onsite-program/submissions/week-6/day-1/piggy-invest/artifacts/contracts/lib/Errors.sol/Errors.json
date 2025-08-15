@@ -1,0 +1,71 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Errors",
+  "sourceName": "contracts/lib/Errors.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "DirectETHNotAllowed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InsufficientBalance",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidAddress",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidLockPeriod",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidPlan",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotERC20Mode",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotETHMode",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RescueNotAdmin",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TransferFailed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ZeroDeposit",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ZeroWithdraw",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x60566050600b82828239805160001a6073146043577f4e487b7100000000000000000000000000000000000000000000000000000000600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212205b61461992b1db44e0c71b62403f27f396e594abd5344321fa836cee6dbc8d7864736f6c634300081c0033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212205b61461992b1db44e0c71b62403f27f396e594abd5344321fa836cee6dbc8d7864736f6c634300081c0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
