@@ -24,6 +24,12 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
+    liskSepolia: {
+      type: "http",
+      url:configVariable("LISK_SEPOLIA_URL"),
+      accounts: [configVariable("PRIVATE_KEY")],
+      chainId: 4202,
+    },
     hardhatMainnet: {
       type: "edr-simulated",
       chainType: "l1",
@@ -32,12 +38,12 @@ const config: HardhatUserConfig = {
       type: "edr-simulated",
       chainType: "op",
     },
-    lisksepolia: {
-      type: "http",
-      chainType: "l1",
-      url: configVariable("LISK_SEPOLIA_URL"),
-      accounts: [configVariable("PRIVATE_KEY")],
-    },
+    // lisksepolia: {
+    //   type: "http",
+    //   chainType: "l1",
+    //   url: configVariable("LISK_SEPOLIA_URL"),
+    //   accounts: [configVariable("PRIVATE_KEY")],
+    // },
   },
   verify: {
     etherscan: {
@@ -46,6 +52,23 @@ const config: HardhatUserConfig = {
      blockscout: {
       enabled: true,
     }
+  },
+    chainDescriptors: {
+    4202: {
+      name: "Listk Sepolia Blockscout",
+      blockExplorers: {
+        blockscout: {
+          name: "Lisk Sepolia Blockscout",
+          url: "https://rpc.sepolia-api.lisk.com",
+          apiUrl: "https://sepolia-blockscout.lisk.com/api",
+        },
+        etherscan: {
+          name: "Lisk Sepolia Blockscout",
+          url: "https://rpc.sepolia-api.lisk.com",
+          apiUrl: "https://sepolia-blockscout.lisk.com/api",
+        },
+      },
+    },
   },
 };
 
