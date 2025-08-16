@@ -72,12 +72,18 @@ or using pnpm
 ```
 
 - install the hardhat verify dependency
+
 ```
     npx hardhat -D @nomicfoundation/hardhat-verify";
 ```
+or using pnpm
+```
+    pnpm add -D @nomicfoundation/hardhat-keystore
+```
+
 - add Your environment variables using keystore instead of using the custom VARS in V2
 ```
-    npx hardhat keystore set ENVIRONMENT_VARIABLE
+    hardhat keystore set ENVIRONMENT_VARIABLE
 ```
 after setting your Environment variables, your hardhat config.ts should look like this
 ```
@@ -161,7 +167,7 @@ after setting your Environment variables, your hardhat config.ts should look lik
 or with pnpm 
 
 ```
-    pnpm hardhat ignition deploy --network lisksepolia ignition/modules/Counter.ts 
+    pnpm hardhat ignition deploy --network liskSepolia ignition/modules/FILENAME.ts 
 ```
 
 - After the deploment create a file to programattically verify your deployed contract
