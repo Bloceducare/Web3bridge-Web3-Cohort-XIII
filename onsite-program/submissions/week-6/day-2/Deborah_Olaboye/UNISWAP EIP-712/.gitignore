@@ -23,3 +23,8 @@ build/
 *.log
 
 lib/
+
+cache/
+out/
+.vscode
+.idea
