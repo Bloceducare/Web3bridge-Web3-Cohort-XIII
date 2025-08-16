@@ -20,6 +20,7 @@ ignition/deployments/sepolia-deployment/build-info
 ignition/deployments/sepolia-deployment/deployed_addresses.json
 ignition/deployments/sepolia-deployment/journal.jsonl
 
+cache/
 .next/
 dist/
 build/
