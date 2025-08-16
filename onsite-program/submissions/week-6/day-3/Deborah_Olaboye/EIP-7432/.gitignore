@@ -20,3 +20,5 @@ cache/
 out/
 .vscode
 .idea
+
+lib
