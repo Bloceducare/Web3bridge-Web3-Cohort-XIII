@@ -1,21 +1,34 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import dotenv from "dotenv";
 
-import { vars } from "hardhat/config";
+dotenv.config();
 
-const PRIVATE_KEY = vars.get("PRIVATE_KEY");
+
+if (!process.env.PRIVATE_KEY) {
+  throw new Error("Please set your PRIVATE_KEY in a .env file");
+}
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.28",
+  solidity: {
+    version: "0.8.26",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+    },
+  },
   networks: {
     "lisk-sepolia": {
       url: "https://rpc.sepolia-api.lisk.com",
-      accounts: [PRIVATE_KEY],
+      accounts: [process.env.PRIVATE_KEY],
+      gasPrice: 1_000_000_000,
     },
   },
   etherscan: {
     apiKey: {
-      "lisk-sepolia": "123",
+      "lisk-sepolia": "unused",
     },
     customChains: [
       {
