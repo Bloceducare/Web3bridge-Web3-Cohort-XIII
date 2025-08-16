@@ -1,0 +1,7 @@
+{
+  "LootBoxDeployModule#CustomERC1155": "0xdbCa3CB993fA79905F385BB47E13c0577cf77d10",
+  "LootBoxDeployModule#CustomERC20": "0xdEF08612E96303eF949ee22a7d93d87AF36C1ceD",
+  "LootBoxDeployModule#CustomERC721": "0x36865368EC7FB08B496FD4Eb0d93D5315d52bc2e",
+  "LootBoxDeployModule#SecurePseudoVRF": "0xc27E79A0C6eae3cB11fD533E82132EefD5a36f6B",
+  "LootBoxDeployModule#LootBox": "0x71e17D833886eB12BAc8b5561D3AD11D5df75e57"
+}
