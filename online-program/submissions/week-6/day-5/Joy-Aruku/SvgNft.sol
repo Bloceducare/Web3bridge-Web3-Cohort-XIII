@@ -5,34 +5,39 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 
-contract SvgNfT is ERC721 {
+contract JoyDynamicNFT is ERC721 {
     using Strings for uint256;
 
     uint256 private _tokenIdCounter;
-    mapping(uint256 => address) private _owners;
+    mapping(uint256 => address) private owners;
 
-    constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) {}
+    string private constant IMAGE_CID = "bafkreih4fecurt5zm2czxvse6dfubmuoxu5bri567tha22pwldsk3ajxua";
 
+    constructor() ERC721("Joy NFT", "JOY") {}
+
+    
     function mint(address to) external returns (uint256 tokenId) {
         tokenId = ++_tokenIdCounter;
         _safeMint(to, tokenId);
     }
+
     function totalMinted() external view returns (uint256) {
         return _tokenIdCounter;
     }
+
     function _exists(uint256 tokenId) internal view returns (bool) {
-        return _owners[tokenId] != address(0);
-    }
+    return owners[tokenId] != address(0);
+}
+
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         require(_exists(tokenId), "Nonexistent token");
 
-      
         string memory svg = _generateSVG(tokenId);
 
         bytes memory json = abi.encodePacked(
             "{",
-                "\"name\":\"Timestamp SVG NFT #", tokenId.toString(), "\",",
-                "\"description\":\"An on-chain SVG that displays the current block.timestamp at render time.\",",
+                "\"name\":\"Joy NFT #", tokenId.toString(), "\",",
+                "\"description\":\"A unique Joy NFT with dynamic timestamp overlay.\",",
                 "\"image\":\"data:image/svg+xml;base64,", Base64.encode(bytes(svg)), "\"",
             "}"
         );
@@ -45,21 +50,22 @@ contract SvgNfT is ERC721 {
         );
     }
 
-
-
     function _generateSVG(uint256 tokenId) internal view returns (string memory) {
         string memory ts = block.timestamp.toString();
 
         return string(
             abi.encodePacked(
-                '<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480">',
-                    '<rect width="100%" height="100%" fill="#111111"/>',
-                    '<g font-family="monospace" fill="#ffffff">',
-                        '<text x="50%" y="42%" font-size="20" text-anchor="middle">Timestamp NFT</text>',
-                        '<text x="50%" y="50%" font-size="16" text-anchor="middle">Token #', tokenId.toString(), '</text>',
-                        '<text x="50%" y="60%" font-size="14" text-anchor="middle">block.timestamp:</text>',
-                        '<text x="50%" y="68%" font-size="14" text-anchor="middle">', ts, '</text>',
-                    '</g>',
+                '<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500">',
+                  
+                    '<image href="ipfs://', IMAGE_CID, '" width="500" height="500"/>',
+
+                    '<rect x="0" y="440" width="500" height="60" fill="black" opacity="0.6"/>',
+                     "<text x='10' y='20' fill='white'>Token ID: ",
+                            tokenId,
+                            "</text>",
+                    '<text x="50%" y="470" font-family="monospace" font-size="18" fill="white" text-anchor="middle">',
+                        "block.timestamp: ", ts,
+                    '</text>',
                 '</svg>'
             )
         );
