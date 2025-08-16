@@ -1,66 +1,80 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.26;
+pragma solidity ^0.8.26;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Base64.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/Base64.sol";
 
-contract TimeNFT is ERC721 {
-    uint256 private _tokenIdCounter = 1; // Start from 1
+contract OnChaiNft is ERC721, Ownable {
+    using Strings for uint256;
 
-    constructor() ERC721("Dynamic Time NFT", "DTIME") {}
+    uint256 private _tokenIdCounter;
 
-    function mint() public returns (uint256) {
-        uint256 tokenId = _tokenIdCounter;
-        _safeMint(msg.sender, tokenId);
-        _tokenIdCounter++;
-        return tokenId;
+    constructor() ERC721("SvgNft", "SVGNFT") Ownable(msg.sender) {}
+
+    /// Mint a token to caller
+    function mint() external onlyOwner {
+        _tokenIdCounter += 1;
+        _safeMint(msg.sender, _tokenIdCounter);
     }
 
+    /// Build dynamic metadata with current blockchain time
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
-       
+        //require(_exists(tokenId), "TimeSVG: nonexistent token");
+        // Get current time from block.timestamp
+        uint256 ts = block.timestamp;
+        uint256 secsOfDay = ts % 86400; // seconds since midnight UTC
+        uint256 hrs = secsOfDay / 3600;
+        uint256 mins = (secsOfDay % 3600) / 60;
+        uint256 secs = secsOfDay % 60;
 
-        (string memory timeStr, uint256 timestamp) = getCurrentTime();
+        // Convert to strings with leading zeros
+        string memory hh = _twoDigits(hrs);
+        string memory mm = _twoDigits(mins);
+        string memory ss = _twoDigits(secs);
 
-        string memory svg = generateSVG(timeStr);
+        string memory timeString = string(abi.encodePacked(hh, ":", mm, ":", ss));
 
-        string memory json = string(abi.encodePacked(
-            '{"name": "Dynamic Time NFT #', Strings.toString(tokenId), '",',
-            '"description": "An NFT that displays the current blockchain time (updates when viewed).",',
-            '"image": "data:image/svg+xml;base64,', Base64.encode(bytes(svg)), '?t=', Strings.toString(timestamp), '",',
-            '"attributes": [{"trait_type": "Last Update", "value": "', timeStr, '"}]',
-            '}'
-        ));
+        // Create SVG
+        string memory svg = string(
+            abi.encodePacked(
+                '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200">',
+                    '<style>text { fill: white; font-family: monospace; font-size: 36px; }</style>',
+                    '<rect width="100%" height="100%" fill="black"/>',
+                    '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">',
+                        timeString,
+                    '</text>',
+                '</svg>'
+            )
+        );
 
-        return string(abi.encodePacked("data:application/json;base64,", Base64.encode(bytes(json))));
+        // Encode SVG to base64
+        string memory image = string(
+            abi.encodePacked("data:image/svg+xml;base64,", Base64.encode(bytes(svg)))
+        );
+
+        // Encode JSON metadata to base64
+        string memory json = Base64.encode(
+            bytes(
+                string(
+                    abi.encodePacked(
+                        '{"name":"Time #', tokenId.toString(),
+                        '","description":"An on-chain SVG NFT showing blockchain time.",',
+                        '"image":"', image, '"}'
+                    )
+                )
+            )
+        );
+
+        return string(abi.encodePacked("data:application/json;base64,", json));
     }
 
-    function getCurrentTime() internal view returns (string memory, uint256) {
-        uint256 timestamp = block.timestamp;
-        uint256 hour = (timestamp % 86400) / 3600;
-        uint256 minute = (timestamp % 3600) / 60;
-        uint256 second = timestamp % 60;
-
-        string memory hoursStr = hour < 10 ? string(abi.encodePacked("0", Strings.toString(hour))) : Strings.toString(hour);
-        string memory minutesStr = minute < 10 ? string(abi.encodePacked("0", Strings.toString(minute))) : Strings.toString(minute);
-        string memory secondsStr = second < 10 ? string(abi.encodePacked("0", Strings.toString(second))) : Strings.toString(second);
-
-        string memory timeStr = string(abi.encodePacked(hoursStr, ":", minutesStr, ":", secondsStr));
-
-        return (timeStr, timestamp);
-    }
-
-    function generateSVG(string memory timeStr) internal pure returns (string memory) {
-        return string(abi.encodePacked(
-            '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">',
-            '<rect width="100%" height="100%" fill="#1a1a1a"/>',
-            '<circle cx="200" cy="200" r="150" fill="none" stroke="#2ed6c8ff" stroke-width="10"/>',
-            '<text x="50%" y="45%" font-family="Arial" font-size="24" fill="#FFFFFF" text-anchor="middle">Dynamic Time NFT</text>',
-            '<text x="50%" y="55%" font-family="Arial" font-size="40" fill="#2ed6c8ff" text-anchor="middle" dominant-baseline="middle">',
-            timeStr,
-            '</text>',
-            '<text x="50%" y="65%" font-family="Arial" font-size="14" fill="#AAAAAA" text-anchor="middle">Updates when viewed</text>',
-            '</svg>'
-        ));
+    /// Format numbers as two digits
+    function _twoDigits(uint256 value) internal pure returns (string memory) {
+        if (value < 10) {
+            return string(abi.encodePacked("0", value.toString()));
+        }
+        return value.toString();
     }
 }
