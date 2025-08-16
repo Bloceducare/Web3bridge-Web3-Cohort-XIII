@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\pc\\Desktop\\code\\Web3bridge-Web3-Cohort-XIII\\onsite-program\\submissions\\week-4\\day-4\\day4-task2\\school-management\\contracts\\StudentManagementSystem.sol": {
+      "lastModificationDate": 1754007396327,
+      "contentHash": "81798a763aa170ccaed9ed5a6cec78f3",
+      "sourceName": "contracts/StudentManagementSystem.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "StudentManagementSystem"
+      ]
+    }
+  }
+}
