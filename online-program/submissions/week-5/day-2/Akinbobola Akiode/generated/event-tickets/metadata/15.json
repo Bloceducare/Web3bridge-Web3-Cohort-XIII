@@ -1,0 +1,31 @@
+{
+  "name": "Event Ticket #15",
+  "description": "This is ticket #15 for the event \"Web3 Workshop\" on 2024-12-20.",
+  "image": "ipfs://QmYourIPFSHash/15.svg",
+  "attributes": [
+    {
+      "trait_type": "Event ID",
+      "value": 2
+    },
+    {
+      "trait_type": "Ticket Number",
+      "value": 15
+    },
+    {
+      "trait_type": "Event Name",
+      "value": "Web3 Workshop"
+    },
+    {
+      "trait_type": "Event Date",
+      "value": "2024-12-20"
+    },
+    {
+      "trait_type": "Event Type",
+      "value": "Free"
+    },
+    {
+      "trait_type": "Ticket ID",
+      "value": 15
+    }
+  ]
+}

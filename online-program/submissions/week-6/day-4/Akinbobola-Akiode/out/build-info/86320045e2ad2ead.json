@@ -1,0 +1,1 @@
+{"id":"86320045e2ad2ead","source_id_to_path":{"0":"lib/forge-std/src/console.sol","1":"script/DeployLootBox.s.sol","2":"script/InteractLootBox.s.sol","3":"script/SimulateLootBox.s.sol","4":"src/LootBox.sol","5":"src/TestERC1155.sol","6":"src/TestERC20.sol","7":"src/TestERC721.sol","8":"test/LootBox.t.sol"},"language":"Solidity"}
