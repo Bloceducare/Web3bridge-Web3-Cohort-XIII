@@ -19,3 +19,9 @@ ignition/deployments/sepolia-deployment
 ignition/deployments/sepolia-deployment/build-info
 ignition/deployments/sepolia-deployment/deployed_addresses.json
 ignition/deployments/sepolia-deployment/journal.jsonl
+
+.next/
+dist/
+build/
+.env
+*.log
