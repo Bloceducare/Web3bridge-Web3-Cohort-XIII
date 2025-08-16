@@ -86,7 +86,6 @@ contract SVGNFT is ERC721, Ownable {
                     '<g text-anchor="middle">',
                         '<text x="50%" y="40%" class="title">Timestamp NFT</text>',
                         '<text x="50%" y="48%" font-size="18">Token #', tokenId.toString(), '</text>',
-                        '<rect x="160" y="220" width="160" height="40" rx="5" class="clock"/>',
                         '<text x="50%" y="60%" font-size="16">Time (UTC):</text>',
                         '<text x="50%" y="68%" font-size="20" class="clock">', ts, '</text>',
                     '</g>',
