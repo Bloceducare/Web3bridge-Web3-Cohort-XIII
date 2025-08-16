@@ -1,0 +1,10 @@
+cache/
+out/
+.vscode
+.idea
+
+.next/
+dist/
+build/
+.env
+*.log
