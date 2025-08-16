@@ -1,0 +1,79 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/debielily/Desktop/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-4/Deborah_Olaboye/contracts/MultiSig.sol": {
+      "lastModificationDate": 1754618719293,
+      "contentHash": "081937ef2c335e2ed34848482b504472",
+      "sourceName": "contracts/MultiSig.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.26"
+      ],
+      "artifacts": [
+        "MultiSigWallet"
+      ]
+    },
+    "/home/debielily/Desktop/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-4/Deborah_Olaboye/contracts/FactoryMultiSig.sol": {
+      "lastModificationDate": 1754624535825,
+      "contentHash": "215ef61379b92f07b026ed7475ee1b8b",
+      "sourceName": "contracts/FactoryMultiSig.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../contracts/MultiSig.sol"
+      ],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "FactoryMultiSig"
+      ]
+    }
+  }
+}

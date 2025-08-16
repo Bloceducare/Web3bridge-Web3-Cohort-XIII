@@ -1,0 +1,115 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ITMS",
+  "sourceName": "interfaces/ITMS.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "address payable",
+          "name": "to",
+          "type": "address"
+        }
+      ],
+      "name": "PaySalary",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_salary",
+          "type": "uint256"
+        },
+        {
+          "internalType": "enum ITMS.Status",
+          "name": "_status",
+          "type": "uint8"
+        }
+      ],
+      "name": "RegisterTeacher",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "salary",
+              "type": "uint256"
+            },
+            {
+              "internalType": "enum ITMS.Status",
+              "name": "status",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "wallet",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct ITMS.Teacher[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ViewTeachers",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "salary",
+              "type": "uint256"
+            },
+            {
+              "internalType": "enum ITMS.Status",
+              "name": "status",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "wallet",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct ITMS.Teacher[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
