@@ -1,114 +1,90 @@
 # SVG Clock NFT
 
-An on-chain SVG NFT that dynamically displays the current time using `block.timestamp`. The NFT renders a beautiful clock face that updates every time the `tokenURI()` function is queried.
+Dynamic on-chain SVG NFT that displays current time using `block.timestamp`. Updates every time `tokenURI()` is queried.
 
 ## Features
 
-- **Dynamic Time Display**: Shows current UTC time from blockchain timestamp
-- **Beautiful SVG Design**: Clean, modern clock face with hour, minute, and second hands
-- **Fully On-Chain**: No external dependencies or IPFS required
-- **ERC721 Compliant**: Standard NFT interface for maximum compatibility
-- **Sepolia Testnet Ready**: Configured for deployment on Sepolia network
+- ⏰ **Dynamic Time**: Shows current UTC time from blockchain
+- 🎨 **SVG Clock**: Clean, simple clock design
+- ⛓️ **Fully On-Chain**: No external dependencies
+- 🚀 **Sepolia Ready**: Configured for testnet deployment
 
-## Contract Details
+## Quick Start
+
+### 1. Setup Environment
+```bash
+# Create .env file with your keys
+echo "PRIVATE_KEY=your_private_key_here" > .env
+echo "ETHERSCAN_API_KEY=your_etherscan_key_here" >> .env
+echo "RPC_URL=https://eth-sepolia.g.alchemy.com/v2/your_alchemy_key" >> .env
+echo "CONTRACT_ADDRESS=0x0000000000000000000000000000000000000000" >> .env
+```
+
+### 2. Deploy Contract
+```bash
+forge script script/Deploy.s.sol:Deploy --rpc-url $RPC_URL --broadcast
+```
+
+### 3. Update Contract Address
+```bash
+# After deployment, update CONTRACT_ADDRESS in .env with the new address
+```
+
+### 4. Mint NFT
+```bash
+forge script script/Mint.s.sol:Mint --rpc-url $RPC_URL --broadcast
+```
+
+### 5. View on Rarible
+- Go to [Rarible Testnet](https://testnet.rarible.com/)
+- Connect wallet (Sepolia network)
+- Check your profile for the NFT
+
+## Contract Info
 
 - **Name**: SVG Clock
 - **Symbol**: SVGC
 - **Standard**: ERC721
-- **Solidity Version**: ^0.8.28
+- **Solidity**: ^0.8.28
 - **Network**: Sepolia Testnet
 
-## How It Works
-
-1. **Time Calculation**: Uses `block.timestamp` to calculate current UTC time
-2. **SVG Generation**: Dynamically generates SVG markup with clock hands
-3. **Base64 Encoding**: Encodes SVG and JSON metadata in base64 format
-4. **Dynamic Rendering**: Each `tokenURI()` call shows current time
-
-## Deployment
-
-### Prerequisites
-
-- Foundry installed
-- Sepolia testnet ETH
-- Etherscan API key
-- Private key for deployment
-
-### Environment Variables
-
-Create a `.env` file with:
+## Commands
 
 ```bash
-PRIVATE_KEY=your_private_key_here
-ETHERSCAN_API_KEY=your_etherscan_api_key_here
-INFURA_API_KEY=your_infura_api_key_here
-```
+# Build
+forge build
 
-### Quick Deploy
-
-```bash
-# Make deploy script executable
-chmod +x deploy.sh
-
-# Deploy to Sepolia
-./deploy.sh
-```
-
-### Manual Deploy
-
-```bash
-# Deploy contract
-forge script script/DeployAndVerify.s.sol:DeployAndVerify --rpc-url sepolia --broadcast
-
-# Verify contract (replace CONTRACT_ADDRESS)
-forge verify-contract CONTRACT_ADDRESS src/SVG_NFT.sol:SVG_NFT --chain sepolia --etherscan-api-key $ETHERSCAN_API_KEY --compiler-version 0.8.28
-```
-
-## Testing
-
-```bash
-# Run tests
+# Test
 forge test
 
-# Run tests with verbose output
-forge test -vvv
+# Load environment variables first
+source .env
+
+# Deploy (uses RPC_URL from .env)
+forge script script/Deploy.s.sol:Deploy --rpc-url $RPC_URL --broadcast
+
+# Mint (uses RPC_URL and CONTRACT_ADDRESS from .env)
+forge script script/Mint.s.sol:Mint --rpc-url $RPC_URL --broadcast
+
+# Verify (after deployment)
+forge verify-contract $CONTRACT_ADDRESS src/SVG_NFT.sol:SVG_NFT --chain sepolia --etherscan-api-key $ETHERSCAN_API_KEY --compiler-version 0.8.28
 ```
 
-## Minting
+## Environment Variables
 
-After deployment, mint NFTs using:
-
-```solidity
-// Mint to your address
-svgNFT.mint(your_address);
+Your `.env` file should contain:
+```bash
+PRIVATE_KEY=your_private_key_here
+ETHERSCAN_API_KEY=your_etherscan_key_here
+RPC_URL=https://eth-sepolia.g.alchemy.com/v2/your_alchemy_key
+CONTRACT_ADDRESS=0x0000000000000000000000000000000000000000
 ```
 
-## Viewing on Rarible
+**Important**: Always run `source .env` before executing forge commands to load the environment variables.
 
-1. Deploy to Sepolia testnet
-2. Mint at least one NFT
-3. Visit [Rarible Sepolia Testnet](https://testnet.rarible.com/)
-4. Connect your wallet
-5. Your NFT should appear in your collection
+## Files
 
-## Contract Functions
-
-- `mint(address to)`: Mint a new NFT
-- `tokenURI(uint256 id)`: Get metadata URI (includes dynamic SVG)
-- `ownerOf(uint256 id)`: Get token owner
-- `balanceOf(address owner)`: Get owner's balance
-- `transferFrom(address from, address to, uint256 id)`: Transfer NFT
-- `approve(address spender, uint256 id)`: Approve spender
-- `setApprovalForAll(address operator, bool approved)`: Set operator approval
-
-## Technical Details
-
-- **SVG Viewport**: 400x400 pixels
-- **Color Scheme**: Dark theme with blue accents
-- **Clock Hands**: Hour (white), Minute (blue), Second (red)
-- **Metadata**: JSON with base64 encoded SVG image
-- **Gas Optimization**: Efficient string operations and minimal storage
-
-## License
-
-MIT License
+- `src/SVG_NFT.sol` - Main contract
+- `script/Deploy.s.sol` - Deployment script
+- `script/Mint.s.sol` - Minting script
+- `foundry.toml` - Foundry configuration

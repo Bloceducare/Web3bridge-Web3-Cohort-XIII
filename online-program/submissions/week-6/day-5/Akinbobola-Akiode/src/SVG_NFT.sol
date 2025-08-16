@@ -63,24 +63,29 @@ contract SVG_NFT {
         require(ownerOf[id] != address(0));
         (string memory hh, string memory mm, string memory ss) = _getTimeParts(block.timestamp);
         
+        // Create a clean, simple SVG that Rarible can handle
         string memory svg = string.concat(
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">',
-            '<rect width="400" height="400" fill="#0f0f23"/>',
-            '<circle cx="200" cy="200" r="180" fill="none" stroke="#4a9eff" stroke-width="4"/>',
-            '<circle cx="200" cy="200" r="160" fill="none" stroke="#2d3748" stroke-width="2"/>',
-            _drawClockHands(hh, mm, ss),
-            '<text x="200" y="320" font-family="Arial, sans-serif" font-size="16" fill="#ffffff" text-anchor="middle">',
-            hh, ":", mm, ":", ss, " UTC</text>",
-            '<text x="200" y="340" font-family="Arial, sans-serif" font-size="12" fill="#718096" text-anchor="middle">Block: ',
-            _toString(block.number), "</text>",
-            '<text x="200" y="360" font-family="Arial, sans-serif" font-size="12" fill="#718096" text-anchor="middle">#',
-            _toString(id), "</text></svg>"
+            '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">',
+            '<rect width="300" height="300" fill="#000000"/>',
+            '<circle cx="150" cy="150" r="120" fill="none" stroke="#ffffff" stroke-width="4"/>',
+            '<text x="150" y="160" font-family="Arial, sans-serif" font-size="32" fill="#ffffff" text-anchor="middle">',
+            hh, ":", mm, ":", ss, '</text>',
+            '<text x="150" y="190" font-family="Arial, sans-serif" font-size="16" fill="#ffffff" text-anchor="middle">UTC Time</text>',
+            '<text x="150" y="210" font-family="Arial, sans-serif" font-size="14" fill="#ffffff" text-anchor="middle">Block: ',
+            _toString(block.number), '</text>',
+            '<text x="150" y="230" font-family="Arial, sans-serif" font-size="14" fill="#ffffff" text-anchor="middle">Token #',
+            _toString(id), '</text>',
+            '</svg>'
         );
         
+        // Use standard metadata format that Rarible expects
         string memory json = string.concat(
             '{"name":"SVG Clock #', _toString(id),
-            '","description":"On-chain SVG clock displaying current time from block.timestamp","image":"data:image/svg+xml;base64,',
-            Base64.encode(bytes(svg)), '"}'
+            '","description":"Dynamic clock NFT showing current UTC time from blockchain","image":"data:image/svg+xml;base64,',
+            Base64.encode(bytes(svg)), '","external_url":"","attributes":[{"trait_type":"Time","value":"',
+            hh, ":", mm, ":", ss, '"},{"trait_type":"Block","value":"',
+            _toString(block.number), '"},{"trait_type":"Token ID","value":"',
+            _toString(id), '"}]}'
         );
         
         return string.concat("data:application/json;base64,", Base64.encode(bytes(json)));
@@ -95,63 +100,6 @@ contract SVG_NFT {
         hh = _padZero(hourValue);
         mm = _padZero(minuteValue);
         ss = _padZero(secondValue);
-    }
-    
-    function _drawClockHands(string memory hh, string memory mm, string memory ss) internal pure returns (string memory) {
-        uint256 hourAngle = (_parseInt(hh) % 12) * 30 + (_parseInt(mm) / 2);
-        uint256 minuteAngle = _parseInt(mm) * 6;
-        uint256 secondAngle = _parseInt(ss) * 6;
-        
-        string memory hourHand = string.concat(
-            '<line x1="200" y1="200" x2="', _toString(uint256(int256(200) + int256(80) * _cos(hourAngle))), 
-            '" y2="', _toString(uint256(int256(200) + int256(80) * _sin(hourAngle))), 
-            '" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>'
-        );
-        
-        string memory minuteHand = string.concat(
-            '<line x1="200" y1="200" x2="', _toString(uint256(int256(200) + int256(120) * _cos(minuteAngle))), 
-            '" y2="', _toString(uint256(int256(200) + int256(120) * _sin(minuteAngle))), 
-            '" stroke="#4a9eff" stroke-width="4" stroke-linecap="round"/>'
-        );
-        
-        string memory secondHand = string.concat(
-            '<line x1="200" y1="200" x2="', _toString(uint256(int256(200) + int256(140) * _cos(secondAngle))), 
-            '" y2="', _toString(uint256(int256(200) + int256(140) * _sin(secondAngle))), 
-            '" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round"/>'
-        );
-        
-        return string.concat(hourHand, minuteHand, secondHand);
-    }
-    
-    function _cos(uint256 angle) internal pure returns (int256) {
-        angle = angle % 360;
-        int256 result;
-        if (angle <= 90) result = 1;
-        else if (angle <= 180) result = -1;
-        else if (angle <= 270) result = -1;
-        else result = 1;
-        return result;
-    }
-    
-    function _sin(uint256 angle) internal pure returns (int256) {
-        angle = angle % 360;
-        int256 result;
-        if (angle <= 90) result = 1;
-        else if (angle <= 180) result = 1;
-        else if (angle <= 270) result = -1;
-        else result = -1;
-        return result;
-    }
-    
-    function _parseInt(string memory str) internal pure returns (uint256) {
-        bytes memory b = bytes(str);
-        uint256 result = 0;
-        for (uint256 i = 0; i < b.length; i++) {
-            if (b[i] >= 0x30 && b[i] <= 0x39) {
-                result = result * 10 + (uint256(uint8(b[i])) - 0x30);
-            }
-        }
-        return result;
     }
     
     function _padZero(uint256 num) internal pure returns (string memory) {
@@ -179,6 +127,7 @@ contract SVG_NFT {
     }
 }
 
+// Fixed Base64 library - no assembly bugs
 library Base64 {
     string internal constant TABLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     
@@ -190,28 +139,32 @@ library Base64 {
         
         bytes memory table = bytes(TABLE);
         
-        assembly {
-            let tablePtr := add(table, 32)
-            let dataPtr := data
-            let endPtr := add(dataPtr, mload(data))
-            let resPtr := add(result, 32)
+        uint256 j = 0;
+        for (uint256 i = 0; i < data.length;) {
+            uint256 a = i < data.length ? uint8(data[i]) : 0;
+            uint256 b = i + 1 < data.length ? uint8(data[i + 1]) : 0;
+            uint256 c = i + 2 < data.length ? uint8(data[i + 2]) : 0;
             
-            for {} lt(dataPtr, endPtr) {}
-            {
-                dataPtr := add(dataPtr, 3)
-                let input := mload(dataPtr)
-                
-                mstore8(resPtr, mload(add(tablePtr, and(shr(26, input), 0x3F))))
-                mstore8(add(resPtr, 1), mload(add(tablePtr, and(shr(20, input), 0x3F))))
-                mstore8(add(resPtr, 2), mload(add(tablePtr, and(shr(14, input), 0x3F))))
-                mstore8(add(resPtr, 3), mload(add(tablePtr, and(shr(8, input), 0x3F))))
-                
-                resPtr := add(resPtr, 4)
-            }
+            uint256 triple = (a << 16) + (b << 8) + c;
             
-            switch mod(mload(data), 3)
-            case 1 { mstore(sub(resPtr, 2), shl(240, 0x3d3d)) }
-            case 2 { mstore(sub(resPtr, 1), shl(248, 0x3d)) }
+            bytes memory resultBytes = bytes(result);
+            resultBytes[j] = table[(triple >> 18) & 63];
+            resultBytes[j + 1] = table[(triple >> 12) & 63];
+            resultBytes[j + 2] = table[(triple >> 6) & 63];
+            resultBytes[j + 3] = table[triple & 63];
+            
+            i += 3;
+            j += 4;
+        }
+        
+        // Adjust for padding
+        if (data.length % 3 == 1) {
+            bytes memory resultBytes = bytes(result);
+            resultBytes[j - 2] = "=";
+            resultBytes[j - 1] = "=";
+        } else if (data.length % 3 == 2) {
+            bytes memory resultBytes = bytes(result);
+            resultBytes[j - 1] = "=";
         }
         
         return result;
