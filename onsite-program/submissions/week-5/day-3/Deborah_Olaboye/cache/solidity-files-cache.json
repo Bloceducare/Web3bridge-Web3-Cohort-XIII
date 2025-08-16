@@ -1,0 +1,48 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/debielily/Desktop/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-3/Deborah_Olaboye/contracts/DEERNFT.sol": {
+      "lastModificationDate": 1754477687872,
+      "contentHash": "d32221a6db926bd0296f083c49e911c7",
+      "sourceName": "contracts/DEERNFT.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Context",
+        "DEERNFT",
+        "IERC165",
+        "IERC721",
+        "IERC721Metadata",
+        "IERC721Receiver",
+        "Ownable",
+        "Strings"
+      ]
+    }
+  }
+}
