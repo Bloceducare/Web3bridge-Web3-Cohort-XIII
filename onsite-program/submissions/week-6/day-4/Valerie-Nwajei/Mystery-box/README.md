@@ -1,0 +1,5 @@
+## Contract Deployed
+
+Deployer: 0xE8E0Ae7555f1a9a0479b97a86ACca2Dc81bf9922
+Deployed to: 0xC83F6C4E25FCCE069edef819bF7B14C2Af7AAc7d
+Transaction hash: 0x4afb6d4228648aaacdd1ace8030c71235fa1e272301cde647c838baf19297bcf
