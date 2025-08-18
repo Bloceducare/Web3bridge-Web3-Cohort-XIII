@@ -1,0 +1,37 @@
+{
+  "name": "lottery-smart-contract",
+  "version": "1.0.0",
+  "description": "A decentralized lottery smart contract built with Hardhat 3 and TypeScript",
+  "type": "module",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:coverage": "hardhat coverage",
+    "deploy": "hardhat run scripts/deploy.ts",
+    "deploy:sepolia": "hardhat run scripts/deploy.ts --network sepolia",
+    "interact": "hardhat run scripts/interact.ts",
+    "interact:sepolia": "hardhat run scripts/interact.ts --network sepolia",
+    "node": "hardhat node",
+    "clean": "hardhat clean"
+  },
+  "keywords": [
+    "lottery",
+    "smart-contract",
+    "ethereum",
+    "hardhat",
+    "typescript",
+    "web3"
+  ],
+  "author": "Jethro - Web3bridge Cohort XIII",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.0",
+    "@types/chai": "^5.0.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^20.0.0",
+    "chai": "^5.1.2",
+    "hardhat": "^3.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}
