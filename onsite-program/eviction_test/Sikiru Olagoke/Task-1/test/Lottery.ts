@@ -168,10 +168,6 @@ describe("Lottery", function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
-      // This is a bit tricky since the lottery resets after 10 players
-      // We need to test that we can't join when it's full before winner selection
-      // Since winner selection is automatic, we'll test the edge case logic
-
       // Add 10 players to trigger reset
       for (let i = 0; i < 10; i++) {
         await lottery.connect(players[i]).joinLottery({ value: entryFee });

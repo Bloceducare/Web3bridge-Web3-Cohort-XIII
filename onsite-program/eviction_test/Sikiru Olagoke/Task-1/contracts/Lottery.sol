@@ -1,11 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-/**
- * @title Lottery Smart Contract
- * @dev A decentralized lottery system where players can join by paying 0.01 ETH
- * @notice This contract automatically selects a winner after 10 players join
- */
 contract Lottery {
     // State variables
     uint256 public constant ENTRY_FEE = 0.01 ether;
@@ -31,17 +26,11 @@ contract Lottery {
     error NoPlayersInLottery();
     error UnauthorizedWinnerSelection();
     
-    /**
-     * @dev Constructor initializes the first lottery
-     */
     constructor() {
         lotteryId = 1;
     }
     
-    /**
-     * @dev Allows a player to join the lottery by paying the exact entry fee
-     * @notice Players can only join once per lottery round
-     */
+ 
     function joinLottery() external payable {
         // Check if the correct entry fee is paid
         if (msg.value != ENTRY_FEE) {
@@ -71,10 +60,6 @@ contract Lottery {
         }
     }
     
-    /**
-     * @dev Internal function to select a random winner
-     * @notice Uses block properties for randomness (not cryptographically secure)
-     */
     function _selectWinner() internal {
         if (players.length == 0) {
             revert NoPlayersInLottery();
@@ -98,11 +83,6 @@ contract Lottery {
         _resetLottery();
     }
     
-    /**
-     * @dev Generates a pseudo-random number using block properties
-     * @return A pseudo-random uint256 number
-     * @notice This is not cryptographically secure and should not be used in production
-     */
     function _generateRandomNumber() internal view returns (uint256) {
         return uint256(
             keccak256(
@@ -116,9 +96,6 @@ contract Lottery {
         );
     }
     
-    /**
-     * @dev Resets the lottery for the next round
-     */
     function _resetLottery() internal {
         // Clear players array
         for (uint256 i = 0; i < players.length; i++) {
@@ -134,67 +111,34 @@ contract Lottery {
     
     // View functions
     
-    /**
-     * @dev Returns all current players in the lottery
-     * @return Array of player addresses
-     */
     function getPlayers() external view returns (address[] memory) {
         return players;
     }
     
-    /**
-     * @dev Returns the number of current players
-     * @return Number of players currently in the lottery
-     */
     function getPlayerCount() external view returns (uint256) {
         return players.length;
     }
     
-    /**
-     * @dev Returns the current prize pool
-     * @return Current prize pool in wei
-     */
     function getPrizePool() external view returns (uint256) {
         return prizePool;
     }
     
-    /**
-     * @dev Returns the current lottery ID
-     * @return Current lottery round ID
-     */
     function getLotteryId() external view returns (uint256) {
         return lotteryId;
     }
     
-    /**
-     * @dev Returns the last winner (from previous round)
-     * @return Address of the last winner
-     */
     function getLastWinner() external view returns (address) {
         return winner;
     }
     
-    /**
-     * @dev Checks if a specific address has joined the current lottery
-     * @param player Address to check
-     * @return True if the player has joined, false otherwise
-     */
     function hasPlayerJoined(address player) external view returns (bool) {
         return hasJoined[player];
     }
     
-    /**
-     * @dev Returns the number of spots remaining in the current lottery
-     * @return Number of spots remaining (0-10)
-     */
     function getSpotsRemaining() external view returns (uint256) {
         return MAX_PLAYERS - players.length;
     }
     
-    /**
-     * @dev Emergency function to get contract balance (should normally be 0 after each round)
-     * @return Contract balance in wei
-     */
     function getContractBalance() external view returns (uint256) {
         return address(this).balance;
     }
