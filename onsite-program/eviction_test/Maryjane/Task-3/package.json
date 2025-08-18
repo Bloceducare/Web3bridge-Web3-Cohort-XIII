@@ -1,0 +1,26 @@
+{
+  "name": "maryjane-board-game",
+  "version": "1.0.0",
+  "description": "Board game implementation with token staking",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.ts",
+    "node": "hardhat node"
+  },
+  "keywords": ["board", "game", "blockchain", "solidity"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "hardhat": "^2.22.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.1.0",
+    "chai": "^4.3.10",
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
+  }
+}
