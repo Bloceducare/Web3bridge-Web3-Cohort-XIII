@@ -14,21 +14,18 @@ contract Lottery is Ownable {
     event PlayerJoined(uint256 indexed round, address indexed player, uint256 indexed count);
     event WinnerSelected(uint256 indexed round, address indexed winner, uint256 prize);
 
-
     error IncorrectFee();
     error AlreadyJoined();
     error RoundNotFull();
     error TransferFailed();
 
-    constructor(uint256 _entryFee) {
+    constructor(uint256 _entryFee) Ownable(msg.sender) {
         require(_entryFee > 0, "fee=0");
         entryFee = _entryFee;
         currentRound = 1;
-        players = new address;
     }
 
-    
-    function join() external payable nonReentrant {
+    function join() external payable {
         if (msg.value != entryFee) revert IncorrectFee();
         if (hasEntered[currentRound][msg.sender]) revert AlreadyJoined();
 
@@ -40,7 +37,6 @@ contract Lottery is Ownable {
             _selectWinnerAndReset();
         }
     }
-
 
     function _selectWinnerAndReset() internal {
         if (players.length != MAX_PLAYERS) revert RoundNotFull();
@@ -63,7 +59,6 @@ contract Lottery is Ownable {
         delete players;
         currentRound += 1;
     }
-
 
     function playersInCurrentRound() external view returns (address[] memory) {
         return players;

@@ -6,17 +6,22 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 // Simple ERC20 token for the game
 contract LudoToken is ERC20, Ownable {
-    constructor() ERC20("Ludo Game Token", "LUDO") {
+    constructor() ERC20("Ludo Game Token", "LUDO") Ownable(msg.sender) {
         _mint(msg.sender, 1000000 * 10**decimals()); // Initial supply
     }
-    
+
+        
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
     
+    // Update the faucet function in LudoToken.sol
     function faucet() public {
-        require(balanceOf(msg.sender) < 100 * 10**decimals(), "Already have enough tokens");
-        _mint(msg.sender, 50 * 10**decimals()); 
+        uint256 faucetAmount = 50 * 10**decimals();
+        uint256 maxBalance = 100 * 10**decimals();
+        
+        require(balanceOf(msg.sender) < maxBalance, "Already have enough tokens");
+        _mint(msg.sender, faucetAmount);
     }
 }
 
@@ -231,7 +236,7 @@ contract LudoGame {
         nonce++;
         uint256 randomValue = uint256(keccak256(abi.encodePacked(
             block.timestamp,
-            block.difficulty,
+            block.prevrandao,
             msg.sender,
             nonce
         ))) % 6;
