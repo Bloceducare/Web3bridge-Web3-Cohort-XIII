@@ -1,0 +1,118 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/akinbobolaakiode/Documents/Web3bridge-Web3-Cohort-XIII/online-program/eviction_test/Akinbobola Akiode/task1/contracts/Lottery.sol": {
+      "lastModificationDate": 1755534338261,
+      "contentHash": "e637beffe3dbfa18493bfc4c48c8f0cb",
+      "sourceName": "contracts/Lottery.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": false,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./errors/LotteryErrors.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Lottery"
+      ]
+    },
+    "/Users/akinbobolaakiode/Documents/Web3bridge-Web3-Cohort-XIII/online-program/eviction_test/Akinbobola Akiode/task1/contracts/Lock.sol": {
+      "lastModificationDate": 1755534307429,
+      "contentHash": "840ae414da887489d8623dd0851e9568",
+      "sourceName": "contracts/Lock.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": false,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Lock"
+      ]
+    },
+    "/Users/akinbobolaakiode/Documents/Web3bridge-Web3-Cohort-XIII/online-program/eviction_test/Akinbobola Akiode/task1/contracts/errors/LotteryErrors.sol": {
+      "lastModificationDate": 1755534298142,
+      "contentHash": "95ac8d67bbc8232214a914be9998dc4c",
+      "sourceName": "contracts/errors/LotteryErrors.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": false,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "LotteryErrors"
+      ]
+    }
+  }
+}
