@@ -69,7 +69,6 @@ contract Ludo {
 
     function rollDice() public view returns (uint8) {
         if (!gameStarted) revert GameNotStarted();
-        // pseudo-random, not for production
         return uint8(uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao, msg.sender))) % 6 + 1);
     }
 

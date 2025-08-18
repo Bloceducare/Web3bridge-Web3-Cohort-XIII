@@ -1,4 +1,3 @@
-Token deployed to: 0xd53f8F66F3Ff879B8A5026D0609e6B479b2B8EcC
-Ludo deployed to: 0x6eba85C9A717385Cf91445f1846928bF2008adBc
-https://sepolia-blockscout.lisk.com/address/0x6eba85C9A717385Cf91445f1846928bF2008adBc#code
-https://sepolia-blockscout.lisk.com/address/0xd53f8F66F3Ff879B8A5026D0609e6B479b2B8EcC#code
+Token deployed to: 0xE00664603bF3ac87dD0cC73F5a778028c4824Bd4
+Ludo deployed to: 0x54E4DB9Cc571B9B9C31848523622C94e52E88466
+Ludo: https://sepolia-blockscout.lisk.com/address/0x54E4DB9Cc571B9B9C31848523622C94e52E88466
