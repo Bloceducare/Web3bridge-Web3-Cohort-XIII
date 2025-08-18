@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.20;
+pragma solidity 0.8.28;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract TimeNFT is ERC721 {
     uint256 private _tokenIdCounter = 1;
 
-    constructor() ERC721("Dynamic Time NFT", "DTIME") {}
+    constructor() ERC721("Dynamic NFT", "DYNAMITE") {}
 
     function mint() public returns (uint256) {
         uint256 tokenId = _tokenIdCounter;
@@ -18,7 +18,6 @@ contract TimeNFT is ERC721 {
     }
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        // require(_exists(tokenId), "ERC721: URI query for nonexistent token");
         
         (string memory timeStr, uint256 timestamp) = getCurrentTime();
         
