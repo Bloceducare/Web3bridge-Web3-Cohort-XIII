@@ -57,4 +57,10 @@ npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
 ```
 
 
+Verifying contract "contracts/Lottery.sol:Lottery" for network lisk-sepolia...
+Successfully verified contract "contracts/Lottery.sol:Lottery" for network lisk-sepolia:
+  - https://sepolia-blockscout.lisk.com/address/0xdeAf910920077e3a624Bc27601F1fBfF9e2cd4EF#code
+
+
+
 ![Lottry project](Lottery-deployment-succeful.png)
