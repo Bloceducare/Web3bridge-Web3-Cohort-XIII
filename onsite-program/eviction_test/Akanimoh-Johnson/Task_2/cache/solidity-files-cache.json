@@ -1,0 +1,151 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/akan_nigeria/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Akanimoh-Johnson/Task_2/contracts/IERC20.sol": {
+      "lastModificationDate": 1755540949674,
+      "contentHash": "42f854b8f4bc24295150270695c13cc1",
+      "sourceName": "contracts/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "/home/akan_nigeria/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Akanimoh-Johnson/Task_2/contracts/IUniswapV2Router02.sol": {
+      "lastModificationDate": 1755540982429,
+      "contentHash": "a4ee3fe059a806731f708303870564c0",
+      "sourceName": "contracts/IUniswapV2Router02.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "IUniswapV2Router02"
+      ]
+    },
+    "/home/akan_nigeria/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Akanimoh-Johnson/Task_2/contracts/IERC20Permit.sol": {
+      "lastModificationDate": 1755541565390,
+      "contentHash": "f488276987a4cbf4679e6fc867fa9acc",
+      "sourceName": "contracts/IERC20Permit.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "IERC20Permit"
+      ]
+    },
+    "/home/akan_nigeria/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Akanimoh-Johnson/Task_2/contracts/IUniswapV2Factory.sol": {
+      "lastModificationDate": 1755541601625,
+      "contentHash": "6e73dfbe611e50bf024eaf3dfd47b363",
+      "sourceName": "contracts/IUniswapV2Factory.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "IUniswapV2Factory"
+      ]
+    }
+  }
+}
