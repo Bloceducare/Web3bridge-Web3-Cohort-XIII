@@ -1,6 +1,8 @@
 # Task3
 
 ```shell
-Deployed to the Celo chain: 0x698c5DeDfe31d9addEa4d914Cd590A8757a4679D
+Deployed to the Celo chain: 
+    Token: 0x472f5f362B237C1E9C0d77E5E4589C0f64Ee2170
+    Ludo Game: 0x5Ac64F5DA22B25559C7D7522b4B2BB7e2012F382
 
 ```

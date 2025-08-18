@@ -5,7 +5,7 @@ const {
 const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
 const { expect } = require("chai");
 
-describe("Lock", function () {
+describe("LudoGame", function () {
   // We define a fixture to reuse the same setup in every test.
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshot in every test.
@@ -37,7 +37,7 @@ describe("Lock", function () {
     return { token, game, owner, alice, bob, carol, stakeAmount, goalPosition };
   }
 
-  describe("Deployment", function () {
+  describe("Testing Ludo game", function () {
     it("1) Players can register with unique colors and stake is transferred", async () => {
       const { game, alice, bob, token, stakeAmount } = await loadFixture(deployGame);
 

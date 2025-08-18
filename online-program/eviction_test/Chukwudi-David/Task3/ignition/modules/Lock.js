@@ -3,16 +3,16 @@
 
 const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
 
-const JAN_1ST_2030 = 1893456000;
-const ONE_GWEI = 1_000_000_000n;
+module.exports = buildModule("LudoModule", (m) => {
 
-module.exports = buildModule("LockModule", (m) => {
-  const unlockTime = m.getParameter("unlockTime", JAN_1ST_2030);
-  const lockedAmount = m.getParameter("lockedAmount", ONE_GWEI);
+  const stakeAmount = m.getParameter("stakeAmount", ethers.parseEther("10"));
+  const goalPosition = m.getParameter("goalPosition", 10);
+  const seed = m.getParameter("seed", 22);
 
-  const lock = m.contract("Lock", [unlockTime], {
-    value: lockedAmount,
-  });
+  // Deploy MyToken
+  const token = m.contract("MyToken", []);
 
-  return { lock };
+  const ludoGame = m.contract("LudoGame", [token, stakeAmount, goalPosition, seed]);
+
+  return { token, ludoGame };
 });
