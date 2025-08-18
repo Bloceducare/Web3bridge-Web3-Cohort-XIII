@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "forge-std": "^1.1.2",
+    "openzeppelin-contracts": "^4.0.0"
+  }
+}
