@@ -11,8 +11,8 @@ describe("Lottery", function () {
     const Lottery = await ethers.getContractFactory("Lottery");
     const lottery: Lottery = await Lottery.deploy();
 
-    const entryFee = await lottery.ENTRY_FEE();
-    const maxPlayers = await lottery.MAX_PLAYERS();
+    const entryFee = await lottery.Base_fee();
+    const maxPlayers = await lottery.MAX();
 
     return { lottery, owner, players, entryFee, maxPlayers };
   }
@@ -21,8 +21,8 @@ describe("Lottery", function () {
     it("set the correct initial values", async function () {
       const { lottery } = await loadFixture(deployLotteryFixture);
 
-      expect(await lottery.ENTRY_FEE()).to.equal(ethers.parseEther("0.01"));
-      expect(await lottery.MAX_PLAYERS()).to.equal(10);
+      expect(await lottery.Base_fee()).to.equal(ethers.parseEther("0.01"));
+      expect(await lottery.MAX()).to.equal(10);
       expect(await lottery.getLotteryId()).to.equal(1);
       expect(await lottery.getPlayerCount()).to.equal(0);
       expect(await lottery.getPrizePool()).to.equal(0);

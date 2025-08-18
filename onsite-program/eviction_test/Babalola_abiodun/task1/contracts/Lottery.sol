@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 
 contract Lottery {
-    uint256 public constant ENTRY_FEE = 0.01 ether;
+    uint256 public constant Base_fee = 0.01 ether;
     uint256 public constant MAX = 10;
     
     address[] public players;
@@ -11,15 +11,15 @@ contract Lottery {
     uint256 public prizePool;
     uint256 public lotteryId;
     
-    mapping(address => bool) public hasJoined;
+    mapping(address => bool) public isPlayingCurrently;
     
     event PlayerJoined(address indexed player, uint256 lotteryId, uint256 currentPlayerCount);
-    event WinnerSelected(address indexed winner, uint256 prize, uint256 lotteryId);
-    event LotteryReset(uint256 newLotteryId);
+    event SelectedWinner(address indexed winner, uint256 prize, uint256 indexed lotteryId);
+    event LotteryReset(uint256 indexed newLotteryId);
     
-    error IncorrectEntryFee();
-    error AlreadyJoined();
-    error LotteryFull();
+    error INSUFFICIENT_BALANCE_ENTRY();
+    error JOINED_ALREADY();
+    error COMPLETE_GAME_PLAYERS();
     error NoPlayersInLottery();
     error UnauthorizedWinnerSelection();
 
@@ -29,36 +29,34 @@ contract Lottery {
     
 
     function joinLottery() external payable {
-        if (msg.value != ENTRY_FEE) {
-            revert IncorrectEntryFee();
+        if (msg.value != Base_fee) {
+            revert INSUFFICIENT_BALANCE_ENTRY();
         }
         
-       if (hasJoined[msg.sender]) {
-            revert AlreadyJoined();
+       if (isPlayingCurrently[msg.sender]) {
+            revert JOINED_ALREADY();
         }
         
-        if (players.length >= MAX_PLAYERS) {
-            revert LotteryFullMAX
+        if (players.length >= MAX) {
+            revert COMPLETE_GAME_PLAYERS();
         }
         
-        // Add player to the lottery
         players.push(msg.sender);
-        hasJoined[msg.sender] = true;
+        isPlayingCurrently[msg.sender] = true;
         prizePool += msg.value;
         
         emit PlayerJoined(msg.sender, lotteryId, players.length);
         
-       if (players.length == MAX_PLAYERS) {
-            _selectWinner();MAX
+       if (players.length == MAX) {
+            chooseWinner();
         }
     }
     
 
-    function _selectWinner() internal {
+    function chooseWinner() internal {
         if (players.length == 0) {
             revert NoPlayersInLottery();
         }
-        
         uint256 randomIndex = _generateRandomNumber() % players.length;
         winner = players[randomIndex];
         
@@ -66,7 +64,7 @@ contract Lottery {
         uint256 prize = prizePool;
         prizePool = 0;
         
-        emit WinnerSelected(winner, prize, lotteryId);
+        emit SelectedWinner(winner, prize, lotteryId);
         
         // Transfer the prize to the winner
         (bool success, ) = payable(winner).call{value: prize}("");
@@ -92,7 +90,7 @@ contract Lottery {
 
     function _resetLottery() internal {
         for (uint256 i = 0; i < players.length; i++) {
-            hasJoined[players[i]] = false;
+            isPlayingCurrently[players[i]] = false;
         }
         delete players;
         
@@ -124,13 +122,12 @@ contract Lottery {
     }
 
     function hasPlayerJoined(address player) external view returns (bool) {
-        return hasJoined[player];
+        return isPlayingCurrently[player];
     }
     
     function getSpotsRemaining() external view returns (uint256) {
-        return MAX_PLAYERS - players.length;
+        return MAX - players.length;
     }
-MAX
     function getContractBalance() external view returns (uint256) {
         return address(this).balance;
     }
