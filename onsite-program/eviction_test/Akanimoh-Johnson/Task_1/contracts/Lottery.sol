@@ -21,7 +21,7 @@ contract Lottery {
     bool public isReset;
 
     mapping(address => bool) public hasJoined;
-    
+
     event PlayerJoined(address indexed player);
     event WinnerSelected(address indexed winner, uint256 prize);
 
@@ -70,11 +70,4 @@ contract Lottery {
 
 
 
-
-
-
-
-
-
-// please using custom error, interfaces, events, mappping and others to build a simple lottery smart contract, please also keep it simple and dont add comment, Write a test and I am deploying to liskTestnet
 
