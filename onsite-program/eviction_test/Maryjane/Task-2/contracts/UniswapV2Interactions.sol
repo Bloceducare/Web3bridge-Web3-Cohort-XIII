@@ -495,5 +495,130 @@ contract UniswapV2Interactions {
         to.transfer(address(this).balance);
     }
 
+    function removeLiquidityWithPermit(
+        address tokenA,
+        address tokenB,
+        uint256 liquidity,
+        uint256 amountAMin,
+        uint256 amountBMin,
+        address to,
+        uint256 deadline,
+        bool approveMax,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external validDeadline(deadline) validAmount(liquidity) returns (uint256 amountA, uint256 amountB) {
+        if (tokenA == address(0) || tokenB == address(0)) revert InvalidTokenAddress();
+
+        address pair = uniswapFactory.getPair(tokenA, tokenB);
+        uint256 value = approveMax ? type(uint256).max : liquidity;
+
+        IUniswapV2Pair(pair).permit(msg.sender, address(uniswapRouter), value, deadline, v, r, s);
+
+        (amountA, amountB) = uniswapRouter.removeLiquidity(
+            tokenA,
+            tokenB,
+            liquidity,
+            amountAMin,
+            amountBMin,
+            to,
+            deadline
+        );
+
+        emit LiquidityRemoved(tokenA, tokenB, amountA, amountB, liquidity, to);
+    }
+
+    function removeLiquidityETHWithPermit(
+        address token,
+        uint256 liquidity,
+        uint256 amountTokenMin,
+        uint256 amountETHMin,
+        address to,
+        uint256 deadline,
+        bool approveMax,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external validDeadline(deadline) validAmount(liquidity) returns (uint256 amountToken, uint256 amountETH) {
+        if (token == address(0)) revert InvalidTokenAddress();
+
+        address pair = uniswapFactory.getPair(token, WETH);
+        uint256 value = approveMax ? type(uint256).max : liquidity;
+
+        IUniswapV2Pair(pair).permit(msg.sender, address(uniswapRouter), value, deadline, v, r, s);
+
+        (amountToken, amountETH) = uniswapRouter.removeLiquidityETH(
+            token,
+            liquidity,
+            amountTokenMin,
+            amountETHMin,
+            to,
+            deadline
+        );
+
+        emit LiquidityRemoved(token, WETH, amountToken, amountETH, liquidity, to);
+    }
+
+    function removeLiquidityETHSupportingFeeOnTransferTokens(
+        address token,
+        uint256 liquidity,
+        uint256 amountTokenMin,
+        uint256 amountETHMin,
+        address to,
+        uint256 deadline
+    ) external validDeadline(deadline) validAmount(liquidity) returns (uint256 amountETH) {
+        if (token == address(0)) revert InvalidTokenAddress();
+
+        address pair = uniswapFactory.getPair(token, WETH);
+        IERC20(pair).transferFrom(msg.sender, address(this), liquidity);
+        IERC20(pair).approve(address(uniswapRouter), liquidity);
+
+        amountETH = uniswapRouter.removeLiquidityETHSupportingFeeOnTransferTokens(
+            token,
+            liquidity,
+            amountTokenMin,
+            amountETHMin,
+            to,
+            deadline
+        );
+
+        emit LiquidityRemoved(token, WETH, 0, amountETH, liquidity, to);
+    }
+
+    function removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
+        address token,
+        uint256 liquidity,
+        uint256 amountTokenMin,
+        uint256 amountETHMin,
+        address to,
+        uint256 deadline,
+        bool approveMax,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external validDeadline(deadline) validAmount(liquidity) returns (uint256 amountETH) {
+        if (token == address(0)) revert InvalidTokenAddress();
+
+        address pair = uniswapFactory.getPair(token, WETH);
+        uint256 value = approveMax ? type(uint256).max : liquidity;
+
+        IUniswapV2Pair(pair).permit(msg.sender, address(uniswapRouter), value, deadline, v, r, s);
+
+        amountETH = uniswapRouter.removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
+            token,
+            liquidity,
+            amountTokenMin,
+            amountETHMin,
+            to,
+            deadline,
+            approveMax,
+            v,
+            r,
+            s
+        );
+
+        emit LiquidityRemoved(token, WETH, 0, amountETH, liquidity, to);
+    }
+
     receive() external payable {}
 }
