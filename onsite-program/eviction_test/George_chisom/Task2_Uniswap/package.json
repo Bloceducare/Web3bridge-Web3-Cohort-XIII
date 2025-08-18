@@ -1,0 +1,21 @@
+{
+  "name": "uniswap-v2-interactions",
+  "version": "1.0.0",
+  "description": "Comprehensive Uniswap V2 function interactions",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "add-liquidity": "hardhat run scripts/01_addLiquidity.ts",
+    "remove-liquidity": "hardhat run scripts/02_removeLiquidity.ts",
+    "swap-exact-tokens": "hardhat run scripts/03_swapExactTokensForTokens.ts",
+    "add-remove-liquidity": "hardhat run scripts/addAndRemoveLiquidity.ts",
+    "test-all-swaps": "hardhat run scripts/testAllSwapFunctions.ts",
+    "test-fee-functions": "hardhat run scripts/testFeeOnTransferFunctions.ts",
+    "clean-demo": "hardhat run scripts/cleanDemo.ts",
+    "demo-all": "npm run clean-demo"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "hardhat": "^2.26.3"
+  }
+}

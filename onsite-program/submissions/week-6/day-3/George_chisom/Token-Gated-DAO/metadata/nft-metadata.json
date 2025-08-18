@@ -1,0 +1,6 @@
+{
+  "name": "DAO NFT",
+  "description": "A decentralized digital collectible",
+  "image": "https://ipfs.io/ipfs/bafkreihbk52ovoabxhd7gpxyn37bblxpah4c5cza2gqunojq5wjgy6urka",
+  "attributes": [{ "trait_type": "Type", "value": "Collectible" }]
+}

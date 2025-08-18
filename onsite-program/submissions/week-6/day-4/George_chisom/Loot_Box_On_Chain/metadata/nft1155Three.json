@@ -1,0 +1,11 @@
+{
+  "name": "Boom Token #2",
+  "description": "An Nft for the Mystery Box token 3",
+  "image": "https://ipfs.io/ipfs/bafkreif6ugnt5lgg47cvsrzzla6z2l6ofnw6azhsqogxfixqmsqc4nlkiq",
+  "attributes": [
+    {
+      "trait_type": "Role",
+      "value": "Reward"
+    }
+  ]
+}
