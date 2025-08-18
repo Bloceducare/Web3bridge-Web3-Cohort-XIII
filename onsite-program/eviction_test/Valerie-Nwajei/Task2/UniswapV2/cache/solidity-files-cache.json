@@ -1,0 +1,187 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/test/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Valerie-Nwajei/Task2/UniswapV2/contracts/IERC20.sol": {
+      "lastModificationDate": 1755541142926,
+      "contentHash": "963f89256186428b3221318d890020bb",
+      "sourceName": "contracts/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.16"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "/Users/test/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Valerie-Nwajei/Task2/UniswapV2/contracts/IUniswapV2Factory.sol": {
+      "lastModificationDate": 1755541142927,
+      "contentHash": "d7a443db9a4af0a9932625bd2a2f1a2f",
+      "sourceName": "contracts/IUniswapV2Factory.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IUniswapV2Factory"
+      ]
+    },
+    "/Users/test/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Valerie-Nwajei/Task2/UniswapV2/contracts/IUniswapV2Pair.sol": {
+      "lastModificationDate": 1755541142927,
+      "contentHash": "c047b6a28c3dcd5e9e4e79d64c69576c",
+      "sourceName": "contracts/IUniswapV2Pair.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IUniswapV2Pair"
+      ]
+    },
+    "/Users/test/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Valerie-Nwajei/Task2/UniswapV2/contracts/IUniswapV2Router01.sol": {
+      "lastModificationDate": 1755541142926,
+      "contentHash": "a1f86fdb1f003bc3837d1b6ed8e2e444",
+      "sourceName": "contracts/IUniswapV2Router01.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IUniswapV2Router01"
+      ]
+    },
+    "/Users/test/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Valerie-Nwajei/Task2/UniswapV2/contracts/IUniswapV2Router02.sol": {
+      "lastModificationDate": 1755543043587,
+      "contentHash": "9d6e37f30d9705682f72cbc9e1a8ffd5",
+      "sourceName": "contracts/IUniswapV2Router02.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IUniswapV2Router01.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IUniswapV2Router02"
+      ]
+    }
+  }
+}
