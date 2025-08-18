@@ -1,7 +1,8 @@
 import { expect } from "chai";
-import ethers  from "hardhat";
+import {ethers}  from "hardhat";
 import { LudoGame } from "../typechain-types";
 import { ERC20 } from "../typechain-types";
+import { parseEther } from "ethers";
 
 describe("LudoGame", function () {
   let ludo: LudoGame;
@@ -18,7 +19,6 @@ describe("LudoGame", function () {
     await ludo.waitForDeployment();
 
     signers = await ethers.getSigners();
-    // Mint tokens to players
     await token.mint(signers[0].address, parseEther("100"));
     await token.mint(signers[1].address, parseEther("100"));
     await token.approve(ludo.address, parseEther("100"));
@@ -26,9 +26,9 @@ describe("LudoGame", function () {
   });
 
   it("Should register players", async function () {
-    await ludo.register("Player1", 0); // RED
+    await ludo.register("Player1", 0); 
     const playerInfo = await ludo.getPlayer(signers[0].address);
-    expect(playerInfo[1]).to.equal(0); // Color index
+    expect(playerInfo[1]).to.equal(0); 
   });
 
   it("Should allow staking and moving", async function () {
@@ -46,10 +46,9 @@ describe("LudoGame", function () {
     await ludo.stakeTokens();
     await ludo.connect(signers[1]).stakeTokens();
 
-    // Simulate reaching end (set position manually for testing)
-    await ludo.makeMove(); // Move once
-    await ethers.provider.network.provider.send("evm_increaseTime", [3600]); // Move time for randomness
-    await ludo.makeMove(); // Move again to reach end
+    await ludo.makeMove();
+    await ethers.provider.network.provider.send("evm_increaseTime", [3600]); 
+    await ludo.makeMove(); 
     const winner = await ludo.winner();
     expect(winner).to.equal(signers[0].address);
     expect(await token.balanceOf(signers[0].address)).to.equal(parseEther("100"));

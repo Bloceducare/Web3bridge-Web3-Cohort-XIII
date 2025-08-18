@@ -28,7 +28,6 @@ contract LudoGame {
         uint256 createdAt;
     }
     
-    // State variables
     mapping(uint256 => Game) public games;
     mapping(address => uint256) public playerCurrentGame;
     uint256 public gameCounter;
@@ -65,7 +64,6 @@ contract LudoGame {
         _;
     }
     
-    // Create a new game with stake requirement
     function createGame(uint256 _stakeAmount) external payable returns (uint256) {
         require(msg.value == _stakeAmount, "Must send exact stake amount");
         require(_stakeAmount > 0, "Stake amount must be greater than 0");
@@ -85,7 +83,6 @@ contract LudoGame {
         return gameId;
     }
     
-    // Register a player for a game
     function registerPlayer(uint256 _gameId, string memory _name, Color _color) 
         external 
         payable
@@ -98,13 +95,11 @@ contract LudoGame {
         require(playerCurrentGame[msg.sender] == 0 || playerCurrentGame[msg.sender] == _gameId, "Already in another game");
         require(bytes(_name).length > 0, "Name cannot be empty");
         
-        // Check if color is already taken
         for (uint8 i = 0; i < game.playerCount; i++) {
             require(game.players[i].color != _color, "Color already taken");
             require(game.players[i].playerAddress != msg.sender, "Already registered in this game");
         }
         
-        // Add player to game
         Player storage newPlayer = game.players[game.playerCount];
         newPlayer.playerAddress = msg.sender;
         newPlayer.name = _name;
@@ -121,14 +116,12 @@ contract LudoGame {
         emit PlayerRegistered(_gameId, msg.sender, _name, _color);
         emit TokensStaked(_gameId, msg.sender, msg.value);
         
-        // Start game if 4 players registered
         if (game.playerCount == MAX_PLAYERS) {
             game.state = GameState.IN_PROGRESS;
             emit GameStarted(_gameId);
         }
     }
     
-    // Dice rolling algorithm - generates random number 1-6
     function rollDice(uint256 _gameId) 
         external 
         gameExists(_gameId)
@@ -137,10 +130,9 @@ contract LudoGame {
         isCurrentPlayer(_gameId)
         returns (uint256) 
     {
-        // Generate random number using block properties and player address
         uint256 randomHash = uint256(keccak256(abi.encodePacked(
             block.timestamp,
-            block.difficulty,
+            block.prevrandao,
             msg.sender,
             _gameId,
             block.number
@@ -150,37 +142,30 @@ contract LudoGame {
         
         emit DiceRolled(_gameId, msg.sender, diceValue);
         
-        // Move player based on dice roll
         _movePlayer(_gameId, diceValue);
         
         return diceValue;
     }
     
-    // Internal function to move player and calculate position
     function _movePlayer(uint256 _gameId, uint256 _diceValue) internal {
         Game storage game = games[_gameId];
         Player storage currentPlayer = game.players[game.currentPlayerIndex];
         
-        // Calculate new position
         uint256 newPosition = currentPlayer.position + _diceValue;
         
-        // Check if player reached or passed winning position
         if (newPosition >= WINNING_POSITION) {
             newPosition = WINNING_POSITION;
             currentPlayer.position = newPosition;
-            currentPlayer.score += 100; // Bonus points for winning
+            currentPlayer.score += 100; 
             
-            // End game
             game.state = GameState.FINISHED;
             game.winner = currentPlayer.playerAddress;
             
-            // Transfer all staked tokens to winner
             payable(currentPlayer.playerAddress).transfer(game.totalStaked);
             
             emit PlayerMoved(_gameId, currentPlayer.playerAddress, newPosition);
             emit GameFinished(_gameId, currentPlayer.playerAddress, game.totalStaked);
             
-            // Clear player game associations
             for (uint8 i = 0; i < game.playerCount; i++) {
                 delete playerCurrentGame[game.players[i].playerAddress];
             }
@@ -189,15 +174,13 @@ contract LudoGame {
         }
         
         currentPlayer.position = newPosition;
-        currentPlayer.score += _diceValue; // Add dice value to score
+        currentPlayer.score += _diceValue;
         
         emit PlayerMoved(_gameId, currentPlayer.playerAddress, newPosition);
         
-        // Move to next player
         game.currentPlayerIndex = (game.currentPlayerIndex + 1) % game.playerCount;
     }
     
-    // Get game information
     function getGame(uint256 _gameId) external view gameExists(_gameId) returns (
         uint256 gameId,
         uint8 playerCount,
@@ -219,7 +202,6 @@ contract LudoGame {
         );
     }
     
-    // Get player information in a game
     function getPlayer(uint256 _gameId, uint8 _playerIndex) external view gameExists(_gameId) returns (
         address playerAddress,
         string memory name,
@@ -240,7 +222,6 @@ contract LudoGame {
         );
     }
     
-    // Get all players in a game
     function getAllPlayers(uint256 _gameId) external view gameExists(_gameId) returns (
         address[] memory addresses,
         string[] memory names,
@@ -268,7 +249,6 @@ contract LudoGame {
         return (addresses, names, colors, scores, positions);
     }
     
-    // Get current player's turn
     function getCurrentPlayer(uint256 _gameId) external view gameExists(_gameId) returns (
         address playerAddress,
         string memory name,
@@ -283,7 +263,6 @@ contract LudoGame {
         return (currentPlayer.playerAddress, currentPlayer.name, currentPlayer.color);
     }
     
-    // Check if a specific color is available in a game
     function isColorAvailable(uint256 _gameId, Color _color) external view gameExists(_gameId) returns (bool) {
         Game storage game = games[_gameId];
         for (uint8 i = 0; i < game.playerCount; i++) {
@@ -294,23 +273,19 @@ contract LudoGame {
         return true;
     }
     
-    // Get available colors for a game
     function getAvailableColors(uint256 _gameId) external view gameExists(_gameId) returns (Color[] memory) {
         Game storage game = games[_gameId];
         bool[] memory taken = new bool[](4);
         
-        // Mark taken colors
         for (uint8 i = 0; i < game.playerCount; i++) {
             taken[uint256(game.players[i].color)] = true;
         }
         
-        // Count available colors
         uint8 availableCount = 0;
         for (uint8 i = 0; i < 4; i++) {
             if (!taken[i]) availableCount++;
         }
         
-        // Create array of available colors
         Color[] memory available = new Color[](availableCount);
         uint8 index = 0;
         for (uint8 i = 0; i < 4; i++) {
@@ -323,24 +298,18 @@ contract LudoGame {
         return available;
     }
     
-    // Emergency function to leave a game (forfeits stake)
     function leaveGame(uint256 _gameId) external gameExists(_gameId) playerInGame(_gameId) {
         Game storage game = games[_gameId];
         require(game.state != GameState.FINISHED, "Game already finished");
         
-        // Remove player from current game tracking
         delete playerCurrentGame[msg.sender];
         
-        // Note: Player forfeits their stake by leaving
-        // In a more complex implementation, you might redistribute stakes
     }
     
-    // Get total number of games created
     function getTotalGames() external view returns (uint256) {
         return gameCounter;
     }
     
-    // Check if player is in any active game
     function getPlayerActiveGame() external view returns (uint256) {
         return playerCurrentGame[msg.sender];
     }
