@@ -6,16 +6,23 @@ contract Lottery {
     uint256 public constant ENTRY_FEE = 0.01 ether;
     address public winner;
     address public owner;
+    address public contractAddress;
 
     event PlayerJoined(address player);
     event WinnerChosen(address winner, uint256 prize);
 
     constructor() {
         owner = msg.sender;
+        contractAddress = address(this);
     }
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Only owner can call this function");
+        _;
+    }
+
+    modifier onlyContract() {
+        require(msg.sender == contractAddress, "Only contract can call this function");
         _;
     }
 
@@ -27,10 +34,9 @@ contract Lottery {
         emit PlayerJoined(msg.sender);
     }
 
-    function selectWinner() public onlyOwner {
+    function selectWinner() public onlyContract {
         require(participants.length == 10, "Exactly 10 players required");
         
-        // Generate a random number using available block data
         uint256 random = uint256(keccak256(abi.encodePacked(
             block.timestamp,
             block.prevrandao,
@@ -40,24 +46,17 @@ contract Lottery {
         )));
         
         uint256 index = random % 10;
-        winner = participants[index];
-        uint256 prizeAmount = address(this).balance;
         
-        // Emit event before any state changes
-        emit WinnerChosen(winner, prizeAmount);
+        address winnerAddress = participants[index];
+        uint256 prizeAmount = 0.1 ether; 
         
-        // Store the winner in memory
-        address winnerAddress = winner;
-        
-        // Reset state before external call
         delete participants;
         
-        // Transfer the prize
-        (bool success, ) = winnerAddress.call{value: prizeAmount}("");
-        require(success, "Transfer failed");
+        payable(winnerAddress).transfer(prizeAmount);
         
-        // Clear the winner after successful transfer
-        winner = address(0);
+        winner = winnerAddress;
+        
+        emit WinnerChosen(winner, prizeAmount);
     }
 
     function hasJoined(address _player) public view returns (bool) {
@@ -73,13 +72,11 @@ contract Lottery {
         return participants.length;
     }
 
-    function reset() internal {
-        // Create a new dynamic array to clear the old one
+    function reset() public onlyOwner {
         delete participants;
         winner = address(0);
     }
 
-    // Allow owner to withdraw funds if needed (security consideration)
     function withdraw() external onlyOwner {
         payable(owner).transfer(address(this).balance);
         reset();
