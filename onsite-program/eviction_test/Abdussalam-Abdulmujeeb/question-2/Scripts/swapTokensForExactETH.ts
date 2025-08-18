@@ -31,12 +31,12 @@ async function main() {
   console.log(
     "::::::::::::::INITIAL USDT AND ETH BALANCE BEFORE SWAP::::::::::::::::",
   );
-  const initialBalance = await DAI.balanceOf(AssetHolder);
+  const initialDAIBalance = await DAI.balanceOf(AssetHolder);
   const initialETHBalance = await ethers.provider.getBalance(AssetHolder);
 
   console.log(
     "INITIAL DAI BALANCE: ",
-    ethers.formatUnits(initialBalance.toString(), 6),
+    ethers.formatUnits(initialDAIBalance.toString(), 18),
   );
 
   console.log(
@@ -45,7 +45,7 @@ async function main() {
   );
   console.log("");
 
-  const AMOUNT_TO_SPEND = ethers.parseUnits("7000000", 6);
+  const AMOUNT_TO_SPEND = ethers.parseUnits("7000000", 18);
 
   // APPROVE USDT FOR SPENDING
   await DAI.connect(AssetHolder).approve(UNIROUTER, AMOUNT_TO_SPEND);
@@ -75,7 +75,7 @@ async function main() {
 
   console.log(
     "UPDATED DAI BALANCE: ",
-    ethers.formatUnits(updatedDAIBalance.toString(), 6),
+    ethers.formatUnits(updatedDAIBalance.toString(), 18),
   );
   console.log(
     "UPDATED ETH BALANCE: ",

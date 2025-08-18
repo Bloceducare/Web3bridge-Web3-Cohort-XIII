@@ -42,7 +42,7 @@ async function main() {
   //Approve token to spend
   const DAIAmount = ethers.parseUnits("77000000", 18);
 
-  const USDCAmount = ethers.parseUnits("80000000", 6);
+  const USDCAmount = ethers.parseUnits("77000000", 6);
 
   const DAIApproval = await DAI.connect(AssetHolder).approve(
     UNIRouter,
@@ -64,8 +64,9 @@ async function main() {
   console.log("");
 
   const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
-  const AMOUNT_TO_BE_SWAPPED = ethers.parseUnits("77000000", 6);
-  const EXPECTED_AMOUNT = ethers.parseUnits("10000000", 6);
+  const AMOUNT_TO_BE_SWAPPED = ethers.parseUnits("70000", 6);
+  const EXPECTED_AMOUNT = ethers.parseUnits("1000", 6);
+  const feeData = await ethers.provider.getFeeData();
 
   // Call the UNISWAP SWAP function
   const swapToken = await UNISWAP.connect(AssetHolder).swapTokensForExactTokens(
@@ -92,8 +93,8 @@ async function main() {
     ethers.formatUnits(UpdatedUSDCBalance.toString(), 6),
   );
   console.log(
-    "Current USDT Balance: ",
-    ethers.formatUnits(UpdatedDAIBalance.toString(), 6),
+    "Current DAI Balance: ",
+    ethers.formatUnits(UpdatedDAIBalance.toString(), 18),
   );
 }
 
