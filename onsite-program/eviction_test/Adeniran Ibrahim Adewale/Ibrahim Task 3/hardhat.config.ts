@@ -8,7 +8,7 @@ const config: HardhatUserConfig = {
   solidity: "0.8.28",
   networks: {
     lisk: {
-      url: "rpc.sepolia-api.lisk.com",
+      url: "https://rpc.sepolia-api.lisk.com",
       accounts: [PRIVATE_KEY]
     }
   },

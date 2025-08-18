@@ -5,9 +5,17 @@ This project demonstrates a basic Hardhat use case. It comes with a sample contr
 Try running some of the following tasks:
 
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
+
+[ LudoGame ] successfully deployed 🚀
+
+Deployed Addresses
+
+LudoGame#LudoGame - 0x55cd1B8D20e1610d2a6a42eb6ec38ee420528376
+
+Verifying deployed contracts
+
+Verifying contract "contracts/LudoGame.sol:LudoGame" for network lisk-sepolia...
+Successfully verified contract "contracts/LudoGame.sol:LudoGame" for network lisk-sepolia:
+  - https://sepolia-blockscout.lisk.com/address/0x55cd1B8D20e1610d2a6a42eb6ec38ee420528376#code
+
 ```
