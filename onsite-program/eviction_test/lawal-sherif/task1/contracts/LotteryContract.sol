@@ -1,7 +1,8 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
 contract Lottery {
+
     struct Participant {
         uint256 id;
         address account;
@@ -9,9 +10,13 @@ contract Lottery {
     }
     
     address public owner;
+
     uint256 public currentRound;
+
     uint256 public playerCount;
+
     uint256 constant ENTRY_FEE = 0.01 ether;
+    
     uint256 constant MAX_PLAYERS = 10;
     
     mapping(uint256 => Participant) public participants;
@@ -48,6 +53,8 @@ contract Lottery {
         playerCount++;
         
         emit PlayerJoined(msg.sender, _name, currentRound, playerCount);
+
+
         if (playerCount == MAX_PLAYERS) {
             _selectWinnerInternal();
         }
@@ -101,4 +108,6 @@ contract Lottery {
         playerCount = 0;
         currentRound++;
     }
+
+    receive() external payable {}
 }
