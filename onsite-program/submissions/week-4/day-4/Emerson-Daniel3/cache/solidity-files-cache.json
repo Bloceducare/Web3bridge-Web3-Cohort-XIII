@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/majormaxx/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/Emerson-Daniel3/contracts/Sma.sol": {
+      "lastModificationDate": 1754012749154,
+      "contentHash": "40bac17fdcdbb1b88e325bf38775c57b",
+      "sourceName": "contracts/Sma.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.30"
+      ],
+      "artifacts": [
+        "SchoolManagement"
+      ]
+    }
+  }
+}
