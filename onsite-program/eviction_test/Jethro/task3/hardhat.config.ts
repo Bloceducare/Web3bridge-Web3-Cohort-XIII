@@ -1,42 +1,18 @@
 import type { HardhatUserConfig } from "hardhat/config";
-
-import hardhatToolboxMochaEthersPlugin from "@nomicfoundation/hardhat-toolbox-mocha-ethers";
-import { configVariable } from "hardhat/config";
+import "@nomicfoundation/hardhat-toolbox";
 
 const config: HardhatUserConfig = {
-  plugins: [hardhatToolboxMochaEthersPlugin],
-  solidity: {
-    profiles: {
-      default: {
-        version: "0.8.28",
+  solidity: "0.8.28",
+  networks :{
+    hardhat: {
+      forking: {
+        url: "https://ethereum.publicnode.com",
+        blockNumber: 16000000,
       },
-      production: {
-        version: "0.8.28",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
-      },
+      chainId: 31337,
+      allowUnlimitedContractSize: true,
     },
-  },
-  networks: {
-    hardhatMainnet: {
-      type: "edr-simulated",
-      chainType: "l1",
-    },
-    hardhatOp: {
-      type: "edr-simulated",
-      chainType: "op",
-    },
-    sepolia: {
-      type: "http",
-      chainType: "l1",
-      url: configVariable("SEPOLIA_RPC_URL"),
-      accounts: [configVariable("SEPOLIA_PRIVATE_KEY")],
-    },
-  },
+  }
 };
 
 export default config;
