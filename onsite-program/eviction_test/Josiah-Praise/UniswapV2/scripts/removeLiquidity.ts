@@ -8,25 +8,21 @@ const daiAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
 const factoryAddress = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f";
 
 async function addLiquidity() {
-  // get pairAddress
   const factoryContract = await ethers.getContractAt(
     "IUniswapV2Factory",
     factoryAddress
   );
   pairAddress = await factoryContract.getPair(usdtAddress, daiAddress);
   console.log(`Pair Address: ${pairAddress}`);
-  // impersonate whale
   const signer = await ethers.getImpersonatedSigner(whaleAddress);
   const [deployer] = await ethers.getSigners();
 
-  // balance before sending eth
   console.log(
     `Whale's ETH balance before: ${ethers.formatEther(
       await ethers.provider.getBalance(await signer.getAddress())
     )}`
   );
 
-  // give whale some eth for signing transactions
   await deployer.sendTransaction({
     to: signer.address,
     value: ethers.parseEther("10"),
@@ -55,7 +51,6 @@ async function addLiquidity() {
     signer
   );
 
-  // show the whale's usdt and dai balances before adding liquidity
   const whalesUsdtBalanceBeforeAdding = await usdtContract.balanceOf(
     await signer.getAddress()
   );
@@ -75,7 +70,6 @@ async function addLiquidity() {
     )}`
   );
 
-  // get initial balance of usdt and dai in the pool
   const UsdtInPoolBeforeAdding = await usdtContract.balanceOf(pairAddress);
   const DaiInPoolBeforeAdding = await daiContract.balanceOf(pairAddress);
 
@@ -103,7 +97,6 @@ async function addLiquidity() {
     )} DAI and ${ethers.formatUnits(minUsdtAmount, 6)} USDT`
   );
 
-  // approve the router to take erc20 pair
   await (
     await daiContract.approve(routerAddress, amountOfDaiToAddToPool)
   ).wait();
@@ -111,7 +104,6 @@ async function addLiquidity() {
     await usdtContract.approve(routerAddress, amountOfUsdtToAddToPool)
   ).wait();
 
-  // tell the router to add liquidity
   await (
     await routerContract.addLiquidity(
       usdtAddress,
@@ -125,7 +117,6 @@ async function addLiquidity() {
     )
   ).wait();
 
-  // get initial balance of usdt and dai in the pool
   const UsdtInPoolAfterAdding = await usdtContract.balanceOf(pairAddress);
   const DaiInPoolAfterAdding = await daiContract.balanceOf(pairAddress);
 
@@ -134,7 +125,6 @@ async function addLiquidity() {
   );
   console.log(`DAI in pool after: ${ethers.formatEther(DaiInPoolAfterAdding)}`);
 
-  // show the whale's usdt and dai balances after adding liquidity
   const whalesUsdtBalanceAfterAdding = await usdtContract.balanceOf(
     await signer.getAddress()
   );
@@ -169,7 +159,6 @@ async function addLiquidity() {
 }
 
 async function removeLiquidity() {
-  // get pairAddress
   const factoryContract = await ethers.getContractAt(
     "IUniswapV2Factory",
     factoryAddress
@@ -177,18 +166,15 @@ async function removeLiquidity() {
   pairAddress = await factoryContract.getPair(usdtAddress, daiAddress);
   console.log(`Pair Address: ${pairAddress}`);
 
-  // impersonate whale
   const signer = await ethers.getImpersonatedSigner(whaleAddress);
   const [deployer] = await ethers.getSigners();
 
-  // balance before sending eth
   console.log(
     `Whale's ETH balance before: ${ethers.formatEther(
       await ethers.provider.getBalance(await signer.getAddress())
     )}`
   );
 
-  // give whale some eth for signing transactions
   await deployer.sendTransaction({
     to: signer.address,
     value: ethers.parseEther("10"),
@@ -217,7 +203,6 @@ async function removeLiquidity() {
     signer
   );
 
-  // show the whale's usdt and dai balances before removing liquidity
   const whalesUsdtBalanceBeforeRemoving = await usdtContract.balanceOf(
     await signer.getAddress()
   );
@@ -237,7 +222,6 @@ async function removeLiquidity() {
     )}`
   );
 
-  // get initial balance of usdt and dai in the pool
   const UsdtInPoolBeforeRemoving = await usdtContract.balanceOf(pairAddress);
   const DaiInPoolBeforeRemoving = await daiContract.balanceOf(pairAddress);
 
@@ -248,18 +232,15 @@ async function removeLiquidity() {
     `DAI in pool before: ${ethers.formatEther(DaiInPoolBeforeRemoving)}`
   );
 
-  // get the whale's LP token balance
   const lpTokenBalance = await pairContract.balanceOf(
     await signer.getAddress()
   );
   console.log(`LP token balance: ${ethers.formatEther(lpTokenBalance)}`);
 
-  // calculate how much liquidity to remove (let's remove half of the LP tokens)
   const liquidityToRemove = lpTokenBalance / 2n;
 
-  // set minimum amounts we expect to receive (95% slippage protection)
-  const minUsdtAmount = ethers.parseUnits("4.75", 6); // expecting around 5 USDT with 5% slippage
-  const minDaiAmount = ethers.parseEther("4.75"); // expecting around 5 DAI with 5% slippage
+  const minUsdtAmount = ethers.parseUnits("4.75", 6); 
+  const minDaiAmount = ethers.parseEther("4.75"); 
 
   console.log(`Removing ${ethers.formatEther(liquidityToRemove)} LP tokens`);
   console.log(
@@ -268,10 +249,8 @@ async function removeLiquidity() {
     )} DAI and ${ethers.formatUnits(minUsdtAmount, 6)} USDT`
   );
 
-  // approve the router to take LP tokens
   await (await pairContract.approve(routerAddress, liquidityToRemove)).wait();
 
-  // tell the router to remove liquidity
   await (
     await routerContract.removeLiquidity(
       usdtAddress,
@@ -284,7 +263,6 @@ async function removeLiquidity() {
     )
   ).wait();
 
-  // get balance of usdt and dai in the pool after removing
   const UsdtInPoolAfterRemoving = await usdtContract.balanceOf(pairAddress);
   const DaiInPoolAfterRemoving = await daiContract.balanceOf(pairAddress);
 
@@ -295,7 +273,6 @@ async function removeLiquidity() {
     `DAI in pool after: ${ethers.formatEther(DaiInPoolAfterRemoving)}`
   );
 
-  // show the whale's usdt and dai balances after removing liquidity
   const whalesUsdtBalanceAfterRemoving = await usdtContract.balanceOf(
     await signer.getAddress()
   );
@@ -328,7 +305,6 @@ async function removeLiquidity() {
     )}`
   );
 
-  // show remaining LP token balance
   const remainingLpTokenBalance = await pairContract.balanceOf(
     await signer.getAddress()
   );
