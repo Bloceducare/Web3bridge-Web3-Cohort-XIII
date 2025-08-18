@@ -1,0 +1,26 @@
+{
+  "name": "Olayemi-Task2",
+  "version": "1.0.0",
+  "type": "module",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@types/chai": "^4.3.5",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "ethers": "^6.13.2",
+    "hardhat": "^2.22.2",
+    "ts-node": "^10.9.1",
+    "typechain": "^8.3.2",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1"
+  },
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile",
+    "typechain": "typechain --target ethers-v6 './artifacts/contracts/**/*.json' --out-dir ./typechain-types"
+  }
+}
