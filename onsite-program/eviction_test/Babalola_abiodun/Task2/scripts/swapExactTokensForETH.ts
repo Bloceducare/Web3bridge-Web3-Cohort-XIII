@@ -15,7 +15,7 @@ const main = async () => {
 
   console.log("Fetching contract instances...");
   const USDC = await ethers.getContractAt("IERC20", USDCAddress);
-  const ROUTER = await ethers.getContractAt("IUniswapV2Router02", UNIRouter);
+  const UNISWAP_ROUTER = await ethers.getContractAt("IUniswapV2Router02", UNIRouter);
   console.log("Contracts loaded successfully");
 
   const amountIn = ethers.parseUnits("10000", 6);
@@ -34,7 +34,7 @@ const main = async () => {
   console.log("Approval successful. Tx Hash:", approvalTx.hash);
 
   console.log("Executing swapExactTokensForETH...");
-  const tx = await ROUTER.connect(impersonatedSigner).swapExactTokensForETH(
+  const tx = await UNISWAP_ROUTER.connect(impersonatedSigner).swapExactTokensForETH(
     amountIn,
     amountOutMin,
     [USDCAddress, wethAddress],

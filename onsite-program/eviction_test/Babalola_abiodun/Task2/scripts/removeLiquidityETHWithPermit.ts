@@ -42,7 +42,7 @@ const main = async () => {
   const chainId = network.chainId;
   console.log("Connected to chain with ID:", chainId);
 
-  const nonce = await DAI.nonces(impersonatedSigner.address); // Get the current nonce
+  const nonce = await DAI.nonces(impersonatedSigner.address); 
   const permitData = {
     owner: impersonatedSigner.address,
     spender: UNIRouter,

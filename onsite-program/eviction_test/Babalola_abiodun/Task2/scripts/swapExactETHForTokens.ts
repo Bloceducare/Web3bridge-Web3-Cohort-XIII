@@ -22,7 +22,7 @@ const main = async () => {
   console.log("Preparing to swap ETH for DAI:");
   console.log("- Minimum amount of DAI expected:", ethers.formatUnits(amountOutMin, 18));
   console.log("- Deadline for swap:", new Date(deadline * 1000).toLocaleString());
-  console.log("- Path: [WETH -> DAI]");
+  console.log("- Paths: WETH -> DAI");
   console.log("- ETH to be sent:", ethers.formatEther("1"));
 
   const tx = await ROUTER.connect(impersonatedSigner).swapExactETHForTokens(
