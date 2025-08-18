@@ -1,0 +1,78 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/akan_nigeria/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Akanimoh-Johnson/Task_3/contracts/LudoGame.sol": {
+      "lastModificationDate": 1755538387269,
+      "contentHash": "b6c7b3faf1db2b89a511b9a84b7cf7c6",
+      "sourceName": "contracts/LudoGame.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ILudoToken",
+        "LudoGame"
+      ]
+    },
+    "/home/akan_nigeria/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Akanimoh-Johnson/Task_3/contracts/LudoToken.sol": {
+      "lastModificationDate": 1755538229392,
+      "contentHash": "b5e74a25d1eaaa5a795e912aba603c85",
+      "sourceName": "contracts/LudoToken.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "LudoToken"
+      ]
+    }
+  }
+}
