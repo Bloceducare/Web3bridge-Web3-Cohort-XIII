@@ -79,14 +79,12 @@ describe('Lottery', function () {
 
   describe('Winner Selection', function () {
     it('Should select winner after 10 players', async function () {
-      // Add 10 players
       for (let i = 0; i < 10; i++) {
         const tx = lottery
           .connect(players[i])
           .enterLottery({ value: ENTRY_FEE });
 
         if (i === 9) {
-          // 10th player should trigger winner selection
           await expect(tx).to.emit(lottery, 'WinnerSelected');
         }
       }
@@ -95,7 +93,6 @@ describe('Lottery', function () {
     it('Should transfer prize pool to winner', async function () {
       const expectedPrizePool = ENTRY_FEE * 10n;
 
-      // Record initial balances
       const initialBalances = [];
       for (let i = 0; i < 10; i++) {
         initialBalances.push(
@@ -103,7 +100,6 @@ describe('Lottery', function () {
         );
       }
 
-      // Add 10 players
       for (let i = 0; i < 10; i++) {
         await lottery.connect(players[i]).enterLottery({ value: ENTRY_FEE });
       }
