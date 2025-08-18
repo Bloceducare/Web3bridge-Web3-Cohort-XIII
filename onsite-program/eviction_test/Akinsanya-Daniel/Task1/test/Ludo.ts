@@ -47,7 +47,7 @@ describe("LudoGame", function () {
             const { ludo, player1 } = await deployLudoFixture();
             await ludo.connect(player1).joinGame();
 
-            await expect(ludo.startGame()).to.be.revertedWith("Not enough players");
+            await expect(ludo.startGame()).to.be.revertedWithCustomError(ludo,"NOT_ENOUGH_PLAYERS");
         });
 
         it("should start with 2 or more players", async function () {

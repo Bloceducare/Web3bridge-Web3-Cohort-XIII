@@ -30,10 +30,7 @@ contract LudoGame {
     event TokenCaptured(address capturer, address captured, uint8 position);
     event PlayerWon(address player);
 
-    constructor() {
-        nonce = 0;
-        gameInProgress = false;
-    }
+
 
     function joinGame() external {
         require(!gameInProgress, GAME_HAS_ALREADY_STARTED());
@@ -115,9 +112,7 @@ contract LudoGame {
         currentPlayerIndex = (currentPlayerIndex + 1) % playerCount;
     }
 
-    function getGameState() external view returns (
-        address[] memory playerAddresses,
-        uint8[MAX_PLAYERS][TOKENS_PER_PLAYER] memory tokenPositions,
+    function getGameState() external view returns (address[] memory playerAddresses, uint8[MAX_PLAYERS][TOKENS_PER_PLAYER] memory tokenPositions,
         uint8[] memory tokensHome,
         uint8 currentPlayer,
         bool isGameInProgress
