@@ -72,7 +72,7 @@ async function name() {
   await POOL.connect(Assetholder).approve(IROUTER, AMOUNT_TO_REMOVE);
 
 
-  const removeLiquidity = await IROUTER.connect(Assetholder).removeLiquidity(
+  const removeOfLiquidity = await IROUTER.connect(Assetholder).removeLiquidity(
     USDCaddress,
     DAIaddress,
     AMOUNT_TO_REMOVE,
