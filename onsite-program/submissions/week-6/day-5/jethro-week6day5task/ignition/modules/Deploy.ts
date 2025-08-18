@@ -1,52 +1,22 @@
-// import { network } from "hardhat";
+import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-// const { ethers } = await network.connect({
-//   network: "sepolia",
-//   chainType: "l1",
-// });
-// async function main(): Promise<void> {
-//   const [deployer] = await ethers.getSigners();
-//   console.log("Deploying with account:", deployer.address);
+/**
+ * Hardhat Ignition module for deploying DynamicTimeNFT contract
+ *
+ * This module deploys the DynamicTimeNFT contract which creates NFTs
+ * that display the current block timestamp as a digital clock.
+ *
+ * Usage:
+ * - Local deployment: npx hardhat ignition deploy ignition/modules/Deploy.ts
+ * - Sepolia deployment: npx hardhat ignition deploy ignition/modules/Deploy.ts --network sepolia
+ * - With verification: npx hardhat ignition deploy ignition/modules/Deploy.ts --network sepolia --verify
+ */
+const DynamicTimeNFTModule = buildModule("DynamicTimeNFTModule", (m) => {
+  // Deploy the DynamicTimeNFT contract
+  const dynamicTimeNFT = m.contract("DynamicTimeNFT", []);
 
-//   const DynamicTimeNFT = await ethers.getContractFactory("DynamicTimeNFT");
-//   const nft = await DynamicTimeNFT.deploy();
-//   await nft.waitForDeployment();
-//   const contractAddress = await nft.getAddress();
-//   console.log("DynamicTimeNFT deployed to:", contractAddress);
-
-//   // Mint a test NFT
-//   const tx = await nft.mint(deployer.address);
-//   await tx.wait();
-//   console.log("Minted NFT ID 1 to:", deployer.address);
-// }
-
-// main().catch((error) => {
-//   console.error(error);
-//   process.exitCode = 1;
-// });
-import { network } from "hardhat";
-
-async function main(): Promise<void> {
-  const { ethers } = await network.connect({
-    network: "sepolia",
-    chainType: "l1",
-  });
-  const [deployer] = await ethers.getSigners();
-  console.log("Deploying with account:", deployer.address);
-
-  const DynamicTimeNFT = await ethers.getContractFactory("DynamicTimeNFT");
-  const nft = await DynamicTimeNFT.deploy();
-  await nft.waitForDeployment();
-  const contractAddress = await nft.getAddress();
-  console.log("DynamicTimeNFT deployed to:", contractAddress);
-
-  // Mint a test NFT
-  const tx = await nft.mint(deployer.address);
-  await tx.wait();
-  console.log("Minted NFT ID 1 to:", deployer.address);
-}
-
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+  // Return the deployed contract for use in other modules or scripts
+  return { dynamicTimeNFT };
 });
+
+export default DynamicTimeNFTModule;
