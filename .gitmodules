@@ -10,3 +10,6 @@
 [submodule "online-program/submissions/week-6/day-3/token_gated_dao_erc7432/lib/openzeppelin-contracts"]
 	path = online-program/submissions/week-6/day-3/token_gated_dao_erc7432/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "online-program/eviction_test/JohnValentine_jvcByte/question1/lottery/lib/forge-std"]
+	path = online-program/eviction_test/JohnValentine_jvcByte/question1/lottery/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
