@@ -14,7 +14,7 @@ describe("Lottery", function () {
   it("should allow entry only with exact fee", async () => {
     await expect(
       lottery.connect(accounts[1]).enter({ value: ethers.parseEther("0.009") })
-    ).to.be.revertedWith("Invalid entry fee");
+    ).to.be.revertedWithCustomError(lottery, "InvalidEntryFee");
     await expect(
       lottery.connect(accounts[1]).enter({ value: ethers.parseEther("0.01") })
     ).to.emit(lottery, "PlayerJoined");
@@ -26,7 +26,7 @@ describe("Lottery", function () {
       .enter({ value: ethers.parseEther("0.01") });
     await expect(
       lottery.connect(accounts[1]).enter({ value: ethers.parseEther("0.01") })
-    ).to.be.revertedWith("Already entered");
+    ).to.be.revertedWithCustomError(lottery, "AlreadyEntered");
   });
 
   it("should track 10 players and pick winner", async () => {

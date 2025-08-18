@@ -2,6 +2,9 @@
 pragma solidity ^0.8.20;
 
 contract Lottery {
+    error InvalidEntryFee();
+    error AlreadyEntered();
+    error LotteryFull();
     uint256 public constant ENTRY_FEE = 0.01 ether;
     address[] public players;
     address public winner;
@@ -16,9 +19,9 @@ contract Lottery {
     }
 
     function enter() public payable {
-        require(msg.value == ENTRY_FEE, "Invalid entry fee");
-        require(!entered[msg.sender], "Already entered");
-        require(players.length < 10, "Lottery full");
+    if (msg.value != ENTRY_FEE) revert InvalidEntryFee();
+    if (entered[msg.sender]) revert AlreadyEntered();
+    if (players.length >= 10) revert LotteryFull();
         players.push(msg.sender);
         entered[msg.sender] = true;
         emit PlayerJoined(msg.sender, round);
@@ -30,7 +33,7 @@ contract Lottery {
     function pickWinner() private {
         uint256 random = uint256(
             keccak256(
-                abi.encodePacked(block.difficulty, block.timestamp, players)
+                abi.encodePacked(block.prevrandao, block.timestamp, players)
             )
         );
         uint256 winnerIndex = random % players.length;
