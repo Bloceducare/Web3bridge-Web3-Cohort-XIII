@@ -12,7 +12,7 @@ contract Lottery is VRFConsumerBaseV2Plus {
     uint32 callbackGasLimit;
     uint16 requestConfirmations;
     uint32 numWords = 1;
-    uint64 public s_subscriptionId;
+    uint256 public s_subscriptionId;
     
     uint256 public constant ENTRY_FEE = 0.01 ether;
     uint256 public constant MAX_PLAYERS = 10;

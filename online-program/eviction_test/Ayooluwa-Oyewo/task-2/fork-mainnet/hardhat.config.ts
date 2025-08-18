@@ -8,6 +8,11 @@ const config: HardhatUserConfig = {
   solidity: "0.8.28",
   defaultNetwork: "hardhat",
   networks: {
+    localhost: {
+      url: "http://127.0.0.1:8545",
+      chainId: 1337,
+      accounts: ACCOUNTS,
+    },
     'lisk-sepolia': {
       url: 'https://rpc.sepolia-api.lisk.com',
       accounts: ACCOUNTS,

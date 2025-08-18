@@ -55,3 +55,7 @@ After setting the variable, you can run the deployment with the Sepolia network:
 ```shell
 npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
 ```
+### Contract Address
+https://sepolia-blockscout.lisk.com/address/0x49a779FD89fFB57eE68b395f45263790B5723038#code
+
+```
