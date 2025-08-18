@@ -84,7 +84,6 @@ contract LudoGame {
         game.isActive = false;
         game.winner = _winner;
         
-        // Calculate prize (total entry fees)
         uint256 totalPlayers = 0;
         for (uint i = 0; i < 4; i++) {
             if (game.players[i] != address(0)) {
