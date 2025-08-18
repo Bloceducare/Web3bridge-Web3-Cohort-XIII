@@ -1,0 +1,19 @@
+{
+  "name": "ludo-game",
+  "version": "1.0.0",
+  "description": "Blockchain-based Ludo game with token staking",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.ts",
+    "deploy:lisk": "hardhat run scripts/deploy.ts --network lisk",
+    "verify": "hardhat run scripts/verify.ts --network lisk",
+    "play": "hardhat run scripts/playGame.ts",
+    "play:lisk": "hardhat run scripts/playGame.ts --network lisk"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "dotenv": "^16.6.1",
+    "hardhat": "^2.26.3"
+  }
+}
