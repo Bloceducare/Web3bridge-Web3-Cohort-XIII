@@ -11,3 +11,4 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
+LotteryModule#Lottery - 0x10d58127D383deB980916703De72997Bb097bdA6
