@@ -2,9 +2,10 @@ import type { HardhatUserConfig } from "hardhat/config";
 
 import hardhatToolboxMochaEthersPlugin from "@nomicfoundation/hardhat-toolbox-mocha-ethers";
 import { configVariable } from "hardhat/config";
+import hardhatVerify from "@nomicfoundation/hardhat-verify";
 
 const config: HardhatUserConfig = {
-  plugins: [hardhatToolboxMochaEthersPlugin],
+  plugins: [hardhatToolboxMochaEthersPlugin, hardhatVerify],
   solidity: {
     profiles: {
       default: {
@@ -35,6 +36,14 @@ const config: HardhatUserConfig = {
       chainType: "op",
       url: configVariable("LISK_SEPOLIA_RPC_URL"),
       accounts: [configVariable("PRIVATE_KEY")],
+    },
+  },
+  verify: {
+    // etherscan: {
+    //   apiKey: configVariable("ETHERSCAN_KEY"),     
+    // },
+    blockscout: {
+      enabled: true,
     },
   },
 };

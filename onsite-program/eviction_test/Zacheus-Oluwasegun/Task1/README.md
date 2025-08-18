@@ -6,7 +6,7 @@ To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide]
 
 ## Deployment
 
-***Contract Address*** - ***0xf992C9cE24717E48bbE8587A88ca3f1dc57B9Cd9***
+***Contract Address*** - ***0xE8ed988580480b1c1a43B24058A47B92e7Af1736***
 
 
 ## Project Overview

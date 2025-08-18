@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-ba92e0c4cb6c181579f910d7a5d4b4c222cac6c9",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/Lottery.sol": "project/contracts/Lottery.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/Lottery.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.28;\n\ncontract Lottery {\n    uint256 public constant ENTRY_FEE = 0.01 ether;\n    uint256 public constant MAX_PLAYERS = 10;\n\n    address[] public players;\n    mapping(address => bool) public hasEntered;\n    uint256 public currentRound;\n\n    event PlayerJoined(address indexed player, uint256 round);\n    event WinnerSelected(address indexed winner, uint256 amount, uint256 round);\n    event LotteryReset(uint256 newRound);\n\n    modifier onlyValidEntry() {\n        require(msg.value == ENTRY_FEE, \"Incorrect entry fee\");\n        require(!hasEntered[msg.sender], \"Already entered this round\");\n        require(players.length < MAX_PLAYERS, \"Lottery is full\");\n        _;\n    }\n\n    function enterLottery() external payable onlyValidEntry {\n        players.push(msg.sender);\n        hasEntered[msg.sender] = true;\n\n        emit PlayerJoined(msg.sender, currentRound);\n\n        if (players.length == MAX_PLAYERS) {\n            _selectWinner();\n        }\n    }\n\n    function _selectWinner() private {\n        require(players.length == MAX_PLAYERS, \"Not enough players\");\n\n        uint256 winnerIndex = _generateRandomNumber() % MAX_PLAYERS;\n        address winner = players[winnerIndex];\n        uint256 prizePool = address(this).balance;\n\n        emit WinnerSelected(winner, prizePool, currentRound);\n\n        (bool success, ) = winner.call{value: prizePool}(\"\");\n        require(success, \"Transfer failed\");\n\n        _resetLottery();\n    }\n\n    function _generateRandomNumber() private view returns (uint256) {\n        return uint256(keccak256(abi.encodePacked(\n            block.timestamp,\n            block.prevrandao,\n            players.length,\n            currentRound\n        )));\n    }\n\n    function _resetLottery() private {\n        for (uint256 i = 0; i < players.length; i++) {\n            hasEntered[players[i]] = false;\n        }\n        delete players;\n        currentRound++;\n\n        emit LotteryReset(currentRound);\n    }\n\n    function getPlayersCount() external view returns (uint256) {\n        return players.length;\n    }\n\n    function getPlayers() external view returns (address[] memory) {\n        return players;\n    }\n\n    function getPrizePool() external view returns (uint256) {\n        return address(this).balance;\n    }\n}"
+      }
+    }
+  }
+}

@@ -4,7 +4,8 @@
   "scripts": {
     "test": "hardhat test",
     "compile": "hardhat compile",
-    "deploy": "hardhat ignition deploy ignition/modules/LudoGame.ts"
+    "deploy": "hardhat run scripts/deploy.js",
+    "deploy:ignition": "hardhat ignition deploy ignition/modules/LudoGame.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
@@ -27,5 +28,9 @@
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "dotenv": "^17.2.1"
   }
 }
