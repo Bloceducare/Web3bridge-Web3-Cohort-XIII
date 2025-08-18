@@ -11,7 +11,7 @@ contract Lottery {
     Participants[] private PARTICIPANTS;
     address[] public participants;
     
-    uint256 private entryFee = 0.01 ether;
+    uint256 private constant entryFee = 0.01 ether;
     address private owner;
     bool private lotteryActive;
 
@@ -81,6 +81,13 @@ contract Lottery {
         return PARTICIPANTS;
         
     }
+
+    function getContractBalance() external view returns (uint256) {
+        return address(this).balance;
+    }
+    // function getLastWinner() external view returns (address) {
+    //     return winner;
+    // }
 
     receive() external payable {}
 }

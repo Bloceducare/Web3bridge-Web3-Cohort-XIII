@@ -1,141 +1,112 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity 0.8.30;
 
-contract LudoGame {
-    struct Player {
-        address Address;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+
+contract LudoChallenge {
+    address public constant LUDO_TOKEN = 0x0ceC7A61B12d801a37143e6E223Cab907839cE3f;
+    uint256 private count;
+    ERC20 public tokenAddress = ERC20(LUDO_TOKEN);
+
+    struct User {
         string name;
-        uint8 color; 
-        uint8[4] token; 
-        uint8 score;
+        uint256 score;
+        COLOR color;
+        address player_address;
     }
 
-    Player[4] public players;
+    enum GAME_MODE {
+        ENDED,
+        START,
+        ONGOING
+    }
+
+    enum COLOR {
+        RED,
+        GREEN,
+        BLUE,
+        YELLOW
+    }
+
+    User[4] public players;
     uint8 public playerCount;
-    uint8 public currentPlayer;
-    uint8 public lastDice;
-    bool public gameStarted;
-    bool public extraTurn;
-    
-    uint8[4] startPositions = [1, 14, 27, 40];
-    
-    event PlayerJoined(address player, string name, uint8 color);
-    event DiceRolled(address player, uint8 roll);
-    event TokenMoved(address player, uint8 tokenIndex, uint8 newPosition);
-    event GameWon(address winner);
+    GAME_MODE public game_state = GAME_MODE.ENDED;
+    address public gameOwner;
 
-    function joinGame(string memory name, uint8 color) external {
-        require(!gameStarted && playerCount < 4 && color < 4);
-        
-        // Check color not taken
-        for(uint8 i = 0; i < playerCount; i++) {
-            require(players[i].color != color, "Color taken");
+    event PlayerRegistered(address player, string name, COLOR color);
+    event GameStarted();
+    event TokensStaked(address player, uint256 amount);
+
+    modifier onlyRegisteredPlayer() {
+        bool isRegistered;
+        for (uint256 i = 0; i < playerCount; i++) {
+            if (players[i].player_address == msg.sender) {
+                isRegistered = true;
+                break;
+            }
         }
-        
-        players[playerCount] = Player(msg.sender, name, color, [0,0,0,0], 0);
+        require(isRegistered, "Player not registered");
+        _;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == gameOwner, "Only owner can call this function");
+        _;
+    }
+
+    constructor() {
+        gameOwner = msg.sender;
+    }
+
+    function register_user(string memory _name, COLOR _color) external {
+        require(game_state == GAME_MODE.ENDED, "Game has already started");
+        require(playerCount <= 4, "Maximum player limit reached");
+        require(_color >= COLOR.RED && _color <= COLOR.YELLOW, "Invalid color");
+
+        // Check if color is already taken
+        for (uint256 i = 0; i < playerCount; i++) {
+            require(players[i].color != _color, "Color already taken");
+            require(players[i].player_address != msg.sender, "Player already registered");
+        }
+
+        User memory newPlayer = User(_name, 0, _color, msg.sender);
+        players[playerCount] = newPlayer;
         playerCount++;
-        
-        emit PlayerJoined(msg.sender, name, color);
+
+        emit PlayerRegistered(msg.sender, _name, _color);
     }
 
-    function startGame() external {
-        require(!gameStarted && playerCount >= 2);
-        gameStarted = true;
+    function stake_token(uint256 _amount) external onlyRegisteredPlayer {
+        require(_amount > 0, "Amount must be greater than 0");
+        require(tokenAddress.balanceOf(msg.sender) >= _amount, "Insufficient token balance");
+
+        bool success = tokenAddress.transferFrom(msg.sender, address(this), _amount);
+        require(success, "Token transfer failed");
+
+        emit TokensStaked(msg.sender, _amount);
     }
 
-    function rollDice() external returns (uint8) {
-        require(gameStarted && msg.sender == players[currentPlayer].addr);
-        
-        lastDice = uint8(uint256(keccak256(abi.encodePacked(
-            block.timestamp, msg.sender, block.prevrandao
-        ))) % 6) + 1;
-        
-        emit DiceRolled(msg.sender, lastDice);
-        return lastDice;
+    function start_game(uint256 _minimumStake) external onlyOwner {
+        require(game_state == GAME_MODE.ENDED, "Game has already started");
+        require(playerCount >= 2, "At least 2 players required");
+        require(playerCount <= 4, "Maximum 4 players allowed");
+
+        // Verify all registered players have staked at least the minimum amount
+        for (uint256 i = 0; i < playerCount; i++) {
+            uint256 stakedAmount = tokenAddress.balanceOf(address(this)); // Simplified check, adjust as needed
+            require(stakedAmount >= _minimumStake, "Insufficient stake by a player");
+        }
+
+        game_state = GAME_MODE.START;
+        emit GameStarted();
     }
 
-    function moveToken(uint8 tokenIndex) external {
-        require(gameStarted && msg.sender == players[currentPlayer].addr && tokenIndex < 4);
-        
-        Player storage player = players[currentPlayer];
-        uint8 currentPos = player.tokens[tokenIndex];
-        uint8 newPos;
-        extraTurn = false;
-        
-        if (currentPos == 0) {
-            require(lastDice == 6, "Need 6 to start");
-            newPos = startPositions[player.color];
-            extraTurn = true;
-        } else if (currentPos <= 52) {
-            uint8 stepsFromStart = (currentPos - startPositions[player.color] + 52) % 52;
-            
-            if (stepsFromStart + lastDice >= 52) {
-                // Enter home stretch
-                newPos = 53 + (stepsFromStart + lastDice - 52);
-            } else {
-                // Move on board
-                newPos = (currentPos + lastDice - 1) % 52 + 1;
-                // Check captures
-                checkCapture(newPos);
-            }
-        } else if (currentPos <= 58) {
-            // In home stretch
-            newPos = currentPos + lastDice;
-            require(newPos <= 59, "Can't overshoot");
-        }
-        
-        player.tokens[tokenIndex] = newPos;
-        
-        if (lastDice == 6) extraTurn = true;
-        if (newPos == 59) {
-            player.score++;
-            if (player.score == 4) {
-                emit GameWon(msg.sender);
-                return;
-            }
-        }
-        
-        emit TokenMoved(msg.sender, tokenIndex, newPos);
-        
-        if (!extraTurn) {
-            currentPlayer = (currentPlayer + 1) % playerCount;
-        }
-        lastDice = 0;
-    }
-
-    function checkCapture(uint8 position) private {
-        for (uint8 i = 0; i < playerCount; i++) {
-            if (i != currentPlayer) {
-                for (uint8 j = 0; j < 4; j++) {
-                    if (players[i].tokens[j] == position) {
-                        players[i].tokens[j] = 0; // Send home
-                        extraTurn = true;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    function getGameState() external view returns (
-        address[4] memory addrs,
-        string[4] memory names,
-        uint8[4] memory colors,
-        uint8[4][4] memory tokenPositions,
-        uint8[4] memory scores,
-        uint8 current,
-        uint8 dice,
-        bool started
-    ) {
-        for (uint8 i = 0; i < 4; i++) {
-            addrs[i] = players[i].addr;
-            names[i] = players[i].name;
-            colors[i] = players[i].color;
-            scores[i] = players[i].score;
-            for (uint8 j = 0; j < 4; j++) {
-                tokenPositions[i][j] = players[i].tokens[j];
-            }
-        }
-        return (addrs, names, colors, tokenPositions, scores, currentPlayer, lastDice, gameStarted);
+    function rollDice() external onlyRegisteredPlayer returns (uint256) {
+        require(game_state == GAME_MODE.START || game_state == GAME_MODE.ONGOING, "Game not in progress");
+        count++;
+        uint256 randomHash = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, count)));
+        uint256 diceResult = (randomHash % 6) + 1; // 1 to 6
+        return diceResult;
     }
 }
