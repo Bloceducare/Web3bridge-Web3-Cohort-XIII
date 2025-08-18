@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
+import "./GameToken.sol";
+
 
 contract LudoGame {
     GameToken public gameToken;
@@ -8,7 +10,7 @@ contract LudoGame {
     
     enum Color { RED, BLUE, GREEN, YELLOW }
     
-    // Player structure
+    
     struct Player {
         string name;
         address playerAddress;
@@ -19,7 +21,7 @@ contract LudoGame {
         uint256 position; 
     }
     
-    // Game structure
+    
     struct Game {
         uint256 gameId;
         Player[4] players;
@@ -32,7 +34,7 @@ contract LudoGame {
         uint8 currentPlayerTurn; 
     }
     
-    // State variables
+   
     uint256 public gameCounter;
     uint256 public constant STAKE_AMOUNT = 10 * 10**18; // 10 tokens
     uint256 public constant WINNING_POSITION = 100;
@@ -40,7 +42,7 @@ contract LudoGame {
     mapping(uint256 => Game) public games;
     mapping(address => uint256) public playerToGame;
     
-    // Events
+    
     event PlayerRegistered(uint256 gameId, address player, string name, Color color);
     event GameStarted(uint256 gameId);
     event DiceRolled(uint256 gameId, address player, uint8 diceValue);
@@ -121,7 +123,7 @@ contract LudoGame {
         }
     }
     
-    // Simple dice rolling algorithm
+    
     function rollDice(uint256 _gameId) public returns (uint8) {
         require(games[_gameId].gameStarted && !games[_gameId].gameEnded, "Game not active");
         require(playerToGame[msg.sender] == _gameId, "Not in this game");
@@ -129,26 +131,26 @@ contract LudoGame {
         uint8 playerIndex = getPlayerIndex(_gameId, msg.sender);
         require(playerIndex == games[_gameId].currentPlayerTurn, "Not your turn");
         
-        // Simple random number generation (not secure for production)
+      
         uint8 diceValue = uint8((uint256(keccak256(abi.encodePacked(
             block.timestamp,
-            block.difficulty,
+            block.prevrandao,
             msg.sender,
             _gameId
         ))) % 6) + 1);
         
         emit DiceRolled(_gameId, msg.sender, diceValue);
         
-        // Move player
+        
         movePlayer(_gameId, playerIndex, diceValue);
         
-        // Move to next player's turn
+        
         games[_gameId].currentPlayerTurn = (games[_gameId].currentPlayerTurn + 1) % games[_gameId].playerCount;
         
         return diceValue;
     }
     
-    // Move player based on dice roll
+    
     function movePlayer(uint256 _gameId, uint8 _playerIndex, uint8 _diceValue) internal {
         games[_gameId].players[_playerIndex].position += _diceValue;
         
