@@ -6,12 +6,9 @@ const factoryAddress = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f";
 const usdtAddress = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
 const daiAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
 
-// swapping usdt for dai
 async function swapExactTokensForToken(amount: bigint) {
-  // get the signer
   const signer = await ethers.getImpersonatedSigner(whale);
 
-  // check for the pair first
   const factoryContract = await ethers.getContractAt(
     "IUniswapV2Factory",
     factoryAddress,
@@ -25,7 +22,6 @@ async function swapExactTokensForToken(amount: bigint) {
     process.exit();
   }
 
-  // deal signer some eth to transact with
   const [deployer] = await ethers.getSigners();
   await deployer.sendTransaction({
     to: signer.address,
@@ -70,10 +66,8 @@ async function swapExactTokensForToken(amount: bigint) {
     `Minimum DAI out (with slippage): ${ethers.formatEther(minDaiOut)}`
   );
 
-  // approve router to chop your money
   await (await usdtContract.approve(routerAddress, amount)).wait();
 
-  // call router and then perform swap
   await routerContract.swapExactTokensForTokens(
     amount,
     minDaiOut,
