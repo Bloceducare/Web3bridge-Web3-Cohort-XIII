@@ -2,6 +2,10 @@
   "name": "day-4",
   "version": "1.0.0",
   "type": "module",
+  "dependencies": {
+    "@chainlink/contracts": "^1.2.0",
+    "@openzeppelin/contracts": "^5.1.0"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^4.0.0",
     "@nomicfoundation/hardhat-ignition": "^3.0.0",
