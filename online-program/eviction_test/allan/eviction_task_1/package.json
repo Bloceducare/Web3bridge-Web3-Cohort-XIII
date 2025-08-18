@@ -1,0 +1,19 @@
+{
+  "name": "eviction_task_1",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lottery smart contract with Hardhat",
+  "scripts": {
+    "build": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.js",
+    "flow": "hardhat run scripts/flow.js",
+    "deploy:lisk": "hardhat run --network lisk-sepolia scripts/deploy.js",
+    "verify:lisk": "hardhat verify --network lisk-sepolia"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.2"
+  }
+}
