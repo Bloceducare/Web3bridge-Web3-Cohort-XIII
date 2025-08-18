@@ -1,0 +1,11 @@
+{
+  "name": "Sword Token #2",
+  "description": "An Nft for the Mystery Box token 1",
+  "image": "https://ipfs.io/ipfs/bafkreici2opzfbvuslal5wel6r34ztt5ksu2sim6r4ojk37ojowmax5jbu",
+  "attributes": [
+    {
+      "trait_type": "Role",
+      "value": "Reward"
+    }
+  ]
+}

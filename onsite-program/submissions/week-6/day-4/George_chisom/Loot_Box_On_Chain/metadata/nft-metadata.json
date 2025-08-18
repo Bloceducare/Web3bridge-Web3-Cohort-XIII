@@ -1,0 +1,6 @@
+{
+  "name": "Loot Box Nft",
+  "description": "An Nft for the Mystery Box",
+  "image": "https://ipfs.io/ipfs/bafkreig7jbezhcilpz5rxl4vwjq3ln55ciohu2fzw7w7njk3qe2ergtioy",
+  "attributes": [{ "trait_type": "Type", "value": "Collectible" }]
+}
