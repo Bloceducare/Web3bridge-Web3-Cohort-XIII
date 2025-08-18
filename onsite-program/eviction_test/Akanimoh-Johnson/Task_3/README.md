@@ -1,13 +1,5 @@
-# Sample Hardhat Project
+## Link to Contract: 
+https://sepolia-blockscout.lisk.com/address/0xbFA7D4EA4105b0dE0FFDdcfE7429B1C1362AFEf9
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+## Link to LudoToken: 
+https://sepolia-blockscout.lisk.com/address/0x7f7134CC3A1386053079d33a31306245c6708f06
