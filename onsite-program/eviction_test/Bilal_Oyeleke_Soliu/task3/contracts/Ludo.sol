@@ -4,18 +4,15 @@ pragma solidity ^0.8.28;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-// Simple ERC20 token for the game
 contract LudoToken is ERC20, Ownable {
     constructor() ERC20("Ludo Game Token", "LUDO") Ownable(msg.sender) {
-        _mint(msg.sender, 1000000 * 10**decimals()); // Initial supply
+        _mint(msg.sender, 1000000 * 10**decimals());
     }
 
-        
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
     
-    // Update the faucet function in LudoToken.sol
     function faucet() public {
         uint256 faucetAmount = 50 * 10**decimals();
         uint256 maxBalance = 100 * 10**decimals();
@@ -36,7 +33,7 @@ contract LudoGame {
         string name;
         Color color;
         uint256 score;
-        uint256 position; // Position on the board (0-51, with special home positions)
+        uint256 position;
         bool isRegistered;
         bool hasFinished;
     }
@@ -50,14 +47,13 @@ contract LudoGame {
         uint256 stakeAmount;
         address winner;
         uint256 createdAt;
-        bool[4] colorsTaken; // RED, GREEN, BLUE, YELLOW
+        bool[4] colorsTaken;
     }
     
     mapping(uint256 => Game) public games;
     mapping(address => uint256) public playerCurrentGame;
     uint256 public gameCounter;
     
-    // Dice rolling variables
     uint256 private nonce;
     
     event GameCreated(uint256 indexed gameId, address creator, uint256 stakeAmount);
@@ -86,9 +82,6 @@ contract LudoGame {
         _;
     }
     
-    /**
-     * @dev Create a new game with stake amount
-     */
     function createGame(uint256 stakeAmount, string memory playerName) external returns (uint256) {
         require(stakeAmount > 0, "Stake must be greater than 0");
         require(bytes(playerName).length > 0, "Name cannot be empty");
@@ -106,7 +99,6 @@ contract LudoGame {
         game.stakeAmount = stakeAmount;
         game.createdAt = block.timestamp;
         
-        // Add creator as first player with RED color
         game.players[0] = Player({
             playerAddress: msg.sender,
             name: playerName,
@@ -117,7 +109,7 @@ contract LudoGame {
             hasFinished: false
         });
         
-        game.colorsTaken[0] = true; // RED taken
+        game.colorsTaken[0] = true;
         playerCurrentGame[msg.sender] = gameId;
         
         emit GameCreated(gameId, msg.sender, stakeAmount);
@@ -126,9 +118,6 @@ contract LudoGame {
         return gameId;
     }
     
-    /**
-     * @dev Join an existing game
-     */
     function joinGame(uint256 gameId, string memory playerName, Color color) 
         external 
         validGame(gameId) 
@@ -160,15 +149,11 @@ contract LudoGame {
         
         emit PlayerJoined(gameId, msg.sender, playerName, color);
         
-        // Auto-start if 4 players
         if (game.playerCount == 4) {
             _startGame(gameId);
         }
     }
     
-    /**
-     * @dev Start the game (can be called by any player when at least 2 players)
-     */
     function startGame(uint256 gameId) 
         external 
         validGame(gameId) 
@@ -186,9 +171,6 @@ contract LudoGame {
         emit GameStarted(gameId);
     }
     
-    /**
-     * @dev Roll dice and move (combined function for simplicity)
-     */
     function rollDiceAndMove(uint256 gameId) 
         external 
         validGame(gameId) 
@@ -199,21 +181,17 @@ contract LudoGame {
         require(game.players[game.currentPlayerIndex].playerAddress == msg.sender, 
                 "Not your turn");
         
-        // Roll dice
         uint256 diceValue = _rollDice();
         emit DiceRolled(gameId, msg.sender, diceValue);
         
-        // Move player
         Player storage currentPlayer = game.players[game.currentPlayerIndex];
         uint256 newPosition = currentPlayer.position + diceValue;
         
-        // Simple winning condition: reach position 52 or higher
         if (newPosition >= 52) {
-            newPosition = 52; // Home position
+            newPosition = 52;
             currentPlayer.hasFinished = true;
-            currentPlayer.score += 100; // Bonus for finishing
+            currentPlayer.score += 100;
             
-            // Check if this player wins
             if (!_hasWinner(gameId)) {
                 _endGame(gameId, msg.sender);
                 return;
@@ -221,17 +199,13 @@ contract LudoGame {
         }
         
         currentPlayer.position = newPosition;
-        currentPlayer.score += diceValue; // Score based on movement
+        currentPlayer.score += diceValue;
         
         emit PlayerMoved(gameId, msg.sender, newPosition);
         
-        // Move to next player
         _nextTurn(gameId);
     }
     
-    /**
-     * @dev Generate random dice roll (1-6)
-     */
     function _rollDice() internal returns (uint256) {
         nonce++;
         uint256 randomValue = uint256(keccak256(abi.encodePacked(
@@ -240,16 +214,14 @@ contract LudoGame {
             msg.sender,
             nonce
         ))) % 6;
-        return randomValue + 1; // 1-6
+        return randomValue + 1;
     }
     
     function _nextTurn(uint256 gameId) internal {
         Game storage game = games[gameId];
         
-        // Find next active player
         uint256 nextPlayer = (game.currentPlayerIndex + 1) % game.playerCount;
         
-        // Skip finished players
         uint256 attempts = 0;
         while (game.players[nextPlayer].hasFinished && attempts < 4) {
             nextPlayer = (nextPlayer + 1) % game.playerCount;
@@ -258,7 +230,6 @@ contract LudoGame {
         
         game.currentPlayerIndex = nextPlayer;
         
-        // Check if only one player remains
         uint256 activePlayers = 0;
         address lastActivePlayer;
         for (uint256 i = 0; i < game.playerCount; i++) {
@@ -282,16 +253,12 @@ contract LudoGame {
         game.state = GameState.FINISHED;
         game.winner = winner;
         
-        // Transfer all staked tokens to winner
         uint256 totalPrize = game.stakeAmount * game.playerCount;
         ludoToken.transfer(winner, totalPrize);
         
         emit GameFinished(gameId, winner, totalPrize);
     }
     
-    /**
-     * @dev Emergency function to leave game before it starts
-     */
     function leaveGame(uint256 gameId) 
         external 
         validGame(gameId) 
@@ -300,16 +267,12 @@ contract LudoGame {
     {
         Game storage game = games[gameId];
         
-        // Find and remove player
         for (uint256 i = 0; i < game.playerCount; i++) {
             if (game.players[i].playerAddress == msg.sender) {
-                // Refund stake
                 ludoToken.transfer(msg.sender, game.stakeAmount);
                 
-                // Reset color availability
                 game.colorsTaken[uint256(game.players[i].color)] = false;
                 
-                // Shift remaining players
                 for (uint256 j = i; j < game.playerCount - 1; j++) {
                     game.players[j] = game.players[j + 1];
                 }
@@ -317,7 +280,6 @@ contract LudoGame {
                 game.playerCount--;
                 playerCurrentGame[msg.sender] = 0;
                 
-                // If no players left, mark as finished
                 if (game.playerCount == 0) {
                     game.state = GameState.FINISHED;
                 }
@@ -327,7 +289,6 @@ contract LudoGame {
         }
     }
     
-    // View functions
     function getGame(uint256 gameId) external view validGame(gameId) returns (
         uint256 id,
         uint256 playerCount,
@@ -391,7 +352,6 @@ contract LudoGame {
             }
         }
         
-        // Resize array
         Color[] memory result = new Color[](count);
         for (uint256 i = 0; i < count; i++) {
             result[i] = available[i];
@@ -400,9 +360,6 @@ contract LudoGame {
         return result;
     }
     
-    /**
-     * @dev Get all waiting games that can be joined
-     */
     function getWaitingGames() external view returns (uint256[] memory) {
         uint256[] memory waitingGames = new uint256[](gameCounter);
         uint256 count = 0;
@@ -414,7 +371,6 @@ contract LudoGame {
             }
         }
         
-        // Resize array
         uint256[] memory result = new uint256[](count);
         for (uint256 i = 0; i < count; i++) {
             result[i] = waitingGames[i];

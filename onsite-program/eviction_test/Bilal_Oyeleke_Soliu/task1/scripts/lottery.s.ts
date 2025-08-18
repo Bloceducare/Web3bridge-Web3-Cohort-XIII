@@ -8,7 +8,6 @@ async function main() {
 
   console.log("Lottery deployed to:", await lottery.getAddress());
 
-  // Simulate 2 full rounds
   for (let round = 1; round <= 2; round++) {
     console.log(`\n--- Round ${await lottery.currentRound()} ---`);
     for (let i = 0; i < 10; i++) {
