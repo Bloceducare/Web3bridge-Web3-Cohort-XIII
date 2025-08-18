@@ -1,0 +1,15 @@
+📸 SCREENSHOT FOLDER
+==================
+
+Save your script execution screenshots here:
+
+1. removeLiquidity_result.png
+2. removeLiquidityEth_result.png  
+3. swapETHForExactTokens_result.png
+
+Commands to run:
+- npm run remove-liquidity
+- npm run remove-liquidity-eth
+- npm run swap-eth-for-tokens
+
+Capture the terminal output showing successful execution!
