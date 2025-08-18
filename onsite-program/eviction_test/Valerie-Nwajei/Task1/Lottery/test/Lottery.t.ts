@@ -1,127 +1,128 @@
-import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
-import {
-  time,
-  loadFixture,
-} from "@nomicfoundation/hardhat-toolbox/network-helpers";
+
+
+import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { expect } from "chai";
+import { ethers } from "hardhat";
+import type { Contract } from "ethers";
 import hre from "hardhat";
 
-describe("Lock", function () {
-  // We define a fixture to reuse the same setup in every test.
-  // We use loadFixture to run this setup once, snapshot that state,
-  // and reset Hardhat Network to that snapshot in every test.
-  async function deployOneYearLockFixture() {
-    const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-    const ONE_GWEI = 1_000_000_000;
 
-    const lockedAmount = ONE_GWEI;
-    const unlockTime = (await time.latest()) + ONE_YEAR_IN_SECS;
+describe("Lottery", function () {
+  const ENTRY_FEE = hre.ethers.parseEther("0.01");
+  const MAX_PLAYERS = 10;
 
-    // Contracts are deployed using the first signer/account by default
-    const [owner, otherAccount] = await hre.ethers.getSigners();
+  async function deployLotteryFixture() {
+    const [owner, ...players] = await ethers.getSigners();
+    const Lottery = await ethers.getContractFactory("Lottery");
+    const lottery = await Lottery.deploy();
+    return { lottery, owner, players };
+  }
 
-    const Lock = await hre.ethers.getContractFactory("Lock");
-    const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-    return { lock, unlockTime, lockedAmount, owner, otherAccount };
+  async function deployAndEnterFixture() {
+    const fixture = await loadFixture(deployLotteryFixture);
+    const { lottery, players } = fixture;
+    
+    // First 10 players enter
+    const entries = players.slice(0, MAX_PLAYERS).map(player => 
+      lottery.connect(player).enter({ value: ENTRY_FEE })
+    );
+    
+    await Promise.all(entries);
+    return fixture;
   }
 
   describe("Deployment", function () {
-    it("Should set the right unlockTime", async function () {
-      const { lock, unlockTime } = await loadFixture(deployOneYearLockFixture);
-
-      expect(await lock.unlockTime()).to.equal(unlockTime);
+    it("Should set the right entry fee", async function () {
+      const { lottery } = await loadFixture(deployLotteryFixture);
+      expect(await lottery.getEntryFee()).to.equal(ENTRY_FEE);
     });
 
-    it("Should set the right owner", async function () {
-      const { lock, owner } = await loadFixture(deployOneYearLockFixture);
-
-      expect(await lock.owner()).to.equal(owner.address);
+    it("Should start with round 1", async function () {
+      const { lottery } = await loadFixture(deployLotteryFixture);
+      expect(await lottery.getCurrentRound()).to.equal(1);
     });
 
-    it("Should receive and store the funds to lock", async function () {
-      const { lock, lockedAmount } = await loadFixture(
-        deployOneYearLockFixture,
-      );
-
-      expect(await hre.ethers.provider.getBalance(lock.target)).to.equal(
-        lockedAmount,
-      );
-    });
-
-    it("Should fail if the unlockTime is not in the future", async function () {
-      // We don't use the fixture here because we want a different deployment
-      const latestTime = await time.latest();
-      const Lock = await hre.ethers.getContractFactory("Lock");
-      await expect(Lock.deploy(latestTime, { value: 1 })).to.be.revertedWith(
-        "Unlock time should be in the future",
-      );
+    it("Should have empty players list initially", async function () {
+      const { lottery } = await loadFixture(deployLotteryFixture);
+      const players = await lottery.getPlayers();
+      expect(players.length).to.equal(0);
     });
   });
 
-  describe("Withdrawals", function () {
-    describe("Validations", function () {
-      it("Should revert with the right error if called too soon", async function () {
-        const { lock } = await loadFixture(deployOneYearLockFixture);
-
-        await expect(lock.withdraw()).to.be.revertedWith(
-          "You can't withdraw yet",
-        );
-      });
-
-      it("Should revert with the right error if called from another account", async function () {
-        const { lock, unlockTime, otherAccount } = await loadFixture(
-          deployOneYearLockFixture,
-        );
-
-        // We can increase the time in Hardhat Network
-        await time.increaseTo(unlockTime);
-
-        // We use lock.connect() to send a transaction from another account
-        await expect(lock.connect(otherAccount).withdraw()).to.be.revertedWith(
-          "You aren't the owner",
-        );
-      });
-
-      it("Shouldn't fail if the unlockTime has arrived and the owner calls it", async function () {
-        const { lock, unlockTime } = await loadFixture(
-          deployOneYearLockFixture,
-        );
-
-        // Transactions are sent using the first signer by default
-        await time.increaseTo(unlockTime);
-
-        await expect(lock.withdraw()).not.to.be.reverted;
-      });
+  describe("Player Entry", function () {
+    it("Should allow players to enter with exact fee", async function () {
+      const { lottery, players } = await loadFixture(deployLotteryFixture);
+      await expect(lottery.connect(players[0]).enter({ value: ENTRY_FEE }))
+        .to.emit(lottery, "PlayerEntered")
+        .withArgs(players[0].address, 1);
     });
 
-    describe("Events", function () {
-      it("Should emit an event on withdrawals", async function () {
-        const { lock, unlockTime, lockedAmount } = await loadFixture(
-          deployOneYearLockFixture,
-        );
-
-        await time.increaseTo(unlockTime);
-
-        await expect(lock.withdraw())
-          .to.emit(lock, "Withdrawal")
-          .withArgs(lockedAmount, anyValue); // We accept any value as `when` arg
-      });
+    it("Should reject entry with incorrect fee", async function () {
+      const { lottery, players } = await loadFixture(deployLotteryFixture);
+      await expect(lottery.connect(players[0]).enter({ value: hre.ethers.parseEther("0.02") }))
+        .to.be.revertedWith("Incorrect ETH amount");
     });
 
-    describe("Transfers", function () {
-      it("Should transfer the funds to the owner", async function () {
-        const { lock, unlockTime, lockedAmount, owner } = await loadFixture(
-          deployOneYearLockFixture,
-        );
+    it("Should prevent duplicate entries in same round", async function () {
+      const { lottery, players } = await loadFixture(deployLotteryFixture);
+      await lottery.connect(players[0]).enter({ value: ENTRY_FEE });
+      await expect(lottery.connect(players[0]).enter({ value: ENTRY_FEE }))
+        .to.be.revertedWith("Already entered this round");
+    });
 
-        await time.increaseTo(unlockTime);
+    it("Should track all entered players", async function () {
+      const { lottery, players } = await loadFixture(deployLotteryFixture);
+      
+      // Enter 5 players
+      for (let i = 0; i < 5; i++) {
+        await lottery.connect(players[i]).enter({ value: ENTRY_FEE });
+      }
 
-        await expect(lock.withdraw()).to.changeEtherBalances(
-          [owner, lock],
-          [lockedAmount, -lockedAmount],
-        );
-      });
+      const currentPlayers = await lottery.getPlayers();
+      expect(currentPlayers.length).to.equal(5);
+    });
+  });
+
+  describe("Winner Selection", function () {
+    it("Should automatically select winner after 10 players", async function () {
+      const { lottery, players } = await loadFixture(deployAndEnterFixture);
+      
+      const prizePool = ENTRY_FEE * BigInt(MAX_PLAYERS);
+      const winner = await lottery.getLastWinner();
+      
+      expect(winner).to.be.oneOf(players.slice(0, MAX_PLAYERS).map(p => p.address));
+      await expect(lottery.getPrizePool()).to.eventually.equal(0);
+    });
+
+    it("Should transfer entire prize pool to winner", async function () {
+      const { lottery, players } = await loadFixture(deployAndEnterFixture);
+
+      const winner = await lottery.getLastWinner();
+      const winnerIndex = players.findIndex(p => p.address === winner);
+
+      // Check that the contract balance is now 0 (all funds transferred)
+      expect(await lottery.getPrizePool()).to.equal(0);
+
+      // Check that winner is one of the players
+      expect(winner).to.be.oneOf(players.slice(0, MAX_PLAYERS).map(p => p.address));
+    });
+
+    it("Should reset for next round after winner selection", async function () {
+      const { lottery } = await loadFixture(deployAndEnterFixture);
+      
+      expect(await lottery.getCurrentRound()).to.equal(2);
+      expect(await lottery.getPlayers()).to.have.lengthOf(0);
+    });
+
+    it("Should allow new entries in next round", async function () {
+      const { lottery, players } = await loadFixture(deployAndEnterFixture);
+      
+      // New player enters in round 2
+      await lottery.connect(players[MAX_PLAYERS]).enter({ value: ENTRY_FEE });
+      
+      const currentPlayers = await lottery.getPlayers();
+      expect(currentPlayers).to.have.lengthOf(1);
+      expect(currentPlayers[0]).to.equal(players[MAX_PLAYERS].address);
     });
   });
 });
