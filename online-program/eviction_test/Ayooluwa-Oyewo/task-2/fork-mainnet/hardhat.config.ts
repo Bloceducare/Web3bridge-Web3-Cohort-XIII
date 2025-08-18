@@ -13,6 +13,11 @@ const config: HardhatUserConfig = {
       chainId: 1337,
       accounts: ACCOUNTS,
     },
+    hardhat: {
+    forking: {
+      url: 'https://eth-mainnet.g.alchemy.com/v2/nRpqJF9I2N3CUDaiqGd_sUq5nlwI1MMm'
+    }
+  },
     'lisk-sepolia': {
       url: 'https://rpc.sepolia-api.lisk.com',
       accounts: ACCOUNTS,
