@@ -5,10 +5,6 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-/**
- * @title LudoGame
- * @dev A complete Ludo game implementation with token staking
- */
 contract LudoGame is Ownable, ReentrancyGuard {
     IERC20 public immutable ludoToken;
     
