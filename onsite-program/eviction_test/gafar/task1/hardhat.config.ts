@@ -10,11 +10,6 @@ const config: HardhatUserConfig = {
     liskTestnet: {
       url: "https://rpc.sepolia-api.lisk.com", 
       accounts: [PRIVATE_KEY],
-    },
-    hardhat: {
-      forking: {
-        url: `https://eth-mainnet.g.alchemy.com/v2/LnncsyF1iDv1LaiAtXIia`,
-      }
     }
   },
   etherscan: {
