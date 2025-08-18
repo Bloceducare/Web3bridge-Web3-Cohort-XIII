@@ -6,8 +6,19 @@ interface IERC20 {
     function transfer(address to, uint256 amount) external returns (bool);
 }
 
+
 contract Ludo {
     enum Color { RED, GREEN, BLUE, YELLOW }
+
+    error GameAlreadyStarted();
+    error MaxPlayersReached();
+    error AlreadyRegistered();
+    error ColorTaken();
+    error StakeFailed();
+    error GameNotStarted();
+    error NotYourTurn();
+    error GameEnded();
+    error PayoutFailed();
 
     struct Player {
         string name;
@@ -39,13 +50,13 @@ contract Ludo {
     }
 
     function register(string calldata name, Color color) external {
-        require(!gameStarted, "Game already started");
-        require(playerCount < 4, "Max players reached");
+        if (gameStarted) revert GameAlreadyStarted();
+        if (playerCount >= 4) revert MaxPlayersReached();
         for (uint8 i = 0; i < playerCount; i++) {
-            require(players[i].addr != msg.sender, "Already registered");
-            require(players[i].color != color, "Color taken");
+            if (players[i].addr == msg.sender) revert AlreadyRegistered();
+            if (players[i].color == color) revert ColorTaken();
         }
-        require(token.transferFrom(msg.sender, address(this), stakeAmount), "Stake failed");
+        if (!token.transferFrom(msg.sender, address(this), stakeAmount)) revert StakeFailed();
         players[playerCount] = Player(name, 0, color, msg.sender, true);
         playerIndex[msg.sender] = playerCount;
         playerCount++;
@@ -57,22 +68,22 @@ contract Ludo {
     }
 
     function rollDice() public view returns (uint8) {
-        require(gameStarted, "Game not started");
+        if (!gameStarted) revert GameNotStarted();
         // pseudo-random, not for production
         return uint8(uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao, msg.sender))) % 6 + 1);
     }
 
     function play() external {
-        require(gameStarted, "Game not started");
-        require(players[turn].addr == msg.sender, "Not your turn");
-        require(winner == address(0), "Game ended");
+        if (!gameStarted) revert GameNotStarted();
+        if (players[turn].addr != msg.sender) revert NotYourTurn();
+        if (winner != address(0)) revert GameEnded();
         uint8 dice = rollDice();
         emit DiceRolled(msg.sender, dice);
         players[turn].score += dice;
         emit Move(msg.sender, players[turn].score);
         if (players[turn].score >= 30) {
             winner = msg.sender;
-            require(token.transfer(msg.sender, pot), "Payout failed");
+            if (!token.transfer(msg.sender, pot)) revert PayoutFailed();
             emit Winner(msg.sender, pot);
         }
         turn = (turn + 1) % 4;
