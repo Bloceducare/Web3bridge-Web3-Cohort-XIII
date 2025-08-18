@@ -16,11 +16,11 @@ describe("Lottery", function () {
     const { lottery, accounts, lotteryPrice } = await deployLottery();
 
     await expect(
-      lottery.connect(accounts[0]).joinLottery({ value: ethers.parseEther("0.002") })
+      lottery.connect(accounts[0]).enterLottery({ value: ethers.parseEther("0.002") })
     ).to.be.revertedWithCustomError(lottery, "Entry_fee_must_be_exactly_001_ETH");
 
     await expect(
-      lottery.connect(accounts[0]).joinLottery({ value: lotteryPrice })
+      lottery.connect(accounts[0]).enterLottery({ value: lotteryPrice })
     ).to.emit(lottery, "PlayerJoined");
   });
 
@@ -28,10 +28,10 @@ describe("Lottery", function () {
     const { lottery, accounts, lotteryPrice } = await deployLottery();
 
     for (let i = 0; i < 10; i++) {
-      await lottery.connect(accounts[i]).joinLottery({ value: lotteryPrice });
+      await lottery.connect(accounts[i]).enterLottery({ value: lotteryPrice });
     }
 
-    const tx = await lottery.connect(accounts[9]).joinLottery({ value: lotteryPrice });
+    const tx = await lottery.connect(accounts[9]).enterLottery({ value: lotteryPrice });
     await expect(tx).to.emit(lottery, "WinnerEvent");
   });
 
@@ -39,13 +39,13 @@ describe("Lottery", function () {
     const { lottery, accounts, lotteryPrice } = await deployLottery();
 
     for (let i = 0; i < 9; i++) {
-      await lottery.connect(accounts[i]).joinLottery({ value: lotteryPrice });
+      await lottery.connect(accounts[i]).enterLottery({ value: lotteryPrice });
     }
 
     await expect(
-      lottery.connect(accounts[8]).joinLottery({ value: lotteryPrice })
+      lottery.connect(accounts[8]).enterLottery({ value: lotteryPrice })
     ).to.emit(lottery, "PlayerJoined").and.not.to.emit(lottery, "WinnerEvent");
-    const tx = lottery.connect(accounts[9]).joinLottery({ value: lotteryPrice });
+    const tx = lottery.connect(accounts[9]).enterLottery({ value: lotteryPrice });
     await expect(tx).to.be.revertedWithCustomError(lottery, "You_have_already_joined_this_round")
     await expect(tx).to.emit(lottery, "WinnerEvent");
   });
@@ -60,7 +60,7 @@ describe("Lottery", function () {
     );
 
     for (let i = 0; i < 10; i++) {
-      await lottery.connect(participants[i]).joinLottery({ value: lotteryPrice });
+      await lottery.connect(participants[i]).enterLottery({ value: lotteryPrice });
     }
 
     const prizePool = lotteryPrice * 10n;
@@ -84,11 +84,11 @@ describe("Lottery", function () {
     const { lottery, accounts, lotteryPrice } = await deployLottery();
 
     for (let i = 0; i < 10; i++) {
-      await lottery.connect(accounts[i]).joinLottery({ value: lotteryPrice });
+      await lottery.connect(accounts[i]).enterLottery({ value: lotteryPrice });
     }
 
     for (let i = 0; i < 10; i++) {
-      const tx = lottery.connect(accounts[i]).joinLottery({ value: lotteryPrice });
+      const tx = lottery.connect(accounts[i]).enterLottery({ value: lotteryPrice });
       if (i === 9) {
         await expect(tx).to.emit(lottery, "WinnerEvent");
       }
