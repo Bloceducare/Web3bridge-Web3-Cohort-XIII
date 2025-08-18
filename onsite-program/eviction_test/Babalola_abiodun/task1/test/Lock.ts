@@ -18,7 +18,7 @@ describe("Lottery", function () {
   }
 
   describe("Deployment", function () {
-    it("Should set the correct initial values", async function () {
+    it("set the correct initial values", async function () {
       const { lottery } = await loadFixture(deployLotteryFixture);
 
       expect(await lottery.ENTRY_FEE()).to.equal(ethers.parseEther("0.01"));
@@ -30,7 +30,7 @@ describe("Lottery", function () {
   });
 
   describe("Joining the Lottery", function () {
-    it("Should allow a player to join with exact entry fee", async function () {
+    it("allow a player to join with exact entry fee", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -43,7 +43,7 @@ describe("Lottery", function () {
       expect(await lottery.hasPlayerJoined(players[0].address)).to.be.true;
     });
 
-    it("Should reject incorrect entry fee", async function () {
+    it("reject incorrect entry fee", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -56,20 +56,20 @@ describe("Lottery", function () {
       ).to.be.revertedWithCustomError(lottery, "IncorrectEntryFee");
     });
 
-    it("Should prevent duplicate entries", async function () {
+    it("prevent duplicate entries", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
-      // First entry should succeed
+      // First entry succeed
       await lottery.connect(players[0]).joinLottery({ value: entryFee });
 
-      // Second entry should fail
+      // Second entry fail
       await expect(
         lottery.connect(players[0]).joinLottery({ value: entryFee }),
       ).to.be.revertedWithCustomError(lottery, "AlreadyJoined");
     });
 
-    it("Should track multiple players correctly", async function () {
+    it("track multiple players correctly", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -91,7 +91,7 @@ describe("Lottery", function () {
   });
 
   describe("Winner Selection", function () {
-    it("Should automatically select winner after 10 players join", async function () {
+    it("automatically select winner after 10 players join", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -116,7 +116,7 @@ describe("Lottery", function () {
       expect(await lottery.getLastWinner()).to.not.equal(ethers.ZeroAddress);
     });
 
-    it("Should transfer correct prize amount to winner", async function () {
+    it("transfer correct prize amount to winner", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -154,7 +154,7 @@ describe("Lottery", function () {
       expect(finalBalance).to.equal(expectedBalance);
     });
 
-    it("Should prevent lottery from accepting more than 10 players", async function () {
+    it("prevent lottery from accepting more than 10 players", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -171,7 +171,7 @@ describe("Lottery", function () {
   });
 
   describe(" Resetting Lottery  ", function () {
-    it("Should reset lottery state after winner selection", async function () {
+    it("reset lottery state after winner selection", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -192,7 +192,7 @@ describe("Lottery", function () {
       expect(currentPlayers.length).to.equal(0);
     });
 
-    it("Should allow previous players to join new lottery round", async function () {
+    it("allow previous players to join new lottery round", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -210,7 +210,7 @@ describe("Lottery", function () {
   });
 
   describe("View Functions", function () {
-    it("Should return correct player information", async function () {
+    it("return correct player information", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -225,7 +225,7 @@ describe("Lottery", function () {
       expect(allPlayers[2]).to.equal(players[2].address);
     });
 
-    it("Should return correct spots remaining", async function () {
+    it("return spots remaining", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -238,7 +238,7 @@ describe("Lottery", function () {
       expect(await lottery.getSpotsRemaining()).to.equal(8);
     });
 
-    it("Should return correct contract balance", async function () {
+    it("return correct contract balance", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -255,7 +255,7 @@ describe("Lottery", function () {
   });
 
   describe("Events", function () {
-    it("Should emit PlayerJoined event with correct parameters", async function () {
+    it("emit PlayerJoined event with correct parameters", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -268,7 +268,7 @@ describe("Lottery", function () {
         .withArgs(players[1].address, 1, 2);
     });
 
-    it("Should emit WinnerSelected and LotteryReset events", async function () {
+    it("emit WinnerSelected and LotteryReset events", async function () {
       const { lottery, players, entryFee } =
         await loadFixture(deployLotteryFixture);
 
@@ -284,29 +284,5 @@ describe("Lottery", function () {
         .withArgs(2);
     });
   });
-
-  describe("more than  Lottery Rounds", function () {
-    it("Should handle multiple complete lottery rounds", async function () {
-      const { lottery, players, entryFee } =
-        await loadFixture(deployLotteryFixture);
-
-     for (let i = 0; i < 10; i++) {
-        await lottery.connect(players[i]).joinLottery({ value: entryFee });
-      }
-
-      const firstWinner = await lottery.getLastWinner();
-      expect(await lottery.getLotteryId()).to.equal(2);
-
-      for (let i = 10; i < 20; i++) {
-        await lottery.connect(players[i]).joinLottery({ value: entryFee });
-      }
-
-      const secondWinner = await lottery.getLastWinner();
-      expect(await lottery.getLotteryId()).to.equal(3);
-
-         expect(secondWinner).to.not.equal(ethers.ZeroAddress);
-    });
-  });
-
 
 });

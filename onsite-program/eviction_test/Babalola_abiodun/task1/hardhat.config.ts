@@ -10,6 +10,7 @@ const config: HardhatUserConfig = {
       url : `https://rpc.sepolia-api.lisk.com`,
       accounts : [PRIVATE_KEY]
     },
+    
       },
   etherscan: {
     apiKey: {

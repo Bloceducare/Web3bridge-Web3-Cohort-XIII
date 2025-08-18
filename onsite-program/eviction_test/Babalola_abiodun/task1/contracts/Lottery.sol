@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 contract Lottery {
     uint256 public constant ENTRY_FEE = 0.01 ether;
-    uint256 public constant MAX_PLAYERS = 10;
+    uint256 public constant MAX = 10;
     
     address[] public players;
     address public winner;
@@ -29,7 +29,6 @@ contract Lottery {
     
 
     function joinLottery() external payable {
-        // Check if the correct entry fee is paid
         if (msg.value != ENTRY_FEE) {
             revert IncorrectEntryFee();
         }
@@ -39,7 +38,7 @@ contract Lottery {
         }
         
         if (players.length >= MAX_PLAYERS) {
-            revert LotteryFull();
+            revert LotteryFullMAX
         }
         
         // Add player to the lottery
@@ -50,7 +49,7 @@ contract Lottery {
         emit PlayerJoined(msg.sender, lotteryId, players.length);
         
        if (players.length == MAX_PLAYERS) {
-            _selectWinner();
+            _selectWinner();MAX
         }
     }
     
@@ -60,7 +59,6 @@ contract Lottery {
             revert NoPlayersInLottery();
         }
         
-        // Generate pseudo-random number
         uint256 randomIndex = _generateRandomNumber() % players.length;
         winner = players[randomIndex];
         
@@ -132,7 +130,7 @@ contract Lottery {
     function getSpotsRemaining() external view returns (uint256) {
         return MAX_PLAYERS - players.length;
     }
-
+MAX
     function getContractBalance() external view returns (uint256) {
         return address(this).balance;
     }
