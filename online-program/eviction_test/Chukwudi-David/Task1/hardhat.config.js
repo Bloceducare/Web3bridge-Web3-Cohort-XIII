@@ -32,7 +32,7 @@ module.exports = {
   ],
   },
   sourcify: {
-    enabled: false
+    enabled: true
   },
 
 };
