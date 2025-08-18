@@ -1,0 +1,1 @@
+lottery contract address: [0x9AcD57857367494eb6CB02Bd2241Cc78FdCdDe8b](https://sepolia-blockscout.lisk.com/address/0x9AcD57857367494eb6CB02Bd2241Cc78FdCdDe8b#code)
