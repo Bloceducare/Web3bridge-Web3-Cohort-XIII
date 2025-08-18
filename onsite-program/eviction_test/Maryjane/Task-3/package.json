@@ -1,13 +1,26 @@
 {
-  "name": "task-3",
+  "name": "ludo-game",
   "version": "1.0.0",
-  "description": "",
+  "description": "A comprehensive Ludo game implementation with token staking",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.ts",
+    "node": "hardhat node"
   },
-  "keywords": [],
+  "keywords": ["ludo", "game", "blockchain", "solidity"],
   "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+  "license": "MIT",
+  "devDependencies": {
+    "hardhat": "^3.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@openzeppelin/contracts": "^5.1.0",
+    "chai": "^4.3.10",
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
+  }
 }
