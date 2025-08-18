@@ -1,3 +1,4 @@
+Contract deployed at 0x24a636C0d3621Cf1eaf922b1C0a8398EEA2914F8
 # Sample Hardhat 3 Beta Project (`mocha` and `ethers`)
 
 This project showcases a Hardhat 3 Beta project using `mocha` for tests and the `ethers` library for Ethereum interactions.
