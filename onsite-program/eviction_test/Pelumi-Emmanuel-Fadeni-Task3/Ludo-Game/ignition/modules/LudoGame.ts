@@ -4,7 +4,7 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
 const LudoGameModule = buildModule("LudoModule", (m) => {
-  const ludogame = m.contract("Ludo");
+  const ludogame = m.contract("LudoGame");
 
   return { ludogame };
 });
