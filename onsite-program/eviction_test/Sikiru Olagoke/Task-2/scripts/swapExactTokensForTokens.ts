@@ -39,7 +39,7 @@ async function main() {
   console.log("");
 
   //Approve token to spend
-  const USDTAmount = ethers.parseUnits("77620000", 6);
+  const USDTAmount = ethers.parseUnits("7000000", 6);
 
   const USDTApproval = await USDT.connect(AssetHolder).approve(
     UNIRouter,
@@ -55,7 +55,7 @@ async function main() {
   console.log("");
 
   const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
-  const AMOUNT_TO_BE_SWAPPED = ethers.parseUnits("77000000", 6);
+  const AMOUNT_TO_BE_SWAPPED = ethers.parseUnits("5000000", 6);
 
   // Call the UNISWAP SWAP function
   const swapToken = await UNISWAP.connect(AssetHolder).swapExactTokensForTokens(
