@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import {ethers}  from "hardhat";
+
 import { LudoGame } from "../typechain-types";
 import { ERC20 } from "../typechain-types";
 import { parseEther } from "ethers";
@@ -10,7 +11,7 @@ describe("LudoGame", function () {
   let signers: ethers.Signer[];
 
   beforeEach(async function () {
-    const Token = await ethers.getContractFactory("ERC20");
+    const Token = await ethers.ethers.getContractFactory("ERC20");
     token = await Token.deploy("TestToken", "TST") as ERC20;
     await token.waitForDeployment();
 
