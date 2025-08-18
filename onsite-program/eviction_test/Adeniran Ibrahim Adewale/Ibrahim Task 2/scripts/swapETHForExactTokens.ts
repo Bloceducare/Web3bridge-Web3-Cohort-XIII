@@ -44,7 +44,7 @@ async function SwapEth() {
 
   const tx = await UNISWAPApprove.wait();
 
-  console.log("Approval receipt", tx);
+  console.log("Approval receipt", tx?.hash);
 
   const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
 
@@ -59,7 +59,7 @@ async function SwapEth() {
   );
 
   const tx3 = await SwapEth.wait();
-  console.log("swap eth receipt", tx3);
+  console.log("swap eth receipt", tx3?.hash);
 
   const WETHBalAfter = await WETH.balanceOf(AssetHolder);
   const UNISWAPBalAfter = await UNISWAP.balanceOf(AssetHolder);

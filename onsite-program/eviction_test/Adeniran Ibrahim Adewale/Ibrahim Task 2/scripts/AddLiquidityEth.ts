@@ -17,7 +17,7 @@ async function main(){
     const UsdcAmount = await ethers.parseUnits("1200",6);
     const ApproveUsdc = await Usdc.connect(impersonatedSigner).approve(UNIROUTER,UsdcAmount);
     const tx = await ApproveUsdc.wait();
-    console.log("Approval done ", tx);
+    console.log("Approval done ", tx?.hash);
     const amountETHMin = await ethers.parseEther("0.1")
     const amountTokenMin = await ethers.parseUnits("1100",6);
 
@@ -28,7 +28,7 @@ async function main(){
     const provideEthLiquidity = await Router.connect(impersonatedSigner).addLiquidityETH(USDCAddress,UsdcAmount,amountTokenMin,amountETHMin,
         impersonatedSigner.address,deadline, {value: ethers.parseEther("0.3")});
     const tx2 = await provideEthLiquidity.wait();
-    console.log("Provide Liquidity done ", tx2);
+    console.log("Provide Liquidity done ", tx2?.hash);
 
     console.log("User Final Balance in usdc",ethers.formatUnits(usdcBal.toString(),6));
 

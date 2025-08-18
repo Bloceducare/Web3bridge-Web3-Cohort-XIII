@@ -44,14 +44,14 @@ async function removeLiquidity() {
     USDTAmount
   );
   const tx = await approvalUSDT.wait();
-  console.log("USDT approval receipt", tx);
+  console.log("USDT approval receipt", tx?.hash);
 
   const approvalUNISWAP = await UNISWAP.connect(impersonatedSigner).approve(
     UNIRouter,
     UNISWAPAmount
   );
   const tx2 = await approvalUNISWAP.wait();
-  console.log("UNISWAP approval receipt", tx2);
+  console.log("UNISWAP approval receipt", tx2?.hash);
 
   const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
 
@@ -71,7 +71,7 @@ async function removeLiquidity() {
   const USDTBalAfter = await USDT.balanceOf(AssetHolder);
   const UNISWAPBalAfter = await UNISWAP.balanceOf(AssetHolder);
 
-  console.log("Liquidity receipt:", tx3);
+  console.log("Liquidity receipt:", tx3?.hash);
 
   //DEFINING ARGS
 
@@ -102,7 +102,7 @@ async function removeLiquidity() {
   );
 
   const tx4 = await removeLiquidity.wait();
-  console.log("REMOVE LIQUIDITY RECIEPT:", tx4);
+  console.log("REMOVE LIQUIDITY RECIEPT:", tx4?.hash);
   const LP_BALANCE_AFTER = await LP_ADDRESS.balanceOf(AssetHolder);
 
   console.log("######################## FINAL BALANCE ###################");

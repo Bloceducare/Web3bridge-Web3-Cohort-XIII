@@ -37,17 +37,17 @@ async function main() {
     USDCAmount
   );
   const tx = await ApproveUsdc.wait();
-  console.log("USDC approval receipt:", tx);
+  console.log("USDC approval receipt:", tx?.hash);
 //   const AllowanceUsdc = await Usdc.allowance(assetHolder, UNIROUTER);
   const tx2 = await ApproveUsdc.wait();
-  console.log("USDC allowance receipt:", tx2);
+  console.log("USDC allowance receipt:", tx2?.hash);
 
   const ApproveDAI = await Dai.connect(impersonatedSigner).approve(
     UNIROUTER,
     DAIAmount
   );
   const tx3 = await ApproveUsdc.wait();
-  console.log("DAI approval receipt:", tx3?.fee);
+  console.log("DAI approval receipt:", tx3?.hash);
 
   const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
 
@@ -64,7 +64,7 @@ async function main() {
     deadline
   );
   const tx4 = await ApproveUsdc.wait();
-  console.log("Liquidity receipt:", tx4);
+  console.log("Liquidity receipt:", tx4?.hash);
 
   const usdcBalanceAfter = await Usdc.balanceOf(assetHolder);
   const daiBalanceAfter = await Dai.balanceOf(assetHolder);

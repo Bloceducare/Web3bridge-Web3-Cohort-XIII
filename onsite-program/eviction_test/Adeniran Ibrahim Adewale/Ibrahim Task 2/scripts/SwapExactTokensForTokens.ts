@@ -24,7 +24,7 @@ async function main(){
 
     const UsdcApproval = await Usdc.connect(impersonatedSigner).approve(UNIROUTER, UsdcAmount);
     const txUsdc = await UsdcApproval.wait();
-    console.log("USDC approval receipt:", txUsdc);
+    console.log("USDC approval receipt:", txUsdc?.hash);
 
     const Router = await ethers.getContractAt("IUniSwap", UNIROUTER);
 
@@ -37,7 +37,7 @@ async function main(){
     );
 
     const txSwap = await SWapTokens.wait();
-    console.log("Swap receipt:", txSwap);
+    console.log("Swap receipt:", txSwap?.hash);
 
     const usdcBalanceAfter = await Usdc.balanceOf(assetHolder);
     const daiBalanceAfter = await Dai.balanceOf(assetHolder);
