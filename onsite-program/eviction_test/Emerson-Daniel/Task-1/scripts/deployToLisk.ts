@@ -9,8 +9,8 @@ async function main() {
   const balance = await ethers.provider.getBalance(deployer.address);
   console.log("Account balance:", ethers.utils.formatEther(balance), "ETH");
 
-  if (balance.lt(ethers.utils.parseEther("0.01"))) {
-    throw new Error("Insufficient balance for deployment. Need at least 0.01 ETH for gas fees.");
+  if (balance.lt(ethers.utils.parseEther("0.005"))) {
+    throw new Error("Insufficient balance for deployment. Need at least 0.005 ETH for gas fees.");
   }
   
   const LotteryFactory = await ethers.getContractFactory("Lottery");

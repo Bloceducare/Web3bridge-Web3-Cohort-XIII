@@ -30,9 +30,10 @@ A decentralized lottery smart contract built with Solidity and Hardhat, deployed
 - Automatic lottery reset after each round
 - Reentrancy protection through proper state management
 
-## Contract Address:   0x5FbDB2315678afecb367f032d93F642f64180aa3
+## Contract Address
 
-**Lisk Sepolia Testnet**: 
+**Lisk Sepolia Testnet**: `0x901F700d8c52eb4a74fCA347e6bcA5ec688801c9`
+https://sepolia-blockscout.lisk.com/address/0x901F700d8c52eb4a74fCA347e6bcA5ec688801c9
 
 ## Installation and Setup
 
