@@ -1,0 +1,24 @@
+{
+	"name": "uniswapv2",
+	"version": "1.0.0",
+	"license": "MIT",
+	"private": true,
+	"scripts": {
+		"build": "tsc -p .",
+		"test": "hardhat test",
+		"node": "hardhat node",
+		"create-and-fund-pair": "hardhat run scripts/createAndFundPair.ts",
+		"add-liquidity": "hardhat run scripts/addLiquidity.ts",
+		"remove-liquidity": "hardhat run scripts/removeLiquidity.ts",
+		"swap-exact": "hardhat run scripts/swapExactTokenForToken.ts",
+		"swap-for-exact": "hardhat run scripts/swapTokensForExactToken.ts"
+	},
+	"devDependencies": {
+		"@nomicfoundation/hardhat-toolbox": "^5.0.0",
+		"@types/node": "^20.11.0",
+		"dotenv": "^16.4.5",
+		"hardhat": "^2.22.10",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.4.5"
+	}
+} 
