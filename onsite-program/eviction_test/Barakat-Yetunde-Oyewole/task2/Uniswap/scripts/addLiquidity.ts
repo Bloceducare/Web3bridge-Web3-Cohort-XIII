@@ -44,8 +44,8 @@ const main = async () => {
     DAIAddress,
     amountADesired,
     amountBDesired,
-    0, 
-    0, 
+    1, 
+    1, 
     impersonatedSigner.address,
     deadline
   );
