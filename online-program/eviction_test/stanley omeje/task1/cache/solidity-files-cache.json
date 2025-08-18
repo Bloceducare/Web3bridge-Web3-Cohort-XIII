@@ -36,6 +36,42 @@
       "artifacts": [
         "SchMgt"
       ]
+    },
+    "/Users/apple/Web3bridge-Web3-Cohort-XIII/online-program/eviction_test/stanley omeje/task1/contracts/Lottery.sol": {
+      "lastModificationDate": 1755533027253,
+      "contentHash": "4203a56942857a6385cb78c58aa88887",
+      "sourceName": "contracts/Lottery.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Lottery"
+      ]
     }
   }
 }

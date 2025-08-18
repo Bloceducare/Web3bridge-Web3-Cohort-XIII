@@ -1,19 +1,20 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-
 import { SignerWithAddress } from '@nomicfoundation/hardhat-ethers/signers';
 
 describe('Lottery', function () {
-  let lottery: Lottery;
+  let lottery: any;
   let owner: SignerWithAddress;
   let players: SignerWithAddress[];
   const ENTRY_FEE = ethers.parseEther('0.01');
 
   beforeEach(async function () {
-    [owner, ...players] = await ethers.getSigners();
+    const signers = await ethers.getSigners();
+    owner = signers[0];
+    players = signers.slice(1);
 
     const LotteryFactory = await ethers.getContractFactory('Lottery');
-    lottery = await LotteryFactory.deploy();
+    lottery = await LotteryFactory.connect(owner).deploy();
     await lottery.waitForDeployment();
   });
 
@@ -29,7 +30,6 @@ describe('Lottery', function () {
 
     it('Should reject entry with incorrect fee', async function () {
       const wrongFee = ethers.parseEther('0.02');
-
       await expect(
         lottery.connect(players[0]).enterLottery({ value: wrongFee })
       ).to.be.revertedWithCustomError(lottery, 'InvalidEntryFee');
@@ -37,7 +37,6 @@ describe('Lottery', function () {
 
     it('Should reject entry with insufficient fee', async function () {
       const wrongFee = ethers.parseEther('0.005');
-
       await expect(
         lottery.connect(players[0]).enterLottery({ value: wrongFee })
       ).to.be.revertedWithCustomError(lottery, 'InvalidEntryFee');
@@ -45,7 +44,6 @@ describe('Lottery', function () {
 
     it('Should prevent double entry', async function () {
       await lottery.connect(players[0]).enterLottery({ value: ENTRY_FEE });
-
       await expect(
         lottery.connect(players[0]).enterLottery({ value: ENTRY_FEE })
       ).to.be.revertedWithCustomError(lottery, 'AlreadyEntered');
@@ -53,7 +51,7 @@ describe('Lottery', function () {
   });
 
   describe('Player Tracking', function () {
-    it('Should track 10 players correctly', async function () {
+    it('Should track players correctly', async function () {
       for (let i = 0; i < 9; i++) {
         await lottery.connect(players[i]).enterLottery({ value: ENTRY_FEE });
         expect(await lottery.getPlayerCount()).to.equal(i + 1);
@@ -79,21 +77,18 @@ describe('Lottery', function () {
 
   describe('Winner Selection', function () {
     it('Should select winner after 10 players', async function () {
-      for (let i = 0; i < 10; i++) {
-        const tx = lottery
-          .connect(players[i])
-          .enterLottery({ value: ENTRY_FEE });
-
-        if (i === 9) {
-          await expect(tx).to.emit(lottery, 'WinnerSelected');
-        }
+      for (let i = 0; i < 9; i++) {
+        await lottery.connect(players[i]).enterLottery({ value: ENTRY_FEE });
       }
+
+      await expect(
+        lottery.connect(players[9]).enterLottery({ value: ENTRY_FEE })
+      ).to.emit(lottery, 'WinnerSelected');
     });
 
     it('Should transfer prize pool to winner', async function () {
-      const expectedPrizePool = ENTRY_FEE * 10n;
-
       const initialBalances = [];
+
       for (let i = 0; i < 10; i++) {
         initialBalances.push(
           await ethers.provider.getBalance(players[i].address)
@@ -110,7 +105,6 @@ describe('Lottery', function () {
           players[i].address
         );
         const balanceChange = finalBalance - initialBalances[i];
-
         if (balanceChange > ENTRY_FEE * 8n) {
           winnerFound = true;
           break;

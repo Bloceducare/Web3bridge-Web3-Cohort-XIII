@@ -1,7 +1,7 @@
 import { ethers } from 'hardhat';
 
 async function main() {
-  console.log('🎰 Starting Lottery Interaction Script...\n');
+  console.log('Starting Lottery Interaction Script...\n');
 
   const signers = await ethers.getSigners();
   const deployer = signers[0];
@@ -10,13 +10,13 @@ async function main() {
   console.log('Deployer:', deployer.address);
   console.log('Available players:', players.length, '\n');
 
-  console.log('📦 Deploying Lottery contract...');
+  console.log('Deploying Lottery contract...');
   const LotteryFactory = await ethers.getContractFactory('Lottery');
-  const lottery = await LotteryFactory.deploy();
+  const lottery = (await LotteryFactory.deploy()) as any;
   await lottery.waitForDeployment();
 
   const contractAddress = await lottery.getAddress();
-  console.log(' Lottery deployed to:', contractAddress);
+  console.log('Lottery deployed to:', contractAddress);
   console.log(
     'Entry fee:',
     ethers.formatEther(await lottery.ENTRY_FEE()),
@@ -45,8 +45,7 @@ async function main() {
 
   await displayState('Initial State');
 
-  console.log('🎮 Starting Round 1 - Adding 10 players...\n');
-
+  console.log('Starting Round 1 - Adding 10 players...\n');
   const entryFee = await lottery.ENTRY_FEE();
   const initialBalances = [];
 
@@ -59,10 +58,8 @@ async function main() {
   }
   console.log('');
 
-  d;
   for (let i = 0; i < 10; i++) {
     console.log(`Adding player ${i + 1} (${players[i].address})...`);
-
     try {
       const tx = await lottery
         .connect(players[i])
@@ -70,21 +67,29 @@ async function main() {
       const receipt = await tx.wait();
 
       if (receipt) {
-        const playerJoinedEvent = receipt.logs.find(
-          (log) => lottery.interface.parseLog(log)?.name === 'PlayerJoined'
-        );
+        const playerJoinedEvent = receipt.logs.find((log) => {
+          try {
+            return lottery.interface.parseLog(log)?.name === 'PlayerJoined';
+          } catch {
+            return false;
+          }
+        });
 
-        const winnerEvent = receipt.logs.find(
-          (log) => lottery.interface.parseLog(log)?.name === 'WinnerSelected'
-        );
+        const winnerEvent = receipt.logs.find((log) => {
+          try {
+            return lottery.interface.parseLog(log)?.name === 'WinnerSelected';
+          } catch {
+            return false;
+          }
+        });
 
         if (playerJoinedEvent) {
-          console.log('✅ Player joined successfully!');
+          console.log('Player joined successfully!');
         }
 
         if (winnerEvent) {
           const parsedEvent = lottery.interface.parseLog(winnerEvent);
-          console.log('🎉 WINNER SELECTED!');
+          console.log('WINNER SELECTED!');
           console.log('Winner address:', parsedEvent?.args[0]);
           console.log(
             'Prize won:',
@@ -94,18 +99,18 @@ async function main() {
         }
       }
     } catch (error: any) {
-      console.log('❌ Error:', error.message);
+      console.log('Error:', error.message);
     }
 
     await displayState(`After Player ${i + 1}`);
   }
 
-  console.log('💰 Final balances after Round 1:');
+  console.log('Final balances after Round 1:');
   let winnerIndex = -1;
+
   for (let i = 0; i < 10; i++) {
     const finalBalance = await ethers.provider.getBalance(players[i].address);
     const balanceChange = finalBalance - initialBalances[i];
-
     console.log(
       `Player ${i + 1}: ${ethers.formatEther(finalBalance)} ETH (${
         balanceChange >= 0 ? '+' : ''
@@ -115,15 +120,13 @@ async function main() {
     if (balanceChange > entryFee * 8n) {
       winnerIndex = i;
       console.log(
-        `  🏆 WINNER! Net gain: ${ethers.formatEther(balanceChange)} ETH`
+        `  WINNER! Net gain: ${ethers.formatEther(balanceChange)} ETH`
       );
     }
   }
   console.log('');
 
-  // ROUND 2: Test lottery reset
-  console.log('🎮 Starting Round 2 - Testing lottery reset...\n');
-
+  console.log('Starting Round 2 - Testing lottery reset...\n');
   await displayState('Round 2 Initial State');
 
   console.log('Adding 5 players to Round 2...');
@@ -133,18 +136,18 @@ async function main() {
       .connect(players[i])
       .enterLottery({ value: entryFee });
     await tx.wait();
-    console.log('✅ Player added successfully!');
+    console.log('Player added successfully!');
   }
 
   await displayState('Round 2 - After 5 players');
 
-  console.log('✅ Script completed successfully!');
-  console.log('\n📊 Summary:');
+  console.log('Script completed successfully!');
+  console.log('\nSummary:');
   console.log('- Contract deployed and tested');
   console.log('- Round 1 completed with 10 players and winner selection');
   console.log('- Round 2 started to confirm reset functionality');
   console.log('- All test cases passed!');
-  console.log(`\n📝 Contract Address: ${contractAddress}`);
+  console.log(`\nContract Address: ${contractAddress}`);
 }
 
 main()
