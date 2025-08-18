@@ -1,0 +1,44 @@
+{
+  "contractAddress": "0xdfbFAc6192bD5F4537bC955a0126630f71f2a038",
+  "network": "lisk-sepolia",
+  "deployer": "0x838Abf92E994e088e641399e91AcE43514038b90",
+  "baseURI": "ipfs://QmfE733vdAm7V3WQVQrE24yddUJvBYs4FAtLuaK5AsvZyz/",
+  "events": [
+    {
+      "eventId": 1,
+      "title": "Blockchain Conference 2024",
+      "organizer": "0x838Abf92E994e088e641399e91AcE43514038b90",
+      "ticketsSold": "0",
+      "totalTickets": "10",
+      "eventType": "Paid",
+      "ticketPrice": "0.001"
+    },
+    {
+      "eventId": 2,
+      "title": "Web3 Workshop",
+      "organizer": "0x838Abf92E994e088e641399e91AcE43514038b90",
+      "ticketsSold": "0",
+      "totalTickets": "5",
+      "eventType": "Free",
+      "ticketPrice": "0.0"
+    }
+  ],
+  "tickets": [
+    {
+      "ticketId": 1,
+      "eventId": 1,
+      "owner": "0x0000000000000000000000000000000000000001",
+      "transferred": true
+    },
+    {
+      "ticketId": 2,
+      "eventId": 2,
+      "owner": "0x838Abf92E994e088e641399e91AcE43514038b90",
+      "transferred": false
+    }
+  ],
+  "timestamp": "2025-08-06T14:52:20.973Z",
+  "status": "success",
+  "errors": [],
+  "gasUsed": "1006719"
+}
