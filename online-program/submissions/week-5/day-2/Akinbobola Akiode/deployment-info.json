@@ -1,0 +1,11 @@
+{
+  "contractAddress": "0xdfbFAc6192bD5F4537bC955a0126630f71f2a038",
+  "network": "hardhat",
+  "deployer": "0x838Abf92E994e088e641399e91AcE43514038b90",
+  "baseURI": "ipfs://QmfE733vdAm7V3WQVQrE24yddUJvBYs4FAtLuaK5AsvZyz/",
+  "deploymentTime": "2025-08-06T14:52:47.381Z",
+  "constructorArgs": [
+    "ipfs://QmfE733vdAm7V3WQVQrE24yddUJvBYs4FAtLuaK5AsvZyz/"
+  ],
+  "gasUsed": "1603716"
+}
