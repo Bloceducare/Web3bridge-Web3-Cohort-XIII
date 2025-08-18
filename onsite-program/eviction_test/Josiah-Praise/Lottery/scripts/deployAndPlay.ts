@@ -14,7 +14,6 @@ async function main() {
   const lottery = await Lottery.deploy();
   console.log("Lottery deployed to:", await lottery.getAddress());
 
-  // Since we're on testnet with only one account, we'll just enter once
   console.log("Entering lottery with deployer account...");
   const tx = await lottery
     .connect(deployer)
@@ -22,7 +21,6 @@ async function main() {
   await tx.wait();
   console.log(`Player entered:`, deployer.address);
 
-  // Check contract state
   const players = await lottery.getPlayers();
   console.log("Current players:", players);
   console.log(
@@ -32,8 +30,6 @@ async function main() {
     )
   );
 
-  // Note: Winner function likely requires minimum players to work
-  // This is just for testing deployment
 }
 
 main().catch((error) => {
