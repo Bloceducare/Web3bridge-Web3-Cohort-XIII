@@ -68,7 +68,6 @@ contract Lottery {
     }
     
     function resetLottery() external onlyOwner {
-        // Clear all data
         for (uint256 i = 0; i < playerCount; i++) {
             hasJoinedCurrentRound[participants[i].account] = false;
             delete participants[i];
@@ -82,7 +81,6 @@ contract Lottery {
         require(playerCount > 0, "No participants in current round");
         
         uint256 randomIndex = uint256(keccak256(abi.encodePacked(
-            block.timestamp,
             block.difficulty,
             currentRound,
             playerCount
