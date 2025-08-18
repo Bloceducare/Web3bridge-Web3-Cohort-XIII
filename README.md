@@ -148,4 +148,3 @@ git push origin main
 - Merge the PR after approval.
 
 Thank you for contributing to Web3Bridge Cohort XIII! Happy coding!
-
