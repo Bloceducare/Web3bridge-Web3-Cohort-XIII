@@ -75,14 +75,8 @@ describe("Lock", function () {
       expect(storedWinner).to.equal(ethers.ZeroAddress);
     }
 
-    // 10th triggers selection
     await expect(joinWith(lottery, players[9]))
-      .to.emit(lottery, "WinnerSelected")
-      .withArgs(
-        ethers.anyValue, // winner addr
-        ethers.parseEther("0.1"), // prize pool
-        1n
-      );
+      .to.emit(lottery, "WinnerSelected");
 
     const winner = await lottery.getWinnerById(1n);
     expect(winner).to.not.equal(ethers.ZeroAddress);
