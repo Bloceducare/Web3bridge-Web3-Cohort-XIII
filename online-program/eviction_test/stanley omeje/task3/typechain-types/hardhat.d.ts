@@ -18,6 +18,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Lottery__factory>;
     getContractFactory(
+      name: "Lottery",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Lottery__factory>;
+    getContractFactory(
       name: "SchMgt",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SchMgt__factory>;
@@ -28,6 +32,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Lottery>;
     getContractAt(
+      name: "Lottery",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Lottery>;
+    getContractAt(
       name: "SchMgt",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -38,10 +47,19 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.Lottery>;
     deployContract(
+      name: "Lottery",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Lottery>;
+    deployContract(
       name: "SchMgt",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.SchMgt>;
 
+    deployContract(
+      name: "Lottery",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Lottery>;
     deployContract(
       name: "Lottery",
       args: any[],

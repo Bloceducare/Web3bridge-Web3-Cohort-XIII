@@ -2,4 +2,3 @@
 /* tslint:disable */
 /* eslint-disable */
 export { Lottery__factory } from "./Lottery__factory";
-export { SchMgt__factory } from "./SchMgt__factory";

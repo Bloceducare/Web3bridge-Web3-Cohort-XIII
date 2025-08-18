@@ -37,10 +37,10 @@
         "SchMgt"
       ]
     },
-    "/Users/apple/Web3bridge-Web3-Cohort-XIII/online-program/eviction_test/stanley omeje/task4/contracts/Lottery.sol": {
-      "lastModificationDate": 1755533030738,
+    "/Users/apple/Web3bridge-Web3-Cohort-XIII/online-program/eviction_test/stanley omeje/task3/contracts/LudoGame.sol": {
+      "lastModificationDate": 1755535942505,
       "contentHash": "4203a56942857a6385cb78c58aa88887",
-      "sourceName": "contracts/Lottery.sol",
+      "sourceName": "contracts/LudoGame.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
