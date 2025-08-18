@@ -1,0 +1,25 @@
+{
+  "name": "web3bridge-web3-cohort-xiii",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IyanuOluwaJesuloba/Web3bridge-Web3-Cohort-XIII.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/IyanuOluwaJesuloba/Web3bridge-Web3-Cohort-XIII/issues"
+  },
+  "homepage": "https://github.com/IyanuOluwaJesuloba/Web3bridge-Web3-Cohort-XIII#readme"
+}
