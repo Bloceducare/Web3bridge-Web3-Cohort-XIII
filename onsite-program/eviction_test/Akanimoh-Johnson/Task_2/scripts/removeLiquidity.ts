@@ -1,72 +1,78 @@
 import { ethers } from "hardhat";
 const helpers = require("@nomicfoundation/hardhat-toolbox/network-helpers");
 
-const main = async () => {
-  
-  const USDCAddress = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
-  const DAIAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
-  const UNIRouter = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
+async function main() {
+    const USDCAddress = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+    const DAIAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
+    const UNIRouter = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 
-  const USDCHolder = "0xf584f8728b874a6a5c7a8d4d387c9aae9172d621";
+    const USDCHolder = "0xf584f8728b874a6a5c7a8d4d387c9aae9172d621";
 
-  await helpers.impersonateAccount(USDCHolder);
-  const impersonatedSigner = await ethers.getSigner(USDCHolder);
+    await helpers.impersonateAccount(USDCHolder);
+    const signer = await ethers.getSigner(USDCHolder);
 
-  const USDC = await ethers.getContractAt("IERC20", USDCAddress);
-  const DAI = await ethers.getContractAt("IERC20", DAIAddress);
-  const ROUTER = await ethers.getContractAt("IUniswapV2Router02", UNIRouter);
+    const USDC = await ethers.getContractAt("IERC20", USDCAddress);
+    const DAI = await ethers.getContractAt("IERC20", DAIAddress);
+    const ROUTER = await ethers.getContractAt("IUniswapV2Router02", UNIRouter);
 
-  console.log("Getting Pair Address for Uniswap Router...");
-  const factoryAddress = await ROUTER.factory();
-  const factory = await ethers.getContractAt("IUniswapV2Factory", factoryAddress);
+    const factoryAddr = await ROUTER.factory();
+    const factory = await ethers.getContractAt("IUniswapV2Factory", factoryAddr);
+    const pairAddress = await factory.getPair(USDCAddress, DAIAddress);
+    const LPToken = await ethers.getContractAt("IERC20", pairAddress);
+    console.log("USDC-DAI Pair:", pairAddress);
 
-  const pairAddress = await factory.getPair(USDCAddress, DAIAddress);
-  const LPToken = await ethers.getContractAt("IERC20", pairAddress);
+    const usdcBefore = await USDC.balanceOf(signer.address);
+    const daiBefore = await DAI.balanceOf(signer.address);
+    console.log("USDC Before:", ethers.formatUnits(usdcBefore, 6));
+    console.log("DAI Before:", ethers.formatUnits(daiBefore, 18));
 
-  // Check Balances Before Adding Liquidity
-  const usdcBalBefore = await USDC.balanceOf(impersonatedSigner.address);
-  const daiBalBefore = await DAI.balanceOf(impersonatedSigner.address);
+    const usdcAmt = ethers.parseUnits("1000", 6);
+    const daiAmt = ethers.parseUnits("1000", 18);
 
-  console.log("USDC Balance Before:", ethers.formatUnits(usdcBalBefore, 6));
-  console.log("DAI Balance Before:", ethers.formatUnits(daiBalBefore, 18));
+    await USDC.connect(signer).approve(UNIRouter, usdcAmt);
+    await DAI.connect(signer).approve(UNIRouter, daiAmt);
 
-  const liquidityBF = await LPToken.balanceOf(impersonatedSigner.address);
-  console.log("Liquidity Token Balance BF Burn:", liquidityBF);
+    const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
+    const addTx = await ROUTER.connect(signer).addLiquidity(
+        USDCAddress,
+        DAIAddress,
+        usdcAmt,
+        daiAmt,
+        0,
+        0,
+        signer.address,
+        deadline
+    );
+    await addTx.wait();
+    console.log("addLiquidity tx:", addTx.hash);
 
-  console.log("Approving LP tokens to be burnt");
+    const lpBalAfterAdd = await LPToken.balanceOf(signer.address);
+    console.log("LP Balance After Add:", lpBalAfterAdd.toString());
 
-  await LPToken.connect(impersonatedSigner).approve(UNIRouter, liquidityBF);
+    await LPToken.connect(signer).approve(UNIRouter, lpBalAfterAdd);
 
-  const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
+    const removeTx = await ROUTER.connect(signer).removeLiquidity(
+        USDCAddress,
+        DAIAddress,
+        lpBalAfterAdd,
+        0,
+        0,
+        signer.address,
+        deadline
+    );
+    await removeTx.wait();
+    console.log("removeLiquidity tx:", removeTx.hash);
 
-  console.log("Removing Liquidity . . . .");
-  const tx = await ROUTER.connect(impersonatedSigner).removeLiquidity(
-    USDCAddress,
-    DAIAddress,
-    liquidityBF,
-    0,
-    0,
-    impersonatedSigner.address,
-    deadline
-  );
-  await tx.wait();
+    const usdcAfter = await USDC.balanceOf(signer.address);
+    const daiAfter = await DAI.balanceOf(signer.address);
+    const lpAfter = await LPToken.balanceOf(signer.address);
 
-  console.log("removeLiquidity executed at:", tx.hash);
+    console.log("USDC After:", ethers.formatUnits(usdcAfter, 6));
+    console.log("DAI After:", ethers.formatUnits(daiAfter, 18));
+    console.log("LP Balance After Remove:", lpAfter.toString());
+}
 
-  // Check Balances After Adding Liquidity
-  const usdcBalAfter = await USDC.balanceOf(impersonatedSigner.address);
-  const daiBalAfter = await DAI.balanceOf(impersonatedSigner.address);
-
-  console.log("USDC Balance After:", ethers.formatUnits(usdcBalAfter, 6));
-  console.log("DAI Balance After:", ethers.formatUnits(daiBalAfter, 18));
-
-  const liquidityAF = await LPToken.balanceOf(impersonatedSigner.address);
-
-  console.log("Liquidity Token Balance AF Burn:", liquidityAF);
-
-};
-
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+main().catch((err) => {
+    console.error(err);
+    process.exitCode = 1;
 });
