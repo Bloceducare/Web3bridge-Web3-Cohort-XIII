@@ -5,11 +5,11 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
-import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
-import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
+import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
+import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 
-contract LootBox is VRFConsumerBaseV2 {
-    VRFCoordinatorV2Interface COORDINATOR;
+contract LootBox is VRFConsumerBaseV2Plus {
+    // VRFCoordinatorV2Interface COORDINATOR;
 
     // Chainlink VRF parameters (Sepolia testnet)
     address public constant vrfCoordinator = 0x27168224eB607eFFbEC76C76A6bC2974e803A0E8;
@@ -49,8 +49,8 @@ contract LootBox is VRFConsumerBaseV2 {
     event RewardAdded(RewardType rewardType, address tokenContract, uint256 tokenId, uint256 amount, uint256 weight);
     event RandomnessRequested(uint256 requestId, address user);
 
-    constructor(uint64 _subscriptionId) VRFConsumerBaseV2(vrfCoordinator) {
-        COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
+    constructor(uint64 _subscriptionId) VRFConsumerBaseV2Plus(vrfCoordinator) {
+        // COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
         subscriptionId = _subscriptionId;
         owner = msg.sender;
     }
@@ -81,12 +81,16 @@ contract LootBox is VRFConsumerBaseV2 {
         require(msg.value >= boxPrice, "Insufficient payment");
         require(totalWeight > 0, "No rewards available");
 
-        uint256 requestId = COORDINATOR.requestRandomWords(
-            keyHash,
-            subscriptionId,
-            requestConfirmations,
-            callbackGasLimit,
-            numWords
+        uint256 requestId = s_vrfCoordinator.requestRandomWords(
+             VRFV2PlusClient.RandomWordsRequest({
+            keyHash: keyHash,
+            subscriptionId: subscriptionId,
+            requestConfirmations: requestConfirmations,
+            callbackGasLimit: callbackGasLimit,
+            numWords: numWords,
+            extraArgs: VRFV2PlusClient._argsToBytes(VRFV2PlusClient.ExtraArgsV1({nativePayment: false}))
+
+             })
         );
 
         requests[requestId] = Request({
