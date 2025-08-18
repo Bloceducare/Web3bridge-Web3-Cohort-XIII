@@ -1,119 +1,115 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  console.log("Setting up Ludo Game demo...");
+  console.log("Setting up board game demo");
 
+  const [deployer, participant1, participant2, participant3, participant4] = await ethers.getSigners();
 
-  const [deployer, player1, player2, player3, player4] = await ethers.getSigners();
-  
   console.log("Deployer:", deployer.address);
-  console.log("Player 1:", player1.address);
-  console.log("Player 2:", player2.address);
-  console.log("Player 3:", player3.address);
-  console.log("Player 4:", player4.address);
+  console.log("Participant 1:", participant1.address);
+  console.log("Participant 2:", participant2.address);
+  console.log("Participant 3:", participant3.address);
+  console.log("Participant 4:", participant4.address);
 
-  console.log("\n1. Deploying contracts...");
-  const LudoTokenFactory = await ethers.getContractFactory("LudoToken");
-  const ludoToken = await LudoTokenFactory.deploy();
-  await ludoToken.waitForDeployment();
-  
-  const LudoGameFactory = await ethers.getContractFactory("LudoGame");
-  const ludoGame = await LudoGameFactory.deploy(await ludoToken.getAddress());
-  await ludoGame.waitForDeployment();
+  console.log("1. Deploying contracts");
+  const TokenFactory = await ethers.getContractFactory("MaryjaneBoardGameToken");
+  const gameToken = await TokenFactory.deploy();
+  await gameToken.waitForDeployment();
 
-  await ludoToken.authorizeGame(await ludoGame.getAddress());
+  const ArenaFactory = await ethers.getContractFactory("MaryjaneBoardGameArena");
+  const gameArena = await ArenaFactory.deploy(await gameToken.getAddress());
+  await gameArena.waitForDeployment();
 
-  console.log("LudoToken:", await ludoToken.getAddress());
-  console.log("LudoGame:", await ludoGame.getAddress());
+  await gameToken.approveGameContract(await gameArena.getAddress());
 
-  console.log("\n2. Minting tokens to players...");
+  console.log("Token:", await gameToken.getAddress());
+  console.log("Arena:", await gameArena.getAddress());
+
+  console.log("2. Creating tokens for participants");
   const mintAmount = ethers.parseEther("1000");
-  
-  await ludoToken.mintTokens(player1.address, mintAmount);
-  await ludoToken.mintTokens(player2.address, mintAmount);
-  await ludoToken.mintTokens(player3.address, mintAmount);
-  await ludoToken.mintTokens(player4.address, mintAmount);
 
-  console.log("Minted 1000 LUDO tokens to each player");
+  await gameToken.createTokens(participant1.address, mintAmount);
+  await gameToken.createTokens(participant2.address, mintAmount);
+  await gameToken.createTokens(participant3.address, mintAmount);
+  await gameToken.createTokens(participant4.address, mintAmount);
 
-  console.log("\n3. Approving token spending...");
+  console.log("Created 1000 tokens for each participant");
+
+  console.log("3. Approving token spending");
   const approveAmount = ethers.parseEther("500");
-  
-  await ludoToken.connect(player1).approve(await ludoGame.getAddress(), approveAmount);
-  await ludoToken.connect(player2).approve(await ludoGame.getAddress(), approveAmount);
-  await ludoToken.connect(player3).approve(await ludoGame.getAddress(), approveAmount);
-  await ludoToken.connect(player4).approve(await ludoGame.getAddress(), approveAmount);
 
-  console.log("Players approved game contract to spend 500 LUDO tokens");
+  await gameToken.connect(participant1).approve(await gameArena.getAddress(), approveAmount);
+  await gameToken.connect(participant2).approve(await gameArena.getAddress(), approveAmount);
+  await gameToken.connect(participant3).approve(await gameArena.getAddress(), approveAmount);
+  await gameToken.connect(participant4).approve(await gameArena.getAddress(), approveAmount);
+
+  console.log("Participants approved arena contract to spend 500 tokens");
 
   // Create a demo game
-  console.log("\n4. Creating demo game...");
-  await ludoGame.connect(player1).createGame("Alice");
-  console.log("Player 1 (Alice) created game 0");
+  console.log("4. Creating demo match");
+  await gameArena.connect(participant1).initializeMatch("Alice");
+  console.log("Participant 1 (Alice) created match 0");
 
-  // Join the game
-  await ludoGame.connect(player2).joinGame(0, "Bob");
-  console.log("Player 2 (Bob) joined game 0");
+  await gameArena.connect(participant2).enterMatch(0, "Bob");
+  console.log("Participant 2 (Bob) joined match 0");
 
-  await ludoGame.connect(player3).joinGame(0, "Charlie");
-  console.log("Player 3 (Charlie) joined game 0");
+  await gameArena.connect(participant3).enterMatch(0, "Charlie");
+  console.log("Participant 3 (Charlie) joined match 0");
 
-  await ludoGame.connect(player4).joinGame(0, "Diana");
-  console.log("Player 4 (Diana) joined game 0");
+  await gameArena.connect(participant4).enterMatch(0, "Diana");
+  console.log("Participant 4 (Diana) joined match 0");
 
-  // Check game state
-  const gameData = await ludoGame.getGame(0);
-  console.log("\n5. Game Status:");
-  console.log("Game ID:", gameData.id.toString());
-  console.log("Player Count:", gameData.playerCount.toString());
-  console.log("Game State:", gameData.state === 0n ? "WAITING" : gameData.state === 1n ? "ACTIVE" : "FINISHED");
+  const matchData = await gameArena.getMatchDetails(0);
+  console.log("5. Match Status:");
+  console.log("Match ID:", matchData.id.toString());
+  console.log("Participant Count:", matchData.participantCount.toString());
+  console.log("Match State:", matchData.status === 0n ? "PENDING" : matchData.status === 1n ? "RUNNING" : "COMPLETED");
 
-  console.log("\n6. Player Details:");
-  for (let i = 0; i < Number(gameData.playerCount); i++) {
-    const playerData = await ludoGame.getPlayer(0, i);
-    const colorNames = ["RED", "GREEN", "BLUE", "YELLOW"];
-    console.log(`Player ${i + 1}: ${playerData.name} (${playerData.playerAddress}) - Color: ${colorNames[Number(playerData.color)]}`);
+  console.log("6. Participant Details:");
+  for (let i = 0; i < Number(matchData.participantCount); i++) {
+    const participantData = await gameArena.getParticipantDetails(0, i);
+    const colorNames = ["CRIMSON", "EMERALD", "SAPPHIRE", "GOLDEN"];
+    console.log(`Participant ${i + 1}: ${participantData.name} (${participantData.walletAddress}) - Color: ${colorNames[Number(participantData.color)]}`);
   }
 
-  
-  console.log("\n7. Staking tokens...");
-  await ludoGame.connect(player1).stakeTokens(0);
-  console.log("Player 1 staked tokens");
+  console.log("7. Making deposits");
+  await gameArena.connect(participant1).makeDeposit(0);
+  console.log("Participant 1 made deposit");
 
-  await ludoGame.connect(player2).stakeTokens(0);
-  console.log("Player 2 staked tokens");
+  await gameArena.connect(participant2).makeDeposit(0);
+  console.log("Participant 2 made deposit");
 
-  await ludoGame.connect(player3).stakeTokens(0);
-  console.log("Player 3 staked tokens");
+  await gameArena.connect(participant3).makeDeposit(0);
+  console.log("Participant 3 made deposit");
 
-  await ludoGame.connect(player4).stakeTokens(0);
-  console.log("Player 4 staked tokens - Game should start now!");
+  await gameArena.connect(participant4).makeDeposit(0);
+  console.log("Participant 4 made deposit - Match should start now");
 
-  const finalGameData = await ludoGame.getGame(0);
-  console.log("\n8. Final Game Status:");
-  console.log("Game State:", finalGameData.state === 0n ? "WAITING" : finalGameData.state === 1n ? "ACTIVE" : "FINISHED");
-  console.log("Total Stake:", ethers.formatEther(finalGameData.totalStake), "LUDO");
-  console.log("Current Player:", finalGameData.currentPlayerIndex.toString());
+  const finalMatchData = await gameArena.getMatchDetails(0);
+  console.log("8. Final Match Status:");
+  console.log("Match State:", finalMatchData.status === 0n ? "PENDING" : finalMatchData.status === 1n ? "RUNNING" : "COMPLETED");
+  console.log("Total Deposits:", ethers.formatEther(finalMatchData.totalDeposits), "tokens");
+  console.log("Active Participant:", finalMatchData.activeParticipantIndex.toString());
 
-  const currentPlayerAddress = await ludoGame.getCurrentPlayer(0);
-  console.log("Current Player Address:", currentPlayerAddress);
+  const activeParticipantAddress = await gameArena.getActiveParticipant(0);
+  console.log("Active Participant Address:", activeParticipantAddress);
 
-  console.log(" Demo setup completed!");
-  console.log(" Game is ready to play!");
-  console.log("- Players can now roll dice using rollDice(0)");
-  console.log("- Move pieces using movePiece(gameId, pieceIndex, diceRoll)");
-  console.log("- First player to get all 4 pieces to safety wins all staked tokens!");
+  console.log("Demo setup completed");
+  console.log("Match is ready to play");
+  console.log("- Participants can now throw dice using throwDice(0)");
+  console.log("- Move tokens using moveToken(matchId, tokenIndex, diceResult)");
+  console.log("- First participant to get all 4 tokens to secure zone wins all deposits");
 
   return {
-    ludoToken: await ludoToken.getAddress(),
-    ludoGame: await ludoGame.getAddress(),
-    gameId: 0
+    gameToken: await gameToken.getAddress(),
+    gameArena: await gameArena.getAddress(),
+    matchId: 0
   };
 }
 
 main()
   .then(() => {
-    console.log("Demo setup successful!");
+    console.log("Demo setup successful");
     process.exit(0);
   })
   .catch((error) => {

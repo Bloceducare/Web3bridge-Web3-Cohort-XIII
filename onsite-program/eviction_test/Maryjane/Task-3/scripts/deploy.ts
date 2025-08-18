@@ -1,81 +1,73 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  console.log("Starting Ludo Game deployment...");
+  console.log("Starting board game deployment");
 
-  // Get the deployer account
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with account:", deployer.address);
   console.log("Account balance:", ethers.formatEther(await deployer.provider.getBalance(deployer.address)));
 
-  // Deploy LudoToken contract
-  console.log("\n1. Deploying LudoToken contract...");
-  const LudoTokenFactory = await ethers.getContractFactory("LudoToken");
-  const ludoToken = await LudoTokenFactory.deploy();
-  await ludoToken.waitForDeployment();
-  
-  const ludoTokenAddress = await ludoToken.getAddress();
-  console.log("LudoToken deployed to:", ludoTokenAddress);
+  console.log("1. Deploying token contract");
+  const TokenFactory = await ethers.getContractFactory("MaryjaneBoardGameToken");
+  const gameToken = await TokenFactory.deploy();
+  await gameToken.waitForDeployment();
 
-  // Deploy LudoGame contract
-  console.log("\n2. Deploying LudoGame contract...");
-  const LudoGameFactory = await ethers.getContractFactory("LudoGame");
-  const ludoGame = await LudoGameFactory.deploy(ludoTokenAddress);
-  await ludoGame.waitForDeployment();
-  
-  const ludoGameAddress = await ludoGame.getAddress();
-  console.log("LudoGame deployed to:", ludoGameAddress);
+  const tokenAddress = await gameToken.getAddress();
+  console.log("Token deployed to:", tokenAddress);
 
-  // Authorize the game contract to transfer tokens
-  console.log("\n3. Authorizing game contract...");
-  const authorizeTx = await ludoToken.authorizeGame(ludoGameAddress);
+  console.log("2. Deploying arena contract");
+  const ArenaFactory = await ethers.getContractFactory("MaryjaneBoardGameArena");
+  const gameArena = await ArenaFactory.deploy(tokenAddress);
+  await gameArena.waitForDeployment();
+
+  const arenaAddress = await gameArena.getAddress();
+  console.log("Arena deployed to:", arenaAddress);
+
+  console.log("3. Authorizing arena contract");
+  const authorizeTx = await gameToken.approveGameContract(arenaAddress);
   await authorizeTx.wait();
-  console.log("Game contract authorized successfully");
+  console.log("Arena contract authorized successfully");
 
-  // Verify token details
-  console.log("\n4. Verifying deployment...");
-  const tokenName = await ludoToken.name();
-  const tokenSymbol = await ludoToken.symbol();
-  const totalSupply = await ludoToken.totalSupply();
-  const stakeAmount = await ludoToken.getGameStakeAmount();
-  
+  console.log("4. Verifying deployment");
+  const tokenName = await gameToken.name();
+  const tokenSymbol = await gameToken.symbol();
+  const totalSupply = await gameToken.totalSupply();
+  const stakeAmount = await gameToken.getRequiredStakeAmount();
+
   console.log("Token Name:", tokenName);
   console.log("Token Symbol:", tokenSymbol);
   console.log("Total Supply:", ethers.formatEther(totalSupply));
   console.log("Stake Amount:", ethers.formatEther(stakeAmount));
 
-  // Get game counter
-  const gameCount = await ludoGame.getGameCount();
-  console.log("Initial Game Count:", gameCount.toString());
+  const matchCount = await gameArena.getMatchCount();
+  console.log("Initial Match Count:", matchCount.toString());
 
-  console.log("\n✅ Deployment completed successfully!");
-  console.log("\n📋 Contract Addresses:");
-  console.log("LudoToken:", ludoTokenAddress);
-  console.log("LudoGame:", ludoGameAddress);
+  console.log("Deployment completed successfully");
+  console.log("Contract Addresses:");
+  console.log("Token:", tokenAddress);
+  console.log("Arena:", arenaAddress);
 
-  console.log("\n🎮 Next Steps:");
-  console.log("1. Players need LUDO tokens to participate");
-  console.log("2. Use mintTokens() function to distribute tokens to players");
-  console.log("3. Players must approve the game contract to spend their tokens");
-  console.log("4. Create games using createGame() function");
-  console.log("5. Join games using joinGame() function");
-  console.log("6. Stake tokens using stakeTokens() function");
-  console.log("7. Start playing when all players have staked!");
+  console.log("Next Steps:");
+  console.log("1. Participants need tokens to participate");
+  console.log("2. Use createTokens() function to distribute tokens to participants");
+  console.log("3. Participants must approve the arena contract to spend their tokens");
+  console.log("4. Create matches using initializeMatch() function");
+  console.log("5. Join matches using enterMatch() function");
+  console.log("6. Make deposits using makeDeposit() function");
+  console.log("7. Start playing when all participants have deposited");
 
   return {
-    ludoToken: ludoTokenAddress,
-    ludoGame: ludoGameAddress
+    gameToken: tokenAddress,
+    gameArena: arenaAddress
   };
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main()
-  .then((addresses) => {
-    console.log("\n🎉 All contracts deployed successfully!");
+  .then(() => {
+    console.log("All contracts deployed successfully");
     process.exit(0);
   })
   .catch((error) => {
-    console.error("❌ Deployment failed:", error);
+    console.error("Deployment failed:", error);
     process.exit(1);
   });

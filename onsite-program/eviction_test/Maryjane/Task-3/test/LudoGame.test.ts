@@ -263,62 +263,61 @@ describe("MaryjaneBoardGameArena", function () {
     });
   });
 
-  describe("Leaving Games", function () {
+  describe("Exiting Matches", function () {
     beforeEach(async function () {
-      await ludoGame.connect(player1).createGame("Player1");
-      await ludoGame.connect(player2).joinGame(0, "Player2");
+      await gameArena.connect(participant1).initializeMatch("Participant1");
+      await gameArena.connect(participant2).enterMatch(0, "Participant2");
     });
 
-    it("Should allow player to leave game before staking", async function () {
-      await ludoGame.connect(player2).leaveGame(0);
+    it("Should allow participant to exit match before depositing", async function () {
+      await gameArena.connect(participant2).exitMatch(0);
 
-      const gameData = await ludoGame.getGame(0);
-      expect(gameData.playerCount).to.equal(1);
+      const matchData = await gameArena.getMatchDetails(0);
+      expect(matchData.participantCount).to.equal(1);
 
-      const playerGame = await ludoGame.getPlayerGame(player2.address);
-      expect(playerGame).to.equal(0);
+      const participantMatch = await gameArena.getParticipantMatch(participant2.address);
+      expect(participantMatch).to.equal(0);
     });
 
-    it("Should return stake when leaving after staking", async function () {
-      await ludoGame.connect(player1).stakeTokens(0);
+    it("Should return deposit when exiting after depositing", async function () {
+      await gameArena.connect(participant1).makeDeposit(0);
 
-      const initialBalance = await ludoToken.balanceOf(player1.address);
-      await ludoGame.connect(player1).leaveGame(0);
-      const finalBalance = await ludoToken.balanceOf(player1.address);
+      const initialBalance = await gameToken.balanceOf(participant1.address);
+      await gameArena.connect(participant1).exitMatch(0);
+      const finalBalance = await gameToken.balanceOf(participant1.address);
 
-      expect(finalBalance - initialBalance).to.equal(STAKE_AMOUNT);
+      expect(finalBalance - initialBalance).to.equal(DEPOSIT_AMOUNT);
     });
 
-    it("Should not allow leaving active game", async function () {
-      await ludoGame.connect(player1).stakeTokens(0);
-      await ludoGame.connect(player2).stakeTokens(0);
+    it("Should not allow exiting active match", async function () {
+      await gameArena.connect(participant1).makeDeposit(0);
+      await gameArena.connect(participant2).makeDeposit(0);
 
-      await expect(ludoGame.connect(player1).leaveGame(0))
-        .to.be.revertedWith("Cannot leave active game");
+      await expect(gameArena.connect(participant1).exitMatch(0))
+        .to.be.revertedWith("Cannot exit active match");
     });
   });
 
   describe("Edge Cases", function () {
     it("Should handle insufficient token balance", async function () {
-      // Create a player with insufficient balance
-      const poorPlayer = player5;
-      await ludoToken.connect(poorPlayer).transfer(owner.address, INITIAL_BALANCE);
+      const poorParticipant = participant5;
+      await gameToken.connect(poorParticipant).transfer(owner.address, INITIAL_BALANCE);
 
-      await expect(ludoGame.connect(poorPlayer).createGame("PoorPlayer"))
-        .to.be.revertedWith("Insufficient tokens for stake");
+      await expect(gameArena.connect(poorParticipant).initializeMatch("PoorParticipant"))
+        .to.be.revertedWith("Insufficient tokens for deposit");
     });
 
-    it("Should handle game counter correctly", async function () {
-      await ludoGame.connect(player1).createGame("Player1");
-      await ludoGame.connect(player2).createGame("Player2");
+    it("Should handle match counter correctly", async function () {
+      await gameArena.connect(participant1).initializeMatch("Participant1");
+      await gameArena.connect(participant2).initializeMatch("Participant2");
 
-      const gameCount = await ludoGame.getGameCount();
-      expect(gameCount).to.equal(2);
+      const matchCount = await gameArena.getMatchCount();
+      expect(matchCount).to.equal(2);
     });
 
-    it("Should not allow operations on non-existent games", async function () {
-      await expect(ludoGame.getGame(999))
-        .to.be.revertedWith("Game does not exist");
+    it("Should not allow operations on non-existent matches", async function () {
+      await expect(gameArena.getMatchDetails(999))
+        .to.be.revertedWith("Match does not exist");
     });
   });
 });
