@@ -1,0 +1,17 @@
+// This setup uses Hardhat Ignition to manage smart contract deployments.
+// Learn more about it at https://hardhat.org/ignition
+
+import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
+
+
+const StudentModule = buildModule("StudentModule", (m) => {
+
+
+  const student = m.contract("StudentManagementSystem", [], {
+    
+  });
+
+  return { student };
+});
+
+export default StudentModule;
