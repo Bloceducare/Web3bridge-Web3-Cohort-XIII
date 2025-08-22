@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Errors",
+  "sourceName": "contracts/multisig.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "COMPLETED",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DUPLICATED_ADDRESS",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "INVALID_ADDRESS",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "INVALID_ADMIN_COUNT",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "INVALID_AMOUNT",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ONLY_ADMIN",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x60566050600b82828239805160001a6073146043577f4e487b7100000000000000000000000000000000000000000000000000000000600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea264697066735822122015563131cbe7475f1d5021eb6d7f627cfe45f50db5fde8166bfe41c9985f090464736f6c634300081e0033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea264697066735822122015563131cbe7475f1d5021eb6d7f627cfe45f50db5fde8166bfe41c9985f090464736f6c634300081e0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
