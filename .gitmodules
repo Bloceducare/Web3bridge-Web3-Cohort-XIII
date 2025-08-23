@@ -4,3 +4,15 @@
 [submodule "onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts"]
 	path = onsite-program/live-coding/week-5/day-4/Foundry101/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "onsite-program/submissions/week-5/day-5/Barakat-Yetunde-Oyewole/lib/forge-std"]
+	path = onsite-program/submissions/week-5/day-5/Barakat-Yetunde-Oyewole/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "onsite-program/submissions/week-5/day-5/Barakat-Yetunde-Oyewole/eventTicketing/lib/forge-std"]
+	path = onsite-program/submissions/week-5/day-5/Barakat-Yetunde-Oyewole/eventTicketing/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "onsite-program/submissions/week-5/day-5/Barakat-Yetunde-Oyewole/eventTicketing/lib/openzeppelin-contracts"]
+	path = onsite-program/submissions/week-5/day-5/Barakat-Yetunde-Oyewole/eventTicketing/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "onsite-program/submissions/week-5/day-5/Barakat-Yetunde-Oyewole/lib/openzeppelin-contracts"]
+	path = onsite-program/submissions/week-5/day-5/Barakat-Yetunde-Oyewole/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts

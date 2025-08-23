@@ -1,0 +1,75 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\Ye\\Desktop\\lottery-smart-contract\\contracts\\Lottery.sol": {
+      "lastModificationDate": 1755531173269,
+      "contentHash": "823613fe193d4d0620aa300e091fdb54",
+      "sourceName": "contracts/Lottery.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "Lottery"
+      ]
+    },
+    "C:\\Users\\Ye\\Web3bridge-Web3-Cohort-XIII\\Web3bridge-Web3-Cohort-XIII\\onsite-program\\eviction_test\\Barakat-Yetunde-Oyewole\\task1\\lottery-smart-contract\\contracts\\Lottery.sol": {
+      "lastModificationDate": 1755531173269,
+      "contentHash": "823613fe193d4d0620aa300e091fdb54",
+      "sourceName": "contracts/Lottery.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "Lottery"
+      ]
+    }
+  }
+}
