@@ -1,0 +1,8 @@
+
+{"chainId":4202,"type":"DEPLOYMENT_INITIALIZE"}
+{"artifactId":"LootBoxModule#LootBox","constructorArgs":[],"contractName":"LootBox","dependencies":[],"from":"0xfa575fb3f73da897062b59a015c0f0ff02c357c3","futureId":"LootBoxModule#LootBox","futureType":"NAMED_ARTIFACT_CONTRACT_DEPLOYMENT","libraries":{},"strategy":"basic","strategyConfig":{},"type":"DEPLOYMENT_EXECUTION_STATE_INITIALIZE","value":{"_kind":"bigint","value":"0"}}
+{"futureId":"LootBoxModule#LootBox","networkInteraction":{"data":"0x","id":1,"type":"ONCHAIN_INTERACTION","value":{"_kind":"bigint","value":"0"}},"type":"NETWORK_INTERACTION_REQUEST"}
+{"futureId":"LootBoxModule#LootBox","networkInteractionId":1,"nonce":17,"type":"TRANSACTION_PREPARE_SEND"}
+{"futureId":"LootBoxModule#LootBox","networkInteractionId":1,"nonce":17,"transaction":{"fees":{"maxFeePerGas":{"_kind":"bigint","value":"1000506"},"maxPriorityFeePerGas":{"_kind":"bigint","value":"1000000"}},"hash":"0x876bc4f0ca73a45ea1d12953e52f78fcdd61358cd03cf30403b70162a4307fbe"},"type":"TRANSACTION_SEND"}
+{"futureId":"LootBoxModule#LootBox","hash":"0x876bc4f0ca73a45ea1d12953e52f78fcdd61358cd03cf30403b70162a4307fbe","networkInteractionId":1,"receipt":{"blockHash":"0xb2829a08b8dde55ffa7bc9de45818a28545e8976d3fc5bb3bf88f581fe6634b3","blockNumber":24962021,"contractAddress":"0x6830Fed38F8b9B90828b8D4fbC028EEef6b2d961","logs":[],"status":"SUCCESS"},"type":"TRANSACTION_CONFIRM"}
+{"futureId":"LootBoxModule#LootBox","result":{"address":"0x6830Fed38F8b9B90828b8D4fbC028EEef6b2d961","type":"SUCCESS"},"type":"DEPLOYMENT_EXECUTION_STATE_COMPLETE"}

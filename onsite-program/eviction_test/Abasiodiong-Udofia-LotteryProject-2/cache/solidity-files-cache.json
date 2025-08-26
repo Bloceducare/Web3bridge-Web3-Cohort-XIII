@@ -1,0 +1,301 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/odiong/Desktop/PROJECTS/WEB3BRIDGE/week4/day4/task2/onsite-program/eviction_test/Abasiodiong-Udofia-LotteryProject-2/contracts/Lottery.sol": {
+      "lastModificationDate": 1755535250419,
+      "contentHash": "832ffffd0d9b865b6cfc26af387a0b16",
+      "sourceName": "contracts/Lottery.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "./interfaces/ILottery.sol",
+        "./interfaces/IVRFCoordinatorV2.sol",
+        "./libraries/Errors.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Lottery"
+      ]
+    },
+    "/home/odiong/Desktop/PROJECTS/WEB3BRIDGE/week4/day4/task2/onsite-program/eviction_test/Abasiodiong-Udofia-LotteryProject-2/contracts/libraries/Errors.sol": {
+      "lastModificationDate": 1755535101033,
+      "contentHash": "ac6c52de62163d90b57d99c1f65f4b06",
+      "sourceName": "contracts/libraries/Errors.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Errors"
+      ]
+    },
+    "/home/odiong/Desktop/PROJECTS/WEB3BRIDGE/week4/day4/task2/onsite-program/eviction_test/Abasiodiong-Udofia-LotteryProject-2/contracts/interfaces/ILottery.sol": {
+      "lastModificationDate": 1755535081903,
+      "contentHash": "1ff5916dff1e800e20f68214147ace10",
+      "sourceName": "contracts/interfaces/ILottery.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "ILottery"
+      ]
+    },
+    "/home/odiong/Desktop/PROJECTS/WEB3BRIDGE/week4/day4/task2/onsite-program/eviction_test/Abasiodiong-Udofia-LotteryProject-2/contracts/interfaces/IVRFCoordinatorV2.sol": {
+      "lastModificationDate": 1755535090519,
+      "contentHash": "bbc7e70a33afc5bfa0648a325e4865fe",
+      "sourceName": "contracts/interfaces/IVRFCoordinatorV2.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "IVRFCoordinatorV2"
+      ]
+    },
+    "/home/odiong/Desktop/PROJECTS/WEB3BRIDGE/week4/day4/task2/onsite-program/eviction_test/Abasiodiong-Udofia-LotteryProject-2/node_modules/@openzeppelin/contracts/utils/ReentrancyGuard.sol": {
+      "lastModificationDate": 1755535216501,
+      "contentHash": "190613e556d509d9e9a0ea43dc5d891d",
+      "sourceName": "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ReentrancyGuard"
+      ]
+    },
+    "/home/odiong/Desktop/PROJECTS/WEB3BRIDGE/week4/day4/task2/onsite-program/eviction_test/Abasiodiong-Udofia-LotteryProject-2/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1755535216496,
+      "contentHash": "d3c790edc9ccf808a17c5a6cd13614fd",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Ownable"
+      ]
+    },
+    "/home/odiong/Desktop/PROJECTS/WEB3BRIDGE/week4/day4/task2/onsite-program/eviction_test/Abasiodiong-Udofia-LotteryProject-2/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1755535216372,
+      "contentHash": "67bfbc07588eb8683b3fd8f6f909563e",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
+    "/home/odiong/Desktop/PROJECTS/WEB3BRIDGE/week4/day4/task2/onsite-program/eviction_test/Abasiodiong-Udofia-LotteryProject-2/contracts/mocks/VRFCoordinatorV2Mock.sol": {
+      "lastModificationDate": 1755535574352,
+      "contentHash": "e6a80ee39704f92fef043823f6442bc5",
+      "sourceName": "contracts/mocks/VRFCoordinatorV2Mock.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "VRFCoordinatorV2Mock"
+      ]
+    }
+  }
+}
