@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\Administrator\\Documents\\projects\\web3bridge\\blockchain\\Web3bridge-Web3-Cohort-XIII\\online-program\\tasks\\week-5\\Chibuike-Chijioke\\contracts\\MultiSignWallet.sol": {
+      "lastModificationDate": 1754464636174,
+      "contentHash": "c0102c1ba9180fbb1cd6a3d17410885c",
+      "sourceName": "contracts/MultiSignWallet.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.8.2 <0.9.0"
+      ],
+      "artifacts": [
+        "MultiSignWallet"
+      ]
+    }
+  }
+}
