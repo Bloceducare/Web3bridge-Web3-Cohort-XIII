@@ -1,0 +1,57 @@
+{
+  "_format": "hh3-artifact-1",
+  "contractName": "ISubscriptionConsumer",
+  "sourceName": "contracts/Counter.t.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_requestId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getRequestStatus",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "fulfilled",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "randomWords",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "enableNativePayment",
+          "type": "bool"
+        }
+      ],
+      "name": "requestRandomWords",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {},
+  "immutableReferences": {},
+  "inputSourceName": "project/contracts/Counter.t.sol",
+  "buildInfoId": "solc-0_8_28-b59028ba2e3886afafc0690c2a0e4ee794bbc852"
+}

@@ -1,0 +1,567 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/contracts/interface/IAllowanceTransfer.sol": {
+      "lastModificationDate": 1755036213285,
+      "contentHash": "4db02885417e9e2bcf72b4ac354c1b7e",
+      "sourceName": "contracts/interface/IAllowanceTransfer.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IEIP712.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IAllowanceTransfer"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/contracts/interface/IEIP712.sol": {
+      "lastModificationDate": 1755020977054,
+      "contentHash": "2e267092a80831796a73a1ac748e5d44",
+      "sourceName": "contracts/interface/IEIP712.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IEIP712"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/contracts/interface/IPermit2.sol": {
+      "lastModificationDate": 1755020988527,
+      "contentHash": "7707fbc2a89598a5054823751ec88d58",
+      "sourceName": "contracts/interface/IPermit2.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./ISignatureTransfer.sol",
+        "./IAllowanceTransfer.sol",
+        "./IERC20.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IPermit2"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/contracts/interface/ISignatureTransfer.sol": {
+      "lastModificationDate": 1755020995501,
+      "contentHash": "482b47db6c13784355af0f1a14f1593d",
+      "sourceName": "contracts/interface/ISignatureTransfer.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IEIP712.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "ISignatureTransfer"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/contracts/interface/IERC20.sol": {
+      "lastModificationDate": 1755065468364,
+      "contentHash": "13b060bd0bb86f08141e3878534e8621",
+      "sourceName": "contracts/interface/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/contracts/permitAndSwap.sol": {
+      "lastModificationDate": 1755091497580,
+      "contentHash": "bc8b192b5690f1c3113b92350f2e3f40",
+      "sourceName": "contracts/permitAndSwap.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol",
+        "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "PermitSwap"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/contracts/interface/IUniswapV2Router01.sol": {
+      "lastModificationDate": 1755016006596,
+      "contentHash": "04a6ca279699179c878b5a5fba373110",
+      "sourceName": "contracts/interface/IUniswapV2Router01.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IUniswapV2Router01"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol": {
+      "lastModificationDate": 1755039498310,
+      "contentHash": "b01905745d47df90c7bd5dd70d498cb7",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.16"
+      ],
+      "artifacts": [
+        "IERC20Permit"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1755039498309,
+      "contentHash": "9261adf6457863de3e9892f51317ec89",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.16"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "lastModificationDate": 1755039498310,
+      "contentHash": "513778b30d2750f5d2b9b19bbcf748a5",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../IERC20.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IERC20Metadata"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/contracts/token.sol": {
+      "lastModificationDate": 1755093313213,
+      "contentHash": "494b07ad060725d28b827780b7d0dbc3",
+      "sourceName": "contracts/token.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8"
+      ],
+      "artifacts": [
+        "Token"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/node_modules/@rari-capital/solmate/src/tokens/ERC20.sol": {
+      "lastModificationDate": 1755085643604,
+      "contentHash": "a0b1801a2ffe030a0f4ff4d508ceb74f",
+      "sourceName": "@rari-capital/solmate/src/tokens/ERC20.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.8.0"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
+      "lastModificationDate": 1755039498266,
+      "contentHash": "59dfce11284f2636db261df9b6a18f81",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC20.sol",
+        "./extensions/IERC20Metadata.sol",
+        "../../utils/Context.sol",
+        "../../interfaces/draft-IERC6093.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1755039498246,
+      "contentHash": "67bfbc07588eb8683b3fd8f6f909563e",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-6/day-2/Fawaz-Oduola/node_modules/@openzeppelin/contracts/interfaces/draft-IERC6093.sol": {
+      "lastModificationDate": 1755039498256,
+      "contentHash": "5041977bbe908de2e6ed0270447f79ad",
+      "sourceName": "@openzeppelin/contracts/interfaces/draft-IERC6093.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.8.4"
+      ],
+      "artifacts": [
+        "IERC1155Errors",
+        "IERC20Errors",
+        "IERC721Errors"
+      ]
+    }
+  }
+}
