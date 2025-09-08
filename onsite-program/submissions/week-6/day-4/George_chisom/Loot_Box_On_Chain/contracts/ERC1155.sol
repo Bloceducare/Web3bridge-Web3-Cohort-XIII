@@ -8,7 +8,7 @@ contract RewardERC1155 is ERC1155, Ownable {
     uint256 public constant TOKEN_ID = 1;
     uint256 public constant TOTAL_SUPPLY = 10_000; // Pre-minted supply for token ID 1
 
-    constructor() ERC1155("pfs://violet-certain-octopus-53.mypinata.cloud/{id}.json") Ownable(msg.sender) {
+    constructor() ERC1155("ipfs://violet-certain-octopus-53.mypinata.cloud/{id}.json") Ownable(msg.sender) {
         _mint(address(this), TOKEN_ID, TOTAL_SUPPLY, "");
     }
 

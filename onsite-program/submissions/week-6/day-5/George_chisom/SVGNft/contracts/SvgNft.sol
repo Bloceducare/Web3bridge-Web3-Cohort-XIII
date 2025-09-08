@@ -45,11 +45,11 @@ contract SvgNft is ERC1155, Ownable, iSvgNft {
 
         string memory my_timestamp = Strings.toString(block.timestamp);
 
-        string memory svg = string(abi.encode(
+        string memory svg = string(abi.encodePacked(
             svgParts[0], // SVG header
             svgParts[1], // Path start
             svgParts[2], // Path continuation
-            svgParts[3], 
+            svgParts[3],
             '<text x="20" y="150" font-family="Arial" font-size="20" fill="black">',
             'Time: ',
             my_timestamp,

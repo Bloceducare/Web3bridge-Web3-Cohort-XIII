@@ -2,18 +2,30 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 require("dotenv").config();
 
-const { WALLET_KEY, LISK_API_KEY, LISK_URL_KEY } = process.env;
+const { PRIVATE_KEY, ETHERSCAN_API_KEY, LISK_RPC_URL } = process.env;
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
   networks: {
-    lisk: {
-      url: LISK_URL_KEY || "https://rpc.sepolia-api.lisk.com",
-      accounts: [`${WALLET_KEY}`],
+    "lisk-sepolia-testnet": {
+      url: "https://rpc.sepolia-api.lisk.com",
+      accounts: [`0x${PRIVATE_KEY}`],
     },
   },
   etherscan: {
-    apiKey: LISK_API_KEY as string,
+    apiKey: {
+      "lisk-sepolia-testnet": "empty",
+    },
+    customChains: [
+      {
+        network: "lisk-sepolia-testnet",
+        chainId: 4202,
+        urls: {
+          apiURL: "https://sepolia-blockscout.lisk.com/api",
+          browserURL: "https://sepolia-blockscout.lisk.com",
+        },
+      },
+    ],
   },
 };
 

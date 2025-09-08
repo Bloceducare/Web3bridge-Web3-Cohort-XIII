@@ -60,7 +60,7 @@ contract EmployeeManagement is iEmployeeInterface {
         require(Employees[_to].status == EmployeeData.Status.Employed, "Employee must be employed");
         require(_amount > 0, "Amount must be greater than zero");
         
-        _to.transfer(_amount);
+        // _to.transfer(_amount);
 
         walletBalances[_to] = walletBalances[_to] + _amount;
     }

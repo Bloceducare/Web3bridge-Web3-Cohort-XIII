@@ -101,4 +101,47 @@ describe("TokenGatedDao", function () {
       expect(await nft.ownerOf(tokenId)).to.equal(member1.address);
     });
   });
+
+  describe("Create Proposal", function () {
+    it("Should allow proposer to create a proposal", async function () {
+      const {
+        tokenGatedDao,
+        nft,
+        roleRegistry,
+        proposerRole,
+        tokenId,
+        owner,
+        member1,
+      } = await loadFixture(deployTokenGatedDaoFixture);
+
+      // First, give approval to member1 to grant roles on behalf of owner
+      await roleRegistry
+        .connect(owner)
+        .setRoleApprovalForAll(await nft.getAddress(), member1.address, true);
+
+      // Grant Proposer role using member1 account (workaround for inverted logic)
+      const role = {
+        roleId: proposerRole,
+        tokenAddress: await nft.getAddress(),
+        tokenId: tokenId,
+        recipient: owner.address,
+        expirationDate: 0, // Never expires
+        revocable: true,
+        data: "0x",
+      };
+
+      await roleRegistry.connect(member1).grantRole(role);
+
+      // Create proposal
+      await tokenGatedDao.createProposal(
+        await nft.getAddress(),
+        tokenId,
+        "Test proposal"
+      );
+
+      const proposal = await tokenGatedDao.proposals(1);
+      expect(proposal.description).to.equal("Test proposal");
+      expect(proposal.proposer).to.equal(owner.address);
+    });
+  });
 });

@@ -2,6 +2,10 @@
   "name": "SVGNft",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^4.0.0",
     "@nomicfoundation/hardhat-ignition": "^3.0.0",

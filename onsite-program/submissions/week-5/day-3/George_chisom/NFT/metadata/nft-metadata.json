@@ -1,0 +1,6 @@
+{
+  "name": "GEORGE NFT",
+  "description": "A unique digital collectible",
+  "image": "https://ipfs.io/ipfs/bafybeiacr3jirch4m5rc2mutzyv4wc7hxejn5txdu6ab3att3iwujbzyju",
+  "attributes": [{ "trait_type": "Type", "value": "Collectible" }]
+}
