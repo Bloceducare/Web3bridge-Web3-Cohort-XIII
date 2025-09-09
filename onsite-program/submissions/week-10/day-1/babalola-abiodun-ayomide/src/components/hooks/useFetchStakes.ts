@@ -1,55 +1,74 @@
-import {
-  STAKING_CONTRACT_ADDRESS,
-  TOKEN_ABI,
-  TOKEN_ADDRESS,
-  STAKING_CONTRACT_ABI,
-} from "@/constants";
-import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-import { useCallback, useState } from "react";
+import { STAKING_CONTRACT_ABI, STAKING_CONTRACT_ADDRESS } from "@/constants";
+import { useState, useCallback, useEffect } from "react";
 import { toast } from "sonner";
+import { usePublicClient, useAccount } from "wagmi";
 
-export const useApproveAndStakeToken = (amount: number) => {
-  const { writeContractAsync } = useWriteContract();
-  const [hash, setHash] = useState<`0x${string}` | undefined>();
+interface UserInfo {
+  stakedAmount: bigint;
+  lastStakeTimestamp: bigint;
+  pendingRewards: bigint;
+  timeUntilUnlock: bigint;
+}
 
-  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
-  const { isSuccess: isConfirmedStake } = useWaitForTransactionReceipt({hash});
+export const useFetchStakes = () => {
+  const client = usePublicClient();
+  const { address } = useAccount();
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
-  const approve = useCallback(async () => {
+  const fetchUserInfo = useCallback(async () => {
+    if (!client || !address) return;
     try {
-      const txHash = await writeContractAsync({
-        address: TOKEN_ADDRESS,
-        abi: TOKEN_ABI,
-        functionName: "approve",
-        args: [TOKEN_ADDRESS, BigInt(amount)],
+      const info = await client.readContract({
+        address: STAKING_CONTRACT_ADDRESS,
+        abi: STAKING_CONTRACT_ABI,
+        functionName: "userInfo",
+        args: [address],
       });
-      setHash(txHash);
-      if (isConfirmed) {
-        const stakeHash = await writeContractAsync({
-          address: STAKING_CONTRACT_ADDRESS,
-          abi: STAKING_CONTRACT_ABI,
-          functionName: "stake",
-          args: [BigInt(amount)],
-        });
-          setHash(stakeHash);
-        if (isConfirmedStake) {
-          console.log("stake hash: ", stakeHash);
-          toast.success(`Succesfully staked ${amount}`);
-        } else {
-          throw new Error("Unable to stake");
-        }
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        toast.error(err.message);
-        console.error(err);
-        throw err;
-      } else {
-        toast.error("Something went wrong");
-        console.error(err);
-      }
-    }
-  }, [writeContractAsync, amount, isConfirmed, isConfirmedStake]);
 
-  return { approve, isConfirmedStake };
+      const parsed: UserInfo = {
+        stakedAmount: info[0] as bigint,
+        lastStakeTimestamp: info[1] as bigint,
+        pendingRewards: info[2] as bigint,
+        timeUntilUnlock: info[3] as bigint,
+      };
+
+      setUserInfo(parsed);
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong fetching staking positions");
+    }
+  }, [address, client]);
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, [fetchUserInfo]);
+
+  useEffect(() => {
+    if (!client || !address) return;
+
+    const unwatch = client.watchContractEvent({
+      address: STAKING_CONTRACT_ADDRESS,
+      abi: STAKING_CONTRACT_ABI,
+      eventName: "Staked",
+      onLogs: (logs) => {
+        logs.forEach((log) => {
+          const { user, amount } = log.args as {
+            user: `0x${string}`;
+            amount: bigint;
+          };
+
+          if (user.toLowerCase() === address.toLowerCase()) {
+            toast.success(`You Successfully staked ${amount.toString()} tokens`);
+            fetchUserInfo();
+          }
+        });
+      },
+    });
+
+    return () => {
+      unwatch?.();
+    };
+  }, [client, address, fetchUserInfo]);
+
+  return { userInfo, refetch: fetchUserInfo };
 };

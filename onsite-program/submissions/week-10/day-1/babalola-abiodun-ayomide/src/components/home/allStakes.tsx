@@ -47,6 +47,7 @@ const mockStakes:UserInfo[] = [
     timestamp: '2024-01-18',
     status: 'Active'
   }
+]
 
 export default function AllStakes() {
   const totalStakers = mockStakes.length
@@ -88,14 +89,14 @@ export default function AllStakes() {
               <TrendingUp className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-muted-foreground">Total Staked</span>
             </div>
-            <p className="text-lg font-bold text-foreground">{totalStaked.toFixed(2)} ETH</p>
+            <p className="text-lg font-bold text-foreground">{totalStaked.toFixed(2)} RSK</p>
           </div>
           <div className="text-center  bg-gray-100 border rounded">
             <div className="flex items-center justify-center gap-1 mb-1">
               <BarChart3 className="w-4 h-4 text-success" />
               <span className="text-sm font-medium text-muted-foreground">Total Rewards</span>
             </div>
-            <p className="text-lg font-bold text-success">{totalRewards.toFixed(3)} ETH</p>
+            <p className="text-lg font-bold text-success">{totalRewards.toFixed(3)} RSK</p>
           </div>
         </div>
 
@@ -118,10 +119,10 @@ export default function AllStakes() {
                     {stake.address}
                   </TableCell>
                   <TableCell className="font-semibold">
-                    {stake.amount} ETH
+                    {stake.amount} RSK
                   </TableCell>
                   <TableCell className="text-success font-semibold">
-                    {stake.rewards} ETH
+                    {stake.rewards} RSK
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {new Date(stake.timestamp).toLocaleDateString()}
