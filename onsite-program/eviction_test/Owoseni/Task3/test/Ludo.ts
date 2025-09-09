@@ -1,0 +1,57 @@
+import { expect } from "chai";
+import {ethers}  from "hardhat";
+
+import { LudoGame } from "../typechain-types";
+import { ERC20 } from "../typechain-types";
+import { parseEther } from "ethers";
+
+describe("LudoGame", function () {
+  let ludo: LudoGame;
+  let token: ERC20;
+  let signers: ethers.Signer[];
+
+  beforeEach(async function () {
+    const Token = await ethers.ethers.getContractFactory("ERC20");
+    token = await Token.deploy("TestToken", "TST") as ERC20;
+    await token.waitForDeployment();
+
+    const LudoGame = await ethers.getContractFactory("LudoGame");
+    ludo = await LudoGame.deploy(token.address) as LudoGame;
+    await ludo.waitForDeployment();
+
+    signers = await ethers.getSigners();
+    await token.mint(signers[0].address, parseEther("100"));
+    await token.mint(signers[1].address, parseEther("100"));
+    await token.approve(ludo.address, parseEther("100"));
+    await token.connect(signers[1]).approve(ludo.address, parseEther("100"));
+  });
+
+  it("Should register players", async function () {
+    await ludo.register("Player1", 0); 
+    const playerInfo = await ludo.getPlayer(signers[0].address);
+    expect(playerInfo[1]).to.equal(0); 
+  });
+
+  it("Should allow staking and moving", async function () {
+    await ludo.register("Player1", 0);
+    await token.approve(ludo.address, parseEther("100"));
+    await ludo.stakeTokens();
+    await ludo.makeMove();
+    const [name, color, position, stakedTokens] = await ludo.getPlayer(signers[0].address);
+    expect(position).to.be.greaterThanOrEqual(1).and.lessThanOrEqual(6);
+  });
+
+  it("Should end game and distribute winnings", async function () {
+    await ludo.register("Player1", 0);
+    await ludo.connect(signers[1]).register("Player2", 1);
+    await ludo.stakeTokens();
+    await ludo.connect(signers[1]).stakeTokens();
+
+    await ludo.makeMove();
+    await ethers.provider.network.provider.send("evm_increaseTime", [3600]); 
+    await ludo.makeMove(); 
+    const winner = await ludo.winner();
+    expect(winner).to.equal(signers[0].address);
+    expect(await token.balanceOf(signers[0].address)).to.equal(parseEther("100"));
+  });
+});
