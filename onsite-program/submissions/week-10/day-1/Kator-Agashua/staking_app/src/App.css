@@ -1,0 +1,402 @@
+/* Base styles */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --warning-color: #f39c12;
+  --dark-color: #2c3e50;
+  --light-color: #ecf0f1;
+  --border-color: #ddd;
+  --text-color: #333;
+  --success-color: #27ae60;
+  --error-color: #c0392b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--light-color);
+}
+
+#root {
+  width: 100%;
+}
+
+/* App Container */
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.app-header h1 {
+  color: var(--primary-color);
+  font-size: 2rem;
+}
+
+/* Main Content */
+.app-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.app-section {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.app-section h2 {
+  color: var(--dark-color);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+/* Footer */
+.app-footer {
+  margin-top: 3rem;
+  padding: 1rem 0;
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+  color: #888;
+}
+
+/* Wallet Button */
+.wallet-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.wallet-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.wallet-address {
+  font-family: monospace;
+  background-color: var(--light-color);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.connect-button, .disconnect-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.connect-button {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.disconnect-button {
+  background-color: var(--light-color);
+  color: var(--dark-color);
+}
+
+.connect-button:hover {
+  background-color: #2980b9;
+}
+
+.disconnect-button:hover {
+  background-color: #ddd;
+}
+
+/* Staking Form */
+.staking-form-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.stake-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.stake-button:hover {
+  background-color: #27ae60;
+}
+
+.stake-button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+/* Protocol Stats */
+.protocol-stats-container {
+  text-align: center;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.stat-item {
+  background-color: var(--light-color);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--dark-color);
+}
+
+/* Stake Positions */
+.stake-positions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.toggle-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--light-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggle-button.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.stakes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stake-item {
+  background-color: var(--light-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stake-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.stake-id {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.stake-amount {
+  font-weight: bold;
+}
+
+.stake-time {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.stake-rewards {
+  font-weight: bold;
+  color: var(--secondary-color);
+}
+
+/* Withdraw and Claim */
+.withdraw-claim-container {
+  margin-top: 1rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.withdraw-button, .claim-button, .emergency-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.withdraw-button {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.claim-button {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.emergency-button {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.withdraw-button:hover {
+  background-color: #2980b9;
+}
+
+.claim-button:hover {
+  background-color: #27ae60;
+}
+
+.emergency-button:hover {
+  background-color: #c0392b;
+}
+
+.withdraw-button:disabled, .claim-button:disabled, .emergency-button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+/* Utility Classes */
+.error-message {
+  color: var(--error-color);
+  background-color: #fadbd8;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.success-message {
+  color: var(--success-color);
+  background-color: #d5f5e3;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.tx-hash {
+  font-family: monospace;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.tx-hash a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.tx-hash a:hover {
+  text-decoration: underline;
+}
+
+.refresh-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--light-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.refresh-button:hover {
+  background-color: #ddd;
+}
+
+.refresh-button:disabled {
+  background-color: #ecf0f1;
+  color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.connect-prompt, .no-stakes, .loading {
+  text-align: center;
+  padding: 2rem;
+  color: #7f8c8d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .wallet-button-container {
+    align-items: center;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .withdraw-button, .claim-button, .emergency-button {
+    width: 100%;
+  }
+}
