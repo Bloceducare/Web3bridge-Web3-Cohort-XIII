@@ -17,7 +17,7 @@ return useCallback(
     async () => {
         if (!address || !walletClient) {
             toast.error("Not Connected", {
-                description: "Ode!, connect wallet"
+                description: "connect wallet"
             });
             return;
         }

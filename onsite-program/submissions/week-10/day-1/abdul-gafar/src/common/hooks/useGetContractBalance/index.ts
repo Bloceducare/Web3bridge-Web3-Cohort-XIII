@@ -16,6 +16,11 @@ export function useGetContractBalance() {
       const totalToken = await publicClient.getBalance({
         address: address as Address,
       })
+      // const balance = await publicClient.getBalance({ 
+      //   address: tokenAddress,
+      //   symbol: 'VAT'
+      // })
+      // console.log("Inside balance", BigInt(totalToken))
       setBalance(totalToken)
     })();
   }, []);

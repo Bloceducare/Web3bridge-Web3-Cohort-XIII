@@ -35,7 +35,6 @@ const useEmergencyWithdraw = () => {
             throw new Error("Public client is undefined");
         }
 
-        // Warning confirmation
         const confirmed = confirm(
             "Emergency withdraw will forfeit all rewards and apply a 50% penalty. Are you sure?"
         );
@@ -45,17 +44,15 @@ const useEmergencyWithdraw = () => {
         }
 
         try {
-            // Call emergencyWithdraw function (no parameters needed)
             const emergencyHash = await writeContractAsync({
                 address: contractAddress as `0x${string}`,
                 abi: STACKING_CONTRACT,
                 functionName: "emergencyWithdraw",
-                args: [], // No arguments needed
+                args: [],
             });
 
             console.log("Emergency withdraw txHash: ", emergencyHash);
 
-            // Wait for transaction confirmation
             const emergencyReceipt = await publicClient.waitForTransactionReceipt({
                 hash: emergencyHash,
             });

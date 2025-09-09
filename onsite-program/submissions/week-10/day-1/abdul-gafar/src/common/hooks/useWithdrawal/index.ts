@@ -15,7 +15,7 @@ const useWithdraw = () => {
     async (amount: number) => {
         if (!address || !walletClient) {
             toast.error("Not Connected", {
-                description: "Ode!, connect wallet"
+                description: "connect wallet"
             });
             return;
         }
@@ -35,10 +35,8 @@ const useWithdraw = () => {
         }
 
         try {
-            // Convert amount to wei (assuming 18 decimals)
             const amountInWei = BigInt(amount * 10**18);
 
-            // Call withdraw function
             const withdrawHash = await writeContractAsync({
                 address: contractAddress as `0x${string}`,
                 abi: STACKING_CONTRACT,
@@ -48,7 +46,6 @@ const useWithdraw = () => {
 
             console.log("Withdraw txHash: ", withdrawHash);
 
-            // Wait for transaction confirmation
             const withdrawReceipt = await publicClient.waitForTransactionReceipt({
                 hash: withdrawHash,
             });

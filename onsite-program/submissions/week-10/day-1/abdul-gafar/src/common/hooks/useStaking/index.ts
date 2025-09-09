@@ -15,7 +15,7 @@ const useStake = () => {
     async (amount: number) => {
         if (!address || !walletClient) {
             toast.error("Not Connected", {
-                description: "Ode!, connect wallet"
+                description: "connect wallet"
             });
             return;
         }
