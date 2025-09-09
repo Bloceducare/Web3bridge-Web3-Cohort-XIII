@@ -17,37 +17,47 @@ import WithdrawCard from '@/ui/modules/components/WithdrawalCard';
 import PositionCard from '@/ui/modules/components/PositionCard';
 import RewardsCard from '@/ui/modules/components/RewardCard';
 import { AppLayout } from '@/ui/modules/partials';
-import { useGetContractBalance } from '@/common/hooks';
-import { parseUnits } from 'viem';
+import { useGetContractBalance, useGetInitialApr, useGetUserStake } from '@/common/hooks';
+import { formatEther } from 'viem';
 import useClaimRewards from '@/common/hooks/useClaimRewards';
 import useStake from '@/common/hooks/useStaking';
 import useWithdraw from '@/common/hooks/useWithdrawal';
 import useEmergencyWithdraw from '@/common/hooks/useEmergencyWithdrawal';
+import { formatTimestamp } from '@/common/utils/helpers';
 
 export default function HomePage() {
   const theme = useTheme();
   const { isConnected } = useAccount();
   const balance = useGetContractBalance();
+  const userStakeBalance = useGetUserStake();
+  const contractApr = useGetInitialApr();
   const claimReward = useClaimRewards();
   const withdrawStake = useWithdraw();
   const emergencyWithdraw = useEmergencyWithdraw();
   const stake = useStake();
+  // @ts-ignore
+  const userstakedAmount = userStakeBalance ? formatEther(userStakeBalance.stakedAmount) : '0'
   if(balance) {
-    console.log("Contract balance", parseUnits(`${balance}`, 18))
+    console.log("Contract APR percentage", contractApr)
   }
 
   const mockData = {
-    tokenBalance: '1000.00',
-    stakedAmount: '500.00',
-    pendingRewards: '12.345',
+    tokenBalance: userstakedAmount,
+    // @ts-ignore
+    stakedAmount: userstakedAmount,
+    // @ts-ignore
+    pendingRewards: userStakeBalance ? formatEther(userStakeBalance.pendingRewards) : '0',
     timeUntilUnlock: '432000',
     canWithdraw: false,
-    currentApr: '45.5',
-    totalStaked: '1234567.89',
+    // @ts-ignore
+    currentApr: contractApr ? formatEther(contractApr) : '',
+    // @ts-ignore
+    totalStaked: userstakedAmount,
     totalStakers: '1,234',
     rewardPool: '50000.00',
     totalClaimed: '25.50',
-    stakingDate: '2024-01-15',
+    // @ts-ignore
+    stakingDate: userStakeBalance ? formatTimestamp(userStakeBalance.stakedAmount) : '0',
   };
 
   return (
@@ -60,7 +70,7 @@ export default function HomePage() {
           pb: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="xl">
           {/* Hero Section */}
           <Box sx={{ textAlign: 'center', mb: 6 }}>
             <Typography

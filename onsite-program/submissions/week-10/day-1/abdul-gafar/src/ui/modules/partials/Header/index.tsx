@@ -26,7 +26,7 @@ export default function Header() {
         borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Toolbar sx={{ py: 1 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
             <AccountBalanceWalletIcon

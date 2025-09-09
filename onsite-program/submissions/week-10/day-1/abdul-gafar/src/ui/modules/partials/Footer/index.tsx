@@ -19,7 +19,7 @@ export default function Footer() {
         borderTop: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Box
           sx={{
             display: 'flex',
@@ -30,7 +30,7 @@ export default function Footer() {
           }}
         >
           <Typography variant="body2" color="text.secondary">
-            © 2024 StakeVault. All rights reserved.
+            &copy; {new Date().getFullYear()} StakeVault. All rights reserved.
           </Typography>
           <Box sx={{ display: 'flex', gap: 2 }}>
             <Link

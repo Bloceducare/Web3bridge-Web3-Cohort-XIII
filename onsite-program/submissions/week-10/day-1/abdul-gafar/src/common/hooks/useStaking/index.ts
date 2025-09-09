@@ -1,12 +1,12 @@
 import { STACKING_CONTRACT, STAKING_CONTRACT_TOKEN } from "@/common/abi";
+import { publicClient } from "@/common/constant";
 import { useCallback } from "react";
 import { toast } from "sonner";
-import { useAccount, usePublicClient, useWalletClient, useWriteContract } from "wagmi";
+import { useAccount, useWalletClient, useWriteContract } from "wagmi";
 
 
 const useStake = () => {
   const { address } = useAccount();
-  const publicClient = usePublicClient();
   const walletClient = useWalletClient();
   const { writeContractAsync } = useWriteContract();
 
@@ -44,6 +44,14 @@ const useStake = () => {
 
         try {
             const amountInWei = BigInt(amount * 10**18);
+
+            // const simulatetransaction = await publicClient.simulateContract({
+            //     abi: STAKING_CONTRACT_TOKEN,
+            //     address: tokenAddress as `0x${string}`,
+            //     functionName: 'approve',
+            //     args: [contractAddress, amountInWei]
+            // })
+            // console.log("Simulate calllll", simulatetransaction);
 
             const approveHash = await writeContractAsync({
                 address: tokenAddress as `0x${string}`,

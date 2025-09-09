@@ -47,18 +47,18 @@ export default function StatsCard({
       icon: <TrendingUpIcon />,
       color: theme.palette.success.main,
     },
-    {
-      label: 'Total Stakers',
-      value: totalStakers,
-      icon: <GroupIcon />,
-      color: theme.palette.info.main,
-    },
-    {
-      label: 'Reward Pool',
-      value: `${rewardPool} STK`,
-      icon: <LocalFireDepartmentIcon />,
-      color: theme.palette.warning.main,
-    },
+    // {
+    //   label: 'Total Stakers',
+    //   value: totalStakers,
+    //   icon: <GroupIcon />,
+    //   color: theme.palette.info.main,
+    // },
+    // {
+    //   label: 'Reward Pool',
+    //   value: `${rewardPool} STK`,
+    //   icon: <LocalFireDepartmentIcon />,
+    //   color: theme.palette.warning.main,
+    // },
   ];
 
   return (
