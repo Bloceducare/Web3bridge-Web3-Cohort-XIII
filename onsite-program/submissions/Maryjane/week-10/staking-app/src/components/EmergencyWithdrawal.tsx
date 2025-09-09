@@ -12,8 +12,8 @@ interface EmergencyWithdrawalProps {
 }
 
 export default function EmergencyWithdrawal({ walletClient, onEmergencyWithdraw }: EmergencyWithdrawalProps) {
-  const [stakeId, setStakeId] = useState('');
   const [hash, setHash] = useState<`0x${string}` | undefined>();
+  const [successMessage, setSuccessMessage] = useState('');
 
   const { writeContract, isPending, data } = useWriteContract();
 
@@ -29,22 +29,23 @@ export default function EmergencyWithdrawal({ walletClient, onEmergencyWithdraw 
 
   React.useEffect(() => {
     if (isSuccess) {
-      alert('Emergency withdrawal successful!');
-      setStakeId('');
+      setSuccessMessage('Emergency withdrawal successful!');
       onEmergencyWithdraw();
       setHash(undefined);
+
+      // Clear success message after 5 seconds
+      setTimeout(() => setSuccessMessage(''), 5000);
     }
   }, [isSuccess, onEmergencyWithdraw]);
 
   const handleEmergencyWithdraw = () => {
-    if (!walletClient || !stakeId) return;
+    if (!walletClient) return;
 
     try {
       writeContract({
         address: CONTRACT_ADDRESSES.STAKING_CONTRACT,
         abi: STAKING_ABI,
         functionName: 'emergencyWithdraw',
-        args: [BigInt(stakeId)],
       });
     } catch (error) {
       console.error('Emergency withdrawal failed:', error);
@@ -55,23 +56,26 @@ export default function EmergencyWithdrawal({ walletClient, onEmergencyWithdraw 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Emergency Withdrawal</h2>
-      <div className="flex gap-4">
-        <input
-          type="number"
-          value={stakeId}
-          onChange={(e) => setStakeId(e.target.value)}
-          placeholder="Stake ID"
-          className="flex-1 p-2 border rounded"
-          disabled={isPending}
-        />
-        <button
-          onClick={handleEmergencyWithdraw}
-          disabled={isPending || isConfirming || !walletClient || !stakeId}
-          className="bg-red-600 text-white px-4 py-2 rounded disabled:opacity-50"
-        >
-          {isPending ? 'Confirm in wallet...' : isConfirming ? 'Confirming...' : 'Emergency Withdraw'}
-        </button>
+
+      {successMessage && (
+        <div className="mb-4 p-3 bg-orange-100 border border-orange-400 text-orange-700 rounded">
+          {successMessage}
+        </div>
+      )}
+
+      <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded">
+        <p className="text-sm text-red-800">
+          ⚠️ Emergency withdrawal will incur a penalty. Only use this if you cannot wait for the lock period to end.
+        </p>
       </div>
+
+      <button
+        onClick={handleEmergencyWithdraw}
+        disabled={isPending || isConfirming || !walletClient}
+        className="bg-red-600 text-white px-4 py-2 rounded disabled:opacity-50 hover:bg-red-700 transition-colors w-full"
+      >
+        {isPending ? 'Confirm in wallet...' : isConfirming ? 'Confirming...' : 'Emergency Withdraw All'}
+      </button>
     </div>
   );
 }

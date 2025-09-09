@@ -12,8 +12,8 @@ interface RewardsClaimProps {
 }
 
 export default function RewardsClaim({ walletClient, onClaim }: RewardsClaimProps) {
-  const [stakeId, setStakeId] = useState('');
   const [hash, setHash] = useState<`0x${string}` | undefined>();
+  const [successMessage, setSuccessMessage] = useState('');
 
   const { writeContract, isPending, data } = useWriteContract();
 
@@ -29,22 +29,23 @@ export default function RewardsClaim({ walletClient, onClaim }: RewardsClaimProp
 
   React.useEffect(() => {
     if (isSuccess) {
-      alert('Rewards claimed successfully!');
-      setStakeId('');
+      setSuccessMessage('Rewards claimed successfully!');
       onClaim();
       setHash(undefined);
+
+      // Clear success message after 5 seconds
+      setTimeout(() => setSuccessMessage(''), 5000);
     }
   }, [isSuccess, onClaim]);
 
   const handleClaim = () => {
-    if (!walletClient || !stakeId) return;
+    if (!walletClient) return;
 
     try {
       writeContract({
         address: CONTRACT_ADDRESSES.STAKING_CONTRACT,
         abi: STAKING_ABI,
         functionName: 'claimRewards',
-        args: [BigInt(stakeId)],
       });
     } catch (error) {
       console.error('Claim failed:', error);
@@ -55,23 +56,20 @@ export default function RewardsClaim({ walletClient, onClaim }: RewardsClaimProp
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
       <h2 className="text-xl font-bold mb-4">Claim Rewards</h2>
-      <div className="flex gap-4">
-        <input
-          type="number"
-          value={stakeId}
-          onChange={(e) => setStakeId(e.target.value)}
-          placeholder="Stake ID"
-          className="flex-1 p-2 border rounded"
-          disabled={isPending}
-        />
-        <button
-          onClick={handleClaim}
-          disabled={isPending || isConfirming || !walletClient || !stakeId}
-          className="bg-yellow-500 text-white px-4 py-2 rounded disabled:opacity-50"
-        >
-          {isPending ? 'Confirm in wallet...' : isConfirming ? 'Confirming...' : 'Claim Rewards'}
-        </button>
-      </div>
+
+      {successMessage && (
+        <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+          {successMessage}
+        </div>
+      )}
+
+      <button
+        onClick={handleClaim}
+        disabled={isPending || isConfirming || !walletClient}
+        className="bg-yellow-500 text-white px-4 py-2 rounded disabled:opacity-50 hover:bg-yellow-600 transition-colors w-full"
+      >
+        {isPending ? 'Confirm in wallet...' : isConfirming ? 'Confirming...' : 'Claim All Rewards'}
+      </button>
     </div>
   );
 }

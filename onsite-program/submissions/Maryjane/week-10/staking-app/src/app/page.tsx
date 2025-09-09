@@ -2,6 +2,7 @@
 
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useWalletClient } from 'wagmi';
+import { useEffect, useState } from 'react';
 import StakingForm from '@/components/StakingForm';
 import WithdrawalForm from '@/components/WithdrawalForm';
 import RewardsClaim from '@/components/RewardsClaim';
@@ -9,13 +10,29 @@ import EmergencyWithdrawal from '@/components/EmergencyWithdrawal';
 import StakePositions from '@/components/StakePositions';
 
 export default function Home() {
-  const { address, isConnected } = useAccount();
+  const [isClient, setIsClient] = useState(false);
+  const { address, isConnected, chain } = useAccount();
   const { data: walletClient } = useWalletClient();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    console.time('Wallet Detection');
+    console.log('Wallet detection started');
+  }, []);
+
+  useEffect(() => {
+    if (isConnected !== undefined) {
+      console.timeEnd('Wallet Detection');
+      console.log('Wallet detection completed:', { isConnected, address, chain });
+    }
+  }, [isConnected, address, chain]);
 
   const handleStake = () => {
     // Refresh data if needed
   };
-
   const handleWithdraw = () => {
     // Refresh data if needed
   };
@@ -33,7 +50,7 @@ export default function Home() {
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-center">Staking dApp</h1>
         <p className="text-center text-gray-600 mt-2">
-          Stake ETH and earn rewards on Lisk Sepolia
+          Stake ETH and earn rewards on Sepolia
         </p>
       </header>
       <main className="max-w-4xl mx-auto">
@@ -49,15 +66,15 @@ export default function Home() {
                 Connect your wallet to start staking ETH and earning rewards.
               </p>
               <div className="text-sm text-gray-500">
-                <p>📍 Network: Lisk Sepolia</p>
-                <p>💰 Minimum Stake: 0.001 ETH</p>
-                <p>🎁 Annual Rewards: 10%</p>
+                <p>Network: Sepolia</p>
+                <p>Minimum Stake: 0.001 ETH</p>
+                <p>Annual Rewards: 10%</p>
               </div>
             </div>
           </div>
         )}
 
-        {isConnected && !walletClient && (
+        {isClient && isConnected && !walletClient && (
           <div className="text-center py-12">
             <div className="bg-yellow-50 p-8 rounded-lg border border-yellow-200">
               <p className="text-yellow-800">Loading wallet client...</p>
@@ -65,7 +82,7 @@ export default function Home() {
           </div>
         )}
 
-        {isConnected && address && walletClient && (
+        {isClient && isConnected && address && walletClient && (
           <div className="space-y-6">
             <div className="bg-white p-4 rounded-lg shadow-md">
               <h3 className="text-lg font-semibold mb-2">Connected Account</h3>
@@ -77,6 +94,14 @@ export default function Home() {
             <RewardsClaim walletClient={walletClient} onClaim={handleClaim} />
             <EmergencyWithdrawal walletClient={walletClient} onEmergencyWithdraw={handleEmergencyWithdraw} />
             <StakePositions account={address} walletClient={walletClient} />
+          </div>
+        )}
+
+        {!isClient && (
+          <div className="text-center py-12">
+            <div className="bg-gray-50 p-8 rounded-lg">
+              <p className="text-gray-600">Loading...</p>
+            </div>
           </div>
         )}
       </main>
