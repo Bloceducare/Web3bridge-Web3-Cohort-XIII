@@ -1,0 +1,1 @@
+export type UserDetailsTuple = [bigint, bigint, bigint];

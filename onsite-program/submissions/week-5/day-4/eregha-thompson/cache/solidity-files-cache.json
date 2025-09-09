@@ -1,0 +1,116 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/godbrand/Documents/GitHub/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-4/eregha-thompson/contracts/Lock.sol": {
+      "lastModificationDate": 1754605077472,
+      "contentHash": "7eee587c347fe6b1de50c96688cb9477",
+      "sourceName": "contracts/Lock.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Lock"
+      ]
+    },
+    "/home/godbrand/Documents/GitHub/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-4/eregha-thompson/contracts/multisig.sol": {
+      "lastModificationDate": 1754654647225,
+      "contentHash": "0db16ac786301677dd2e125629941857",
+      "sourceName": "contracts/multisig.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Errors",
+        "Multisig"
+      ]
+    },
+    "/home/godbrand/Documents/GitHub/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-5/day-4/eregha-thompson/contracts/multisigfactory.sol": {
+      "lastModificationDate": 1754650135039,
+      "contentHash": "812b8a9f6695aa7cef8a7be65d3514c7",
+      "sourceName": "contracts/multisigfactory.sol",
+      "solcConfig": {
+        "version": "0.8.30",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./multisig.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "multisigFactory"
+      ]
+    }
+  }
+}
