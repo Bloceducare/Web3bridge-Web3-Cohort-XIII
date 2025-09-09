@@ -42,7 +42,7 @@ const MintTokens = () => {
         await refetch();
       }, 6000);
       
-      alert('🎉 Tokens successfully minted to your wallet!');
+      alert(' Tokens successfully minted to your wallet!');
     } catch (error) {
       console.error('Failed to mint tokens:', error);
       alert('Failed to mint tokens: ' + error.message);
@@ -59,7 +59,7 @@ const MintTokens = () => {
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold text-green-800 mb-1">
-            🎁 Get Test Tokens
+             Get Test Tokens
           </h3>
           <p className="text-green-600 text-sm mb-1">
             Get free MTK tokens to start staking and testing the platform

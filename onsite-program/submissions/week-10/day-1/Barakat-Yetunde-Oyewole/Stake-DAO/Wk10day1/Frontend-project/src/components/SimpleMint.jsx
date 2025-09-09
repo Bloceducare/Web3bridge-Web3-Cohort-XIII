@@ -40,7 +40,7 @@ const SimpleMint = () => {
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold text-blue-800 mb-1">
-            🎁 Get Test Tokens (Wagmi Version)
+             Get Test Tokens (Wagmi Version)
           </h3>
           <p className="text-blue-600 text-sm">
             Mint 10,000 MTK tokens directly using Wagmi
@@ -58,8 +58,8 @@ const SimpleMint = () => {
           {/* Status messages */}
           <div className="mt-2 text-sm">
             {hash && <p className="text-blue-600">Transaction: {hash.slice(0, 10)}...</p>}
-            {isConfirmed && <p className="text-green-600">✅ Success!</p>}
-            {error && <p className="text-red-600">❌ {error.shortMessage || error.message}</p>}
+            {isConfirmed && <p className="text-green-600"> Success!</p>}
+            {error && <p className="text-red-600"> {error.shortMessage || error.message}</p>}
           </div>
         </div>
       </div>

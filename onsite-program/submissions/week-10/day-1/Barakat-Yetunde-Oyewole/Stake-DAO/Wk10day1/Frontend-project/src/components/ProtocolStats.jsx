@@ -15,21 +15,21 @@ const ProtocolStats = () => {
     {
       label: 'Total Value Locked', // How much is staked across all users
       value: `${formatTokenAmount(protocolStats.totalStaked)} Tokens`,
-      icon: '🔒', // Lock emoji represents "locked" staked tokens
+      icon: '', // Lock emoji represents "locked" staked tokens
       bgColor: 'bg-blue-50', // Light blue background
       textColor: 'text-blue-700', // Darker blue text
     },
     {
       label: 'Current APR', // Annual Percentage Rate - how much rewards you earn per year
       value: `${calculateAPR(protocolStats.currentRewardRate)}%`,
-      icon: '📈', // Chart emoji represents growth/returns
+      icon: '', // Chart emoji represents growth/returns
       bgColor: 'bg-green-50', // Light green background  
       textColor: 'text-green-700', // Darker green text
     },
     {
       label: 'Reward Rate', // Raw reward rate in basis points (technical detail)
       value: `${protocolStats.currentRewardRate.toString()} BP`, // BP = Basis Points
-      icon: '⚡', // Lightning bolt represents active/dynamic rate
+      icon: '', // Lightning bolt represents active/dynamic rate
       bgColor: 'bg-purple-50', // Light purple background
       textColor: 'text-purple-700', // Darker purple text
     },

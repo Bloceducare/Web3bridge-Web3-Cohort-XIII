@@ -47,7 +47,7 @@ const RewardsSection = () => {
   if (!isConnected || !isCorrectChain) {
     return (
       <div className="card" id="rewards">
-        <h2 className="text-xl font-bold mb-4">🎁 Rewards</h2>
+        <h2 className="text-xl font-bold mb-4"> Rewards</h2>
         <p className="text-gray-500 text-center py-8">
           {!isConnected ? 'Please connect your wallet' : 'Please switch to Sepolia network'}
         </p>
@@ -57,7 +57,7 @@ const RewardsSection = () => {
 
   return (
     <div className="card" id="rewards">
-      <h2 className="text-xl font-bold mb-6">🎁 Rewards</h2>
+      <h2 className="text-xl font-bold mb-6"> Rewards</h2>
       
       {/* Rewards Overview - Two stat cards side by side */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -107,7 +107,7 @@ const RewardsSection = () => {
 
       {/* Educational Information */}
       <div className="mt-6 bg-blue-50 rounded-lg p-4">
-        <h3 className="font-medium text-blue-900 mb-2">💡 How Rewards Work</h3>
+        <h3 className="font-medium text-blue-900 mb-2"> How Rewards Work</h3>
         <ul className="text-sm text-blue-800 space-y-1">
           <li>• Rewards are calculated based on your staking amount and time</li>
           <li>• APR decreases as more tokens are staked in the protocol</li>

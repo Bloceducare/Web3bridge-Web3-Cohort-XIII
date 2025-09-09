@@ -27,7 +27,7 @@ const UserStakes = () => {
       
       // Refresh data to show updated stakes
       await refetch();
-      alert('Withdrawal successful! 💰');
+      alert('Withdrawal successful! ');
     } catch (error) {
       console.error('Withdrawal error:', error);
       alert('Withdrawal failed: ' + error.message);
@@ -60,7 +60,7 @@ const UserStakes = () => {
   if (!isConnected || !isCorrectChain) {
     return (
       <div className="card">
-        <h2 className="text-xl font-bold mb-4">📊 Your Stakes</h2>
+        <h2 className="text-xl font-bold mb-4"> Your Stakes</h2>
         <p className="text-gray-500 text-center py-8">
           {!isConnected ? 'Please connect your wallet' : 'Please switch to Sepolia network'}
         </p>
@@ -72,9 +72,9 @@ const UserStakes = () => {
   if (userStakes.length === 0) {
     return (
       <div className="card">
-        <h2 className="text-xl font-bold mb-4">📊 Your Stakes</h2>
+        <h2 className="text-xl font-bold mb-4"> Your Stakes</h2>
         <div className="text-center py-8">
-          <div className="text-4xl mb-4">🌱</div>
+          <div className="text-4xl mb-4"></div>
           <p className="text-gray-500">No stakes yet. Start staking to see your positions here!</p>
         </div>
       </div>
@@ -83,7 +83,7 @@ const UserStakes = () => {
 
   return (
     <div className="card">
-      <h2 className="text-xl font-bold mb-6">📊 Your Stakes</h2>
+      <h2 className="text-xl font-bold mb-6"> Your Stakes</h2>
       
       <div className="space-y-4">
         {/* Loop through each stake and render a card */}
@@ -132,10 +132,10 @@ const UserStakes = () => {
                 <div className="text-right">
                   <p className="text-sm text-gray-600">
                     {unlocked ? (
-                      <span className="text-green-600 font-medium">🔓 Unlocked</span>
+                      <span className="text-green-600 font-medium"> Unlocked</span>
                     ) : (
                       <span className="text-orange-600">
-                        🔒 {formatTimeRemaining(unlockTime)}
+                         {formatTimeRemaining(unlockTime)}
                       </span>
                     )}
                   </p>

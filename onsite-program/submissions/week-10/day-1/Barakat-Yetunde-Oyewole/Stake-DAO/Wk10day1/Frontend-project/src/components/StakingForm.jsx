@@ -81,7 +81,7 @@ const StakingForm = () => {
   if (!isConnected) {
     return (
       <div className="card" id="stake">
-        <h2 className="text-xl font-bold mb-4">💰 Stake Tokens</h2>
+        <h2 className="text-xl font-bold mb-4"> Stake Tokens</h2>
         <p className="text-gray-500 text-center py-8">
           Please connect your wallet to start staking
         </p>
@@ -93,7 +93,7 @@ const StakingForm = () => {
   if (!isCorrectChain) {
     return (
       <div className="card" id="stake">
-        <h2 className="text-xl font-bold mb-4">💰 Stake Tokens</h2>
+        <h2 className="text-xl font-bold mb-4"> Stake Tokens</h2>
         <p className="text-gray-500 text-center py-8">
           Please switch to Sepolia network to start staking
         </p>
@@ -103,7 +103,7 @@ const StakingForm = () => {
 
   return (
     <div className="card" id="stake">
-      <h2 className="text-xl font-bold mb-6">💰 Stake Tokens</h2>
+      <h2 className="text-xl font-bold mb-6"> Stake Tokens</h2>
       
       {/* Balance Display - Show user how many tokens they have */}
       <div className="bg-gray-50 rounded-lg p-4 mb-6">

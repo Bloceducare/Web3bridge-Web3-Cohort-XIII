@@ -21,7 +21,7 @@ const BalanceChecker = () => {
 
     try {
       setIsChecking(true);
-      console.log('🔍 Direct balance check starting...');
+      console.log(' Direct balance check starting...');
       console.log('Account:', account);
       console.log('Token contract address:', CONTRACTS.MOCK_ERC20);
       console.log('Contract target:', tokenContract.target);
@@ -36,7 +36,7 @@ const BalanceChecker = () => {
       
       setBalance(`${formattedBalance} MTK (${rawBalance.toString()} wei)`);
     } catch (error) {
-      console.error('❌ Balance check failed:', error);
+      console.error(' Balance check failed:', error);
       setBalance(`Error: ${error.message}`);
     } finally {
       setIsChecking(false);
@@ -53,7 +53,7 @@ const BalanceChecker = () => {
 
   return (
     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-      <h4 className="font-semibold text-blue-900 mb-3">🔍 Direct Balance Checker</h4>
+      <h4 className="font-semibold text-blue-900 mb-3"> Direct Balance Checker</h4>
       
       <div className="space-y-2">
         <p className="text-sm">
@@ -72,7 +72,7 @@ const BalanceChecker = () => {
         disabled={isChecking}
         className="mt-3 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white px-4 py-2 rounded font-medium transition-colors"
       >
-        {isChecking ? 'Checking...' : '🔄 Check Balance Now'}
+        {isChecking ? 'Checking...' : ' Check Balance Now'}
       </button>
     </div>
   );
