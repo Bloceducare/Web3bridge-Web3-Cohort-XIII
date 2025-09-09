@@ -12,11 +12,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useStake from "@/hooks/useStake";
+import useApproval from "@/hooks/useApproval";
 
 function Stake() {
-  const [stakeToken, setStakeToken] = React.useState("");
+  const [token, setToken] = React.useState("");
 
   const stake = useStake();
+  const approve = useApproval();
 
   return (
     <div className="flex w-full max-w-lg flex-col gap-6">
@@ -38,15 +40,21 @@ function Stake() {
               id="tabs-demo-name"
               placeholder="Enter token amount"
               className="h-10 py-6"
-              value={stakeToken}
-              onChange={(e) => setStakeToken(e.target.value)}
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
             />
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex gap-2">
           <Button
-            className="w-full h-12 bg-purple-400 text-white text-lg font-bold hover:bg-purple-500"
-            onClick={() => stake(stakeToken)}
+            onClick={() => approve(token)}
+            className="w-1/2 h-12 bg-purple-400 text-white text-lg font-bold hover:bg-purple-500"
+          >
+            Approve
+          </Button>
+          <Button
+            onClick={() => stake(token)}
+            className="w-1/2 h-12 bg-purple-600 text-white text-lg font-bold hover:bg-purple-700"
           >
             Stake
           </Button>

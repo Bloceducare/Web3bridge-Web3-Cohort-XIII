@@ -1,8 +1,7 @@
 import React from "react";
 import { contractData, publicClient } from "@/config/config";
 import { useAccount } from "wagmi";
-import { formatEther, getAddress, parseAbiItem } from "viem";
-//import useApproval from "./useApproval";
+import { formatEther, parseAbiItem } from "viem";
 
 function useStakingBalance() {
   const [userInfo, setUserInfo] = React.useState<UserInfoProp | undefined>(
@@ -21,16 +20,6 @@ function useStakingBalance() {
     return request;
   }, [account]);
 
-  const unwatch = React.useMemo(() => {
-    publicClient.watchEvent({
-      address: contractData.contractAddress,
-      event: parseAbiItem(
-        "event Staked(address indexed user, uint256 amount, uint256 timestamp, uint256 newTotalStaked, int256 currentRewardRate)",
-      ),
-      onLogs: (logs) => console.log(logs),
-    });
-  }, []);
-
   React.useEffect(
     function () {
       (async () => {
@@ -46,8 +35,18 @@ function useStakingBalance() {
           ),
         });
       })();
+
+      (() => {
+        const unwatch = publicClient.watchEvent({
+          address: contractData.contractAddress,
+          event: parseAbiItem(
+            "event Staked(address indexed user, uint256 amount, uint256 timestamp, uint256 newTotalStaked, uint256 currentRewardRate)",
+          ),
+          onLogs: (data) => console.log(data[0].args),
+        });
+      })();
     },
-    [data, unwatch],
+    [data],
   );
 
   return { ...userInfo };

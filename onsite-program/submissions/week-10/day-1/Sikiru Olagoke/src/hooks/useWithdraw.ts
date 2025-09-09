@@ -1,9 +1,9 @@
 import React from "react";
 import { contractData, publicClient } from "@/config/config";
 import { useAccount, useWriteContract } from "wagmi";
-import { getAddress, parseEther } from "viem";
+import { parseEther } from "viem";
 
-function useStake() {
+function useWithdraw() {
   const { address: account } = useAccount();
 
   const { writeContract } = useWriteContract();
@@ -11,9 +11,9 @@ function useStake() {
   return React.useCallback(
     async (amount: string) => {
       const { request } = await publicClient.simulateContract({
-        address: getAddress(contractData.contractAddress),
+        address: contractData.contractAddress,
         abi: contractData.contractABI,
-        functionName: "stake",
+        functionName: "withdraw",
         args: [parseEther(amount)],
         account,
       });
@@ -24,4 +24,4 @@ function useStake() {
   );
 }
 
-export default useStake;
+export default useWithdraw;
