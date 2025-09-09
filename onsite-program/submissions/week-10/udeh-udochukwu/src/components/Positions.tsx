@@ -1,9 +1,40 @@
 "use client";
 
+import { useGetHooks } from "@/hooks/useGetHooks";
+import useWithdraw from "@/hooks/useWithdraw";
 import Link from "next/link";
 import { useState } from "react";
+import { useAccount } from "wagmi";
+
 
 export default function Positions() {
+  const [isWithdrawing, setIsWithdrawing] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+
+  const withdrawTokens = useWithdraw();
+  const { address } = useAccount(); // Fix: destructure address properly
+const hooksData = useGetHooks();
+const userDetails = hooksData?.userDetails;
+const minLockDuration = hooksData?.minLockDuration;
+
+
+  const handleWithdraw = async () => { // Fix: remove parameter, get from state
+    if (!withdrawAmount || parseFloat(withdrawAmount) <= 0) {
+      alert("Please enter a valid amount");
+      return;
+    }
+
+    setIsWithdrawing(true);
+    try {
+      await withdrawTokens(parseFloat(withdrawAmount)); // Fix: pass the amount from state
+      setWithdrawAmount(""); // Clear input on success
+    } catch (error) {
+      console.error("Withdrawal failed:", error);
+    } finally {
+      setIsWithdrawing(false);
+    }
+  };
+
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-6">
@@ -54,9 +85,24 @@ export default function Positions() {
                 </span>
               </td>
               <td className="p-3 border-b">
-                <button className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
-                  Withdraw
-                </button>
+                <div className="space-y-2">
+                  <input
+                    type="number"
+                    value={withdrawAmount}
+                    onChange={(e) => setWithdrawAmount(e.target.value)}
+                    placeholder="Amount to withdraw"
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+                    disabled={isWithdrawing}
+                    max="5000" // Max available amount
+                  />
+                  <button
+                    onClick={handleWithdraw}
+                    disabled={!address || isWithdrawing || !withdrawAmount}
+                    className="w-full px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  >
+                    {isWithdrawing ? "Withdrawing..." : "Withdraw"}
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
