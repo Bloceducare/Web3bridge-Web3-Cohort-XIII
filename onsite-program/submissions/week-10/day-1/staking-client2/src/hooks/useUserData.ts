@@ -14,6 +14,7 @@ export function useUserData(): UserData & { isLoading: boolean } {
     query: { enabled: !!address }
   });
 
+  console.log('user details: ', userDetails)
   const { data: tokenBalance, isLoading: balanceLoading } = useReadContract({
     address: TOKEN_CONTRACT_ADDRESS,
     abi: TOKEN_ABI,
@@ -31,10 +32,10 @@ export function useUserData(): UserData & { isLoading: boolean } {
   });
 
   return {
-    stakedAmount: userDetails ? formatEther(userDetails[0]) : '0',
-    pendingRewards: userDetails ? formatEther(userDetails[2]) : '0',
-    timeUntilUnlock: userDetails ? Number(userDetails[3]) : 0,
-    canWithdraw: userDetails ? userDetails[4] : false,
+    stakedAmount: userDetails ? formatEther(userDetails.stakedAmount) : '0',
+    pendingRewards: userDetails ? formatEther(userDetails.pendingRewards) : '0',
+    timeUntilUnlock: userDetails ? Number(userDetails.timeUntilUnlock) : 0,
+    canWithdraw: userDetails ? userDetails.canWithdraw : false,
     tokenBalance: tokenBalance ? formatEther(tokenBalance) : '0',
     allowance: allowance ? formatEther(allowance) : '0',
     isLoading: userDetailsLoading || balanceLoading || allowanceLoading

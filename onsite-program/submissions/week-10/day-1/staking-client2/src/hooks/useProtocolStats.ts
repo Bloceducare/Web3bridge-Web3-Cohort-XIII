@@ -19,13 +19,11 @@ export function useProtocolStats(): ProtocolStats & { isLoading: boolean } {
   const { data: initialApr, isLoading: initialAprLoading } = useReadContract({
     address: STAKING_CONTRACT_ADDRESS,
     abi: STAKING_ABI,
-    // functionName: 'initialApr',
   });
 
   const { data: minLockDuration, isLoading: minLockLoading } = useReadContract({
     address: STAKING_CONTRACT_ADDRESS,
     abi: STAKING_ABI,
-    // functionName: 'minLockDuration',
   });
 
   return {
