@@ -1,10 +1,14 @@
-import { Coins, TrendingUp } from "lucide-react";
+import { Banknote, Coins, TrendingUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import useStakeTokenStore from "@/config/store";
 import useGetStakingStats from "@/hooks/useGetStakingStats";
+import useTokenDetails from "@/hooks/useGetTokenDetails";
+import { useAccount } from "wagmi";
 
 export const ContractStats = () => {
   const {totalStaked, currentAPR} = useGetStakingStats();
+  const {address} = useAccount()
+  const {userBal} = useTokenDetails()
   const tokenSymbol = useStakeTokenStore((state) => state.tokenSymbol);
 
   const stats = [
@@ -19,13 +23,19 @@ export const ContractStats = () => {
       value: `${currentAPR}%`,
       icon: <TrendingUp className="h-4 w-4" />,
       color: "text-green-600",
+    },
+    {
+      title: "Your Balance",
+      value: address ? `${userBal} MST` : "Connect your wallet",
+      icon: <Banknote className="h-4 w-4" />,
+      color: "text-cyan-600",
     }, 
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       {stats.map((stat, index) => (
-        <Card key={index}>
+        <Card key={index} className="py-0">
           <CardContent className="flex items-center p-6">
             <div className={`${stat.color} mr-4`}>{stat.icon}</div>
             <div>

@@ -38,8 +38,7 @@ const useStakeToken = () => {
         if (!publicClient) return;
 
         const amountInWei = Number(amount);
-
-        // Check user balance
+        
         if (userBal && amountInWei > userBal) {
           toast.error("Insufficient balance", {
             description: "You don't have enough tokens to stake this amount",
@@ -47,13 +46,11 @@ const useStakeToken = () => {
           return;
         }
 
-        // Check and handle allowance
         if (!allowance || allowance < amountInWei) {
           toast.info("Approval required", {
             description: "Please approve tokens for staking first",
           });
-
-          // Approve tokens
+          
           const approveHash = await writeContractAsync({
             address: import.meta.env.VITE_STAKE_TOKEN as `0x${string}`,
             abi: STAKE_TOKEN_ABI,
@@ -79,8 +76,7 @@ const useStakeToken = () => {
             description: "Tokens approved, now proceeding to stake",
           });
         }
-
-        // Stake tokens
+        
         const stakeHash = await writeContractAsync({
           address: import.meta.env
             .VITE_STAKING_CONTRACT as `0x${string}`,

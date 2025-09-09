@@ -16,25 +16,77 @@ const useGetUserDetails = () => {
   const [userDetails, setUserDetails] = useState<UserDetails>();
   const [isLoading, setIsLoading] = useState(false);
 
+  const fetchUserDetails = async () => {
+    if (!publicClient || !address) {
+      setUserDetails(undefined);
+      return;
+    }
+
+    setIsLoading(true);
+
+    const userDetailsResult = await publicClient.readContract({
+      address: import.meta.env.VITE_STAKING_CONTRACT,
+      abi: STAKING_CONTRACT_ABI,
+      functionName: "getUserDetails",
+      args: [address],
+    });
+
+    setUserDetails(userDetailsResult);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    (async () => {
-      if (!publicClient || !address) {
-        setUserDetails(undefined);
-        return;
+    fetchUserDetails();
+  }, [publicClient, address]);
+
+  useEffect(() => {
+    if (!publicClient || !address) return;
+
+    const onUserEvent = (logs:any) => {
+      const log = logs[0];
+      if (log?.args?.user === address) {
+        fetchUserDetails();
       }
+    };
 
-      setIsLoading(true);
+    const stakedEventAbiItem = STAKING_CONTRACT_ABI.find(
+      // @ts-ignore
+      (x) => x.name === "Staked" && x.type === "event"
+    );
 
-      const userDetailsResult = await publicClient.readContract({
-        address: import.meta.env.VITE_STAKING_CONTRACT,
-        abi: STAKING_CONTRACT_ABI,
-        functionName: "getUserDetails",
-        args: [address],
-      });
+    const withdrawnEventAbiItem = STAKING_CONTRACT_ABI.find(
+      // @ts-ignore
+      (x) => x.name === "Withdrawn" && x.type === "event"
+    );
 
-      setUserDetails(userDetailsResult);
-      setIsLoading(false);
-    })();
+    const rewardsClaimedEventAbiItem = STAKING_CONTRACT_ABI.find(
+      // @ts-ignore
+      (x) => x.name === "RewardsClaimed" && x.type === "event"
+    );
+
+    const unwatchStaked = publicClient.watchEvent({
+      address: import.meta.env.VITE_STAKING_CONTRACT,
+      event: stakedEventAbiItem,
+      onLogs: onUserEvent,
+    });
+
+    const unwatchWithdrawn = publicClient.watchEvent({
+      address: import.meta.env.VITE_STAKING_CONTRACT,
+      event: withdrawnEventAbiItem,
+      onLogs: onUserEvent,
+    });
+
+    const unwatchRewardsClaimed = publicClient.watchEvent({
+      address: import.meta.env.VITE_STAKING_CONTRACT,
+      event: rewardsClaimedEventAbiItem,
+      onLogs: onUserEvent,
+    });
+
+    return () => {
+      unwatchStaked();
+      unwatchWithdrawn();
+      unwatchRewardsClaimed();
+    };
   }, [publicClient, address]);
 
   return useMemo(() => ({userDetails, isLoading}), [userDetails, isLoading, publicClient]);

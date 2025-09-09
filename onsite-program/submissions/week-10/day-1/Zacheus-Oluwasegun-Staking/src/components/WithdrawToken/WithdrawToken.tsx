@@ -19,11 +19,11 @@ export const WithdrawToken = ({ position }: { position: UserDetails }) => {
   const [amount, setAmount] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const stakedAmount = formatUnits(position?.stakedAmount ?? 0n, 18);
-  const onWithdraw = useWithdraw()
+  const { withdraw, isWithdrawing} = useWithdraw()
 
   const handleWithdraw = () => {
     if (amount && parseFloat(amount) > 0) {
-        onWithdraw(amount);
+        withdraw(amount);
     //   setAmount("");
     //   setIsOpen(false);
     }
@@ -73,9 +73,9 @@ export const WithdrawToken = ({ position }: { position: UserDetails }) => {
         <DialogFooter className="text-white">
           <Button
             onClick={handleWithdraw}
-            disabled={!amount || parseFloat(amount) <= 0}
+            disabled={parseFloat(amount) <= 0 || isWithdrawing}
           >
-            Withdraw
+            {isWithdrawing ? "Withdrawing..." :"Withdraw"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -7,9 +7,9 @@ import { STAKING_CONTRACT_ABI } from "../config/staking_contract_abi";
 const useWithdraw = () => {
   const { address } = useAccount();
   const publicClient = usePublicClient();
-  const { writeContractAsync } = useWriteContract();
+  const { writeContractAsync, isPending } = useWriteContract();
 
-  return useCallback(
+  const withdrawCallback = useCallback(
     async (amount: string): Promise<void> => {
       if (!address || !publicClient) {
         toast.error("Not connected", {
@@ -54,6 +54,8 @@ const useWithdraw = () => {
     },
     [address, publicClient, writeContractAsync]
   );
+
+  return { withdraw: withdrawCallback, isWithdrawing: isPending };
 };
 
 export default useWithdraw;

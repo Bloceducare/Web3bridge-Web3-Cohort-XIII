@@ -1,4 +1,4 @@
-import { WagmiProvider } from "wagmi";
+import { http, WagmiProvider } from "wagmi";
 import { sepolia } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import '@rainbow-me/rainbowkit/styles.css';
@@ -10,6 +10,9 @@ const config = getDefaultConfig({
   appName: "Staking Dapp",   
   projectId: import.meta.env.VITE_WC_PROJECT_ID,
   chains: [sepolia],
+  transports: {
+    [sepolia.id]: http(import.meta.env.VITE_SEPOLIA_URL_KEY)
+  },
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
