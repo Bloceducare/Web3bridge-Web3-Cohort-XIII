@@ -1,0 +1,82 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Fawaz-Oduola/task-2/contracts/Lock.sol": {
+      "lastModificationDate": 1755535228248,
+      "contentHash": "5daa40c22d3a9841af8edcaaabc57c7c",
+      "sourceName": "contracts/Lock.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "Lock"
+      ]
+    },
+    "/home/fawaz/web3bridge/Web3bridge-Web3-Cohort-XIII/onsite-program/eviction_test/Fawaz-Oduola/task-2/contracts/interface.sol": {
+      "lastModificationDate": 1755536373313,
+      "contentHash": "91b02f46d1df3fb53e00fa39d7579ea8",
+      "sourceName": "contracts/interface.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0",
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IERC20",
+        "IUniswapV2Factory",
+        "IUniswapV2Pair",
+        "IUniswapV2Router01",
+        "IUniswapV2Router02"
+      ]
+    }
+  }
+}
