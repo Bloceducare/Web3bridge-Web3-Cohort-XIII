@@ -21,6 +21,7 @@ export default function StakeModal({ setOpen }: { setOpen: () => void }) {
     const { isConnected } = useAccount();
     const { tokenBalance } = useBalance();
     const { approve } = useApproveAndStakeToken(stakeValue);
+
     const [loading, setLoading] = useState(false)
     return (
         <Dialog open>
@@ -75,7 +76,11 @@ export default function StakeModal({ setOpen }: { setOpen: () => void }) {
                                 <span className="text-sm font-medium">Staking Benefits</span>
                             </div>
                             <ul className="text-xs text-muted-foreground space-y-1">
+<<<<<<< HEAD
                                 <li>• Earn up to 10% APR on your stake</li>
+=======
+                                <li>• Earn up to 12% APR on your stake</li>
+>>>>>>> 00a9c4220343e25bae1631dea842602e70a89bd6
                                 <li>• Rewards are compounded automatically</li>
                                 <li>• Withdraw anytime with 7-day cooldown</li>
                             </ul>

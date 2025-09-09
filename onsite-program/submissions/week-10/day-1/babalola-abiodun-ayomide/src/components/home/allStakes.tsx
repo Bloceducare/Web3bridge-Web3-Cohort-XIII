@@ -47,9 +47,8 @@ const mockStakes:UserInfo[] = [
     timestamp: '2024-01-18',
     status: 'Active'
   }
-]
 
-export function AllStakes() {
+export default function AllStakes() {
   const totalStakers = mockStakes.length
   const totalStaked = mockStakes.reduce((sum, stake) => sum + parseFloat(stake.amount), 0)
   const totalRewards = mockStakes.reduce((sum, stake) => sum + parseFloat(stake.rewards), 0)
