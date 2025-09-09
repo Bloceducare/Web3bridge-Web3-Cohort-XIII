@@ -17,17 +17,30 @@ import WithdrawCard from '@/ui/modules/components/WithdrawalCard';
 import PositionCard from '@/ui/modules/components/PositionCard';
 import RewardsCard from '@/ui/modules/components/RewardCard';
 import { AppLayout } from '@/ui/modules/partials';
+import { useGetContractBalance } from '@/common/hooks';
+import { parseUnits } from 'viem';
+import useClaimRewards from '@/common/hooks/useClaimRewards';
+import useStake from '@/common/hooks/useStaking';
+import useWithdraw from '@/common/hooks/useWithdrawal';
+import useEmergencyWithdraw from '@/common/hooks/useEmergencyWithdrawal';
 
 export default function HomePage() {
   const theme = useTheme();
   const { isConnected } = useAccount();
+  const balance = useGetContractBalance();
+  const claimReward = useClaimRewards();
+  const withdrawStake = useWithdraw();
+  const emergencyWithdraw = useEmergencyWithdraw();
+  const stake = useStake();
+  if(balance) {
+    console.log("Contract balance", parseUnits(`${balance}`, 18))
+  }
 
-  // Mock data - will be replaced with actual contract data
   const mockData = {
     tokenBalance: '1000.00',
     stakedAmount: '500.00',
     pendingRewards: '12.345',
-    timeUntilUnlock: '432000', // 5 days in seconds
+    timeUntilUnlock: '432000',
     canWithdraw: false,
     currentApr: '45.5',
     totalStaked: '1234567.89',
@@ -79,9 +92,7 @@ export default function HomePage() {
             />
           </Box>
 
-          {/* Main Content Grid */}
           <Grid container spacing={3}>
-            {/* Left Column - Actions */}
             <Grid size={{ xs: 12, md: 8 }}>
               <Grid container spacing={3}>
                 <Grid size={12}>
@@ -89,6 +100,7 @@ export default function HomePage() {
                     tokenBalance={isConnected ? mockData.tokenBalance : '0'}
                     currentApr={mockData.currentApr}
                     isLoading={false}
+                    handleStake={stake}
                   />
                 </Grid>
                 <Grid size={12}>
@@ -97,12 +109,13 @@ export default function HomePage() {
                     timeUntilUnlock={isConnected ? mockData.timeUntilUnlock : '0'}
                     canWithdraw={isConnected ? mockData.canWithdraw : false}
                     isLoading={false}
+                    handleWithdraw={withdrawStake}
+                    handleEmergencyWithdraw={emergencyWithdraw}
                   />
                 </Grid>
               </Grid>
             </Grid>
 
-            {/* Right Column - Info */}
             <Grid size={{ xs: 12, md: 4}}>
               <Grid container spacing={3}>
                 <Grid size={12}>
@@ -120,13 +133,13 @@ export default function HomePage() {
                     pendingRewards={isConnected ? mockData.pendingRewards : '0'}
                     totalClaimed={isConnected ? mockData.totalClaimed : '0'}
                     isLoading={false}
+                    handleClaim={claimReward}
                   />
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
 
-          {/* Info Banner */}
           {!isConnected && (
             <Paper
               elevation={0}

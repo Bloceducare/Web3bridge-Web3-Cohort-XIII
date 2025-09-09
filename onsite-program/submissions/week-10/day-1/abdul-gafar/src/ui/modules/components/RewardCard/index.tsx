@@ -21,19 +21,21 @@ interface RewardsCardProps {
   pendingRewards?: string;
   totalClaimed?: string;
   isLoading?: boolean;
+  handleClaim: () => void;
 }
 
 export default function RewardsCard({ 
   pendingRewards = '0', 
   totalClaimed = '0', 
-  isLoading = false 
+  isLoading = false,
+  handleClaim
 }: RewardsCardProps) {
   const theme = useTheme();
   const { isConnected } = useAccount();
 
-  const handleClaim = () => {
-    console.log('Claiming rewards:', pendingRewards);
-  };
+  // const handleClaim = () => {
+  //   console.log('Claiming rewards:', pendingRewards);
+  // };
 
   return (
     <Card

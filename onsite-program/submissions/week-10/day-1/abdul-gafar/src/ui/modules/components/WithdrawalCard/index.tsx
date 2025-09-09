@@ -29,13 +29,17 @@ interface WithdrawCardProps {
   timeUntilUnlock?: string;
   canWithdraw?: boolean;
   isLoading?: boolean;
+  handleWithdraw: (amount: number) => void;
+  handleEmergencyWithdraw: () => void;
 }
 
 export default function WithdrawCard({ 
   stakedAmount = '0', 
   timeUntilUnlock = '0', 
   canWithdraw = false, 
-  isLoading = false 
+  isLoading = false,
+  handleWithdraw,
+  handleEmergencyWithdraw
 }: WithdrawCardProps) {
   const theme = useTheme();
   const { isConnected } = useAccount();
@@ -53,14 +57,14 @@ export default function WithdrawCard({
     setAmount(stakedAmount);
   };
 
-  const handleWithdraw = () => {
-    console.log('Withdrawing:', amount);
-  };
+  // const handleWithdraw = () => {
+  //   console.log('Withdrawing:', amount);
+  // };
 
-  const handleEmergencyWithdraw = () => {
-    console.log('Emergency withdraw');
-    setEmergencyDialogOpen(false);
-  };
+  // const handleEmergencyWithdraw = () => {
+  //   console.log('Emergency withdraw');
+  //   setEmergencyDialogOpen(false);
+  // };
 
   const formatTimeRemaining = (seconds: string) => {
     const sec = parseInt(seconds);
@@ -150,7 +154,7 @@ export default function WithdrawCard({
               fullWidth
               variant="contained"
               size="large"
-              onClick={handleWithdraw}
+              onClick={() => handleWithdraw(Number(stakedAmount))}
               disabled={!isConnected || !canWithdraw || !amount || parseFloat(amount) <= 0 || isLoading}
               sx={{ py: 1.5 }}
             >

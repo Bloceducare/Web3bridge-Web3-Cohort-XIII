@@ -23,9 +23,10 @@ interface StakingCardProps {
   tokenBalance?: string;
   currentApr?: string;
   isLoading?: boolean;
+  handleStake: (amount: number) => void;
 }
 
-export default function StakingCard({ tokenBalance = '0', currentApr = '0', isLoading = false }: StakingCardProps) {
+export default function StakingCard({ tokenBalance = '0', currentApr = '0', isLoading = false, handleStake }: StakingCardProps) {
   const theme = useTheme();
   const { isConnected } = useAccount();
   const [amount, setAmount] = useState('');
@@ -54,10 +55,10 @@ export default function StakingCard({ tokenBalance = '0', currentApr = '0', isLo
     setSliderValue(100);
   };
 
-  const handleStake = () => {
-    // Will be implemented with contract integration
-    console.log('Staking:', amount);
-  };
+  // const handleStake = () => {
+  //   // Will be implemented with contract integration
+  //   console.log('Staking:', amount);
+  // };
 
   return (
     <Card
@@ -187,7 +188,7 @@ export default function StakingCard({ tokenBalance = '0', currentApr = '0', isLo
           fullWidth
           variant="contained"
           size="large"
-          onClick={handleStake}
+          onClick={() => handleStake(Number(tokenBalance))}
           disabled={!isConnected || !amount || parseFloat(amount) <= 0 || isLoading}
           sx={{
             py: 1.5,

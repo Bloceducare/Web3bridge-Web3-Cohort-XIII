@@ -64,12 +64,14 @@ export default function TransactionModal({
     <Dialog
       open={open}
       onClose={status !== 'pending' ? onClose : undefined}
-      PaperProps={{
-        sx: {
-          borderRadius: 3,
-          minWidth: 400,
-          background: theme.palette.background.paper,
-        },
+      slotProps={{
+        paper: {
+          sx: {
+            borderRadius: 3,
+            minWidth: 400,
+            background: theme.palette.background.paper,
+          },
+        }
       }}
     >
       <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
