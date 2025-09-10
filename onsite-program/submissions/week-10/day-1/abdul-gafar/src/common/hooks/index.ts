@@ -4,3 +4,4 @@ export * from "./useEmergencyWithdrawal";
 export * from "./useWithdrawal";
 export * from "./useGetUserStake";
 export * from "./useGetInitialApr";
+export * from "./useWatchAllEvent";

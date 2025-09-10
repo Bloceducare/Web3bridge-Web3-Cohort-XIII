@@ -1,81 +1,75 @@
 import { STACKING_CONTRACT } from "@/common/abi";
 import { useCallback } from "react";
 import { toast } from "sonner";
-import { useAccount, usePublicClient, useWalletClient, useWriteContract } from "wagmi";
-
+import { useAccount, usePublicClient, useWriteContract } from "wagmi";
+import { useWatchAllEvent } from "../useWatchAllEvent";
 
 const useEmergencyWithdraw = () => {
-    const { address } = useAccount();
-    const publicClient = usePublicClient();
-    const walletClient = useWalletClient();
-    const { writeContractAsync } = useWriteContract();
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
+  const { writeContractAsync } = useWriteContract();
 
+  return useCallback(async () => {
+    if (!address) {
+      toast.error("Not Connected", {
+        description: "Please connect your wallet first.",
+      });
+      return;
+    }
 
+    const contractAddress = process.env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS as
+      | `0x${string}`
+      | undefined;
 
-  return useCallback(
-    async () => {
-        if (!address || !walletClient) {
-            toast.error("Not Connected", {
-                description: "connect wallet"
-            });
-            return;
-        }
+    if (!contractAddress) {
+      toast.error("Contract address not set", {
+        description: "NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS is undefined",
+      });
+      return;
+    }
 
-        const contractAddress = process.env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS;
+    if (!publicClient) {
+      toast.error("Public client not available");
+      return;
+    }
 
-        if (!contractAddress) {
-            toast.error("Contract address not set", {
-                description: "NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS is undefined"
-            });
-            throw new Error("NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS is undefined");
-        }
+    const confirmed = confirm(
+      "Emergency withdraw will forfeit all rewards and apply a 50% penalty. Are you sure?"
+    );
 
-        if (!publicClient) {
-            toast.error("Public client not available");
-            throw new Error("Public client is undefined");
-        }
+    if (!confirmed) return;
 
-        const confirmed = confirm(
-            "Emergency withdraw will forfeit all rewards and apply a 50% penalty. Are you sure?"
-        );
+    try {
+      const emergencyHash = await writeContractAsync({
+        address: contractAddress,
+        abi: STACKING_CONTRACT,
+        functionName: "emergencyWithdraw",
+      });
 
-        if (!confirmed) {
-            return;
-        }
+      console.log("Emergency withdraw txHash: ", emergencyHash);
 
-        try {
-            const emergencyHash = await writeContractAsync({
-                address: contractAddress as `0x${string}`,
-                abi: STACKING_CONTRACT,
-                functionName: "emergencyWithdraw",
-                args: [],
-            });
+      const emergencyReceipt = await publicClient.waitForTransactionReceipt({
+        hash: emergencyHash,
+      });
 
-            console.log("Emergency withdraw txHash: ", emergencyHash);
-
-            const emergencyReceipt = await publicClient.waitForTransactionReceipt({
-                hash: emergencyHash,
-            });
-
-            if (emergencyReceipt.status === "success") {
-                toast.success("Emergency withdrawal successful", {
-                    description: "Tokens withdrawn with penalty applied. All rewards forfeited.",
-                });
-            } else {
-                toast.error("Emergency withdrawal failed", {
-                    description: "Emergency withdrawal transaction failed",
-                });
-            }
-
-        } catch (error) {
-            console.error("Emergency withdraw error:", error);
-            toast.error("Transaction failed", {
-                description: "Something went wrong during emergency withdrawal"
-            });
-        }
-    },
-    [address, walletClient, publicClient, writeContractAsync]
-);
-}
+      if (emergencyReceipt.status === "success") {
+        useWatchAllEvent();
+        toast.success("Emergency withdrawal successful", {
+          description:
+            "Tokens withdrawn with penalty applied. All rewards forfeited.",
+        });
+      } else {
+        toast.error("Emergency withdrawal failed", {
+          description: "Emergency withdrawal transaction failed",
+        });
+      }
+    } catch (error) {
+      console.error("Emergency withdraw error:", error);
+      toast.error("Transaction failed", {
+        description: "Something went wrong during emergency withdrawal",
+      });
+    }
+  }, [address, publicClient, writeContractAsync]);
+};
 
 export default useEmergencyWithdraw;

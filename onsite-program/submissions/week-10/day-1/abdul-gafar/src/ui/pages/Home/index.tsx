@@ -17,8 +17,8 @@ import WithdrawCard from '@/ui/modules/components/WithdrawalCard';
 import PositionCard from '@/ui/modules/components/PositionCard';
 import RewardsCard from '@/ui/modules/components/RewardCard';
 import { AppLayout } from '@/ui/modules/partials';
-import { useGetContractBalance, useGetInitialApr, useGetUserStake } from '@/common/hooks';
-import { formatEther } from 'viem';
+import { useGetContractBalance, useGetInitialApr, useGetUserStake, useWatchAllEvent } from '@/common/hooks';
+import { formatEther, formatUnits } from 'viem';
 import useClaimRewards from '@/common/hooks/useClaimRewards';
 import useStake from '@/common/hooks/useStaking';
 import useWithdraw from '@/common/hooks/useWithdrawal';
@@ -28,33 +28,31 @@ import { formatTimestamp } from '@/common/utils/helpers';
 export default function HomePage() {
   const theme = useTheme();
   const { isConnected } = useAccount();
-  const balance = useGetContractBalance();
   const userStakeBalance = useGetUserStake();
   const contractApr = useGetInitialApr();
   const claimReward = useClaimRewards();
   const withdrawStake = useWithdraw();
   const emergencyWithdraw = useEmergencyWithdraw();
   const stake = useStake();
+  const userBalance = useGetContractBalance();
   // @ts-ignore
-  const userstakedAmount = userStakeBalance ? formatEther(userStakeBalance.stakedAmount) : '0'
-  if(balance) {
-    console.log("Contract APR percentage", contractApr)
-  }
+  const userstakedAmount = userStakeBalance ? formatUnits(userStakeBalance.stakedAmount, 18) : '0'
 
+  // console.log("User Balance", userBalance)
   const mockData = {
-    tokenBalance: userstakedAmount,
+    tokenBalance: userBalance as string,
     // @ts-ignore
     stakedAmount: userstakedAmount,
     // @ts-ignore
-    pendingRewards: userStakeBalance ? formatEther(userStakeBalance.pendingRewards) : '0',
+    pendingRewards: userStakeBalance ? formatUnits(userStakeBalance.pendingRewards) : '0',
     timeUntilUnlock: '432000',
     canWithdraw: false,
     // @ts-ignore
-    currentApr: contractApr ? formatEther(contractApr) : '',
+    currentApr: contractApr ? formatUnits(contractApr) : '',
     // @ts-ignore
     totalStaked: userstakedAmount,
-    totalStakers: '1,234',
-    rewardPool: '50000.00',
+    totalStakers: '',
+    rewardPool: '',
     totalClaimed: '25.50',
     // @ts-ignore
     stakingDate: userStakeBalance ? formatTimestamp(userStakeBalance.stakedAmount) : '0',

@@ -2,6 +2,7 @@ import { STACKING_CONTRACT } from "@/common/abi";
 import { useCallback } from "react";
 import { toast } from "sonner";
 import { useAccount, usePublicClient, useWalletClient, useWriteContract } from "wagmi";
+import { useWatchAllEvent } from "../useWatchAllEvent";
 
 
 
@@ -52,6 +53,7 @@ return useCallback(
             });
 
             if (claimReceipt.status === "success") {
+                useWatchAllEvent();
                 toast.success("Rewards claimed successfully", {
                     description: "Your rewards have been transferred to your wallet",
                 });

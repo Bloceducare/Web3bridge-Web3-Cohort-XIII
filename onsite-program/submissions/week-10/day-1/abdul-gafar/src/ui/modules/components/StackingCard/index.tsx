@@ -188,7 +188,7 @@ export default function StakingCard({ tokenBalance = '0', currentApr = '0', isLo
           fullWidth
           variant="contained"
           size="large"
-          onClick={() => handleStake(Number(tokenBalance))}
+          onClick={() => handleStake(Number(amount))}
           disabled={!isConnected || !amount || parseFloat(amount) <= 0 || isLoading}
           sx={{
             py: 1.5,
