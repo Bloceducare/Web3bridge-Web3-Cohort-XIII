@@ -1,0 +1,4 @@
+EmployeeModule#EmployeeManagement - 0x53cAAf1029f2BB9B59384B84c1c84899c17597c8
+
+Successfully verified contract EmployeeManagement on the block explorer.
+https://sepolia-blockscout.lisk.com/address/0x53cAAf1029f2BB9B59384B84c1c84899c17597c8#code
