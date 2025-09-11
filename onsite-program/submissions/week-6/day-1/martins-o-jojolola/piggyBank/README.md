@@ -1,0 +1,1 @@
+### [Deployment details on blockscout](https://sepolia-blockscout.lisk.com/address/0x6D14D386259d019cea77f4170CcEd9790d87821a)
