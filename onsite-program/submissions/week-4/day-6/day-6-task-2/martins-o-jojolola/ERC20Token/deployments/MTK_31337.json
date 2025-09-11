@@ -1,0 +1,17 @@
+{
+  "network": "localhost",
+  "chainId": 31337,
+  "contractAddress": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+  "deployerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "transactionHash": "0x0a379f33837123d30d38fbe003dbabf307fd7188eeedc31861637b527d1e7d65",
+  "blockNumber": 4,
+  "gasUsed": "6000000",
+  "deploymentTime": 59,
+  "tokenConfig": {
+    "name": "MartinsToken",
+    "symbol": "MTK",
+    "decimals": 18,
+    "totalSupply": "1000000000000000000000000"
+  },
+  "timestamp": "2025-08-03T22:05:14.507Z"
+}
