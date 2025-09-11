@@ -10,7 +10,7 @@ const config: HardhatUserConfig = {
 
   networks: {
      // for testnet
-    'lisk-sepolia': {
+    'sepolia': {
       url: LISK_SEPOLIA_URL,
       accounts: [PRIVATE_KEY as string],
       gasPrice: 1000000000,
